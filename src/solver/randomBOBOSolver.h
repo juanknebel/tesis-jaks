@@ -1,0 +1,30 @@
+/*
+ * randomBOBOSolver.h
+ *
+ *  Created on: 14/08/2013
+ *      Author: zero
+ */
+
+#ifndef RANDOMBOBOSOLVER_H_
+#define RANDOMBOBOSOLVER_H_
+
+#include "randomSOBOSolver.h"
+
+class RandomBOBOSolver : protected RandomSOBOSolver {
+private:
+	static int INITIAL_TRIALS_FOR_MU;
+	Double mu_;
+
+	Double chooseMu();
+
+public:
+	RandomBOBOSolver(ProblemInstance* problem) : RandomSOBOSolver(problem) {
+		this->mu_ = chooseMu();
+	}
+	~RandomBOBOSolver();
+
+	bool candidateAcceptable(SnowFlake& candidate);
+};
+
+
+#endif /* RANDOMBOBOSOLVER_H_ */
