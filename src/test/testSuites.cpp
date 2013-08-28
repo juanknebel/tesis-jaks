@@ -11,6 +11,8 @@
 #include "testingProblemInstance.h"
 #include "testingProblemInstanceFromFiles.h"
 #include "testingMetisWrapper.h"
+#include "testingClustering.h"
+#include "testingClusterAndPickSolver.h"
 
 MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
 	MatrixConcrete matrix(2,2);
@@ -30,6 +32,38 @@ MatrixConcrete giveMeMatrix2x2() {
 	return matrix;
 }
 
+MatrixConcrete giveMeSymetricMatrix2x2() {
+	MatrixConcrete matrix(2,2);
+	matrix.set(0,0,1.0);
+	matrix.set(0,1,2.0);
+	matrix.set(1,0,3.0);
+	matrix.set(1,1,2.0);
+	return matrix;
+}
+
+MatrixConcrete giveMeSymetricMatrix2x2With0InDiagonal() {
+	MatrixConcrete matrix(2,2);
+	matrix.set(0,0,0.0);
+	matrix.set(0,1,2.0);
+	matrix.set(1,0,3.0);
+	matrix.set(1,1,0.0);
+	return matrix;
+}
+
+MatrixConcrete giveMeMatrix3x3() {
+	MatrixConcrete matrix(3,3);
+	matrix.set(0,0,1.0);
+	matrix.set(0,1,2.0);
+	matrix.set(0,2,3.0);
+	matrix.set(1,0,4.0);
+	matrix.set(1,1,5.0);
+	matrix.set(1,2,6.0);
+	matrix.set(2,0,7.0);
+	matrix.set(2,1,8.0);
+	matrix.set(2,2,9.0);
+	return matrix;
+}
+
 MatrixConcrete giveMeSymetricMatrix3x3() {
 	MatrixConcrete matrix(3,3);
 	matrix.set(0,0,1.0);
@@ -41,6 +75,20 @@ MatrixConcrete giveMeSymetricMatrix3x3() {
 	matrix.set(2,0,3.0);
 	matrix.set(2,1,2.0);
 	matrix.set(2,2,1.0);
+	return matrix;
+}
+
+MatrixConcrete giveMeMatrix3x3With0InDiagonal() {
+	MatrixConcrete matrix(3,3);
+	matrix.set(0,0,0.0);
+	matrix.set(0,1,2.0);
+	matrix.set(0,2,3.0);
+	matrix.set(1,0,4.0);
+	matrix.set(1,1,0.0);
+	matrix.set(1,2,6.0);
+	matrix.set(2,0,7.0);
+	matrix.set(2,1,8.0);
+	matrix.set(2,2,0.0);
 	return matrix;
 }
 
@@ -56,6 +104,16 @@ MatrixConcrete giveMeSymetricMatrix3x3With0InDiagonal() {
 	matrix.set(2,1,2.0);
 	matrix.set(2,2,0.0);
 	return matrix;
+}
+
+ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory) {
+	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
+	std::string fileNodeCost = directory + "node_cost.csv";
+	std::string fileNodeCover = directory + "node_cover.csv";
+	std::string fileNodeName = directory + "node_name.csv";
+	std::string fileTypeName = directory + "type_name.csv";
+	ProblemInstanceFromFiles* result = new ProblemInstanceFromFiles(fileNodeCost, fileNodeCompatibility, fileNodeCover, 1000.00);
+	return result;
 }
 
 void initDebug(String filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel) {
@@ -113,4 +171,19 @@ void testMetisWrapper() {
 	TestingMetisWrapper metis;
 	MatrixConcrete graph = giveMeSymetricMatrix3x3With0InDiagonal();
 	metis.testCluster(graph, 2);
+}
+
+void testClustering() {
+	TestingClustering clustering;
+	MatrixConcrete graphNoSymetric = giveMeMatrix3x3With0InDiagonal();
+	MatrixConcrete graphSymetric = giveMeSymetricMatrix3x3With0InDiagonal();
+	clustering.testCluster(graphSymetric, 2);
+	clustering.testSymmetrizeCluster(graphNoSymetric, 2);
+}
+
+void testClusterAndPickSolver ( std::string directory) {
+	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
+	ProblemInstanceFromFiles* aProblem = giveMeProblemInstance(directory); 
+	TestingClusterAndPickSolver clusterPickSolver(*aProblem);
+	clusterPickSolver.testingSolve(4);
 }

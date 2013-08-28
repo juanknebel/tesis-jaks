@@ -98,14 +98,14 @@ void MatrixConcrete::ensureSymmetric() {
 
 	int rows = this->rows_;
 	for (int r = 0; r < rows; ++r) {
-		for (int c = 1; c <= rows; ++c) {
+		for (int c = 0; c < rows; ++c) {
 			if (this->get(r,c) < this->get(c,r)) {
 				this->set(r,c,this->get(c,r));
 			}
 		}
 	}
 	for (int r = 0; r < rows; ++r) {
-		for (int c = 1; c <= rows; ++c) {
+		for (int c = 0; c < rows; ++c) {
 			if (this->get(r,c) < this->get(c,r)) {
 				this->set(r,c,this->get(c,r));
 			}

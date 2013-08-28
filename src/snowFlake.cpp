@@ -86,3 +86,8 @@ void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVecto
 IntSet& SnowFlake::ids() {
 	return *(this->elements_);
 }
+
+String SnowFlake::showMe() {
+	return "";
+}
+
