@@ -11,6 +11,8 @@
 int main(int argc, char *argv[]) {
 	//testMatrix();
 	//testProblemInstanceFromFiles("/home/$USER/temp/");
-	testMetisWrapper();
+	//testMetisWrapper();
+	//testClustering();
+	testClusterAndPickSolver("/home/$USER/temp/");
 	return 0;
 }

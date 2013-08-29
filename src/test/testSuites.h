@@ -21,4 +21,8 @@ void testProblemInstanceFromFiles(std::string);
 
 void testMetisWrapper();
 
+void testClustering();
+
+void testClusterAndPickSolver(std::string);
+
 #endif /* TESTSUITES_H_ */
