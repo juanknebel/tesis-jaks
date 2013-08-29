@@ -116,6 +116,16 @@ ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory) {
 	return result;
 }
 
+ProblemInstance* giveMeAnotherProblemInstance(std::string directory) {
+	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
+	std::string fileNodeCost = directory + "node_cost.csv";
+	std::string fileNodeCover = directory + "node_cover.csv";
+	std::string fileNodeName = directory + "node_name.csv";
+	std::string fileTypeName = directory + "type_name.csv";
+	ProblemInstance* result = new ProblemInstanceFromFiles(fileNodeCost, fileNodeCompatibility, fileNodeCover, 1000.00);
+	return result;
+}
+
 void initDebug(String filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel) {
 	DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
 }
@@ -184,6 +194,9 @@ void testClustering() {
 void testClusterAndPickSolver ( std::string directory) {
 	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
 	ProblemInstanceFromFiles* aProblem = giveMeProblemInstance(directory); 
+	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
 	TestingClusterAndPickSolver clusterPickSolver(*aProblem);
+	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
 	clusterPickSolver.testingSolve(4);
+	anotherClusterPickSolver.testingSolve(2);
 }
