@@ -130,6 +130,10 @@ void initDebug(String filename, Logger::loggerConf aConf, int fileVerbosityLevel
 	DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
 }
 
+void initDefaultDebug() {
+	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
+}
+
 void testMatrix() {
 	std::cout << "Test MatrixWrapper y MatrixConcrete" << std::endl;
 	MatrixConcrete matrix = giveMeMatrix2x2(1.0,2.0,3.0,4.0);
@@ -171,13 +175,14 @@ void testProblemInstance() {
 }
 
 void testProblemInstanceFromFiles(std::string directory) {
+	initDefaultDebug();
 	std::cout << "Test ProblemInstanceFromFiles" << std::endl;
 	TestingProblemInstanceFromFiles testProblemFiles(directory);
 	testProblemFiles.showTheProblem();
 }
 
 void testMetisWrapper() {
-	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
+	initDefaultDebug();
 	TestingMetisWrapper metis;
 	MatrixConcrete graph = giveMeSymetricMatrix3x3With0InDiagonal();
 	metis.testCluster(graph, 2);
@@ -192,11 +197,11 @@ void testClustering() {
 }
 
 void testClusterAndPickSolver ( std::string directory) {
-	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
-	ProblemInstanceFromFiles* aProblem = giveMeProblemInstance(directory); 
+	initDefaultDebug();
+	//ProblemInstanceFromFiles* aProblem = giveMeProblemInstance(directory); 
 	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
-	TestingClusterAndPickSolver clusterPickSolver(*aProblem);
+	//TestingClusterAndPickSolver clusterPickSolver(*aProblem);
 	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
-	clusterPickSolver.testingSolve(4);
+	//clusterPickSolver.testingSolve(4);
 	anotherClusterPickSolver.testingSolve(2);
 }

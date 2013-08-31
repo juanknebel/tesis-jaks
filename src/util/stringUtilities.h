@@ -17,5 +17,7 @@ void trim(String& str);
 
 String convertToString(int aNumber);
 
+String convertToString(Double aNumber);
+
 
 #endif /* STRINGUTILITIES_H_ */

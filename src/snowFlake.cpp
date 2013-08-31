@@ -6,6 +6,7 @@
  */
 
 #include "snowFlake.h"
+#include "util/stringUtilities.h"
 #include <float.h>
 #include <algorithm>
 
@@ -57,8 +58,8 @@ Double SnowFlake::getCost() {
 int SnowFlake::getCoverSize() {
 	IntSet covered;
 	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		IntSet aSetToInsert = this->problem_->getCover(*it);
-		covered.insert(aSetToInsert.begin(), aSetToInsert.end());
+		const IntSet *aSetToInsert = this->problem_->getCover(*it);
+		covered.insert(aSetToInsert->begin(), aSetToInsert->end());
 	}
 
 	return covered.size();
@@ -88,6 +89,11 @@ IntSet& SnowFlake::ids() {
 }
 
 String SnowFlake::showMe() {
-	return "";
+	String result;
+	result = "COST = " + convertToString(this->getCost()) + "\n";
+	result.append("COVER = " + convertToString(this->getCoverSize()) + "\n");
+	result.append("SIZE = " + convertToString((int)this->elements_->size()) + "\n");
+	result.append("SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n");	
+	return result;
 }
 

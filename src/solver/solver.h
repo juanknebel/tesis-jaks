@@ -18,7 +18,6 @@ class Solver {
 protected:
 	ProblemInstance* problem_;
 	int pivot_;
-	bool compare(int o1, int o2);
 
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
 	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
@@ -28,6 +27,16 @@ protected:
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
+	
+private:
+	struct compatCompare {
+		compatCompare(ProblemInstance& aProblem, int pivot) : pivot_(pivot), problem_(aProblem) {}
+		ProblemInstance& problem_;
+		int pivot_;
+		inline bool operator() (int node1, int node2) {
+			return problem_.getCompat(pivot_, node2) >  problem_.getCompat(pivot_, node1);
+		}
+	};
 
 public:
 	Solver(ProblemInstance* problem) {

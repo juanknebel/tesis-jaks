@@ -10,6 +10,7 @@
 #include <functional>
 #include <iostream>
 #include "matrixConcrete.h"
+#include "util/Logger.h"
 
 MatrixConcrete::MatrixConcrete(int rows, int cols) : MatrixWrapper(rows, cols) {
 	this->theVector_ = new DblVector (this->rows_ * this->cols_);
