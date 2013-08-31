@@ -44,4 +44,11 @@ String convertToString(int aNumber) {
 	return out.str();
 }
 
+String convertToString(Double aNumber) {
+	String s;
+	std::stringstream out;
+	out << aNumber;
+	return out.str();
+}
+
 

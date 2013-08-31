@@ -22,6 +22,10 @@ protected:
 	SparseDoubleMatrix2D *nodeCompat_;
 	Object2IntOpenHashMap *node2id_;
 	Int2ObjectOpenHashMapString *id2node_;
+	String showBudget();
+	String showCosts();
+	String showCompat();
+	String showCover();
 
 public:
 	ProblemInstance();
@@ -32,7 +36,7 @@ public:
 	int numNodes();
 	Double getCost(int id);
 	Double getbudget();
-	IntSet& getCover(int id);
+	const IntSet* getCover(int id);
 	Double getCompat(int id1, int id2);
 	SparseDoubleMatrix2D* getCompat();
 	void normalizeNodeCompat();
@@ -41,6 +45,7 @@ public:
 	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
 	void createIdNodeMappings(StrVector nodes);
+	String showMe();
 };
 
 #endif /* PROBLEMINSTANCE_H_ */

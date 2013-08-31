@@ -19,6 +19,7 @@
 
 
 #include "testingClusterAndPickSolver.h"
+#include <iostream>
 
 TestingClusterAndPickSolver::TestingClusterAndPickSolver(ProblemInstance& problem) {
 	this->clusterSovler_ = new ClusterAndPickSolver(&problem);
@@ -32,8 +33,11 @@ TestingClusterAndPickSolver::~TestingClusterAndPickSolver() {
 
 void TestingClusterAndPickSolver::testingSolve ( int numFlakes ) {
 	SnowFlakeVector* result = this->clusterSovler_->solve(numFlakes);
+	int i=1;
 	for(SnowFlakeVector::iterator it = result->begin(); it != result->end(); ++it) {
-		it->showMe();
+		std::cout<<"Bundle numero "<<i<<std::endl;
+		std::cout<<it->showMe();
+		++i;
 	}
 }
 

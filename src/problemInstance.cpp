@@ -6,6 +6,7 @@
  */
 
 #include "problemInstance.h"
+#include "util/stringUtilities.h"
 #include <cassert>
 
 ProblemInstance::ProblemInstance() {
@@ -29,7 +30,7 @@ ProblemInstance::ProblemInstance(Double budget) {
 ProblemInstance::~ProblemInstance() {
 	delete this->nodeCost_;
 	for (Int2ObjectOpenHashMap::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
-		it->second.clear();
+		it->second->clear();
 	}
 	delete this->nodeCover_;
 	delete this->nodeCompat_;
@@ -55,7 +56,7 @@ Double ProblemInstance::getbudget() {
 	return this->budget_;
 }
 
-IntSet& ProblemInstance::getCover(int id) {
+const IntSet* ProblemInstance::getCover(int id) {
 	return this->nodeCover_->at(id);
 }
 
@@ -102,11 +103,72 @@ Double ProblemInstance::maxPairwiseCompatibility(const IntSet& aSet, const IntSe
 }*/
 
 void ProblemInstance::createIdNodeMappings(StrVector nodes) {
-	int nextId = 1;
+	int nextId = 0;
 	for (StrVector::iterator it = nodes.begin(); it != nodes.end(); ++it) {
 		String nodeId(*it);
 		(*(*this).node2id_)[nodeId]=nextId;
 		(*(*this).id2node_)[nextId]=nodeId;
 		++nextId;
 	}
+}
+
+String ProblemInstance::showMe() {
+	String result;
+	result = this->showBudget();
+	result.append(this->showCosts());
+	result.append(this->showCompat());
+	result.append(this->showCover());
+	return result;
+}
+
+String ProblemInstance::showBudget() {
+	String result;
+	result = "----------------------El presupuesto---------------------------------\n";
+	result.append(convertToString(this->budget_) + "\n");
+	result.append("---------------------------------------------------------------------\n");
+	return result;
+}
+
+String ProblemInstance::showCosts() {
+	String result;
+	result = "-----------------------Nodo, Costo-----------------------------------\n";
+	for(Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
+		result.append(this->getNode(it->first) + ", " + convertToString(it->second) + "\n");
+	}
+	result.append("---------------------------------------------------------------------\n");
+	return result;
+}
+
+String ProblemInstance::showCompat() {
+	String result;
+	result = "-------------------Nodo1, Nodo2, Compatibilidad----------------------\n";
+	for(int r = 0; r < this->nodeCompat_->getRows(); ++r) {
+		for(int c = 0; c < this->nodeCompat_->getCols(); ++c) {
+			result.append(this->getNode(r) + "," + this->getNode(c) + ", " + convertToString(this->getCompat(r, c)) + "\n");
+		}
+	}
+	result.append("---------------------------------------------------------------------\n");
+	return result;
+}
+
+String ProblemInstance::showCover() {
+	String result;
+	result = "---------------------Node, {Cubrimiento}:----------------------------\n";
+	bool withComma;
+	for (Int2ObjectOpenHashMap::iterator it=this->nodeCover_->begin();it!=this->nodeCover_->end();++it) {
+		result.append(this->getNode(it->first)+", {");
+		withComma = false;
+		for(IntSet::iterator it1=it->second->begin();it1!=it->second->end();++it1) {
+			if (!withComma) {
+				result.append(this->getNode(*it1));
+				withComma = true;
+			}
+			else {
+				result.append("," + this->getNode(*it1));
+			}
+		}
+		result.append("}\n");
+	}
+	result.append("---------------------------------------------------------------------\n");
+	return result;
 }

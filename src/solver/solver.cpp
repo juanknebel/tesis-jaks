@@ -6,6 +6,8 @@
  */
 
 #include "solver.h"
+#include "../util/Logger.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -24,7 +26,7 @@ bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1,
 bool Solver::checkBudgetConstraint(const IntSet& currentSnowflake, int newNode) {
 	double currentCost = 0;
 	for (IntSet::iterator it = currentSnowflake.begin(); it != currentSnowflake.end(); ++it) {
-			currentCost += this->problem_->getCost(*it);
+		currentCost += this->problem_->getCost(*it);
 	}
 	bool ret = currentCost + this->problem_->getCost(newNode) <= this->problem_->getbudget();
 	return ret;
@@ -55,20 +57,20 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 	bool ret = true;
 
 	for (IntSet::iterator node = currentSnowflake.begin(); node != currentSnowflake.end(); ++node) {
-		IntSet& covers = this->problem_->getCover(*node);
-//		if (covers == NULL) {
-//			throw 0; //new IllegalStateException("Node " + node + " does not cover anything");
-//		}
-		for (IntSet::iterator cover = covers.begin(); cover != covers.end(); ++cover) {
+		const IntSet* covers = this->problem_->getCover(*node);
+		if (covers == NULL) {
+			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+		}
+		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
-				// currentSnowflake is not valid
+				//currentSnowflake is not valid
 				ret = false;
 			}
 			coverageCovered->insert(*cover);
 		}
 	}
-	IntSet& covers = this->problem_->getCover(newNode);
-	for (IntSet::iterator cover = covers.begin(); cover != covers.end(); ++cover) {
+	const IntSet* covers = this->problem_->getCover(newNode);
+	for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 		if (coverageCovered->find(*cover)!=coverageCovered->end()) {
 			// adding this newNode is not valid
 			ret = false;
@@ -87,11 +89,11 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 	bool ret = true;
 
 	for (IntSet::iterator node = snowflake1.begin(); node != snowflake1.end(); ++node) {
-		IntSet& covers = this->problem_->getCover(*node);
-//		if (covers == NULL) {
-//			throw 0; //new IllegalStateException("Node " + node + " does not cover anything");
-//		}
-		for (IntSet::iterator cover = covers.begin(); cover != covers.end(); ++cover) {
+		const IntSet* covers = this->problem_->getCover(*node);
+		if (covers == NULL) {
+			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+		}
+		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
 				ret =  false;
 			}
@@ -100,11 +102,11 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 	}
 
 	for (IntSet::iterator node = snowflake2.begin(); node != snowflake2.end(); ++node) {
-		IntSet& covers = this->problem_->getCover(*node);
-//		if (covers == NULL) {
-//			throw 0;// new IllegalStateException("Node " + node + " does not cover anything");
-//		}
-		for (IntSet::iterator cover = covers.begin(); cover != covers.end(); ++cover) {
+		const IntSet* covers = this->problem_->getCover(*node);
+		if (covers == NULL) {
+			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+		}
+		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
 				ret =  false;
 			}
@@ -144,13 +146,6 @@ SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers) {
 	// Sort clusterMembers by decreasing compatibility
 	IntVector membersSorted;
 	this->pivot_ = pivot;
-	std::copy(clusterMembers.begin(), clusterMembers.end(), std::back_inserter(membersSorted));
-	//std::sort(membersSorted.begin(), membersSorted.end(), this->compare);
+	std::sort(membersSorted.begin(), membersSorted.end(), compatCompare(*(this->problem_), this->pivot_));
 	return pickFlakeGivenPermutation(pivot, membersSorted);
 }
-
-bool Solver::compare(int o1, int o2)
-{
-	return this->problem_->getCompat(this->pivot_, o2) >  this->problem_->getCompat(this->pivot_, o1);
-}
-

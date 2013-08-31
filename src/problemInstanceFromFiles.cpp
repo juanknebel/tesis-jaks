@@ -6,8 +6,8 @@
  */
 
 #include <stdlib.h>
-#include <iostream>
 #include "problemInstanceFromFiles.h"
+#include "util/stringUtilities.h"
 
 ProblemInstanceFromFiles::ProblemInstanceFromFiles() : ProblemInstance() {
 
@@ -45,13 +45,15 @@ void ProblemInstanceFromFiles::loadIdMapping(String fileName) {
 void ProblemInstanceFromFiles::loadInt2Double(String fileName) {
 	FileInput file;
 	file.open(fileName.c_str());
-	String theId, value;
+	String line;
 	int nodeId;
-	while(getline(file, theId, '\t')) {
-		//TODO: reemplazar por el nuevo split para los strings
-		getline(file, value, '\n');
-		nodeId = this->getId(theId);
-		(*(*this).nodeCost_)[nodeId] = atof(value.c_str());
+	while(getline(file, line, '\n')) {
+		StrVector tokens;
+		stringToVectorSplit(line,"\t",tokens);
+		nodeId = this->getId(tokens[0]);
+		if (nodeId >= 0) { // Skip silently nodes not mentioned in the cost file
+			(*(*this).nodeCost_)[nodeId] = atof(tokens[1].c_str());
+		}
 	}
 	file.close();
 }
@@ -60,15 +62,19 @@ void ProblemInstanceFromFiles::loadAndSymmetrizeMatrix(int nElements,  String fi
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
 	FileInput file;
 	file.open(fileName.c_str());
-	String theId, value;
+	String line;
 	int nodeId1, nodeId2;
-	while(getline(file, theId, '\t')) {
-		//TODO: reemplazar por el nuevo split para los strings
-		nodeId1 =this->getId(theId);
-		getline(file, theId, '\t');
-		nodeId2 =this->getId(theId);
-		getline(file, value, '\n');
-		this->nodeCompat_->set(nodeId1, nodeId2, atof(value.c_str()));
+	while (getline(file, line, '\n')) {
+		StrVector tokens;
+		stringToVectorSplit(line, "\t", tokens);
+		if (tokens.size() == 3) {
+			nodeId1 = this->getId(tokens[0]);
+			nodeId2 = this->getId(tokens[1]);
+			if (nodeId1 >= 0 && nodeId2 >= 0) { // Skip silently nodes not mentioned in the cost fileCompat
+				this->nodeCompat_->set(nodeId1, nodeId2, atof(tokens[2].c_str()));
+				
+			}
+		}
 	}
 	file.close();
 }
@@ -78,69 +84,17 @@ void ProblemInstanceFromFiles::loadInt2IntSet(String fileName) {
 	file.open(fileName.c_str());
 	String line;
 	int nodeId;
-	unsigned long pos;
-	while(getline(file, line, '\n')) {
-		//TODO: reemplazar por el nuevo split para los strings
-		pos=line.find('\t');
-		IntSet *aSet = new IntSet();
-		nodeId = this->getId(line.substr(0,pos));
-		while(pos!=String::npos) {
-			line=line.substr(pos+1,line.size());
-			pos=line.find('\t');
-			aSet->insert(atoi((line.substr(0,pos)).c_str()));
+	while (getline(file, line, '\n')) {
+		StrVector tokens;
+		stringToVectorSplit(line, "\t", tokens);
+		nodeId = this->getId(tokens[0]);
+		if (nodeId >=0) { // Skip silently nodes not mentioned in the cost file
+			IntSet *aSet = new IntSet();
+			for(int i = 1; i < tokens.size(); ++i) {
+				aSet->insert(atoi(tokens[i].c_str()));
+			}
+			(*(*this).nodeCover_)[nodeId] = aSet;
 		}
-		(*(*this).nodeCover_)[nodeId] = *aSet;
 	}
 	file.close();
-}
-
-void ProblemInstanceFromFiles::showMe() {
-	this->showBudget();
-	this->showCosts();
-	this->showCompat();
-	this->showCover();
-}
-
-void ProblemInstanceFromFiles::showBudget() {
-	std::cout << "----------------------El presupuesto---------------------------------" << std::endl;
-	std::cout << this->budget_ << std::endl;
-	std::cout << "---------------------------------------------------------------------" << std::endl;
-}
-
-void ProblemInstanceFromFiles::showCosts() {
-	std::cout << "-----------------------Nodo, Costo-----------------------------------" << std::endl;
-	for(Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
-		std::cout << this->getNode(it->first) << ", " << it->second << std::endl;
-	}
-	std::cout << "---------------------------------------------------------------------" << std::endl;
-}
-
-void ProblemInstanceFromFiles::showCompat() {
-	std::cout << "-------------------Nodo1, Nodo2, Compatibilidad----------------------" << std::endl;
-	for(int r = 1; r <= this->nodeCompat_->getRows(); ++r) {
-		for(int c = 1; c <= this->nodeCompat_->getCols(); ++c) {
-			std::cout << this->getNode(r) << "," << this->getNode(c) << ", " << this->getCompat(r, c) << std::endl;
-		}
-	}
-	std::cout << "---------------------------------------------------------------------" << std::endl;
-}
-
-void ProblemInstanceFromFiles::showCover() {
-	std::cout << "---------------------Node, {Cubrimiento}:----------------------------" << std::endl;
-	bool withComma;
-	for (Int2ObjectOpenHashMap::iterator it=this->nodeCover_->begin();it!=this->nodeCover_->end();++it) {
-		std::cout << this->getNode(it->first)<<", {";
-		withComma = false;
-		for(IntSet::iterator it1=it->second.begin();it1!=it->second.end();++it1) {
-			if (!withComma) {
-				std::cout << this->getNode(*it1);
-				withComma = true;
-			}
-			else {
-				std::cout <<"," << this->getNode(*it1);
-			}
-		}
-		std::cout << "}\n";
-	}
-	std::cout << "---------------------------------------------------------------------" << std::endl;
 }

@@ -11,3 +11,13 @@
 *.lai
 *.la
 *.a
+
+# Temp Files
+*~
+
+# Kdevelop Files
+*.kdev4
+
+# Binary Directory
+build/
+files/

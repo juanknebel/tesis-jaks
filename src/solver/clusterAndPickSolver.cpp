@@ -7,6 +7,7 @@
 
 #include "clusterAndPickSolver.h"
 #include "../cluster/clustering.h"
+#include "../util/Logger.h"
 
 
 ClusterAndPickSolver::~ClusterAndPickSolver() {
@@ -17,7 +18,7 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 	IntVector* clustering;
 	clustering = Clustering::symmetrizeAndCluster(*this->problem_->getCompat(), numSnowflakes);
 	if (clustering->size()!= this->problem_->numNodes()) {
-		//throw "Wrong length of returned clustering";
+		DEBUG(DBG_ERROR, "Error: Wrong length of returned clustering\n")
 	}
 
 	IntSet clusterIds = IntSet();
@@ -37,16 +38,14 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 			}
 		}
 
-		SnowFlake *bestFlake = bestSnowflake(clusterMembers);
+		SnowFlake *bestFlake = bestSnowFlake(clusterMembers);
 
 		solution->push_back(*bestFlake);
 	}
-
-
 	return solution;
 }
 
-SnowFlake* ClusterAndPickSolver::bestSnowflake(const IntSet& clusterMembers){
+SnowFlake* ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers){
 	double bestScore = -1.0;
 	SnowFlake* bestSnowflake;
 
@@ -55,7 +54,6 @@ SnowFlake* ClusterAndPickSolver::bestSnowflake(const IntSet& clusterMembers){
 		double score = snowflake->getSumIntraCompat();
 		if (score > bestScore) {
 			bestScore = score;
-			delete bestSnowflake;
 			bestSnowflake = snowflake;
 		}
 		else{

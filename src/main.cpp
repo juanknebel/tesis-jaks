@@ -10,9 +10,9 @@
 
 int main(int argc, char *argv[]) {
 	//testMatrix();
-	//testProblemInstanceFromFiles("/home/$USER/temp/");
+	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();
 	//testClustering();
-	testClusterAndPickSolver("/home/$USER/temp/");
+	testClusterAndPickSolver("../files/");
 	return 0;
 }

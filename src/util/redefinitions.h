@@ -23,13 +23,12 @@ typedef std::map<int, Double> Int2DoubleOpenHashMap;
 typedef std::map<int, String> Int2ObjectOpenHashMapString;
 typedef std::map<String, int> Object2IntOpenHashMap;
 typedef std::map<String, String> Object2ObjectOpenHashMap;
-typedef std::map<int, IntSet> Int2ObjectOpenHashMap;
+typedef std::map<int, IntSet*> Int2ObjectOpenHashMap;
 typedef std::map<String, StringSet> StringToStringSet;
 typedef std::vector<String> StrVector;
 typedef std::vector<Double> DblVector;
 typedef std::vector<int> IntVector;
 typedef std::ifstream FileInput;
 typedef std::ofstream FileOutput;
-
 
 #endif /* REDEFINITIONS_H_ */
