@@ -19,7 +19,7 @@ public:
 	Id2Str(String fileName);
 	~Id2Str();
 
-	String getNodebyName(String node);
+	String getNodebyName(String node) const;
 };
 
 

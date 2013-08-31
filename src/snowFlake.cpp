@@ -65,9 +65,18 @@ int SnowFlake::getCoverSize() {
 	return covered.size();
 }
 
-String SnowFlake::toString(const Id2Str& node2name) {
-
-	return "";
+String SnowFlake::toString(const Id2Str* node2name) {
+	String result = "";
+	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(this->problem_->getNode(*it))));
+		result.append(" (cost=" + convertToString(this->problem_->getCost(*it)) + ")\n");
+	}
+	result.append(" SIZE             = " + convertToString((int)this->elements_->size()) + "\n");
+	result.append(" COVERAGE         = " + convertToString(this->getCoverSize()) + "\n");
+	result.append(" COST             = " + convertToString(this->getCost()) + "\n");
+	result.append(" MIN_INTRA_COMPAT = " + convertToString(this->getMinCompat()) + "\n");
+	result.append(" SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n");
+	return result;
 }
 
 Double SnowFlake::getSumIntraCompat() const {
@@ -88,12 +97,24 @@ IntSet& SnowFlake::ids() {
 	return *(this->elements_);
 }
 
-String SnowFlake::showMe() {
+String SnowFlake::showSolution(std::vector<SnowFlake>& solutions) {
 	String result;
-	result = "COST = " + convertToString(this->getCost()) + "\n";
-	result.append("COVER = " + convertToString(this->getCoverSize()) + "\n");
-	result.append("SIZE = " + convertToString((int)this->elements_->size()) + "\n");
-	result.append("SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n");	
+	int avgCost = 0;
+	int avgCover = 0;
+	int avgSize = 0;
+	int avgSumIntraCompat = 0;
+	int solutionsSize = solutions.size();
+	for (std::vector<SnowFlake>::iterator it = solutions.begin(); it != solutions.end(); ++it) {
+		avgCost += it->getCost();
+		avgCover += it->getCoverSize();
+		avgSize += it->ids().size();
+		avgSumIntraCompat += it->getSumIntraCompat();
+	}
+	result = "SOLUTION_SIZE = " + convertToString(solutionsSize) + "\n";
+	result.append("AVG_COST = " + convertToString(avgCost / (double) solutionsSize) + "\n");
+	result.append("AVG_COVER = " + convertToString(avgCover / (double) solutionsSize) + "\n");
+	result.append("AVG_SIZE = " + convertToString(avgSize / (double) solutionsSize) + "\n");
+	result.append("AVG_SUM_INTRA_COMPAT = " + convertToString(avgSumIntraCompat / (double) solutionsSize) + "\n");
+	
 	return result;
 }
-

@@ -20,6 +20,6 @@ Id2Str::~Id2Str() {
 	delete this->node2name_;
 }
 
-String Id2Str::getNodebyName(String node) {
+String Id2Str::getNodebyName(String node) const {
 	return (*(*this).node2name_)[node];
 }

@@ -13,6 +13,7 @@
 #include "testingMetisWrapper.h"
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
+#include "../util/configurationJaks.h"
 
 MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
 	MatrixConcrete matrix(2,2);
@@ -134,6 +135,19 @@ void initDefaultDebug() {
 	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
 }
 
+void configureFile(char* fileName) {
+	String value;
+	ConfigurationJaks configFiles = ConfigurationJaks(fileName);
+	while(true) {
+		std::cout<<"Ingresar la clave a consultar (X para salir) ";
+		std::cin>>value;
+		if (value == "X") {
+			break;
+		}
+	std::cout<<"EL valor de la clave es: "<<configFiles.giveMeValue(value)<<std::endl;
+	}
+}
+
 void testMatrix() {
 	std::cout << "Test MatrixWrapper y MatrixConcrete" << std::endl;
 	MatrixConcrete matrix = giveMeMatrix2x2(1.0,2.0,3.0,4.0);
@@ -198,10 +212,35 @@ void testClustering() {
 
 void testClusterAndPickSolver ( std::string directory) {
 	initDefaultDebug();
-	//ProblemInstanceFromFiles* aProblem = giveMeProblemInstance(directory); 
 	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
-	//TestingClusterAndPickSolver clusterPickSolver(*aProblem);
 	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
-	//clusterPickSolver.testingSolve(4);
-	anotherClusterPickSolver.testingSolve(2);
+	anotherClusterPickSolver.testingSolve(4);
 }
+
+void testConfiguration(int argc, char *argv[]) {
+	if (argc <= 1) {
+		std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
+	}
+	else {
+		if (argv[1][0] != '-') {
+			std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
+		}
+		else {
+			char option = argv[1][1];
+			switch(option) {
+				case 'f':
+					std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
+					configureFile(argv[2]);
+					break;
+				case 't':
+					std::cout<<"Usando los tests internos ..."<<std::endl;
+					break;
+				default:
+					std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
+					break;
+			}
+		}
+	}
+}
+
+

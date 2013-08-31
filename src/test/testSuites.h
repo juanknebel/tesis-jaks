@@ -25,4 +25,5 @@ void testClustering();
 
 void testClusterAndPickSolver(std::string);
 
+void testConfiguration(int argc, char *argv[]);
 #endif /* TESTSUITES_H_ */

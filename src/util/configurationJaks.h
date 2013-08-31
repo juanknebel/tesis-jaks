@@ -18,28 +18,23 @@
 */
 
 
-#include "testingClusterAndPickSolver.h"
-#include <iostream>
+#ifndef CONFIGURATIONJAKS_H
+#define CONFIGURATIONJAKS_H
 
-TestingClusterAndPickSolver::TestingClusterAndPickSolver(ProblemInstance& problem) {
-	this->clusterSovler_ = new ClusterAndPickSolver(&problem);
-}
+#include <map>
+#include <string>
 
-TestingClusterAndPickSolver::TestingClusterAndPickSolver ( const TestingClusterAndPickSolver& other ) {
-}
+class ConfigurationJaks {
+private:
+	static char COMMENT;
+	static std::string SEPARATOR;
+	std::map<std::string, std::string> *keyValues_;
+	void parseFile(char* fileName);
+public:
+    ConfigurationJaks(char* fileName);
+    ~ConfigurationJaks();
+    
+    std::string giveMeValue(std::string key);
+};
 
-TestingClusterAndPickSolver::~TestingClusterAndPickSolver() {
-}
-
-void TestingClusterAndPickSolver::testingSolve ( int numFlakes ) {
-	SnowFlakeVector* result = this->clusterSovler_->solve(numFlakes);
-	int i=1;
-	for(SnowFlakeVector::iterator it = result->begin(); it != result->end(); ++it) {
-		std::cout<<"Bundle numero "<<i<<std::endl;
-		std::cout<<it->toString(NULL);
-		++i;
-	}
-	//std::cout<<SnowFlake::showSolution(*result);
-}
-
-
+#endif // CONFIGURATIONJAKS_H

@@ -27,11 +27,11 @@ public:
 
 	Double getCost();
 	int getCoverSize();
-	String toString(const Id2Str& node2name);
+	String toString(const Id2Str* node2name);
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids();
-	String showMe();
+	static String showSolution(std::vector<SnowFlake>& solutions);
 };
 
 #endif /* SNOWFLAKE_H_ */
