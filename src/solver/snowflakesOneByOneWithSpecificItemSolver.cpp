@@ -28,6 +28,8 @@ SnowFlakeVector* snowflakesOneByOneWithSpecificItemSolver::produceManySnowflakes
 		SnowFlake* snowflake = this->pickFlake(pivot, allIds);
 		if (this->candidateAcceptable(*snowflake)) {
 			candidates->push_back(*snowflake);
+			IntSet snowflakeIds = snowflake->ids();
+			allIds.erase(snowflakeIds.begin(),snowflakeIds.end());
 		}
 
 		trials++;
