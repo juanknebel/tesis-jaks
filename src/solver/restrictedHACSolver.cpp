@@ -71,8 +71,10 @@ bool RestrictedHACSolver::tryMerge(Int2ObjectOpenHashMap& clustering) {
 
 	if (bestC1 >= 0 && bestC2 >= 0) {
 		//copy elements from c2 into c1
+		IntSet *bestSetC1 = clustering.at(bestC1);
 		IntSet *bestSetC2 = clustering.at(bestC2);
-		//clustering.at(bestC1).insert(bestSetC2->begin(), bestSetC2->end());
+		bestSetC1->insert(bestSetC2->begin(), bestSetC2->end());
+
 		//remove c2 from cluster
 		clustering.erase(bestC2);
 		return true;

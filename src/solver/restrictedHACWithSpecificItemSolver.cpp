@@ -23,9 +23,9 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 		double cost = this->problem_->getCost(*it) +
 				this->problem_->getCost(this->_specificItem);
 		if (cost <= this->problem_->getbudget()) {
-			IntSet temp = IntSet();
-			temp.insert(*it);
-			temp.insert(this->_specificItem);
+			IntSet *temp = new IntSet();
+			temp->insert(*it);
+			temp->insert(this->_specificItem);
 			clustering[*it] = temp;
 		}
 	}
@@ -40,7 +40,7 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	}
 	SnowFlakeVector* solution = new SnowFlakeVector;
 	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it) {
-		SnowFlake *aFlake = new SnowFlake(it->second, this->problem_);
+		SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
 		solution->push_back(*aFlake);
 	}
 
@@ -53,16 +53,16 @@ bool RestrictedHACSWithSpecificItemSolver::tryMerge(Int2ObjectOpenHashMap& clust
 	int bestC2 = -1;
 	Double maxCompatibility = -1.00;
 	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it) {
-		IntSet cluster1 = it->second;
+		IntSet *cluster1 = it->second;
 		for (Int2ObjectOpenHashMap::iterator it2 = it; it != clustering.end(); ++it2) {
 			if (it == it2) {
 				continue;
 			}
-			IntSet cluster2 = it2->second;
+			IntSet *cluster2 = it2->second;
 			//check if these can be merged
-			if (this->checkBudgetAndCoverageConstraint(cluster1, cluster2)) {
+			if (this->checkBudgetAndCoverageConstraint(*cluster1, *cluster2)) {
 				// if they can be merged, measure their compatibility
-				Double compatibility = this->problem_->maxPairwiseCompatibility(cluster1, cluster2);
+				Double compatibility = this->problem_->maxPairwiseCompatibility(*cluster1, *cluster2);
 				if (compatibility > maxCompatibility) {
 					bestC1 = it->first;
 					bestC2 = it2->first;
@@ -73,8 +73,9 @@ bool RestrictedHACSWithSpecificItemSolver::tryMerge(Int2ObjectOpenHashMap& clust
 	}
 	if (bestC1 >= 0 && bestC2 >= 0) {
 		//copy elements from c2 into c1
-		IntSet bestSetC2 = clustering.at(bestC2);
-		clustering.at(bestC1).insert(bestSetC2.begin(), bestSetC2.end());
+		IntSet *bestSetC1 = clustering.at(bestC1);
+		IntSet *bestSetC2 = clustering.at(bestC2);
+		bestSetC1->insert(bestSetC2->begin(), bestSetC2->end());
 
 		//remove c2 from cluster
 		clustering.erase(bestC2);
