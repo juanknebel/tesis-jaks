@@ -44,10 +44,14 @@ std::string ConfigurationJaks::giveMeValue(std::string key) {
 		result = this->keyValues_->at(key);
 	}
 	catch (const std::out_of_range& oor) {
-		result = "Error: Clave no encontrada";
+		result = "Error: Clave no encontrada.";
 	}
 	
 	return result;
+}
+
+std::string ConfigurationJaks::operator[](std::string key) {
+	return this->giveMeValue(key);
 }
 
 void ConfigurationJaks::parseFile(char* fileName) {
