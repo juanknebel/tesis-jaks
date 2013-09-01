@@ -10,7 +10,7 @@
 
 #include "randomSOBOSolver.h"
 
-class RandomBOBOSolver : protected RandomSOBOSolver {
+class RandomBOBOSolver : public RandomSOBOSolver {
 private:
 	static int INITIAL_TRIALS_FOR_MU;
 	Double mu_;

@@ -10,7 +10,7 @@
 
 #include "multiplicativeEffortProduceAndChooseSolver.h"
 
-class SnowflakesOneByOneSolver: protected MultiplicativeEffortProduceAndChooseSolver {
+class SnowflakesOneByOneSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
 	static bool SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS;
 

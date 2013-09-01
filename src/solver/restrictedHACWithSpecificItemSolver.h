@@ -10,7 +10,7 @@
 
 #include "multiplicativeEffortProduceAndChooseSolver.h"
 
-class RestrictedHACSWithSpecificItemSolver: protected MultiplicativeEffortProduceAndChooseSolver {
+class RestrictedHACSWithSpecificItemSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
 	RestrictedHACSWithSpecificItemSolver(ProblemInstance* problem, int specificItem) :  MultiplicativeEffortProduceAndChooseSolver(problem) {
 		this->_specificItem = specificItem;

@@ -10,7 +10,7 @@
 
 #include "produceAndChooseSolver.h"
 
-class MultiplicativeEffortProduceAndChooseSolver: protected ProduceAndChooseSolver {
+class MultiplicativeEffortProduceAndChooseSolver: public ProduceAndChooseSolver {
 protected:
 	static Double DEFAULT_NUMCANDIDATES_MULTIPLIER;
 	Double numCandidatesMultiplier_;

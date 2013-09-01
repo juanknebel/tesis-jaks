@@ -20,7 +20,7 @@ Double RandomBOBOSolver::chooseMu() {
 	int pivot;
 	Double median = 0.0;
 
-	for (DblVector::iterator it = listOfSumIntra.begin(); it != listOfSumIntra.end(); ++it) {
+	for (Uint i = 0; i < this->INITIAL_TRIALS_FOR_MU; ++i) {
 		pivot = this->randomNode();
 		listOfSumIntra.push_back(this->pickFlake(pivot, allIds)->getSumIntraCompat());
 	}

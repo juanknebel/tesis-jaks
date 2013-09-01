@@ -15,10 +15,9 @@ SnowflakesOneByOneSolver::~SnowflakesOneByOneSolver() {
 
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflakes){
 
-	SnowFlakeVector* candidates;
-	candidates = new SnowFlakeVector(numSnowflakes);
+	SnowFlakeVector* candidates = new SnowFlakeVector();
 
-	IntSet pivotsUsed = IntSet();
+	IntSet pivotsUsed;
 	IntSet possiblePivots = IntSet(this->problem_->getIds());
 	IntSet allIds = IntSet(this->problem_->getIds());
 
@@ -26,7 +25,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflak
 
 	int trials = 0;
 
-	while((candidates->size() < 0) && (possiblePivots.size() > 0) && (trials < maxTrials)){
+	while((candidates->size() < numSnowflakes) && (possiblePivots.size() > 0) && (trials < maxTrials)){
 		int pivot = this->getPivot(pivotsUsed, possiblePivots);
 		if ((pivotsUsed.find(pivot) != pivotsUsed.end()) || (possiblePivots.find(pivot) != possiblePivots.end())) {
 			//throw

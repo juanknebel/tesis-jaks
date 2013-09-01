@@ -10,7 +10,7 @@
 
 #include "solver.h"
 
-class ProduceAndChooseSolver : protected Solver {
+class ProduceAndChooseSolver : public Solver {
 public:
 	enum RankingStrategy {
 			/**

@@ -10,7 +10,7 @@
 
 #include "exhaustiveSOBOSolver.h"
 
-class ExhaustiveGreedySumSimSOBOSolver : ExhaustiveSOBOSolver {
+class ExhaustiveGreedySumSimSOBOSolver : public ExhaustiveSOBOSolver {
 public:
 	ExhaustiveGreedySumSimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
 

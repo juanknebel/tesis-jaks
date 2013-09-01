@@ -16,12 +16,12 @@ RandomSOBOSolver::~RandomSOBOSolver() {
 int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) {
 	srand(time(0));
 	int pivot = randomNode();
-	while(pivotsUsed.count(pivot) != 1 || possiblePivots.count(pivot) == 0) {
+	while(pivotsUsed.count(pivot) == 1 || !(possiblePivots.count(pivot) == 1)) {
 		pivot = randomNode();
 	}
 	return pivot;
 }
 
 int RandomSOBOSolver::randomNode() {
-	return (rand() % this->problem_->numNodes()) + 1;
+	return (rand() % this->problem_->numNodes());
 }

@@ -9,7 +9,7 @@
 #define RANDOMSOBOSOLVER_H_
 
 #include "snowflakesOneByOneSolver.h"
-class RandomSOBOSolver : protected SnowflakesOneByOneSolver {
+class RandomSOBOSolver : public SnowflakesOneByOneSolver {
 public:
 	RandomSOBOSolver(ProblemInstance *problem) : SnowflakesOneByOneSolver(problem) {
 		this->SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;

@@ -10,7 +10,7 @@
 
 #include "multiplicativeEffortProduceAndChooseSolver.h"
 
-class snowflakesOneByOneWithSpecificItemSolver: protected MultiplicativeEffortProduceAndChooseSolver {
+class snowflakesOneByOneWithSpecificItemSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
 	snowflakesOneByOneWithSpecificItemSolver(ProblemInstance* problem, int specificItem) : MultiplicativeEffortProduceAndChooseSolver (problem) {
 		this->_specificItem = specificItem;

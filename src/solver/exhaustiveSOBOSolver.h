@@ -10,7 +10,7 @@
 
 #include "snowflakesOneByOneSolver.h"
 
-class ExhaustiveSOBOSolver: protected SnowflakesOneByOneSolver {
+class ExhaustiveSOBOSolver: public SnowflakesOneByOneSolver {
 public:
 	ExhaustiveSOBOSolver(ProblemInstance* problem):SnowflakesOneByOneSolver(problem){
 		SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = true;
