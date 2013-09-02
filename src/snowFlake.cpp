@@ -52,7 +52,7 @@ SnowFlake::~SnowFlake() {
 }
 
 bool SnowFlake::operator<(const SnowFlake& snowflake) const {
-	return this->getSumIntraCompat() < snowflake.getSumIntraCompat();
+	return snowflake.getSumIntraCompat() < this->getSumIntraCompat();
 }
 
 Double SnowFlake::getCost() {
@@ -96,7 +96,9 @@ Double SnowFlake::getSumIntraCompat() const {
 	Double sum = 0.0;
 	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
 		for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
-			sum += this->problem_->getCompat(*it, *it2);
+			if (*it<*it2) {
+					sum += this->problem_->getCompat(*it, *it2);
+			}
 		}
 	}
 	return sum;
