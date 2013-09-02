@@ -23,6 +23,11 @@ bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1,
 			&& checkCoverageConstraint(snowflake1, snowflake2);
 }
 
+bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode){
+	return checkBudgetConstraint(snowflake1, snowflake2)
+				&& checkCoverageConstraint(snowflake1, snowflake2, excludeNode);
+}
+
 bool Solver::checkBudgetConstraint(const IntSet& currentSnowflake, int newNode) {
 	double currentCost = 0;
 	for (IntSet::iterator it = currentSnowflake.begin(); it != currentSnowflake.end(); ++it) {
@@ -111,6 +116,52 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 				ret =  false;
 			}
 			coverageCovered->insert(*cover);
+		}
+	}
+
+	delete coverageCovered;
+	return ret;
+}
+
+bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
+		const IntSet& snowflake2, int excludeNode) {
+	IntSet* coverageCovered;
+	coverageCovered = new IntSet();
+	bool ret = true;
+
+	for (IntSet::iterator node = snowflake1.begin(); node != snowflake1.end(); ++node) {
+		if (excludeNode == *node) {
+			continue;
+		}
+		const IntSet* covers = this->problem_->getCover(*node);
+		if (covers == NULL) {
+			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+		}
+		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+				ret =  false;
+			}
+			if (excludeNode != *cover) {
+				coverageCovered->insert(*cover);
+			}
+		}
+	}
+
+	for (IntSet::iterator node = snowflake2.begin(); node != snowflake2.end(); ++node) {
+		if (excludeNode == *node) {
+			continue;
+		}
+		const IntSet* covers = this->problem_->getCover(*node);
+		if (covers == NULL) {
+			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+		}
+		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+				ret =  false;
+			}
+			if (excludeNode != *cover) {
+				coverageCovered->insert(*cover);
+			}
 		}
 	}
 

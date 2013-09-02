@@ -9,6 +9,7 @@
 #include "util/stringUtilities.h"
 #include <float.h>
 #include <algorithm>
+#include <iostream>
 
 Double SnowFlake::getMinCompat() {
 	Double minCompat = FLT_MAX;
@@ -44,7 +45,7 @@ SnowFlake::~SnowFlake() {
 }
 
 bool SnowFlake::operator<(const SnowFlake& snowFlake) const {
-	return this->getSumIntraCompat() < snowFlake.getSumIntraCompat();
+	return this->getSumIntraCompat() > snowFlake.getSumIntraCompat();
 }
 
 Double SnowFlake::getCost() {

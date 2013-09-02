@@ -21,10 +21,12 @@ protected:
 
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
 	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
+	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
 	bool checkBudgetConstraint(const IntSet& currentSnowflake, int newNode);
 	bool checkBudgetConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
+	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
 	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
 	

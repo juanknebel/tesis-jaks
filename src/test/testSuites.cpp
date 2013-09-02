@@ -243,4 +243,20 @@ void testConfiguration(int argc, char *argv[]) {
 	}
 }
 
+void testRestrictedHACWithSpecificItemSolver() {
+	initDefaultDebug();
+	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance("../files/");
+	RestrictedHACSWithSpecificItemSolver resSolver = RestrictedHACSWithSpecificItemSolver(anotherProblem, 4);
+	SnowFlakeVector* solutions = resSolver.solve(5);
+	for (SnowFlakeVector::iterator snowflake = solutions->begin(); snowflake != solutions->end(); ++snowflake){
+		std::cout << "snowflake: {";
+		std::set<int> ids = snowflake->ids();
+		for (std::set<int>::iterator id = ids.begin(); id != ids.end(); ++id){
+			std::cout << *id << ";";
+		}
+		std::cout << "} costo:" << snowflake->getSumIntraCompat() << std::endl;
+	}
 
+	String result = SnowFlake::showSolution(*solutions);
+	std::cout<< result <<std::endl;
+}
