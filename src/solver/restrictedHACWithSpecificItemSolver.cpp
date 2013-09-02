@@ -6,7 +6,6 @@
  */
 
 #include "restrictedHACWithSpecificItemSolver.h"
-#include <iostream>
 
 RestrictedHACSWithSpecificItemSolver::~RestrictedHACSWithSpecificItemSolver() {
 	// TODO Auto-generated destructor stub
@@ -19,7 +18,6 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	// Put each item with specific item in its own cluster
 	Int2ObjectOpenHashMap clustering = Int2ObjectOpenHashMap();
 	IntSet ids = this->problem_->getIds();
-	std::cout << ids.size() << std::endl;
 	for (IntSet::iterator it = ids.begin(); it != ids.end(); ++it) {
 		// Make sure all singleton clusters are within budget
 		double cost = this->problem_->getCost(*it) +
@@ -29,7 +27,6 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 			temp->insert(*it);
 			temp->insert(this->_specificItem);
 			clustering[*it] = temp;
-			std::cout << temp->size() << std::endl;
 		}
 	}
 	// Merge iteratively
@@ -45,13 +42,7 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 
 	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it){
 		SnowFlake *snowflake = new SnowFlake(*it->second, this->problem_);
-		std::cout << "snowflake: {";
 		std::set<int> ids = snowflake->ids();
-		for (std::set<int>::iterator id = ids.begin(); id != ids.end(); ++id){
-			std::cout << *id << ";";
-		}
-		std::cout << "} costo:" << snowflake->getSumIntraCompat() << std::endl;
-
 		delete snowflake;
 	}
 
