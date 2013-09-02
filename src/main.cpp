@@ -80,7 +80,9 @@ void usingTestFiles(char *configFileName) {
 		initializeDefaultDebug();
 	}
 	
-	switch(atoi(configFiles["SOLVER"].c_str())) {
+	int solverId = atoi(configFiles["SOLVER"].c_str());
+	
+	switch(solverId) {
 		case ClusterAndPick:
 			std::cout<<"Ejecutando ClusterAndPickSolver ..."<<std::endl;
 			executeClusterAndPickSolver(configFiles);

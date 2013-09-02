@@ -193,9 +193,7 @@ SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMember
  * @return a good snowflake containing the central element
  */
 SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers) {
-
-	// Sort clusterMembers by decreasing compatibility
-	IntVector membersSorted;
+	IntVector membersSorted(clusterMembers.begin(), clusterMembers.end());
 	this->pivot_ = pivot;
 	std::sort(membersSorted.begin(), membersSorted.end(), compatCompare(*(this->problem_), this->pivot_));
 	return pickFlakeGivenPermutation(pivot, membersSorted);
