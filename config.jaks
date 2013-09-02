@@ -9,11 +9,11 @@ FILE_COVER	node_cover.csv
 FILE_NODE_NAME	node_name.csv
 FILE_TYPE_NAME	type_name.csv
 #Cantidad de SnowFlakes
-NUM_FLAKES	7
+NUM_FLAKES	3
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
 #Valor del budget (o presupuesto)
-BUDGET	10.80
+BUDGET	10000.80
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0
 #RestrictedHACSolver = 1
@@ -23,7 +23,7 @@ BUDGET	10.80
 #ExhaustiveGreedyAnySimSolver = 5
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
-SOLVER	0
+SOLVER	3
 #Inicilizar el log
 LOG	1
 #Ejecutar con un item similar en todos: 1 para si, 0 para no

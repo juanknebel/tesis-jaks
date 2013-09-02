@@ -170,18 +170,16 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 }
 
 SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted) {
-	IntSet* picked;
-	picked = new IntSet();
-	picked->insert(pivot);
+	IntSet picked;
+	picked.insert(pivot);
 
 	for (IntVector::iterator newMember = clusterMembersPermuted.begin(); newMember != clusterMembersPermuted.end(); ++newMember) {
-		if (this->checkBudgetAndCoverageConstraint(*picked, *newMember)) {
-			picked->insert(*newMember);
+		if (this->checkBudgetAndCoverageConstraint(picked, *newMember)) {
+			picked.insert(*newMember);
 		}
 	}
 
-	SnowFlake* ret;
-	ret = new SnowFlake(*picked, this->problem_);
+	SnowFlake* ret = new SnowFlake(picked, this->problem_);
 	return ret;
 }
 
