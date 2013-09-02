@@ -78,22 +78,8 @@ String SnowFlake::toString(const Id2Str* node2name) {
 	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
 		Double cost;
 		String node;
-		try {
 		cost = this->problem_->getCost(*it);
-		}
-		catch (const std::out_of_range& oor) {
-			DEBUG(DBG_WARN,"Elemento: "<<*it<<".\nCantidad de elementos: "<<this->elements_->size());
-			DEBUG(DBG_ERROR, "Abortando la ejecucion en getCost\n");
-			abort();
-		}
-		try {
 		node = this->problem_->getNode(*it);
-		}
-		catch (const std::out_of_range& oor) {
-			DEBUG(DBG_WARN,"Elemento: "<<*it<<".\nCantidad de elementos: "<<this->elements_->size());
-			DEBUG(DBG_ERROR, "Abortando la ejecucion en getNode\n");
-			abort();
-		}
 		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(node)));
 		result.append(" (cost=" + convertToString(cost) + ")\n");
 	}
