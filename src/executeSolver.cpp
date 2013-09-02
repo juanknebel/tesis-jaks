@@ -10,6 +10,7 @@
 #include "solver/exhaustiveGreedyAnySimSOBOSolver.h"
 #include "solver/exhaustiveGreedySumSimSOBOSolver.h"
 #include "solver/sequentialScanSolver.h"
+#include "solver/restrictedHACWithSpecificItemSolver.h"
 
 #include <iostream>
 using namespace std;
@@ -47,7 +48,13 @@ void executeRestrictedHACSolver(ConfigurationJaks& configFile) {
 }
 
 void executeRestrictedHACSpecificSolver(ConfigurationJaks& configFile) {
-	
+	ProblemInstance* theProblem = instanceTheProblem(configFile);
+	RestrictedHACSWithSpecificItemSolver resSolver = RestrictedHACSWithSpecificItemSolver(theProblem, 4);
+	Id2Str* theNodeName = instanceTheNodeName(configFile);
+	SnowFlakeVector* solutions = resSolver.solve(atoi(configFile["num_flakes"].c_str()));
+	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeRandomBOBOSolver(ConfigurationJaks& configFile) {

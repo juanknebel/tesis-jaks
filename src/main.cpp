@@ -64,7 +64,6 @@ void usingTestHardcode(int argc, char *argv[]) {
 	//testClustering();
 	//testClusterAndPickSolver("../files/");
 	//testConfiguration(argc, argv);
-	testRestrictedHACWithSpecificItemSolver();
 }
 
 void usingTestFiles(char *configFileName) {
