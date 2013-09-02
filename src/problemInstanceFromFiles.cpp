@@ -56,6 +56,9 @@ void ProblemInstanceFromFiles::loadInt2Double(String fileName) {
 		}
 	}
 	file.close();
+	for (Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
+		ids_->insert(it->first);
+	}
 }
 
 void ProblemInstanceFromFiles::loadAndSymmetrizeMatrix(int nElements,  String fileName) {

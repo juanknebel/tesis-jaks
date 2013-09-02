@@ -16,6 +16,7 @@ ProblemInstance::ProblemInstance() {
 	this->nodeCompat_ = 0;
 	this->node2id_ = 0;
 	this->id2node_ = 0;
+	this->ids_ = 0;
 }
 
 ProblemInstance::ProblemInstance(Double budget) {
@@ -25,6 +26,7 @@ ProblemInstance::ProblemInstance(Double budget) {
 	this->nodeCompat_ = 0;
 	this->node2id_ = new Object2IntOpenHashMap;
 	this->id2node_ = new Int2ObjectOpenHashMapString;
+	this->ids_ = new IntSet();
 }
 
 ProblemInstance::~ProblemInstance() {
@@ -35,14 +37,12 @@ ProblemInstance::~ProblemInstance() {
 	this->nodeCover_->clear();
 	delete this->nodeCover_;
 	delete this->nodeCompat_;
+	this->ids_->clear();
+	delete this->ids_;
 }
 
 IntSet& ProblemInstance::getIds() {
-	IntSet *aSetOfIds = new IntSet;
-	for (Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
-		aSetOfIds->insert(it->first);
-	}
-	return *aSetOfIds;
+	return *(this->ids_);
 }
 
 int ProblemInstance::numNodes() {

@@ -22,6 +22,7 @@ protected:
 	SparseDoubleMatrix2D *nodeCompat_;
 	Object2IntOpenHashMap *node2id_;
 	Int2ObjectOpenHashMapString *id2node_;
+	IntSet *ids_;//mantengo un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
 	String showBudget();
 	String showCosts();
 	String showCompat();
