@@ -39,23 +39,18 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			char option = argv[1][1];
-			if (argv[2] == NULL) {
-				std::cerr<<errorMsg;
-			}
-			else {
-				switch(option) {
-					case 'f':
-						std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
-						usingTestFiles(argv[2]);
-						break;
-					case 't':
-						std::cout<<"Usando los tests internos ..."<<std::endl;
-						usingTestHardcode(argc, argv);
-						break;
-					default:
-						std::cerr<<errorMsg;
-						break;
-				}
+			switch(option) {
+				case 'f':
+					std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
+					usingTestFiles(argv[2]);
+					break;
+				case 't':
+					std::cout<<"Usando los tests internos ..."<<std::endl;
+					usingTestHardcode(argc, argv);
+					break;
+				default:
+					std::cerr<<errorMsg;
+					break;
 			}
 		}
 	}
@@ -72,8 +67,17 @@ void usingTestHardcode(int argc, char *argv[]) {
 }
 
 void usingTestFiles(char *configFileName) {
+	if (configFileName == NULL) {
+		//Si no pasa ningun archivo como parametro, termina la ejecucion del programa
+		std::cerr<<"Nombre de archivo invalido"<<std::endl;
+		return;
+	}
+	
 	ConfigurationJaks configFiles = ConfigurationJaks(configFileName);
-	if (atoi(configFiles["log"].c_str())) {initializeDefaultDebug();}
+	if (atoi(configFiles["log"].c_str())) {
+		//Si esta en modo debug, inicia el Logger
+		initializeDefaultDebug();
+	}
 	
 	switch(atoi(configFiles["SOLVER"].c_str())) {
 		case ClusterAndPick:
@@ -83,6 +87,7 @@ void usingTestFiles(char *configFileName) {
 		case RestrictedHAC:
 			std::cout<<"Ejecutando RestrictedHACSolver ..."<<std::endl;
 			executeRestrictedHACSolver(configFiles);
+			break;
 		case RestrictedHACSpecific:
 			std::cout<<"Ejecutando RestrictedHACSpecificSolver ..."<<std::endl;
 			executeRestrictedHACSpecificSolver(configFiles);
