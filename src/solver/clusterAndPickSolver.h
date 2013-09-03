@@ -15,7 +15,7 @@ public:
 	ClusterAndPickSolver(ProblemInstance* problem):Solver(problem){
 
 	}
-	virtual ~ClusterAndPickSolver();
+	~ClusterAndPickSolver();
 
 	SnowFlakeVector* solve (int numSnowflakes);
 private:

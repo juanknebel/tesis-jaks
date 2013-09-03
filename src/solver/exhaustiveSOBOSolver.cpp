@@ -8,10 +8,6 @@
 #include "exhaustiveSOBOSolver.h"
 #include <limits>
 
-ExhaustiveSOBOSolver::~ExhaustiveSOBOSolver() {
-	// TODO Auto-generated destructor stub
-}
-
 int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots){
 	int minPivot = std::numeric_limits<int>::max();
 

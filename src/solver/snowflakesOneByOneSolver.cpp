@@ -9,10 +9,6 @@
 
 bool SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 
-SnowflakesOneByOneSolver::~SnowflakesOneByOneSolver() {
-	// TODO Auto-generated destructor stub
-}
-
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflakes){
 
 	SnowFlakeVector* candidates = new SnowFlakeVector();

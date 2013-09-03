@@ -9,10 +9,6 @@
 #include <time.h>
 #include <cstdlib>
 
-RandomSOBOSolver::~RandomSOBOSolver() {
-
-}
-
 int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) {
 	srand(time(0));
 	int pivot = randomNode();

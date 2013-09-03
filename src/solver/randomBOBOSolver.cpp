@@ -10,10 +10,6 @@
 
 int RandomBOBOSolver::INITIAL_TRIALS_FOR_MU = 5;
 
-RandomBOBOSolver::~RandomBOBOSolver() {
-
-}
-
 Double RandomBOBOSolver::chooseMu() {
 	DblVector listOfSumIntra = DblVector(this->INITIAL_TRIALS_FOR_MU);
 	IntSet allIds = IntSet(this->problem_->getIds());

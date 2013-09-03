@@ -10,10 +10,6 @@
 
 Double MultiplicativeEffortProduceAndChooseSolver::DEFAULT_NUMCANDIDATES_MULTIPLIER = 2.0;
 
-MultiplicativeEffortProduceAndChooseSolver::~MultiplicativeEffortProduceAndChooseSolver() {
-
-}
-
 void MultiplicativeEffortProduceAndChooseSolver::setNumCandidatesMultiplier(Double numCandidatesMultiplier) {
 	this->numCandidatesMultiplier_ = numCandidatesMultiplier;
 }

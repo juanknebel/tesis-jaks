@@ -12,10 +12,6 @@ void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingS
 	this->rankingStrategy_ = strategy;
 }
 
-ProduceAndChooseSolver::~ProduceAndChooseSolver() {
-
-}
-
 ProduceAndChooseSolver::RankingStrategy ProduceAndChooseSolver::getRankingStrategy() {
 	return this->rankingStrategy_;
 }

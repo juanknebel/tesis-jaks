@@ -7,9 +7,6 @@
 
 #include "exhaustiveGreedySumSimSOBOSolver.h"
 
-ExhaustiveGreedySumSimSOBOSolver::~ExhaustiveGreedySumSimSOBOSolver() {
-}
-
 SnowFlake* ExhaustiveGreedySumSimSOBOSolver::pickFlake(int pivot, const IntSet& clusterMembers) {
 	Uint n = clusterMembers.size();
 	IntSet membersSortedSelected;

@@ -16,7 +16,7 @@ public:
 
 	SnowflakesOneByOneSolver(ProblemInstance* problem) : MultiplicativeEffortProduceAndChooseSolver (problem) {
 	}
-	virtual ~SnowflakesOneByOneSolver();
+	~SnowflakesOneByOneSolver() {};
 
 	virtual int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) = 0;
 

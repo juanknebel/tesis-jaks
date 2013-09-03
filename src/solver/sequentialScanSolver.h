@@ -15,7 +15,7 @@ public:
 	SequentialScanSolver(ProblemInstance* problem):Solver(problem){
 
 	}
-	virtual ~SequentialScanSolver();
+	~SequentialScanSolver() {};
 
 	SnowFlakeVector* solve(int numSnowflakes);
 	int pickRandom(const IntSet& set);

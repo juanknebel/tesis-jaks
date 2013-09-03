@@ -15,7 +15,7 @@ public:
 	ExhaustiveGreedySumSimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
 
 	}
-	~ExhaustiveGreedySumSimSOBOSolver();
+	~ExhaustiveGreedySumSimSOBOSolver() {};
 
 	protected:
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);

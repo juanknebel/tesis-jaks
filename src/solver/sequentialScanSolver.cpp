@@ -9,10 +9,6 @@
 #include <time.h>
 #include <cstdlib>
 
-SequentialScanSolver::~SequentialScanSolver() {
-	// TODO Auto-generated destructor stub
-}
-
 SnowFlakeVector* SequentialScanSolver::solve(int numSnowflakes){
 	SnowFlakeVector* solution = new SnowFlakeVector;
 	IntSet nodes = IntSet(this->problem_->getIds());

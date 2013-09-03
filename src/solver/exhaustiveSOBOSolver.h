@@ -16,7 +16,7 @@ public:
 		SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = true;
 
 	}
-	virtual ~ExhaustiveSOBOSolver();
+	~ExhaustiveSOBOSolver() {};
 
 	int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots);
 

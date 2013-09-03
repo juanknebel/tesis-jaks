@@ -18,7 +18,7 @@ public:
 	MultiplicativeEffortProduceAndChooseSolver(ProblemInstance* problem) : ProduceAndChooseSolver (problem) {
 		this->numCandidatesMultiplier_ = this->DEFAULT_NUMCANDIDATES_MULTIPLIER;
 	}
-	~MultiplicativeEffortProduceAndChooseSolver();
+	~MultiplicativeEffortProduceAndChooseSolver() {};
 	void setNumCandidatesMultiplier(Double numCandidatesMultiplier);
 	int numToProduce(int requestedSnowFlake);
 };

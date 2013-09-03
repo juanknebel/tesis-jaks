@@ -21,7 +21,7 @@ public:
 	RandomBOBOSolver(ProblemInstance* problem) : RandomSOBOSolver(problem) {
 		this->mu_ = chooseMu();
 	}
-	~RandomBOBOSolver();
+	~RandomBOBOSolver() {};
 
 	bool candidateAcceptable(SnowFlake& candidate);
 };

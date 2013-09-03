@@ -14,7 +14,7 @@ public:
 	RandomSOBOSolver(ProblemInstance *problem) : SnowflakesOneByOneSolver(problem) {
 		this->SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 	}
-	~RandomSOBOSolver();
+	~RandomSOBOSolver() {};
 
 	int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots);
 protected:

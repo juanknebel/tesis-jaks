@@ -31,7 +31,7 @@ public:
 	ProduceAndChooseSolver(ProblemInstance* problem) : Solver(problem) {
 		this->rankingStrategy_ = ProduceAndChooseSolver::getDefault();
 	}
-	~ProduceAndChooseSolver();
+	~ProduceAndChooseSolver() {};
 
 	void setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy);
 	ProduceAndChooseSolver::RankingStrategy getRankingStrategy();

@@ -15,7 +15,7 @@ class ExhaustiveGreedyAnySimSOBOSolver : public ExhaustiveSOBOSolver {
 	ExhaustiveGreedyAnySimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
 
 	}
-	~ExhaustiveGreedyAnySimSOBOSolver();
+	~ExhaustiveGreedyAnySimSOBOSolver() {};
 
 	protected:
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
