@@ -108,6 +108,10 @@ void usingTestFiles(char *configFileName) {
 			std::cout<<"Ejecutando ExhaustiveGreedySumSimSolver ..."<<std::endl;
 			executeExhaustiveGreedySumSimSolver(configFiles);
 			break;
+		case SeqScan:
+			std::cout<<"Ejecutando SequentialScanSolver ..."<<std::endl;
+			executeSequentialScanSolver(configFiles);
+			break;
 		default:
 			std::cerr<<"El metodo elegido para la resolucion no existe"<<std::endl;
 			break;
