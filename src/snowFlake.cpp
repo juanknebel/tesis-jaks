@@ -71,11 +71,12 @@ String SnowFlake::toString(const Id2Str* node2name) {
 		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(this->problem_->getNode(*it))));
 		result.append(" (cost=" + convertToString(this->problem_->getCost(*it)) + ")\n");
 	}
-	result.append(" SIZE             = " + convertToString((int)this->elements_->size()) + "\n");
-	result.append(" COVERAGE         = " + convertToString(this->getCoverSize()) + "\n");
-	result.append(" COST             = " + convertToString(this->getCost()) + "\n");
-	result.append(" MIN_INTRA_COMPAT = " + convertToString(this->getMinCompat()) + "\n");
-	result.append(" SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n");
+	
+	result.append("SIZE             = " + convertToString((int)this->elements_->size()) + "\n");
+	result.append("COVERAGE         = " + convertToString(this->getCoverSize()) + "\n");
+	result.append("COST             = " + convertToString(this->getCost()) + "\n");
+	result.append("MIN_INTRA_COMPAT = " + convertToString(this->getMinCompat()) + "\n");
+	result.append("SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n\n");
 	return result;
 }
 
@@ -97,8 +98,8 @@ IntSet& SnowFlake::ids() {
 	return *(this->elements_);
 }
 
-String SnowFlake::showSolution(std::vector<SnowFlake>& solutions) {
-	String result;
+String SnowFlake::showSolution(std::vector<SnowFlake>& solutions,const Id2Str* node2name) {
+	String result = "\n";
 	int avgCost = 0;
 	int avgCover = 0;
 	int avgSize = 0;
@@ -109,8 +110,10 @@ String SnowFlake::showSolution(std::vector<SnowFlake>& solutions) {
 		avgCover += it->getCoverSize();
 		avgSize += it->ids().size();
 		avgSumIntraCompat += it->getSumIntraCompat();
+		result.append(it->toString(node2name));
 	}
-	result = "SOLUTION_SIZE = " + convertToString(solutionsSize) + "\n";
+	result.append("-------------------------------------------------\n");
+	result.append("SOLUTION_SIZE = " + convertToString(solutionsSize) + "\n");
 	result.append("AVG_COST = " + convertToString(avgCost / (double) solutionsSize) + "\n");
 	result.append("AVG_COVER = " + convertToString(avgCover / (double) solutionsSize) + "\n");
 	result.append("AVG_SIZE = " + convertToString(avgSize / (double) solutionsSize) + "\n");
