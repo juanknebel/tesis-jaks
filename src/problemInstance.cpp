@@ -32,6 +32,7 @@ ProblemInstance::~ProblemInstance() {
 	for (Int2ObjectOpenHashMap::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
 		it->second->clear();
 	}
+	this->nodeCover_->clear();
 	delete this->nodeCover_;
 	delete this->nodeCompat_;
 }

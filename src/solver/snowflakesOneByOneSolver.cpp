@@ -6,6 +6,7 @@
  */
 
 #include "snowflakesOneByOneSolver.h"
+#include <functional>
 
 bool SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 
@@ -30,19 +31,20 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflak
 		pivotsUsed.insert(pivot);
 		possiblePivots.erase(pivot);
 
-		SnowFlake* snowflake = this->pickFlake(pivot, allIds);
-		if (this->candidateAcceptable(*snowflake)) {
-			candidates->push_back(*snowflake);
+		SnowFlake* refToFlake = this->pickFlake(pivot, allIds);
+		SnowFlake snowflake(*refToFlake);
+		delete refToFlake;
+		if (this->candidateAcceptable(snowflake)) {
+			candidates->push_back(snowflake);
 			if (!SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS) {
 				// Remove all snowflake members from the possible pivots
-				for (IntSet::iterator id = snowflake->ids().begin(); id != snowflake->ids().end(); ++id) {
+				for (IntSet::iterator id = snowflake.ids().begin(); id != snowflake.ids().end(); ++id) {
 					possiblePivots.erase(*id);
 				}
 			}
 		}
 
 		trials++;
-		delete snowflake;
 	}
 	return candidates;
 }

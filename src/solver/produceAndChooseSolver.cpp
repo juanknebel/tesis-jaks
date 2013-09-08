@@ -52,6 +52,8 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionByRankingStrategy(SnowFla
 		default:
 			break;
 	}
+	produced->clear();
+	delete produced;
 	return ret;
 }
 
@@ -62,7 +64,11 @@ ProduceAndChooseSolver::RankingStrategy ProduceAndChooseSolver::getDefault() {
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested) {
 	SnowFlake::sortByDecresingSumCompat(*produced);
 	int minValue = ((numRequested < produced->size()) ? numRequested : produced->size());
-	SnowFlakeVector* selected = new SnowFlakeVector(produced->begin(), produced->begin() + minValue);
+	SnowFlakeVector* selected = new SnowFlakeVector();
+	for (int i = 0; i < minValue; ++i) {
+		SnowFlake selectedSnowFlake(produced->at(i));
+		selected->push_back(selectedSnowFlake);
+	}
 	return selected;
 }
 

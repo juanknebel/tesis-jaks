@@ -32,6 +32,8 @@ void executeClusterAndPickSolver(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverCANP.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeRestrictedHACSolver(ConfigurationJaks& configFile) {
@@ -40,6 +42,8 @@ void executeRestrictedHACSolver(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverRHAC.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeRestrictedHACSpecificSolver(ConfigurationJaks& configFile) {
@@ -49,10 +53,12 @@ void executeRestrictedHACSpecificSolver(ConfigurationJaks& configFile) {
 void executeRandomBOBOSolver(ConfigurationJaks& configFile) {
 	ProblemInstance *theProblem = instanceTheProblem(configFile);
 	RandomBOBOSolver resolverRBOBO = RandomBOBOSolver(theProblem);
-	SnowflakesOneByOneSolver::MAX_TRIALS = atoi(configFile["max_trials"].c_str());
+	//SnowflakesOneByOneSolver::MAX_TRIALS = atoi(configFile["max_trials"].c_str());
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverRBOBO.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeRandomSOBOSolver(ConfigurationJaks& configFile) {
@@ -61,6 +67,8 @@ void executeRandomSOBOSolver(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverRSOBO.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeExhaustiveGreedyAnySimSolver(ConfigurationJaks& configFile) {
@@ -69,6 +77,8 @@ void executeExhaustiveGreedyAnySimSolver(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverEGAS.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeExhaustiveGreedySumSimSolver(ConfigurationJaks& configFile) {
@@ -77,6 +87,8 @@ void executeExhaustiveGreedySumSimSolver(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	SnowFlakeVector* solutions = resolverEGSS.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
 
 void executeSequentialScanSolver ( ConfigurationJaks& configFile ) {
@@ -85,4 +97,6 @@ void executeSequentialScanSolver ( ConfigurationJaks& configFile ) {
 	SequentialScanSolver resolverSS = SequentialScanSolver(theProblem);
 	SnowFlakeVector* solutions = resolverSS.solve(atoi(configFile["num_flakes"].c_str()));
 	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
+	delete solutions;
+	delete theProblem;
 }
