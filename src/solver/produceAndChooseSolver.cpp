@@ -92,6 +92,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 			Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
 			if (score > maxScore) {
 				bestCandidateId = candidateId;
+				maxScore = score;
 			}
 		}
 

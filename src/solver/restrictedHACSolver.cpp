@@ -51,7 +51,7 @@ bool RestrictedHACSolver::tryMerge(Int2ObjectOpenHashMap& clustering) {
 	Double maxCompatibility = -1.00;
 	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it) {
 		IntSet *cluster1 = it->second;
-		for (Int2ObjectOpenHashMap::iterator it2 = it; it != clustering.end(); ++it2) {
+		for (Int2ObjectOpenHashMap::iterator it2 = it; it2 != clustering.end(); ++it2) {
 			if (it == it2) {
 				continue;
 			}
