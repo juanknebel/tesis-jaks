@@ -20,7 +20,7 @@ Double RandomBOBOSolver::chooseMu() {
 		pivot = this->randomNode();
 		listOfSumIntra.push_back(this->pickFlake(pivot, allIds)->getSumIntraCompat());
 	}
-	sort(listOfSumIntra.begin(), listOfSumIntra.end());
+	std::sort(listOfSumIntra.begin(), listOfSumIntra.end());
 	int middle = listOfSumIntra[this->INITIAL_TRIALS_FOR_MU/2];
 
 	if (this->INITIAL_TRIALS_FOR_MU % 2 == 0) {
