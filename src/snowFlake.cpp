@@ -9,6 +9,7 @@
 #include "util/stringUtilities.h"
 #include <float.h>
 #include <algorithm>
+#include <stdexcept>
 
 Double SnowFlake::getMinCompat() {
 	Double minCompat = FLT_MAX;
@@ -38,13 +39,20 @@ SnowFlake::SnowFlake(const SnowFlake& snowflake){
 	this->elements_ = new IntSet(*(snowflake.elements_));
 }
 
-
-SnowFlake::~SnowFlake() {
-	delete this->elements_;
+SnowFlake& SnowFlake::operator=(const SnowFlake& snowflake) {
+	this->problem_ = snowflake.problem_;
+	this->elements_ = new IntSet(*(snowflake.elements_));
+	return *this;
 }
 
-bool SnowFlake::operator<(const SnowFlake& snowFlake) const {
-	return this->getSumIntraCompat() < snowFlake.getSumIntraCompat();
+SnowFlake::~SnowFlake() {
+	this->elements_->clear();
+	delete this->elements_;
+	this->problem_ = 0;
+}
+
+bool SnowFlake::operator<(const SnowFlake& snowflake) const {
+	return this->getSumIntraCompat() < snowflake.getSumIntraCompat();
 }
 
 Double SnowFlake::getCost() {
@@ -68,8 +76,26 @@ int SnowFlake::getCoverSize() {
 String SnowFlake::toString(const Id2Str* node2name) {
 	String result = "";
 	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(this->problem_->getNode(*it))));
-		result.append(" (cost=" + convertToString(this->problem_->getCost(*it)) + ")\n");
+		Double cost;
+		String node;
+		try {
+		cost = this->problem_->getCost(*it);
+		}
+		catch (const std::out_of_range& oor) {
+			DEBUG(DBG_WARN,"Elemento: "<<*it<<".\nCantidad de elementos: "<<this->elements_->size());
+			DEBUG(DBG_ERROR, "Abortando la ejecucion en getCost\n");
+			abort();
+		}
+		try {
+		node = this->problem_->getNode(*it);
+		}
+		catch (const std::out_of_range& oor) {
+			DEBUG(DBG_WARN,"Elemento: "<<*it<<".\nCantidad de elementos: "<<this->elements_->size());
+			DEBUG(DBG_ERROR, "Abortando la ejecucion en getNode\n");
+			abort();
+		}
+		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(node)));
+		result.append(" (cost=" + convertToString(cost) + ")\n");
 	}
 	
 	result.append("SIZE             = " + convertToString((int)this->elements_->size()) + "\n");

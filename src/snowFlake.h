@@ -20,10 +20,11 @@ private:
 
 public:
 	SnowFlake();
-	SnowFlake(const SnowFlake&);
+	SnowFlake(const SnowFlake& snowflake);
 	SnowFlake(const IntSet& elements, ProblemInstance* problem);
+	SnowFlake& operator=(const SnowFlake& snowflake);
 	~SnowFlake();
-	bool operator<(const SnowFlake& snowFlake) const;
+	bool operator<(const SnowFlake& snowflake) const;
 
 	Double getCost();
 	int getCoverSize();
