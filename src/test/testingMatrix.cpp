@@ -16,6 +16,10 @@ TestingMatrix::~TestingMatrix() {
 	delete this->theMatrix_;
 }
 
+MatrixWrapper* TestingMatrix::getMatrix() {
+	return this->theMatrix_;
+}
+
 void TestingMatrix::setMatrix(MatrixWrapper* theMatrix) {
 	if (this->theMatrix_ != 0) {
 		delete this->theMatrix_;
@@ -92,5 +96,14 @@ void TestingMatrix::testScalarMultiply(Double scalar, MatrixWrapper* theMatrix) 
 	}
 	else {
 		std::cout<<"Multiplicar por un escalar fallo"<<std::endl;
+	}
+}
+
+void TestingMatrix::testCountNonZeros(int cantOfNonZero) {
+	if (this->theMatrix_->countNonZeros() == cantOfNonZero) {
+		std::cout<<"Contar la cantidad de elementos que no son ceros funciono"<<std::endl;
+	}
+	else {
+		std::cout<<"Contar la cantidad de elementos que no son ceros fallo"<<std::endl;
 	}
 }

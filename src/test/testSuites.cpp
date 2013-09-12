@@ -170,13 +170,22 @@ void testMatrix() {
 	matrixToCompare.set(1,0,6.0);
 
 	matrixToCompare.set(1,1,133.2);
+	testMatrix.getMatrix()->showMe();
+	matrixToCompare.showMe();
 	testMatrix.testScalarMultiply(2.0, &matrixToCompare);
 
 	matrixToCompare.set(1,1,8.0);
+	testMatrix.getMatrix()->showMe();
+	matrixToCompare.showMe();
 	testMatrix.testScalarMultiply(2.0, &matrixToCompare);
 
-	matrix.showMe();
-	matrixToCompare.showMe();
+	MatrixConcrete anotherMatrix = giveMeMatrix2x2(0.0,0.0,0.0,0.0);
+	testMatrix.setMatrix(&anotherMatrix);
+
+	testMatrix.getMatrix()->showMe();
+	testMatrix.testCountNonZeros(0);
+	testMatrix.getMatrix()->showMe();
+	testMatrix.testCountNonZeros(2);
 }
 
 void testProblemInstance() {

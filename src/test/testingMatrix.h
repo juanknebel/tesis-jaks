@@ -19,6 +19,7 @@ public:
 	TestingMatrix(const TestingMatrix& );
 	~TestingMatrix();
 
+	MatrixWrapper* getMatrix();
 	void setMatrix(MatrixWrapper* theMatrix);
 	void testRows(int rows);
 	void testCols(int cols);
@@ -27,6 +28,7 @@ public:
 	void testGet(int row, int col, Double value);
 	void testSet(int row, int col, Double value, Double realValue);
 	void testScalarMultiply(Double scalar, MatrixWrapper* theMatrix);
+	void testCountNonZeros(int cantOfNonZero);
 };
 
 
