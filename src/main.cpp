@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 }
 
 void usingTestHardcode(int argc, char *argv[]) {
-	//testMatrix();
+	testMatrix();
 	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();
 	//testClustering();
@@ -73,49 +73,11 @@ void usingTestFiles(char *configFileName) {
 		return;
 	}
 	
-	ConfigurationJaks configFiles = ConfigurationJaks(configFileName);
-	if (atoi(configFiles["log"].c_str())) {
+	ConfigurationJaks configFile = ConfigurationJaks(configFileName);
+	if (atoi(configFile["log"].c_str())) {
 		//Si esta en modo debug, inicia el Logger
 		initializeDefaultDebug();
 	}
 	
-	int solverId = atoi(configFiles["SOLVER"].c_str());
-	
-	switch(solverId) {
-		case ClusterAndPick:
-			std::cout<<"Ejecutando ClusterAndPickSolver ..."<<std::endl;
-			executeClusterAndPickSolver(configFiles);
-			break;
-		case RestrictedHAC:
-			std::cout<<"Ejecutando RestrictedHACSolver ..."<<std::endl;
-			executeRestrictedHACSolver(configFiles);
-			break;
-		case RestrictedHACSpecific:
-			std::cout<<"Ejecutando RestrictedHACSpecificSolver ..."<<std::endl;
-			executeRestrictedHACSpecificSolver(configFiles);
-			break;
-		case RandomBOBO:
-			std::cout<<"Ejecutando RandomBOBOSolver ..."<<std::endl;
-			executeRandomBOBOSolver(configFiles);
-			break;
-		case RandomSOBO:
-			std::cout<<"Ejecutando RandomSOBOSolver ..."<<std::endl;
-			executeRandomSOBOSolver(configFiles);
-			break;
-		case ExAnySimSOBO:
-			std::cout<<"Ejecutando ExhaustiveGreedyAnySimSolver ..."<<std::endl;
-			executeExhaustiveGreedyAnySimSolver(configFiles);
-			break;
-		case ExSumSimSOBO:
-			std::cout<<"Ejecutando ExhaustiveGreedySumSimSolver ..."<<std::endl;
-			executeExhaustiveGreedySumSimSolver(configFiles);
-			break;
-		case SeqScan:
-			std::cout<<"Ejecutando SequentialScanSolver ..."<<std::endl;
-			executeSequentialScanSolver(configFiles);
-			break;
-		default:
-			std::cerr<<"El metodo elegido para la resolucion no existe"<<std::endl;
-			break;
-	}
+	execute(configFile);
 }

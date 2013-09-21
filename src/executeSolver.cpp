@@ -27,83 +27,63 @@ Id2Str* instanceTheNodeName(ConfigurationJaks& configFile) {
 	return theNodeName;
 }
 
-void executeClusterAndPickSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	ClusterAndPickSolver resolverCANP = ClusterAndPickSolver(theProblem);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverCANP.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
+void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile) {
+	if(atoi(configFile["write_file"].c_str())) {
+		SnowFlake::writeSolution(solution, configFile["directory_work"] + configFile["name_output"]);
+	}
 }
 
-void executeRestrictedHACSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	RestrictedHACSolver resolverRHAC = RestrictedHACSolver(theProblem);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverRHAC.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeRestrictedHACSpecificSolver(ConfigurationJaks& configFile) {
-	ProblemInstance* theProblem = instanceTheProblem(configFile);
-	RestrictedHACSWithSpecificItemSolver resSolver = RestrictedHACSWithSpecificItemSolver(theProblem, 4);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resSolver.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeRandomBOBOSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	RandomBOBOSolver resolverRBOBO = RandomBOBOSolver(theProblem);
-	//SnowflakesOneByOneSolver::MAX_TRIALS = atoi(configFile["max_trials"].c_str());
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverRBOBO.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeRandomSOBOSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	RandomSOBOSolver resolverRSOBO = RandomSOBOSolver(theProblem);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverRSOBO.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeExhaustiveGreedyAnySimSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	ExhaustiveGreedyAnySimSOBOSolver resolverEGAS = ExhaustiveGreedyAnySimSOBOSolver(theProblem);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverEGAS.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeExhaustiveGreedySumSimSolver(ConfigurationJaks& configFile) {
-	ProblemInstance *theProblem = instanceTheProblem(configFile);
-	ExhaustiveGreedySumSimSOBOSolver resolverEGSS = ExhaustiveGreedySumSimSOBOSolver(theProblem);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SnowFlakeVector* solutions = resolverEGSS.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
-	delete theProblem;
-}
-
-void executeSequentialScanSolver ( ConfigurationJaks& configFile ) {
+void execute(ConfigurationJaks& configFile) {
+	int solverId = atoi(configFile["SOLVER"].c_str());
 	ProblemInstance *theProblem = instanceTheProblem(configFile);
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	SequentialScanSolver resolverSS = SequentialScanSolver(theProblem);
-	SnowFlakeVector* solutions = resolverSS.solve(atoi(configFile["num_flakes"].c_str()));
-	cout<<SnowFlake::showSolution(*solutions,theNodeName)<<endl;
-	delete solutions;
+	bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
+	int specificItem = atoi(configFile["specific_item"].c_str());
+	Solver * theSolver = 0;
+	switch(solverId) {
+		case ClusterAndPick:
+			std::cout<<"Ejecutando ClusterAndPickSolver ..."<<std::endl;
+			theSolver = new ClusterAndPickSolver(theProblem);
+			break;
+		case RestrictedHAC:
+			std::cout<<"Ejecutando RestrictedHACSolver ..."<<std::endl;
+			theSolver = new RestrictedHACSolver(theProblem);
+			break;
+		case RestrictedHACSpecific:
+			std::cout<<"Ejecutando RestrictedHACSpecificSolver ..."<<std::endl;
+			theSolver = new RestrictedHACSWithSpecificItemSolver(theProblem, atoi(configFile["specific_item"].c_str()));
+			break;
+		case RandomBOBO:
+			std::cout<<"Ejecutando RandomBOBOSolver ..."<<std::endl;
+			theSolver = new RandomBOBOSolver(theProblem);
+			if (withSpecificItem) {
+				dynamic_cast<RandomBOBOSolver *> (theSolver)->setSpecificItem(specificItem);
+			}
+			break;
+		case RandomSOBO:
+			std::cout<<"Ejecutando RandomSOBOSolver ..."<<std::endl;
+			theSolver = new RandomSOBOSolver(theProblem);
+			break;
+		case ExAnySimSOBO:
+			std::cout<<"Ejecutando ExhaustiveGreedyAnySimSolver ..."<<std::endl;
+			theSolver = new ExhaustiveGreedyAnySimSOBOSolver(theProblem);
+			break;
+		case ExSumSimSOBO:
+			std::cout<<"Ejecutando ExhaustiveGreedySumSimSolver ..."<<std::endl;
+			theSolver = new ExhaustiveGreedySumSimSOBOSolver(theProblem);
+			break;
+		case SeqScan:
+			std::cout<<"Ejecutando SequentialScanSolver ..."<<std::endl;
+			theSolver = new SequentialScanSolver(theProblem);
+			break;
+		default:
+			std::cerr<<"El metodo elegido para la resolucion no existe"<<std::endl;
+			break;
+	}
+	SnowFlakeVector* solution = theSolver->solve(atoi(configFile["num_flakes"].c_str()));
+	cout<<SnowFlake::showSolution(*solution,theNodeName)<<endl;
+	writeSolution(*solution, configFile);
+	delete solution;
 	delete theProblem;
+	delete theSolver;
 }
