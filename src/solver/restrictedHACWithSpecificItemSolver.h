@@ -12,15 +12,14 @@
 
 class RestrictedHACSWithSpecificItemSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
-	RestrictedHACSWithSpecificItemSolver(ProblemInstance* problem, int specificItem) :  MultiplicativeEffortProduceAndChooseSolver(problem) {
-		this->_specificItem = specificItem;
+	RestrictedHACSWithSpecificItemSolver(ProblemInstance* problem) :  MultiplicativeEffortProduceAndChooseSolver(problem) {
+
 	}
 	virtual ~RestrictedHACSWithSpecificItemSolver();
 
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
 	bool tryMerge(Int2ObjectOpenHashMap& clustering);
-	int _specificItem;
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

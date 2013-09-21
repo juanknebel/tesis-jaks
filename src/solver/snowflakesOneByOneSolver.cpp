@@ -12,7 +12,7 @@ bool SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflakes){
 
-	if (this->specificItem != -1) {
+	if (this->problem_->getSpecificItem() != -1) {
 		return this->produceManySnowflakesWithSpecificItem(numSnowflakes);
 	} else {
 		return this->produceManySnowflakesSimple(numSnowflakes);
@@ -65,8 +65,8 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 	IntSet possiblePivots = IntSet(this->problem_->getIds());
 	IntSet allIds = IntSet(this->problem_->getIds());
 
-	possiblePivots.erase(this->specificItem);
-	allIds.erase(this->specificItem);
+	possiblePivots.erase(this->problem_->getSpecificItem());
+	allIds.erase(this->problem_->getSpecificItem());
 
 	int maxTrials = numSnowflakes * 1000;
 
@@ -81,7 +81,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 		pivotsUsed.insert(pivot);
 		possiblePivots.erase(pivot);
 
-		SnowFlake* refToFlake = this->pickFlake(this->specificItem, pivot, allIds);
+		SnowFlake* refToFlake = this->pickFlake(this->problem_->getSpecificItem(), pivot, allIds);
 		SnowFlake snowflake(*refToFlake);
 		delete refToFlake;
 		if (this->candidateAcceptable(snowflake)) {
@@ -102,8 +102,4 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 
 bool SnowflakesOneByOneSolver::candidateAcceptable(SnowFlake& candidate){
 	return true;
-}
-
-void SnowflakesOneByOneSolver::setSpecificItem(int specificItem){
-	this->specificItem = specificItem;
 }

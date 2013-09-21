@@ -21,11 +21,11 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	for (IntSet::iterator it = ids.begin(); it != ids.end(); ++it) {
 		// Make sure all singleton clusters are within budget
 		double cost = this->problem_->getCost(*it) +
-				this->problem_->getCost(this->_specificItem);
+				this->problem_->getCost(this->problem_->getSpecificItem());
 		if (cost <= this->problem_->getbudget()) {
 			IntSet *temp = new IntSet();
 			temp->insert(*it);
-			temp->insert(this->_specificItem);
+			temp->insert(this->problem_->getSpecificItem());
 			clustering[*it] = temp;
 		}
 	}
@@ -67,7 +67,7 @@ bool RestrictedHACSWithSpecificItemSolver::tryMerge(Int2ObjectOpenHashMap& clust
 			}
 			IntSet *cluster2 = it2->second;
 			//check if these can be merged
-			if (this->checkBudgetAndCoverageConstraint(*cluster1, *cluster2, this->_specificItem)) {
+			if (this->checkBudgetAndCoverageConstraint(*cluster1, *cluster2, this->problem_->getSpecificItem())) {
 				// if they can be merged, measure their compatibility
 				Double compatibility = this->problem_->maxPairwiseCompatibility(*cluster1, *cluster2);
 				if (compatibility > maxCompatibility) {

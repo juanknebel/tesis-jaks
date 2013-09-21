@@ -39,6 +39,9 @@ void execute(ConfigurationJaks& configFile) {
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
 	int specificItem = atoi(configFile["specific_item"].c_str());
+	if (withSpecificItem) {
+		theProblem->setSpecificItem(specificItem);
+	}
 	Solver * theSolver = 0;
 	switch(solverId) {
 		case ClusterAndPick:
@@ -51,14 +54,11 @@ void execute(ConfigurationJaks& configFile) {
 			break;
 		case RestrictedHACSpecific:
 			std::cout<<"Ejecutando RestrictedHACSpecificSolver ..."<<std::endl;
-			theSolver = new RestrictedHACSWithSpecificItemSolver(theProblem, atoi(configFile["specific_item"].c_str()));
+			theSolver = new RestrictedHACSWithSpecificItemSolver(theProblem);
 			break;
 		case RandomBOBO:
 			std::cout<<"Ejecutando RandomBOBOSolver ..."<<std::endl;
 			theSolver = new RandomBOBOSolver(theProblem);
-			if (withSpecificItem) {
-				dynamic_cast<RandomBOBOSolver *> (theSolver)->setSpecificItem(specificItem);
-			}
 			break;
 		case RandomSOBO:
 			std::cout<<"Ejecutando RandomSOBOSolver ..."<<std::endl;
