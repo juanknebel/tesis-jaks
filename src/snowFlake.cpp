@@ -112,14 +112,14 @@ IntSet& SnowFlake::ids() {
 	return *(this->elements_);
 }
 
-String SnowFlake::showSolution(std::vector<SnowFlake>& solutions,const Id2Str* node2name) {
+String SnowFlake::showSolution(std::vector<SnowFlake>& solution,const Id2Str* node2name) {
 	String result = "\n";
 	int avgCost = 0;
 	int avgCover = 0;
 	int avgSize = 0;
 	int avgSumIntraCompat = 0;
-	int solutionsSize = solutions.size();
-	for (std::vector<SnowFlake>::iterator it = solutions.begin(); it != solutions.end(); ++it) {
+	int solutionsSize = solution.size();
+	for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
 		avgCost += it->getCost();
 		avgCover += it->getCoverSize();
 		avgSize += it->ids().size();
@@ -134,4 +134,15 @@ String SnowFlake::showSolution(std::vector<SnowFlake>& solutions,const Id2Str* n
 	result.append("AVG_SUM_INTRA_COMPAT = " + convertToString(avgSumIntraCompat / (double) solutionsSize) + "\n");
 	
 	return result;
+}
+
+void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName) {
+	FileOutput file(fileName.c_str());
+	for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
+		for (IntSet::iterator it = itSF->elements_->begin(); it != itSF->elements_->end(); ++it) {
+			file << itSF->problem_->getNode(*it) << "\t";
+		}
+		file << "\n";
+	}
+	file.close();
 }

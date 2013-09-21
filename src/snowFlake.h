@@ -32,7 +32,8 @@ public:
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids();
-	static String showSolution(std::vector<SnowFlake>& solutions, const Id2Str* node2name);
+	static String showSolution(std::vector<SnowFlake>& solution, const Id2Str* node2name);
+	static void writeSolution(const std::vector<SnowFlake>& solution, String fileName);
 };
 
 #endif /* SNOWFLAKE_H_ */
