@@ -37,7 +37,8 @@ void execute(ConfigurationJaks& configFile) {
 	int solverId = atoi(configFile["SOLVER"].c_str());
 	ProblemInstance *theProblem = instanceTheProblem(configFile);
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	
+	bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
+	int specificItem = atoi(configFile["specific_item"].c_str());
 	Solver * theSolver = 0;
 	switch(solverId) {
 		case ClusterAndPick:
@@ -55,6 +56,9 @@ void execute(ConfigurationJaks& configFile) {
 		case RandomBOBO:
 			std::cout<<"Ejecutando RandomBOBOSolver ..."<<std::endl;
 			theSolver = new RandomBOBOSolver(theProblem);
+			if (withSpecificItem) {
+				dynamic_cast<RandomBOBOSolver *> (theSolver)->setSpecificItem(specificItem);
+			}
 			break;
 		case RandomSOBO:
 			std::cout<<"Ejecutando RandomSOBOSolver ..."<<std::endl;

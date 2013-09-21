@@ -12,7 +12,7 @@ bool SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflakes){
 
-	if (this->specificItem == -1) {
+	if (this->specificItem != -1) {
 		return this->produceManySnowflakesWithSpecificItem(numSnowflakes);
 	} else {
 		return this->produceManySnowflakesSimple(numSnowflakes);
@@ -81,7 +81,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 		pivotsUsed.insert(pivot);
 		possiblePivots.erase(pivot);
 
-		SnowFlake* refToFlake = this->pickFlake(pivot, allIds);
+		SnowFlake* refToFlake = this->pickFlake(this->specificItem, pivot, allIds);
 		SnowFlake snowflake(*refToFlake);
 		delete refToFlake;
 		if (this->candidateAcceptable(snowflake)) {
