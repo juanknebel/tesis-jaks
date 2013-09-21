@@ -17,6 +17,12 @@ bool Solver::checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake,
 			&& checkCoverageConstraint(currentSnowflake, node);
 }
 
+bool Solver::checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake,
+		int node, int excludeNode){
+	return checkBudgetConstraint(currentSnowflake, node)
+				&& checkCoverageConstraint(currentSnowflake, node, excludeNode);
+}
+
 bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1,
 		const IntSet& snowflake2) {
 	return checkBudgetConstraint(snowflake1, snowflake2)
@@ -72,6 +78,39 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 				ret = false;
 			}
 			coverageCovered->insert(*cover);
+		}
+	}
+	const IntSet* covers = this->problem_->getCover(newNode);
+	for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+		if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			// adding this newNode is not valid
+			ret = false;
+		}
+		coverageCovered->insert(*cover);
+	}
+
+	delete coverageCovered;
+	return ret;
+}
+
+bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode, int excludeNode){
+	IntSet* coverageCovered;
+	coverageCovered = new IntSet();
+	bool ret = true;
+
+	for (IntSet::iterator node = currentSnowflake.begin(); node != currentSnowflake.end(); ++node) {
+		if (*node == excludeNode) {
+			const IntSet* covers = this->problem_->getCover(*node);
+			if (covers == NULL) {
+				DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			}
+			for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+				if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+					//currentSnowflake is not valid
+					ret = false;
+				}
+				coverageCovered->insert(*cover);
+			}
 		}
 	}
 	const IntSet* covers = this->problem_->getCover(newNode);
@@ -195,4 +234,27 @@ SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers) {
 	this->pivot_ = pivot;
 	std::sort(membersSorted.begin(), membersSorted.end(), compatCompare(*(this->problem_), this->pivot_));
 	return pickFlakeGivenPermutation(pivot, membersSorted);
+}
+
+SnowFlake* Solver::pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted) {
+	IntSet picked;
+	picked.insert(specificItem);
+	picked.insert(pivot);
+
+	for (IntVector::iterator newMember = clusterMembersPermuted.begin(); newMember != clusterMembersPermuted.end(); ++newMember) {
+		if (this->checkBudgetAndCoverageConstraint(picked, *newMember)) {
+			picked.insert(*newMember);
+		}
+	}
+
+	SnowFlake* ret = new SnowFlake(picked, this->problem_);
+	return ret;
+}
+
+SnowFlake* Solver::pickFlake(int specificItem, int pivot, const IntSet& clusterMembers) {
+	IntVector membersSorted(clusterMembers.begin(), clusterMembers.end());
+	this->pivot_ = pivot;
+	this->specificItem_ = specificItem;
+	std::sort(membersSorted.begin(), membersSorted.end(), compatCompareTwoItems(*(this->problem_), this->specificItem_, this->pivot_));
+	return pickFlakeGivenPermutation(specificItem, pivot, membersSorted);
 }
