@@ -15,6 +15,9 @@ typedef MatrixWrapper SparseDoubleMatrix2D;
 typedef MatrixConcrete SparseDoubleMatrix2DImplementation;
 
 class ProblemInstance {
+private:
+	int specificItem_;
+
 protected:
 	Double budget_;
 	Int2DoubleOpenHashMap *nodeCost_;
@@ -47,6 +50,9 @@ public:
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
 	void createIdNodeMappings(StrVector nodes);
 	String showMe();
+
+	void setSpecificItem(int specificItem);
+	int getSpecificItem();
 };
 
 #endif /* PROBLEMINSTANCE_H_ */

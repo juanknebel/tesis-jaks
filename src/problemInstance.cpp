@@ -64,6 +64,10 @@ const IntSet* ProblemInstance::getCover(int id) {
 Double ProblemInstance::getCompat(int id1, int id2) {
 	assert (id1 < this->nodeCompat_->getRows());
 	assert (id2 < this->nodeCompat_->getCols());
+	if (id1 == id2) {
+		return this->specificItem_ == id1 ? 0 : 1;
+	}
+
 	return this->nodeCompat_->get(id1, id2);
 }
 
@@ -172,4 +176,12 @@ String ProblemInstance::showCover() {
 	}
 	result.append("---------------------------------------------------------------------\n");
 	return result;
+}
+
+void ProblemInstance::setSpecificItem(int specificItem){
+	this->specificItem_ = specificItem;
+}
+
+int ProblemInstance::getSpecificItem(){
+	return this->specificItem_;
 }
