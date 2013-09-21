@@ -18,17 +18,22 @@ class Solver {
 protected:
 	ProblemInstance* problem_;
 	int pivot_;
+	int specificItem_;
 
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
+	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node, int excludeNode);
 	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
 	bool checkBudgetConstraint(const IntSet& currentSnowflake, int newNode);
 	bool checkBudgetConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode);
+	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode, int excludeNode);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
 	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
+	SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
+	SnowFlake* pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
 	
 private:
 	struct compatCompare {
@@ -39,6 +44,18 @@ private:
 			return problem_.getCompat(pivot_, node2) >  problem_.getCompat(pivot_, node1);
 		}
 	};
+
+	struct compatCompareTwoItems {
+			compatCompareTwoItems(ProblemInstance& aProblem, int specificItem, int pivot) : specificItem_(specificItem), pivot_(pivot), problem_(aProblem) {}
+			ProblemInstance& problem_;
+			int pivot_;
+			int specificItem_;
+			inline bool operator() (int node1, int node2) {
+				double node1_compat =  problem_.getCompat(pivot_, node1) + problem_.getCompat(specificItem_, node1);
+				double node2_compat =  problem_.getCompat(pivot_, node2) + problem_.getCompat(specificItem_, node2);
+				return node2_compat >  node1_compat;
+			}
+		};
 
 public:
 	Solver(ProblemInstance* problem) {
