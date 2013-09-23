@@ -18,7 +18,7 @@ ProduceAndChooseSolver::RankingStrategy ProduceAndChooseSolver::getRankingStrate
 
 void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeight) {
 	if (this->rankingStrategy_ == RANK_BY_INTRA_INTER || this->rankingStrategy_ == RANK_BY_DENSEST_SUBGRAPH) {
-		this->interSimilarityWeight_ = interSimilarityWeight_;
+		this->interSimilarityWeight_ = interSimilarityWeight;
 	}
 	else {
 		//ARROJAR EXCEPCION This ranking strategy does not need an inter-similarity weight
@@ -78,7 +78,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 	}
 	SnowFlake::sortByDecresingSumCompat(*produced);
 	SnowFlakeVector available(*produced);
-	SnowFlakeVector *selected = new SnowFlakeVector(numRequested);
+	SnowFlakeVector *selected = new SnowFlakeVector();
 	Double currentSumIntra = 0.0;
 	Double currentSumOneMinusInter = 0.0;
 	while (selected->size() < numRequested && selected->size() < produced->size()) {
@@ -121,7 +121,7 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
 	for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
 		sumOneMinusInter += 1.0 - this->problem_->maxPairwiseCompatibility(it->ids(), candidate.ids());
 	}
-	return ((1.0 - interSimilarityWeight_) * sumIntra) + (interSimilarityWeight_ * sumOneMinusInter);
+	return ((1.0 - this->interSimilarityWeight_) * sumIntra) + (this->interSimilarityWeight_ * sumOneMinusInter);
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
@@ -166,10 +166,9 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 		}
 		selected.erase(minElement);
 	}
-	SnowFlakeVector* solution = new SnowFlakeVector[numRequested];
-	int i = 0;
+	SnowFlakeVector* solution = new SnowFlakeVector();
 	for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
-		solution[i] = produced[*ui];
+		solution->push_back(produced->at(*ui));
 	}
 	return solution;
 }

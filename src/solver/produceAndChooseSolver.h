@@ -30,6 +30,7 @@ public:
 
 	ProduceAndChooseSolver(ProblemInstance* problem) : Solver(problem) {
 		this->rankingStrategy_ = ProduceAndChooseSolver::getDefault();
+		this->interSimilarityWeight_ = 0.0;
 	}
 	~ProduceAndChooseSolver() {};
 
