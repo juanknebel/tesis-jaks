@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <iostream>
+#include "Logger.h"
 
 typedef double Double;
 typedef unsigned int Uint;
