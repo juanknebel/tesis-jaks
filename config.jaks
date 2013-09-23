@@ -9,7 +9,7 @@ FILE_COVER	node_cover.csv
 FILE_NODE_NAME	node_name.csv
 FILE_TYPE_NAME	type_name.csv
 #Cantidad de SnowFlakes
-NUM_FLAKES	3
+NUM_FLAKES	2
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
 #Valor del budget (o presupuesto)
@@ -24,9 +24,20 @@ BUDGET	10000.80
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
 SOLVER	3
-#Inicilizar el log
-LOG	1
+#Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
+INTER_SIMILARITY_WEIGHT	0
+#Estrategia del solver, las opciones son
+#RANK_BY_INTRA = 0
+#RANK_BY_INTRA_INTER = 1
+#RANK_BY_DENSEST_SUBGRAPH = 2
+RANKING_STRATEGY	0
 #Ejecutar con un item similar en todos: 1 para si, 0 para no
-WITH_SPECIFIC_TEM	1
+WITH_SPECIFIC_ITEM	1
 #El elemento especifico
 SPECIFIC_ITEM	7
+#Inicilizar el log: 1 para si, 0 para no
+LOG	1
+#Escribir datos a archivo de salida: 1 para si, 0 para no
+WRITE_FILE	1
+#Nombre del archivo donde se va a guardar los datos
+NAME_OUTPUT	output_data.csv
