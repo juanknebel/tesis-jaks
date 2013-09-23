@@ -17,6 +17,7 @@ ProblemInstance::ProblemInstance() {
 	this->node2id_ = 0;
 	this->id2node_ = 0;
 	this->ids_ = 0;
+	this->specificItem_ = -1;
 }
 
 ProblemInstance::ProblemInstance(Double budget) {
@@ -27,6 +28,7 @@ ProblemInstance::ProblemInstance(Double budget) {
 	this->node2id_ = new Object2IntOpenHashMap;
 	this->id2node_ = new Int2ObjectOpenHashMapString;
 	this->ids_ = new IntSet();
+	this->specificItem_ = -1;
 }
 
 ProblemInstance::~ProblemInstance() {
