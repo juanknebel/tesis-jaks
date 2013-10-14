@@ -13,16 +13,15 @@
 #include "util/Logger.h"
 
 MatrixConcrete::MatrixConcrete(int rows, int cols) : MatrixWrapper(rows, cols) {
-	this->theVector_ = new DblVector (this->rows_ * this->cols_);
+	this->theMatrix_ = new mapped_matrix<Double>(rows, cols);
 }
 
 MatrixConcrete::MatrixConcrete(const MatrixConcrete& matrix)  : MatrixWrapper(matrix.getRows(), matrix.getCols()) {
-	this->theVector_ = new DblVector (this->rows_ * this->cols_);
-	std::copy(matrix.theVector_->begin(), matrix.theVector_->end(), this->theVector_->begin());
+	this->theMatrix_ = new mapped_matrix<Double>(*matrix.theMatrix_);
 }
 
 MatrixConcrete::~MatrixConcrete() {
-	delete this->theVector_;
+	delete this->theMatrix_;
 }
 
 int MatrixConcrete::getRows() const {
@@ -37,7 +36,7 @@ Double MatrixConcrete::get(int row, int col) const {
 	assert (row < this->rows_);
 	assert (col < this->cols_);
 
-	return this->theVector_->at(row * this->cols_ + col);
+	return (*(this->theMatrix_))(row, col);
 }
 
 Double MatrixConcrete::getMaxValue() const {
@@ -52,7 +51,7 @@ void MatrixConcrete::set(int row, int col, Double value) {
 	assert (row < this->rows_);
 	assert (col < this->cols_);
 
-	this->theVector_->at(row * this->cols_ + col) = value;
+	(*(this->theMatrix_))(row, col) = value;
 
 	if (isnan(this->maxValue_)) {
 		this->maxValue_ = value;
@@ -72,24 +71,19 @@ void MatrixConcrete::set(int row, int col, Double value) {
 }
 
 void MatrixConcrete::scalarMultiply(Double scalar) {
-	for (int i = 0; i < this->rows_ * this->cols_; ++i) {
-		this->theVector_->at(i) = this->theVector_->at(i) * scalar;
-	}
+	(*(this->theMatrix_)) *= scalar;
 }
 
 void MatrixConcrete::showMe() {
-	for (int i = 0; i < this->rows_ * this->cols_; ++i) {
-		std::cout<<this->theVector_->at(i)<<" ";
-		if ((i + 1) % this->cols_ == 0) {
-			std::cout<<std::endl;
-		}
-	}
+	std::cout << (*(this->theMatrix_)) << std::endl;
 }
 
 int MatrixConcrete::countNonZeros() const {
 	int count = 0;
-	for (int i = 0; i < this->rows_ * this->cols_; ++i) {
-		count = count + ((this->theVector_->at(i) > 0.00) ? 1 : 0);
+	for (int r = 0; r < this->rows_; ++r) {
+		for (int c = 0; c < this->cols_; ++c) {
+			count = count + (((*(this->theMatrix_))(r,c) > 0.00) ? 1 : 0);
+		}
 	}
 	return count;
 }
@@ -112,4 +106,8 @@ void MatrixConcrete::ensureSymmetric() {
 			}
 		}
 	}
+}
+
+Double MatrixConcrete::operator ()(int row, int col) {
+	return this->get(row, col);
 }

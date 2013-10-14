@@ -10,10 +10,14 @@
 
 #include "matrixWrapper.h"
 #include "util/redefinitions.h"
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <boost/numeric/ublas/io.hpp>
+using namespace boost::numeric::ublas;
 
 class MatrixConcrete : public MatrixWrapper {
 private:
-	DblVector *theVector_;
+	mapped_matrix<Double> *theMatrix_;
+
 public:
 	MatrixConcrete(int rows, int cols);
 	MatrixConcrete(const MatrixConcrete& matrix);
@@ -29,6 +33,7 @@ public:
 	void showMe();
 	int countNonZeros() const;
 	void ensureSymmetric();
+	Double operator()(int row, int col);
 };
 
 #endif /* MATRIXCONCRETE_H_ */

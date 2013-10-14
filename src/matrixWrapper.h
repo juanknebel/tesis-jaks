@@ -37,6 +37,7 @@ public:
 	virtual void showMe() = 0;
 	virtual int countNonZeros() const = 0;
 	virtual void ensureSymmetric() = 0;
+	virtual Double operator()(int row, int col) = 0;
 };
 
 

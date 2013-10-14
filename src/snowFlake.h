@@ -13,7 +13,13 @@
 
 class SnowFlake {
 private:
+	/**
+	 * The elements this snowflake is composed of.
+	 */
 	IntSet *elements_;
+	/**
+	 * The problem instance for which this snowflake was generated.
+	 */
 	ProblemInstance *problem_;
 
 	Double getMinCompat();

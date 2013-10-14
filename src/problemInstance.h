@@ -19,13 +19,31 @@ private:
 	int specificItem_;
 
 protected:
+	/**
+	 * The budget available.
+	 */
 	Double budget_;
+	/**
+	 * Cost of adding a node to the solution.
+	 */
 	Int2DoubleOpenHashMap *nodeCost_;
+	/**
+	 * Attribute to be covered.
+	 */
 	Int2ObjectOpenHashMap *nodeCover_;
+	/**
+	 * Compatibility between two nodes.
+	 */	
 	SparseDoubleMatrix2D *nodeCompat_;
+	/**
+	 * Identifiers of nodes.
+	 */
 	Object2IntOpenHashMap *node2id_;
 	Int2ObjectOpenHashMapString *id2node_;
-	IntSet *ids_;//mantengo un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
+	/**
+	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se
+	 */
+	IntSet *ids_; necesita
 	String showBudget();
 	String showCosts();
 	String showCompat();
