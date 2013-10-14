@@ -41,9 +41,9 @@ protected:
 	Object2IntOpenHashMap *node2id_;
 	Int2ObjectOpenHashMapString *id2node_;
 	/**
-	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se
+	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
 	 */
-	IntSet *ids_; necesita
+	IntSet *ids_;
 	String showBudget();
 	String showCosts();
 	String showCompat();

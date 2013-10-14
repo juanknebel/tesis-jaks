@@ -59,7 +59,7 @@ void ConfigurationJaks::parseFile(char* fileName) {
 	file.open(fileName);
 	std::string line;
 	while(getline(file, line, '\n')) {
-		if (line[0] == ConfigurationJaks::COMMENT) {
+		if (line[0] == ConfigurationJaks::COMMENT || line.empty()) {
 			continue;
 		}
 		std::vector<std::string> tokens;
