@@ -1,8 +1,8 @@
 #Archivo de configuracion para el programa tesis-jaks
 #Con # son los comentarios, y los datos estan separados por una tabulacion
-
+#---------------------------DIRECTORIOS Y ARCHIVOS--------------------------------#
 #Nombre del directorio de trabajo
-#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products
+#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products/
 #Nombre de los archivos
 #FILE_COSTS	node_cost.csv
 #FILE_COMPAT	node_compatibility.csv
@@ -11,7 +11,7 @@
 #FILE_TYPE_NAME	type_name.csv
 
 #Nombre del directorio de trabajo
-DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities
+DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
 #Nombre de los archivos
 FILE_COSTS	node_cost.txt
 FILE_COMPAT	node_compatibility.txt
@@ -19,8 +19,11 @@ FILE_COVER	node_cover_attribute.txt
 FILE_NODE_NAME	node_id.txt
 FILE_TYPE_NAME	type_name.txt
 
+#Nombre del archivo donde se va a guardar los datos
+NAME_OUTPUT	output_data.csv
+#---------------------------------------------------------------------------------#
 #Cantidad de SnowFlakes
-NUM_FLAKES	2
+NUM_FLAKES	10
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
 #Valor del budget (o presupuesto)
@@ -36,19 +39,19 @@ BUDGET	10000.80
 #SequentialScanSolver = 7
 SOLVER	3
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
-INTER_SIMILARITY_WEIGHT	0
+INTER_SIMILARITY_WEIGHT	1
 #Estrategia del solver, las opciones son
 #RANK_BY_INTRA = 0
 #RANK_BY_INTRA_INTER = 1
 #RANK_BY_DENSEST_SUBGRAPH = 2
-RANKING_STRATEGY	0
+RANKING_STRATEGY	1
 #Ejecutar con un item similar en todos: 1 para si, 0 para no
-WITH_SPECIFIC_ITEM	1
+WITH_SPECIFIC_ITEM	0
 #El elemento especifico
 SPECIFIC_ITEM	7
 #Inicilizar el log: 1 para si, 0 para no
 LOG	1
 #Escribir datos a archivo de salida: 1 para si, 0 para no
 WRITE_FILE	1
-#Nombre del archivo donde se va a guardar los datos
-NAME_OUTPUT	output_data.csv
+#Si muestra por pantalla la solucio obtenida
+PRINT_TO_SCREEN	0

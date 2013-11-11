@@ -32,9 +32,17 @@ Id2Str* instanceTheNodeName(ConfigurationJaks& configFile) {
 	return theNodeName;
 }
 
+void showSolution(SnowFlakeVector& solution, ConfigurationJaks& configFile, const Id2Str* theNodeName) {
+	if(atoi(configFile["print_to_screen"].c_str())) {
+		cout<<SnowFlake::showSolution(solution,theNodeName)<<endl;
+	}
+}
+
 void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile) {
+	String outputFileName = configFile["directory_work"] + configFile["name_output"];
+	std::cout<<"Escribiendo la solución en el archivo "<<outputFileName<<std::endl;
 	if(atoi(configFile["write_file"].c_str())) {
-		SnowFlake::writeSolution(solution, configFile["directory_work"] + configFile["name_output"]);
+		SnowFlake::writeSolution(solution, outputFileName);
 	}
 }
 
@@ -42,7 +50,8 @@ ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks
 	int similarity = atoi(configFile["inter_similarity_weight"].c_str());
 	int strategy = atoi(configFile["ranking_strategy"].c_str());
 	if (similarity == 1 && strategy == 0) {
-		std::cerr<<"De usar la INTER_SIMILARITY_WEIGHT, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)"<<std::endl;
+		std::cerr<<"De usar la similitud INTER_SIMILARITY_WEIGHT, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)"<<std::endl;
+		exit(0);
 	}
 	return static_cast<ProduceAndChooseSolver::RankingStrategy> (strategy);
 }
@@ -99,7 +108,7 @@ void execute(ConfigurationJaks& configFile) {
 			break;
 	}
 	SnowFlakeVector* solution = theSolver->solve(numberOfSnowFlakes);
-	cout<<SnowFlake::showSolution(*solution,theNodeName)<<endl;
+	showSolution(*solution, configFile, theNodeName);
 	writeSolution(*solution, configFile);
 	delete solution;
 	delete theProblem;
