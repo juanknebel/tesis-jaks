@@ -24,9 +24,9 @@
 #include <stdexcept>
 using namespace std;
 
-class Exception /*: public runtime_error*/ {
+class Exception : public runtime_error {
 public:
-    Exception ( const string& msg );
+    Exception ( const string& msg ) : runtime_error(msg) {};
 };
 
 #endif // EXCEPTION_H
