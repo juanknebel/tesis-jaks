@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(tesis-jaks_exe)
 
-set(tesis-jaks_source_files 
+set(tesis-jaks_source_files src/util/exception.cpp 
 src/executeSolver.cpp
 src/solver/restrictedHACWithSpecificItemSolver.cpp
 src/util/configurationJaks.cpp src/test/testingClusterAndPickSolver.cpp src/test/testingClustering.cpp

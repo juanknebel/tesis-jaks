@@ -47,9 +47,9 @@ void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFil
 }
 
 ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks& configFile) {
-	int similarity = atoi(configFile["inter_similarity_weight"].c_str());
+	Double similarity = atof(configFile["inter_similarity_weight"].c_str());
 	int strategy = atoi(configFile["ranking_strategy"].c_str());
-	if (similarity == 1 && strategy == 0) {
+	if (similarity == 1.00 && strategy == 0) {
 		std::cerr<<"De usar la similitud INTER_SIMILARITY_WEIGHT, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)"<<std::endl;
 		exit(0);
 	}
@@ -57,54 +57,62 @@ ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks
 }
 
 void execute(ConfigurationJaks& configFile) {
-	int solverId = atoi(configFile["SOLVER"].c_str());
+	int solverId = atoi(configFile["solver"].c_str());
 	ProblemInstance* theProblem = instanceTheProblem(configFile);
 	Id2Str* theNodeName = instanceTheNodeName(configFile);
 	ProduceAndChooseSolver::RankingStrategy strategy = checkAndReturnStrategy(configFile);
 	int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
 	Solver* theSolver = 0;
+	Double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
 	
 	switch(solverId) {
 		case ClusterAndPick:
 			std::cout<<"Ejecutando ClusterAndPickSolver ..."<<std::endl;
 			theSolver = new ClusterAndPickSolver(theProblem);
 			break;
+		case SeqScan:
+			std::cout<<"Ejecutando SequentialScanSolver ..."<<std::endl;
+			theSolver = new SequentialScanSolver(theProblem);
+			break;
 		case RestrictedHAC:
 			std::cout<<"Ejecutando RestrictedHACSolver ..."<<std::endl;
 			theSolver = new RestrictedHACSolver(theProblem);
 			dynamic_cast<RestrictedHACSolver *> (theSolver)->setRankingStrategy(strategy);
+			dynamic_cast<RestrictedHACSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		case RestrictedHACSpecific:
 			std::cout<<"Ejecutando RestrictedHACSpecificSolver ..."<<std::endl;
 			theSolver = new RestrictedHACSWithSpecificItemSolver(theProblem);
 			dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setRankingStrategy(strategy);
+			dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		case RandomBOBO:
 			std::cout<<"Ejecutando RandomBOBOSolver ..."<<std::endl;
 			theSolver = new RandomBOBOSolver(theProblem);
 			dynamic_cast<RandomBOBOSolver *> (theSolver)->setRankingStrategy(strategy);
+			dynamic_cast<RandomBOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		case RandomSOBO:
 			std::cout<<"Ejecutando RandomSOBOSolver ..."<<std::endl;
 			theSolver = new RandomSOBOSolver(theProblem);
 			dynamic_cast<RandomSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
+			dynamic_cast<RandomSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		case ExAnySimSOBO:
 			std::cout<<"Ejecutando ExhaustiveGreedyAnySimSolver ..."<<std::endl;
 			theSolver = new ExhaustiveGreedyAnySimSOBOSolver(theProblem);
 			dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
+			dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		case ExSumSimSOBO:
 			std::cout<<"Ejecutando ExhaustiveGreedySumSimSolver ..."<<std::endl;
 			theSolver = new ExhaustiveGreedySumSimSOBOSolver(theProblem);
 			dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
-			break;
-		case SeqScan:
-			std::cout<<"Ejecutando SequentialScanSolver ..."<<std::endl;
-			theSolver = new SequentialScanSolver(theProblem);
+			dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
 			break;
 		default:
 			std::cerr<<"El metodo elegido para la resolucion no existe"<<std::endl;
+			exit(0);
 			break;
 	}
 	SnowFlakeVector* solution = theSolver->solve(numberOfSnowFlakes);
