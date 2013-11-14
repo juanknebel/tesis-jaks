@@ -20,3 +20,6 @@
 
 # Binary Directory
 build/
+
+# Output file
+output_data.csv
