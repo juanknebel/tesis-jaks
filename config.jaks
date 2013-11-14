@@ -22,12 +22,16 @@ FILE_TYPE_NAME	type_name.txt
 #Nombre del archivo donde se va a guardar los datos
 NAME_OUTPUT	output_data.csv
 #---------------------------------------------------------------------------------#
+
 #Cantidad de SnowFlakes
 NUM_FLAKES	10
+
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
+
 #Valor del budget (o presupuesto)
-BUDGET	10000.80
+BUDGET	100000000000000.80
+
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0
 #RestrictedHACSolver = 1
@@ -38,20 +42,26 @@ BUDGET	10000.80
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
 SOLVER	3
+
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
-INTER_SIMILARITY_WEIGHT	1
+INTER_SIMILARITY_WEIGHT	0.32
+
 #Estrategia del solver, las opciones son
 #RANK_BY_INTRA = 0
 #RANK_BY_INTRA_INTER = 1
 #RANK_BY_DENSEST_SUBGRAPH = 2
 RANKING_STRATEGY	1
+
 #Ejecutar con un item similar en todos: 1 para si, 0 para no
 WITH_SPECIFIC_ITEM	0
 #El elemento especifico
 SPECIFIC_ITEM	7
+
 #Inicilizar el log: 1 para si, 0 para no
 LOG	1
+
 #Escribir datos a archivo de salida: 1 para si, 0 para no
 WRITE_FILE	1
+
 #Si muestra por pantalla la solucio obtenida
-PRINT_TO_SCREEN	0
+PRINT_TO_SCREEN	1
