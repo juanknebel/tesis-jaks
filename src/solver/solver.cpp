@@ -70,7 +70,7 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 	for (IntSet::iterator node = currentSnowflake.begin(); node != currentSnowflake.end(); ++node) {
 		const IntSet* covers = this->problem_->getCover(*node);
 		if (covers == NULL) {
-			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 		}
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
@@ -102,7 +102,7 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 		if (*node == excludeNode) {
 			const IntSet* covers = this->problem_->getCover(*node);
 			if (covers == NULL) {
-				DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+				throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 			}
 			for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 				if (coverageCovered->find(*cover)!=coverageCovered->end()) {
@@ -135,7 +135,7 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 	for (IntSet::iterator node = snowflake1.begin(); node != snowflake1.end(); ++node) {
 		const IntSet* covers = this->problem_->getCover(*node);
 		if (covers == NULL) {
-			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 		}
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
@@ -148,7 +148,7 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 	for (IntSet::iterator node = snowflake2.begin(); node != snowflake2.end(); ++node) {
 		const IntSet* covers = this->problem_->getCover(*node);
 		if (covers == NULL) {
-			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 		}
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
@@ -174,7 +174,7 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 		const IntSet* covers = this->problem_->getCover(*node);
 		if (covers == NULL) {
-			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 		}
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
@@ -192,7 +192,7 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 		const IntSet* covers = this->problem_->getCover(*node);
 		if (covers == NULL) {
-			DEBUG(DBG_ERROR, "Error: IllegalStateException(Node  + node +  does not cover anything\n");
+			throw Exception(__FILE__, __LINE__, "Error: IllegalStateException(Node  + node +  does not cover anything");
 		}
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 			if (coverageCovered->find(*cover)!=coverageCovered->end()) {

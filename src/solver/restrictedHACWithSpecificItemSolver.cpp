@@ -13,7 +13,7 @@ RestrictedHACSWithSpecificItemSolver::~RestrictedHACSWithSpecificItemSolver() {
 
 SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int numToProduce) {
 	if (this->problem_->numNodes() < numToProduce) {
-		//ARROJAR EXCEPCION Too few nodes
+		throw Exception(__FILE__, __LINE__, "Too few nodes");
 	}
 	// Put each item with specific item in its own cluster
 	Int2ObjectOpenHashMap clustering = Int2ObjectOpenHashMap();
@@ -36,7 +36,7 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	}
 
 	if( merged == false ) {
-		//not merged
+		DEBUG(DBG_DEBUG,"Could not merge more, stopped at "<<clustering.size());
 	}
 
 

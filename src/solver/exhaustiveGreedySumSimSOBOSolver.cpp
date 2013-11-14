@@ -39,7 +39,7 @@ SnowFlake* ExhaustiveGreedySumSimSOBOSolver::pickFlake(int pivot, const IntSet& 
 		}
 		// Add selected element
 		if (mostSimilarElement == -1) {
-			//ARROJAR EXCEPCION Did not find an element to select
+			throw Exception(__FILE__, __LINE__, "Did not find an element to select");
 		}
 		membersSortedSelected.insert(mostSimilarElement);
 		membersSorted[i] = mostSimilarElement;

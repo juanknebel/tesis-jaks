@@ -11,6 +11,7 @@
 #include "../util/redefinitions.h"
 #include "../problemInstance.h"
 #include "../snowFlake.h"
+#include "../util/exception.h"
 
 typedef std::vector<SnowFlake> SnowFlakeVector;
 

@@ -6,7 +6,6 @@
  */
 
 #include "produceAndChooseSolver.h"
-#include "../util/exception.h"
 #include "../util/stringUtilities.h"
 #include <float.h>
 
@@ -23,7 +22,7 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 		this->interSimilarityWeight_ = interSimilarityWeight;
 	}
 	else {
-		throw Exception("This ranking strategy does not need an inter-similarity weight");
+		throw Exception(__FILE__, __LINE__, "This ranking strategy does not need an inter-similarity weight");
 	}
 }
 
@@ -41,13 +40,13 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionByRankingStrategy(SnowFla
 			break;
 		case ProduceAndChooseSolver::RANK_BY_INTRA_INTER:
 			if (this->interSimilarityWeight_ < 0.0) {
-				throw Exception("This ranking strategy requires an inter similarity weight");
+				throw Exception(__FILE__, __LINE__, "This ranking strategy requires an inter similarity weight");
 			}
 			ret = this->getTopSolutionsByInterIntra(produced, numRequested);
 			break;
 		case ProduceAndChooseSolver::RANK_BY_DENSEST_SUBGRAPH:
 			if (this->interSimilarityWeight_ < 0.0) {
-				throw Exception("This ranking strategy requires an inter similarity weight");
+				throw Exception(__FILE__, __LINE__, "This ranking strategy requires an inter similarity weight");
 			}
 			ret = this->getTopSolutionsByDensestSubgraph(produced, numRequested);
 			break;
@@ -76,7 +75,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntra(SnowFlakeVector*
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested){
 	if(this->interSimilarityWeight_ < 0.00) {
-		throw Exception("You need to set the value of inter similarity weight");
+		throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
 	}
 	SnowFlake::sortByDecresingSumCompat(*produced);
 	SnowFlakeVector available(*produced);
@@ -87,7 +86,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 		Double maxScore = FLT_MIN;
 		int bestCandidateId = -1;
 		if (available.size() == 0) {
-			throw Exception("There are no available condidates");
+			throw Exception(__FILE__, __LINE__, "There are no available condidates");
 		}
 		for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
 			SnowFlake candidate = available[candidateId];
@@ -99,7 +98,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 		}
 
 		if (bestCandidateId == -1) {
-			throw Exception("There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
+			throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
 					+ ", maxScore==" + convertToString(maxScore) + ")");
 		}
 
@@ -130,6 +129,7 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
 	int numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
+	DEBUG(DBG_DEBUG,"Valor del gamma: "<<gamma);
 	MatrixWrapper* w;
 	w= new MatrixConcrete(numProduced, numProduced);
 
@@ -165,7 +165,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 			}
 		}
 		if (selected.count(minElement) == 0) {
-			throw Exception("Tried to remove element " + convertToString(minElement) + " that does not belong to " + "selected");
+			throw Exception(__FILE__, __LINE__, "Tried to remove element " + convertToString(minElement) + " that does not belong to " + "selected");
 		}
 		selected.erase(minElement);
 	}

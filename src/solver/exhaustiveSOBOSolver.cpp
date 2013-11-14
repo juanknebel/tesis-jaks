@@ -20,7 +20,7 @@ int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots){
 	}
 
 	if (minPivot == std::numeric_limits<int>::max()) {
-		//throw new IllegalStateException("Could not get a valid pivot" );
+		throw Exception(__FILE__, __LINE__, "IllegalStateException Could not get a valid pivot");
 	}
 
 	return minPivot;

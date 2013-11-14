@@ -70,14 +70,15 @@ void usingTestFiles(char *configFileName) {
 	if (configFileName == NULL) {
 		//Si no pasa ningun archivo como parametro, termina la ejecucion del programa
 		std::cerr<<"Nombre de archivo invalido"<<std::endl;
-		return;
+		exit(0);
 	}
-	
-	ConfigurationJaks configFile = ConfigurationJaks(configFileName);
-	if (atoi(configFile["log"].c_str())) {
-		//Si esta en modo debug, inicia el Logger
-		initializeDefaultDebug();
+	else {
+		ConfigurationJaks configFile = ConfigurationJaks(configFileName);
+		if (atoi(configFile["log"].c_str())) {
+			//Si esta en modo debug, inicia el Logger
+			initializeDefaultDebug();
+		}
+
+		execute(configFile);
 	}
-	
-	execute(configFile);
 }

@@ -32,8 +32,9 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSn
 
 	while((candidates->size() < numSnowflakes) && (possiblePivots.size() > 0) && (trials < maxTrials)){
 		int pivot = this->getPivot(pivotsUsed, possiblePivots);
-		if ((pivotsUsed.find(pivot) != pivotsUsed.end()) || (possiblePivots.find(pivot) != possiblePivots.end())) {
-			//throw
+		//pivot esta en pivotsUsados o pivot no esta en possiblePivots
+		if ((pivotsUsed.find(pivot) != pivotsUsed.end()) || (possiblePivots.find(pivot) == possiblePivots.end())) {
+			throw Exception(__FILE__, __LINE__, "IllegalStateException Invalid pivot");
 		}
 
 		pivotsUsed.insert(pivot);
@@ -74,8 +75,8 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 
 	while((candidates->size() < numSnowflakes) && (possiblePivots.size() > 0) && (trials < maxTrials)){
 		int pivot = this->getPivot(pivotsUsed, possiblePivots);
-		if ((pivotsUsed.find(pivot) != pivotsUsed.end()) || (possiblePivots.find(pivot) != possiblePivots.end())) {
-			//throw
+		if ((pivotsUsed.find(pivot) != pivotsUsed.end()) || (possiblePivots.find(pivot) == possiblePivots.end())) {
+			throw Exception(__FILE__, __LINE__, "IllegalStateException Invalid pivot");
 		}
 
 		pivotsUsed.insert(pivot);

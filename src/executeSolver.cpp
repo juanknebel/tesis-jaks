@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "util/Logger.h"
 #include "util/id2Str.h"
+#include "util/exception.h"
 #include "executeSolver.h"
 #include "problemInstanceFromFiles.h"
 #include "solver/clusterAndPickSolver.h"
@@ -50,8 +51,7 @@ ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks
 	Double similarity = atof(configFile["inter_similarity_weight"].c_str());
 	int strategy = atoi(configFile["ranking_strategy"].c_str());
 	if (similarity == 1.00 && strategy == 0) {
-		std::cerr<<"De usar la similitud INTER_SIMILARITY_WEIGHT, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)"<<std::endl;
-		exit(0);
+		throw Exception(__FILE__, __LINE__, "De usar la similitud INTER_SIMILARITY_WEIGHT, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)");
 	}
 	return static_cast<ProduceAndChooseSolver::RankingStrategy> (strategy);
 }
