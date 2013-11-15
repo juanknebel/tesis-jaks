@@ -115,7 +115,16 @@ void execute(ConfigurationJaks& configFile) {
 			exit(0);
 			break;
 	}
-	SnowFlakeVector* solution = theSolver->solve(numberOfSnowFlakes);
+	SnowFlakeVector* solution = 0;
+	try {
+		solution = theSolver->solve(numberOfSnowFlakes);
+	}
+	catch (Exception& e) {
+		std::cerr<<e.what()<<std::endl;
+	}
+	catch ( ...) {
+		std::cerr<<"Unexpected error"<<std::endl;
+	}
 	showSolution(*solution, configFile, theNodeName);
 	writeSolution(*solution, configFile);
 	delete solution;
