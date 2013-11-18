@@ -1,3 +1,4 @@
 1	Park
 2	Building
 3	Museum 
+4	Lala

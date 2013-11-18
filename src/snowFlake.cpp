@@ -80,7 +80,7 @@ String SnowFlake::toString(const Id2Str* node2name) {
 		String node;
 		cost = this->problem_->getCost(*it);
 		node = this->problem_->getNode(*it);
-		result.append(" * " + convertToString(*it) + (node2name == NULL ? "" : " " + node2name->getNodebyName(node)));
+		result.append(" * " + node + (node2name == NULL ? "" : " " + node2name->getNodebyName(node)));
 		result.append(" (cost=" + convertToString(cost) + ")\n");
 	}
 	
