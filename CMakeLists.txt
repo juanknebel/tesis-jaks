@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-
 project(tesis-jaks_exe)
-set(CMAKE_CXX_FLAGS "-L/usr/lib/mysql/ -lmysqlclient")
 set(tesis-jaks_source_files 
 src/dao/daoMySql.cpp 
 src/dao/dao.cpp 
@@ -41,5 +39,6 @@ src/solver/solver.cpp
 src/cluster/clustering.cpp
 src/cluster/metisWrapper.cpp
 )
-
+link_directories("/usr/lib/mysql/")
 add_executable(tesis-jaks ${tesis-jaks_source_files})
+target_link_libraries(tesis-jaks mysqlclient)
