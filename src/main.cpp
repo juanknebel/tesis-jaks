@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
 }
 
 void usingTestHardcode(int argc, char *argv[]) {
-	testMatrix();
+	testDB();
+	//testMatrix();
 	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();
 	//testClustering();

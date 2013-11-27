@@ -14,6 +14,8 @@
 
 void initDebug();
 
+void testDB();
+
 void testMatrix();
 
 void testProblemInstance();

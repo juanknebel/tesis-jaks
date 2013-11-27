@@ -14,6 +14,8 @@
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
 #include "../util/configurationJaks.h"
+#include "../dao/dao.h"
+#include "../util/dbConnection.h"
 
 MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
 	MatrixConcrete matrix(2,2);
@@ -145,6 +147,70 @@ void configureFile(char* fileName) {
 			break;
 		}
 	std::cout<<"EL valor de la clave es: "<<configFiles.giveMeValue(value)<<std::endl;
+	}
+}
+
+void testDBGeneric(Dao& dao, String tableName) {
+	if (dao.isConnected()) {
+		bool hasresult = dao.getAllFrom(tableName);
+		if (hasresult) {
+			const char** result;
+			int numOffields = dao.getNumberOfFields();
+			while(result = dao.getNextRow()) {
+				for (int i=0;i<numOffields;++i) {
+					if (result[i] != NULL) {
+						std::cout<<result[i];
+					}
+					else {
+						std::cout<<"NULL";
+					}
+					if (i!=numOffields-1) {
+						std::cout<<"|";
+					}
+				}
+				std::cout<<std::endl;
+			}
+		}
+		else {
+			std::cerr<<"Error al obtener resutlados"<<std::endl;
+			std::cerr<<dao.getError()<<std::endl;
+		}
+	}
+	else {
+		std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
+	}
+}
+
+void testDBCitationInformation(Dao& dao) {
+	testDBGeneric(dao,"CitationInformation");
+}
+
+void testDBARTICLES(Dao& dao) {
+	testDBGeneric(dao,"ARTICLES");
+}
+
+void testDB() {
+	Dao dao(db_database,db_user,db_password,db_server);
+	bool connect = dao.connect();
+	if (!connect) {
+		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
+	}
+	else {
+		std::cout<<dao.showConnection();
+		testDBARTICLES(dao);
+		dao.disconnect();
+	}
+	
+	connect = dao.connect();
+	if (!connect) {
+		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
+	}
+	else {
+		std::cout<<dao.showConnection();
+		testDBCitationInformation(dao);
+		dao.disconnect();
 	}
 }
 
