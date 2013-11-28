@@ -14,7 +14,7 @@
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
 #include "../util/configurationJaks.h"
-#include "../dao/dao.h"
+#include "../dao/daoMySql.h"
 #include "../util/dbConnection.h"
 
 MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
@@ -190,27 +190,27 @@ void testDBARTICLES(Dao& dao) {
 }
 
 void testDB() {
-	Dao dao(db_database,db_user,db_password,db_server);
-	bool connect = dao.connect();
+	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
+	bool connect = dao->connect();
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao.getError()<<std::endl;
+		std::cerr<<dao->getError()<<std::endl;
 	}
 	else {
-		std::cout<<dao.showConnection();
-		testDBARTICLES(dao);
-		dao.disconnect();
+		std::cout<<dao->showConnection();
+		testDBARTICLES(*dao);
+		dao->disconnect();
 	}
 	
-	connect = dao.connect();
+	connect = dao->connect();
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao.getError()<<std::endl;
+		std::cerr<<dao->getError()<<std::endl;
 	}
 	else {
-		std::cout<<dao.showConnection();
-		testDBCitationInformation(dao);
-		dao.disconnect();
+		std::cout<<dao->showConnection();
+		//testDBCitationInformation(*dao);
+		dao->disconnect();
 	}
 }
 

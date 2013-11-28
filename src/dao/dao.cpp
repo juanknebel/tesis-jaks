@@ -25,46 +25,9 @@ void Dao::init(String database, String user, String password, String server) {
 	this->password_ = password;
 	this->user_ = user;
 	this->server_ = server;
-	this->conn_ = mysql_init(NULL);
-	this->row_ = NULL;
-	this->res_ = NULL;
 	this->isConnected_ = false;
 	this->error_ = "";
 	this->fields_ = -1;
-}
-
-Dao::Dao() {
-	this->init("", "", "", "");
-}
-
-Dao::Dao(String database, String user, String password, String server) {
-	this->init(database, user, password, server);
-}
-
-Dao::~Dao() {
-	this->disconnect();
-}
-
-bool Dao::connect() {
-	if (!this->isConnected_) {
-		if (!mysql_real_connect(this->conn_, this->server_.c_str(), 
-this->user_.c_str(), this->password_.c_str(), this->database_.c_str(), 0, NULL, 
-0)) {
-			this->isConnected_ = false;
-			this->error_ = String(mysql_error(this->conn_));
-		}
-		else {
-			this->isConnected_ = true;
-		}
-	}
-	return this->isConnected_;
-}
-
-bool Dao::disconnect() {
-	mysql_free_result(this->res_);
-	mysql_close(this->conn_);
-	this->init(this->database_, this->user_, this->password_, this->server_);
-	return true;
 }
 
 bool Dao::isConnected() const {
@@ -80,36 +43,6 @@ String Dao::getError() const {
 	return this->error_;
 }
 
-bool Dao::getAllFrom(String tableName) {
-	bool hasResult = false;
-	if (this->isConnected_) {
-		String select = "select * from " + tableName;
-		if(mysql_query(this->conn_, select.c_str())) {
-			this->error_ = String(mysql_error(this->conn_));
-			hasResult = false;
-		}
-		else {
-			this->res_ = mysql_use_result(this->conn_);
-			this->fields_ = mysql_num_fields(this->res_);
-			hasResult = true;
-		}
-	}
-	return hasResult;
-}
-
 int Dao::getNumberOfFields() const {
 	return this->fields_;
-}
-
-const char** Dao::getNextRow() {
-	MYSQL_ROW row;
-	if ((row = mysql_fetch_row(this->res_)) != NULL) {
-		for (int i = 0; i < this->fields_; ++i) {
-			this->row_ = row;
-		}
-		return (const_cast<const char**> (this->row_));
-	}
-	else {
-		return NULL;
-	}
 }

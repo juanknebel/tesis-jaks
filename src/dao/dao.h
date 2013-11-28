@@ -31,23 +31,26 @@ protected:
 	String server_;
 	bool isConnected_;
 	String error_;
-	MYSQL *conn_;
-	MYSQL_RES *res_;
-	char **row_;
 	int fields_;
 	void init(String database, String user, String password, String server);
 public:
-	Dao();
-	Dao(String database, String user, String password, String server);
-	bool connect();
-	bool disconnect();
+	Dao() {
+		this->init("", "", "", "");
+	};
+	Dao(String database, String user, String password, String server) {
+		this->init(database, user, password, server);
+	};
+	virtual ~Dao() {};
+	
 	bool isConnected() const;
 	String showConnection() const;
 	String getError() const;
-	bool getAllFrom(String tableName);
 	int getNumberOfFields() const;
-	const char** getNextRow();
-	~Dao();
+	
+	virtual bool connect() = 0;
+	virtual bool disconnect() = 0;
+	virtual bool getAllFrom(String tableName) = 0;
+	virtual const char** getNextRow() = 0;
     
 };
 

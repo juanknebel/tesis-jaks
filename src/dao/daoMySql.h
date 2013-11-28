@@ -20,12 +20,23 @@
 
 #ifndef DAOMYSQL_H
 #define DAOMYSQL_H
+#include "dao.h"
 
-class DaoMysql
-{
+class DaoMySql : public Dao {
+private:
+	MYSQL *conn_;
+	MYSQL_RES *res_;
+	char **row_;
 public:
-DaoMysql();
-~DaoMysql();
+	DaoMySql();
+	DaoMySql(String database, String user, String password, String server);
+	DaoMySql(const DaoMySql& dao);
+	~DaoMySql();
+	
+	bool connect();
+	bool disconnect();
+	bool getAllFrom(String tableName);
+	const char** getNextRow();
 };
 
 #endif // DAOMYSQL_H
