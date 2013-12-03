@@ -152,7 +152,7 @@ void configureFile(char* fileName) {
 
 void testDBGeneric(Dao& dao, String tableName) {
 	if (dao.isConnected()) {
-		bool hasresult = dao.getAllFrom(tableName);
+		bool hasresult = dao.executeSelectAllFrom(tableName);
 		if (hasresult) {
 			const char** result;
 			int numOffields = dao.getNumberOfFields();
@@ -189,7 +189,7 @@ void testDBARTICLES(Dao& dao) {
 	testDBGeneric(dao,"ARTICLES");
 }
 
-void testDB() {
+void testDB1() {
 	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
 	bool connect = dao->connect();
 	if (!connect) {
@@ -209,9 +209,69 @@ void testDB() {
 	}
 	else {
 		std::cout<<dao->showConnection();
-		//testDBCitationInformation(*dao);
+		testDBCitationInformation(*dao);
 		dao->disconnect();
 	}
+	delete dao;
+}
+
+void testDBCustomQuery() {
+	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
+	bool connect = dao->connect();
+	if (!connect) {
+		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
+		std::cerr<<dao->getError()<<std::endl;
+	}
+	else {
+		std::cout<<dao->showConnection();
+		if (dao->isConnected()) {
+			bool hasresult = dao->executeCustomQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
+			if (hasresult) {
+				const char** result;
+				int numOffields = dao->getNumberOfFields();
+				while(result = dao->getNextRow()) {
+					for (int i=0;i<numOffields;++i) {
+						if (result[i] != NULL) {
+							std::cout<<result[i];
+						}
+						else {
+							std::cout<<"NULL";
+						}
+						if (i!=numOffields-1) {
+							std::cout<<"|";
+						}
+					}
+					std::cout<<std::endl;
+				}
+			}
+			else {
+				std::cerr<<"Error al obtener resutlados"<<std::endl;
+				std::cerr<<dao->getError()<<std::endl;
+			}
+		}
+		else {
+			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
+		}
+		dao->disconnect();
+	}
+}
+
+void testDBInsert() {
+	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	bool connect = dao->connect();
+	if (!connect) {
+		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
+		std::cerr<<dao->getError()<<std::endl;
+	}
+	else {
+		std::cout<<dao->showConnection();
+		if (dao->isConnected()) {
+		}
+	}
+}
+
+void testDB() {
+	testDBCustomQuery();
 }
 
 void testMatrix() {

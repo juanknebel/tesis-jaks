@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(tesis-jaks_exe)
-set(tesis-jaks_source_files 
+set(tesis-jaks_source_files src/util/vectornorm.cpp 
 src/dao/daoMySql.cpp 
 src/dao/dao.cpp 
 src/util/exception.cpp 

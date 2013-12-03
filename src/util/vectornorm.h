@@ -18,27 +18,12 @@
  * 
  */
 
-#ifndef DAOMYSQL_H
-#define DAOMYSQL_H
-#include "dao.h"
+#ifndef VECTORNORM_H
+#define VECTORNORM_H
 
-class DaoMySql : public Dao {
-private:
-	MYSQL *conn_;
-	MYSQL_RES *res_;
-	char **row_;
-	bool executeQuery(String query);
-public:
-	DaoMySql();
-	DaoMySql(String database, String user, String password, String server);
-	DaoMySql(const DaoMySql& dao);
-	~DaoMySql();
-	
-	bool connect();
-	bool disconnect();
-	bool executeSelectAllFrom(String tableName);
-	bool executeCustomQuery(String query);
-	const char** getNextRow();
-};
+#include <cmath>
+#include "redefinitions.h"
 
-#endif // DAOMYSQL_H
+double normOf(IntVector* vector);
+
+#endif // VECTORNORM_H

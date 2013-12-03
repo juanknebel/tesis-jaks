@@ -49,7 +49,8 @@ public:
 	
 	virtual bool connect() = 0;
 	virtual bool disconnect() = 0;
-	virtual bool getAllFrom(String tableName) = 0;
+	virtual bool executeSelectAllFrom(String tableName) = 0;
+	virtual bool executeCustomQuery(String query) = 0;
 	virtual const char** getNextRow() = 0;
     
 };

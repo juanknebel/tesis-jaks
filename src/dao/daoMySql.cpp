@@ -20,6 +20,18 @@
 
 #include "daoMySql.h"
 
+bool DaoMySql::executeQuery(String query) {
+	if(mysql_query(this->conn_, query.c_str())) {
+		this->error_ = String(mysql_error(this->conn_));
+		return false;
+	}
+	else {
+		this->res_ = mysql_use_result(this->conn_);
+		this->fields_ = mysql_num_fields(this->res_);
+		return true;
+	}
+}
+
 DaoMySql::DaoMySql() : Dao() {
 	this->conn_ = mysql_init(NULL);
 	this->row_ = NULL;
@@ -66,19 +78,19 @@ bool DaoMySql::disconnect() {
 	return true;
 }
 
-bool DaoMySql::getAllFrom(String tableName) {
+bool DaoMySql::executeSelectAllFrom(String tableName) {
 	bool hasResult = false;
 	if (this->isConnected_) {
 		String select = "select * from " + tableName;
-		if(mysql_query(this->conn_, select.c_str())) {
-			this->error_ = String(mysql_error(this->conn_));
-			hasResult = false;
-		}
-		else {
-			this->res_ = mysql_use_result(this->conn_);
-			this->fields_ = mysql_num_fields(this->res_);
-			hasResult = true;
-		}
+		hasResult = this->executeQuery(select);
+	}
+	return hasResult;
+}
+
+bool DaoMySql::executeCustomQuery(String query) {
+	bool hasResult = false;
+	if (this->isConnected_) {
+		hasResult = this->executeQuery(query);
 	}
 	return hasResult;
 }

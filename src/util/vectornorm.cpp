@@ -18,27 +18,31 @@
  * 
  */
 
-#ifndef DAOMYSQL_H
-#define DAOMYSQL_H
-#include "dao.h"
+#include "vectornorm.h"
 
-class DaoMySql : public Dao {
-private:
-	MYSQL *conn_;
-	MYSQL_RES *res_;
-	char **row_;
-	bool executeQuery(String query);
-public:
-	DaoMySql();
-	DaoMySql(String database, String user, String password, String server);
-	DaoMySql(const DaoMySql& dao);
-	~DaoMySql();
-	
-	bool connect();
-	bool disconnect();
-	bool executeSelectAllFrom(String tableName);
-	bool executeCustomQuery(String query);
-	const char** getNextRow();
-};
+double dotProductOf(IntVector* vector1, IntVector* vector2){
+	double product = 0.0;
+	int size = vector1->size();
+	for (unsigned i=0; i<size; i++){
+		product += (*vector1)[i] * (*vector2)[i];
+	}
 
-#endif // DAOMYSQL_H
+	return product;
+}
+
+double angleBetweenVectors(IntVector* vector1, IntVector* vector2){
+	double norm1 = normOf(vector1);
+	double norm2 = normOf(vector2);
+	double dotProduct = dotProductOf(vector1, vector2);
+
+	return dotProduct * (norm1 / norm2);
+}
+
+double normOf(IntVector* vector){
+	double norm = 0.0;
+	for (IntVector::iterator it = vector->begin(); it != vector->end(); ++it) {
+		norm += std::pow(*it,2);
+	}
+
+	return std::sqrt(norm);
+}
