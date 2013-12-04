@@ -21,15 +21,33 @@
 #include "daoMySql.h"
 
 bool DaoMySql::executeQuery(String query) {
+	this->lastQueryExecute_ = query;
+	DEBUG(DBG_DEBUG,"Se ejecuto la query: "<<this->lastQueryExecute_);
 	if(mysql_query(this->conn_, query.c_str())) {
 		this->error_ = String(mysql_error(this->conn_));
 		return false;
 	}
-	else {
+	return true;
+}
+
+bool DaoMySql::executeConsultativeQuery(String query) {
+	bool hasResult = false;
+	if (this->isConnected_) {
+		hasResult = this->executeQuery(query);
+	}
+	if (hasResult){
 		this->res_ = mysql_use_result(this->conn_);
 		this->fields_ = mysql_num_fields(this->res_);
-		return true;
 	}
+	return hasResult;
+}
+
+bool DaoMySql::executeModifiableQuery(String query) {
+	bool isOk = false;
+	if (this->isConnected_) {
+		isOk = this->executeQuery(query);
+	}
+	return isOk;
 }
 
 DaoMySql::DaoMySql() : Dao() {
@@ -79,20 +97,33 @@ bool DaoMySql::disconnect() {
 }
 
 bool DaoMySql::executeSelectAllFrom(String tableName) {
-	bool hasResult = false;
-	if (this->isConnected_) {
-		String select = "select * from " + tableName;
-		hasResult = this->executeQuery(select);
-	}
-	return hasResult;
+	String query = "SELECT * FROM " + tableName + ";";
+	return this->executeConsultativeQuery(query);
 }
 
-bool DaoMySql::executeCustomQuery(String query) {
-	bool hasResult = false;
-	if (this->isConnected_) {
-		hasResult = this->executeQuery(query);
+bool DaoMySql::executeCustomConsultativeQuery(String query) {
+	return this->executeConsultativeQuery(query);
+}
+
+bool DaoMySql::executeCustomModifiableQuery(String query) {
+	return this->executeModifiableQuery(query);
+}
+
+//INSERT INTO tableName SET field1 = value1,field2 = value2;
+bool DaoMySql::executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count) {
+	String query = "INSERT INTO " + tableName + " SET ";
+	for (int i = 0;i < count; ++i) {
+		query.append(fields[i]);
+		query.append(" = ");
+		query.append(values[i]);
+		if (i != count - 1) {
+			query.append(", ");
+		}
+		else {
+			query.append("; ");
+		}
 	}
-	return hasResult;
+	return this->executeModifiableQuery(query);
 }
 
 const char** DaoMySql::getNextRow() {

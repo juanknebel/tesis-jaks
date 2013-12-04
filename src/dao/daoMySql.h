@@ -27,7 +27,10 @@ private:
 	MYSQL *conn_;
 	MYSQL_RES *res_;
 	char **row_;
+	String lastQueryExecute_;
 	bool executeQuery(String query);
+	bool executeConsultativeQuery(String query);
+	bool executeModifiableQuery(String query);
 public:
 	DaoMySql();
 	DaoMySql(String database, String user, String password, String server);
@@ -37,7 +40,9 @@ public:
 	bool connect();
 	bool disconnect();
 	bool executeSelectAllFrom(String tableName);
-	bool executeCustomQuery(String query);
+	bool executeCustomConsultativeQuery(String query);
+	bool executeCustomModifiableQuery(String query);
+	bool executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count);
 	const char** getNextRow();
 };
 

@@ -225,7 +225,7 @@ void testDBCustomQuery() {
 	else {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
-			bool hasresult = dao->executeCustomQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
+			bool hasresult = dao->executeCustomConsultativeQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
 			if (hasresult) {
 				const char** result;
 				int numOffields = dao->getNumberOfFields();
@@ -256,7 +256,7 @@ void testDBCustomQuery() {
 	}
 }
 
-void testDBInsert() {
+void testDBInsertCustom() {
 	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 	if (!connect) {
@@ -266,12 +266,36 @@ void testDBInsert() {
 	else {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
+			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba values (3,5,\'prueba tres\')");
+			if (!isOk) {
+				std::cerr<<dao->getError()<<std::endl;
+			}
+		}
+	}
+}
+
+void testDBInsertPartial() {
+	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	bool connect = dao->connect();
+	if (!connect) {
+		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
+		std::cerr<<dao->getError()<<std::endl;
+	}
+	else {
+		std::cout<<dao->showConnection();
+		if (dao->isConnected()) {
+			const char *fields [] =  {"id", "descripcion", "valor"};
+			const char *values [] = {"6", "\'prueba seis\'", "333"};
+			bool isOk = dao->executeInsertQueryWithValues("tablaPrueba", fields, values, 3);
+			if (!isOk) {
+				std::cerr<<dao->getError()<<std::endl;
+			}
 		}
 	}
 }
 
 void testDB() {
-	testDBCustomQuery();
+	testDBInsertPartial();
 }
 
 void testMatrix() {

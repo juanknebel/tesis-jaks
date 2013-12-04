@@ -50,7 +50,9 @@ public:
 	virtual bool connect() = 0;
 	virtual bool disconnect() = 0;
 	virtual bool executeSelectAllFrom(String tableName) = 0;
-	virtual bool executeCustomQuery(String query) = 0;
+	virtual bool executeCustomConsultativeQuery(String query) = 0;
+	virtual bool executeCustomModifiableQuery(String query) = 0;
+	virtual bool executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count) = 0;
 	virtual const char** getNextRow() = 0;
     
 };
