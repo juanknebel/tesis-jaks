@@ -10,7 +10,7 @@
 
 #include "problemInstance.h"
 
-class ProblemInstanceFromFiles : public ProblemInstance{
+class ProblemInstanceFromFiles : public ProblemInstance {
 public:
 	ProblemInstanceFromFiles(String fileCosts, String fileCompat, String fileCover, Double budget);
 	ProblemInstanceFromFiles();

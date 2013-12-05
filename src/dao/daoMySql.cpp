@@ -31,23 +31,29 @@ bool DaoMySql::executeQuery(String query) {
 }
 
 bool DaoMySql::executeConsultativeQuery(String query) {
-	bool hasResult = false;
+	bool wasOk = false;
 	if (this->isConnected_) {
-		hasResult = this->executeQuery(query);
+		wasOk = this->executeQuery(query);
+		if (wasOk){
+			this->res_ = mysql_use_result(this->conn_);
+			this->fields_ = mysql_num_fields(this->res_);
+		}
 	}
-	if (hasResult){
-		this->res_ = mysql_use_result(this->conn_);
-		this->fields_ = mysql_num_fields(this->res_);
+	else {
+		this->error_ = "Not connected to database";
 	}
-	return hasResult;
+	return wasOk;
 }
 
 bool DaoMySql::executeModifiableQuery(String query) {
-	bool isOk = false;
+	bool wasOk = false;
 	if (this->isConnected_) {
-		isOk = this->executeQuery(query);
+		wasOk = this->executeQuery(query);
 	}
-	return isOk;
+	else {
+		this->error_ = "Not connected to database";
+	}
+	return wasOk;
 }
 
 DaoMySql::DaoMySql() : Dao() {
@@ -96,33 +102,11 @@ bool DaoMySql::disconnect() {
 	return true;
 }
 
-bool DaoMySql::executeSelectAllFrom(String tableName) {
-	String query = "SELECT * FROM " + tableName + ";";
-	return this->executeConsultativeQuery(query);
-}
-
 bool DaoMySql::executeCustomConsultativeQuery(String query) {
 	return this->executeConsultativeQuery(query);
 }
 
 bool DaoMySql::executeCustomModifiableQuery(String query) {
-	return this->executeModifiableQuery(query);
-}
-
-//INSERT INTO tableName SET field1 = value1,field2 = value2;
-bool DaoMySql::executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count) {
-	String query = "INSERT INTO " + tableName + " SET ";
-	for (int i = 0;i < count; ++i) {
-		query.append(fields[i]);
-		query.append(" = ");
-		query.append(values[i]);
-		if (i != count - 1) {
-			query.append(", ");
-		}
-		else {
-			query.append("; ");
-		}
-	}
 	return this->executeModifiableQuery(query);
 }
 
@@ -137,4 +121,50 @@ const char** DaoMySql::getNextRow() {
 	else {
 		return NULL;
 	}
+}
+
+bool DaoMySql::executeCountAllFrom(String tableName) {
+	return this->executeSelectAllFromProject(tableName, "COUNT(*)");
+}
+
+bool DaoMySql::executeSelectAllFrom(String tableName) {
+	return this->executeSelectAllFromProject(tableName, "*");
+}
+
+bool DaoMySql::executeSelectAllFromProject(String tableName, String fieldToProjet) {
+	return this->executeSelectProjectFromWithAndConditions(tableName, fieldToProjet, 0, 0, 0);
+}
+
+bool DaoMySql::executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet,const char *fields[], const char *values[], int count) {
+	String query = "SELECT " + fieldToProjet + " FROM " + tableName;
+	
+	if (count > 0) {
+		query.append(" WHERE ");
+	}
+	
+	for (int i = 0;i < count; ++i) {
+		query.append(fields[i]);
+		query.append(" = ");
+		query.append(values[i]);
+		if (i != count - 1) {
+			query.append(" AND ");
+		}
+	}
+	query.append(";");
+	return this->executeCustomConsultativeQuery(query);
+}
+
+//INSERT INTO tableName SET field1 = value1,field2 = value2;
+bool DaoMySql::executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count) {
+	String query = "INSERT INTO " + tableName + " SET ";
+	for (int i = 0;i < count; ++i) {
+		query.append(fields[i]);
+		query.append(" = ");
+		query.append(values[i]);
+		if (i != count - 1) {
+			query.append(", ");
+		}
+	}
+	query.append(";");
+	return this->executeCustomModifiableQuery(query);
 }

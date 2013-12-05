@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 }
 
 void usingTestHardcode(int argc, char *argv[]) {
+	//testOverLoadFunction();
 	testDB();
 	//testMatrix();
 	//testProblemInstanceFromFiles("../files/");

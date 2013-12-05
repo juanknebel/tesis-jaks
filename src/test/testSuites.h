@@ -12,7 +12,9 @@
 #include "../util/Logger.h"
 #include "../solver/restrictedHACWithSpecificItemSolver.h"
 
-void initDebug();
+void initDefaultDebug();
+
+void testOverLoadFunction();
 
 void testDB();
 

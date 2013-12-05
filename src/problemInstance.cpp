@@ -69,7 +69,6 @@ Double ProblemInstance::getCompat(int id1, int id2) {
 	if (id1 == id2) {
 		return this->specificItem_ == id1 ? 0 : 1;
 	}
-
 	return this->nodeCompat_->get(id1, id2);
 }
 

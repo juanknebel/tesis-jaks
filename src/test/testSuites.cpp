@@ -13,6 +13,7 @@
 #include "testingMetisWrapper.h"
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
+#include "../problemInstanceFromDataBase.h"
 #include "../util/configurationJaks.h"
 #include "../dao/daoMySql.h"
 #include "../util/dbConnection.h"
@@ -225,7 +226,9 @@ void testDBCustomQuery() {
 	else {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
-			bool hasresult = dao->executeCustomConsultativeQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
+			dao->showConnection();
+			//bool hasresult = dao->executeCustomConsultativeQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
+			bool hasresult = dao->executeCustomConsultativeQuery("select count(*) from ARTICLES");
 			if (hasresult) {
 				const char** result;
 				int numOffields = dao->getNumberOfFields();
@@ -252,8 +255,8 @@ void testDBCustomQuery() {
 		else {
 			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 		}
-		dao->disconnect();
 	}
+	delete dao;
 }
 
 void testDBInsertCustom() {
@@ -272,6 +275,7 @@ void testDBInsertCustom() {
 			}
 		}
 	}
+	delete dao;
 }
 
 void testDBInsertPartial() {
@@ -292,10 +296,21 @@ void testDBInsertPartial() {
 			}
 		}
 	}
+	delete dao;
+}
+
+void testOverLoadFunction() {
+	Dao *dao = new DaoMySql(db_database, db_user, db_password,db_server);
+	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab",5);
+	std::cout<<problem->getCompat(1,1)<<std::endl;
+	delete dao;
+	delete problem;
 }
 
 void testDB() {
-	testDBInsertPartial();
+	initDefaultDebug();
+	testDBCustomQuery();
+	//testDBInsertPartial();
 }
 
 void testMatrix() {

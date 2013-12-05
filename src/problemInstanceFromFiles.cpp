@@ -18,7 +18,6 @@ ProblemInstanceFromFiles::ProblemInstanceFromFiles(String fileCosts, String file
 }
 
 ProblemInstanceFromFiles::~ProblemInstanceFromFiles() {
-
 }
 
 void ProblemInstanceFromFiles::init(String fileCosts, String fileCompat, String fileCover) {
@@ -57,7 +56,7 @@ void ProblemInstanceFromFiles::loadInt2Double(String fileName) {
 	}
 	file.close();
 	for (Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
-		ids_->insert(it->first);
+		this->ids_->insert(it->first);
 	}
 }
 

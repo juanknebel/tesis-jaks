@@ -52,17 +52,17 @@ protected:
 public:
 	ProblemInstance();
 	ProblemInstance(Double budget);
-	~ProblemInstance();
+	virtual ~ProblemInstance();
 
-	IntSet& getIds();
-	int numNodes();
-	Double getCost(int id);
+	virtual IntSet& getIds();
+	virtual int numNodes();
+	virtual Double getCost(int id);
 	Double getbudget();
-	const IntSet* getCover(int id);
-	Double getCompat(int id1, int id2);
-	SparseDoubleMatrix2D* getCompat();
-	void normalizeNodeCompat();
-	String getNode(int id);
+	virtual const IntSet* getCover(int id);
+	virtual Double getCompat(int id1, int id2);
+	virtual SparseDoubleMatrix2D* getCompat();
+	virtual void normalizeNodeCompat();
+	virtual String getNode(int id);
 	int getId(String);
 	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
