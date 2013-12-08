@@ -83,7 +83,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 	Double currentSumIntra = 0.0;
 	Double currentSumOneMinusInter = 0.0;
 	while (selected->size() < numRequested && selected->size() < produced->size()) {
-		Double maxScore = FLT_MIN;
+		Double maxScore = -1.0;
 		int bestCandidateId = -1;
 		if (available.size() == 0) {
 			throw Exception(__FILE__, __LINE__, "There are no available condidates");

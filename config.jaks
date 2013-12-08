@@ -19,6 +19,10 @@ FIELD_ITEM_COMPAT2	Item2
 FIELD_COMPAT	Similarity
 #---------------------------------------------------------------------------------#
 
+#---------------------------DIRECTORIO DE TRABAJO---------------------------------#
+DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/papers/
+#---------------------------------------------------------------------------------#
+
 #---------------------------DIRECTORIOS Y ARCHIVOS--------------------------------#
 #Nombre del directorio de trabajo
 #DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products/
@@ -30,7 +34,7 @@ FIELD_COMPAT	Similarity
 #FILE_TYPE_NAME	type_name.csv
 
 #Nombre del directorio de trabajo
-DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
+#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
 #Nombre de los archivos
 FILE_COSTS	node_cost.txt
 FILE_COMPAT	node_compatibility.txt
@@ -49,7 +53,7 @@ NUM_FLAKES	2
 MAX_TRIALS	10
 
 #Valor del budget (o presupuesto)
-BUDGET	100.80
+BUDGET	2
 
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0
