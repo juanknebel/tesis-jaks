@@ -41,7 +41,8 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 int ProblemInstanceFromDataBase::getPrimaryId(int id) {
 	int theId = -1;
 	const char *fields [] =  {this->item_.c_str()};
-	const char *values [] = {convertToString(id).c_str()};
+	String primaryId = convertToString(id);
+	const char *values [] = {primaryId.c_str()};
 	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableConvertElementItem_, primaryField_, fields, values, 1)) {
 		theId = atoi(this->dao_->getNextRow()[0]);
 	}
@@ -91,7 +92,8 @@ int ProblemInstanceFromDataBase::numNodes() {
 Double ProblemInstanceFromDataBase::getCost(int id) {
 	Double cost = -1.0;
 	const char *fields [] =  {this->primaryField_.c_str()};
-	const char *values [] = {convertToString(this->getPrimaryId(id)).c_str()};
+	String primaryId = convertToString(this->getPrimaryId(id));
+	const char *values [] = {primaryId.c_str()};
 	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->costField_,fields, values, 1)) {
 		cost = atof(this->dao_->getNextRow()[0]);
 	}
@@ -104,7 +106,8 @@ Double ProblemInstanceFromDataBase::getCost(int id) {
 const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 	IntSet *cover = new IntSet;
 	const char *fields [] =  {this->primaryField_.c_str()};
-	const char *values [] = {convertToString(this->getPrimaryId(id)).c_str()};
+	String primaryId = convertToString(this->getPrimaryId(id));
+	const char *values [] = {primaryId.c_str()};
 	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->coverField_,fields, values, 1)) {
 		const char** result;
 			while(result = this->dao_->getNextRow()) {
@@ -124,7 +127,8 @@ Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
 		std::swap(id1, id2);
 	}
 	if (id1 == id2) {
-		throw Exception(__FILE__, __LINE__, "The ids can not be equal");
+		return 0;
+		//throw Exception(__FILE__, __LINE__, "The ids can not be equal");
 	}
 	const char *fields [] =  {this->itemCompat1_.c_str(), this->itemCompat2_.c_str()};
 	String theId1 = convertToString(id1), theId2 = convertToString(id2);
@@ -142,7 +146,6 @@ SparseDoubleMatrix2D* ProblemInstanceFromDataBase::getCompat() {
 	int count = -1;
 	if (this->dao_->executeCountAllFrom(this->tableCompat_)) {
 		count = atoi(this->dao_->getNextRow()[0]);
-		this->dao_->disconnect();
 	}
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
@@ -158,7 +161,8 @@ void ProblemInstanceFromDataBase::normalizeNodeCompat() {
 String ProblemInstanceFromDataBase::getNode(int id) {
 	String node;
 	const char *fields [] =  {this->primaryField_.c_str()};
-	const char *values [] = {convertToString(this->getPrimaryId(id)).c_str()};
+	String primaryId = convertToString(this->getPrimaryId(id));
+	const char *values [] = {primaryId.c_str()};
 	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->primaryDescription_,fields, values, 1)) {
 		node = this->dao_->getNextRow()[0];
 	}

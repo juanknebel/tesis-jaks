@@ -80,7 +80,7 @@ ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks
 void execute(ConfigurationJaks& configFile) {
 	int solverId = atoi(configFile["solver"].c_str());
 	ProblemInstance* theProblem = instanceTheProblem(configFile);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
+	//Id2Str* theNodeName = instanceTheNodeName(configFile);
 	ProduceAndChooseSolver::RankingStrategy strategy = checkAndReturnStrategy(configFile);
 	int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
 	Solver* theSolver = 0;
@@ -146,7 +146,7 @@ void execute(ConfigurationJaks& configFile) {
 	catch ( ...) {
 		std::cerr<<"Unexpected error"<<std::endl;
 	}
-	showSolution(*solution, configFile, theNodeName);
+	//showSolution(*solution, configFile, theNodeName);
 	writeSolution(*solution, configFile);
 	delete solution;
 	delete theProblem;

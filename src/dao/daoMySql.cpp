@@ -104,7 +104,7 @@ bool DaoMySql::disconnect() {
 }
 
 void DaoMySql::freeConnection() {
-	if (this->res_ != NULL) {
+	if (this->res_ == NULL) {
 		mysql_free_result(this->res_);
 	}
 }
