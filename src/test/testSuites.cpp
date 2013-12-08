@@ -182,36 +182,20 @@ void testDBGeneric(Dao& dao, String tableName) {
 	}
 }
 
-void testDBCitationInformation(Dao& dao) {
-	testDBGeneric(dao,"CitationInformation");
-}
-
-void testDBARTICLES(Dao& dao) {
-	testDBGeneric(dao,"ARTICLES");
-}
-
 void testDB1() {
 	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
 	bool connect = dao->connect();
+	std::cout<<dao->showConnection();
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
 		std::cerr<<dao->getError()<<std::endl;
 	}
 	else {
-		std::cout<<dao->showConnection();
-		testDBARTICLES(*dao);
-		dao->disconnect();
-	}
-	
-	connect = dao->connect();
-	if (!connect) {
-		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao->getError()<<std::endl;
-	}
-	else {
-		std::cout<<dao->showConnection();
-		testDBCitationInformation(*dao);
-		dao->disconnect();
+		if (dao->executeCountAllFrom("ARTICLES")) {
+			int count = atoi(dao->getNextRow()[0]);
+			std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
+		}
+		testDBGeneric(*dao,"ARTICLES");
 	}
 	delete dao;
 }
@@ -301,7 +285,7 @@ void testDBInsertPartial() {
 
 void testOverLoadFunction() {
 	Dao *dao = new DaoMySql(db_database, db_user, db_password,db_server);
-	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab",5);
+	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab", "tab","tab","tab", "tab", 5);
 	std::cout<<problem->getCompat(1,1)<<std::endl;
 	delete dao;
 	delete problem;
@@ -309,8 +293,7 @@ void testOverLoadFunction() {
 
 void testDB() {
 	initDefaultDebug();
-	testDBCustomQuery();
-	//testDBInsertPartial();
+	testDB1();
 }
 
 void testMatrix() {

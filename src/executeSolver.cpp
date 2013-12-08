@@ -2,8 +2,11 @@
 #include "util/Logger.h"
 #include "util/id2Str.h"
 #include "util/exception.h"
+#include "util/dbConnection.h"
+#include "dao/daoMySql.h"
 #include "executeSolver.h"
 #include "problemInstanceFromFiles.h"
+#include "problemInstanceFromDataBase.h"
 #include "solver/clusterAndPickSolver.h"
 #include "solver/restrictedHACSolver.h"
 #include "solver/randomBOBOSolver.h"
@@ -16,13 +19,31 @@
 #include <iostream>
 using namespace std;
 
-ProblemInstance* instanceTheProblem(ConfigurationJaks& configFile) {
+ProblemInstance* instanceTheProblemForDB(ConfigurationJaks& configFile) {
+	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
+	dao->connect();
+	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, configFile["table_costs"], configFile["table_compat"], configFile["table_cover"], configFile["table_convertion_element_item"], configFile["field_cost"], configFile["field_compat"], configFile["field_cover"], configFile["field_primary"], configFile["field_primary_description"], configFile["field_item"], configFile["field_item_compat1"], configFile["field_item_compat2"], atof(configFile["budget"].c_str()));
+	return theProblem;
+}
+
+ProblemInstance* instanceTheProblemForFiles(ConfigurationJaks& configFile) {
 	std::string directory = configFile["directory_work"];
 	ProblemInstance* theProblem = new ProblemInstanceFromFiles(directory+configFile["file_costs"], directory+configFile["file_compat"], directory+configFile["file_cover"], atof(configFile["budget"].c_str()));
 	bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
 	int specificItem = atoi(configFile["specific_item"].c_str());
 	if (withSpecificItem) {
 		theProblem->setSpecificItem(specificItem);
+	}
+	return theProblem;
+}
+
+ProblemInstance* instanceTheProblem(ConfigurationJaks& configFile) {
+	ProblemInstance* theProblem = 0;
+	if (configFile["use_data_from_db"] == "1") {
+		theProblem = instanceTheProblemForDB(configFile);
+	}
+	else {
+		theProblem = instanceTheProblemForFiles(configFile);
 	}
 	return theProblem;
 }

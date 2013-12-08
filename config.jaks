@@ -1,5 +1,24 @@
 #Archivo de configuracion para el programa tesis-jaks
 #Con # son los comentarios, y los datos estan separados por una tabulacion
+#Usa de la base de datos en lugar de los archivos
+USE_DATA_FROM_DB	1
+
+#--------------------------TABLAS y CAMPOS NECESARIOS------------------------------#
+TABLE_COSTS	ARTICLES
+TABLE_COMPAT	SIMILARITY
+TABLE_COVER	ARTICLES
+TABLE_CONVERTION_ELEMENT_ITEM	ARTICLE_ITEM
+FIELD_COST	Cost
+FIELD_COVER	venue_Venue_Id
+FIELD_PRIMARY	ArticleId
+FIELD_PRIMARY_DESCRIPTION	title
+FIELD_ELEMENT	ArticleId
+FIELD_ITEM	Item
+FIELD_ITEM_COMPAT1	Item
+FIELD_ITEM_COMPAT2	Item2
+FIELD_COMPAT	Similarity
+#---------------------------------------------------------------------------------#
+
 #---------------------------DIRECTORIOS Y ARCHIVOS--------------------------------#
 #Nombre del directorio de trabajo
 #DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products/
@@ -24,13 +43,13 @@ NAME_OUTPUT	output_data.csv
 #---------------------------------------------------------------------------------#
 
 #Cantidad de SnowFlakes
-NUM_FLAKES	10
+NUM_FLAKES	2
 
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
 
 #Valor del budget (o presupuesto)
-BUDGET	100000000000000.80
+BUDGET	100.80
 
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0

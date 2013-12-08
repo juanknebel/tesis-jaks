@@ -29,18 +29,22 @@ private:
 	String tableCosts_;
 	String tableCompat_;
 	String tableCover_;
+	String tableConvertElementItem_;
 	String costField_;
 	String compatField_;
 	String coverField_;
 	String primaryField_;
-	String secondaryField_;
 	String primaryDescription_;
+	String item_;
+	String itemCompat1_;
+	String itemCompat2_;
 	Dao *dao_;
 	
-	void init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String costField, String compatField, String coverField, String primaryField, String secondaryField, String primaryDescription);
+	void init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2);
+	int getPrimaryId(int id);
 public:
 	ProblemInstanceFromDataBase();
-	ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String costField, String compatField, String coverField, String primaryField, String secondaryField, String primaryDescription, Double budget);
+	ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2, Double budget);
 	~ProblemInstanceFromDataBase();
 	
 	IntSet& getIds();

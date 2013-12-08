@@ -21,6 +21,7 @@
 #include "daoMySql.h"
 
 bool DaoMySql::executeQuery(String query) {
+	this->freeConnection();
 	this->lastQueryExecute_ = query;
 	DEBUG(DBG_DEBUG,"Se ejecuto la query: "<<this->lastQueryExecute_);
 	if(mysql_query(this->conn_, query.c_str())) {
@@ -35,7 +36,8 @@ bool DaoMySql::executeConsultativeQuery(String query) {
 	if (this->isConnected_) {
 		wasOk = this->executeQuery(query);
 		if (wasOk){
-			this->res_ = mysql_use_result(this->conn_);
+			//this->res_ = mysql_use_result(this->conn_);
+			this->res_ = mysql_store_result(this->conn_);
 			this->fields_ = mysql_num_fields(this->res_);
 		}
 	}
@@ -87,6 +89,7 @@ this->user_.c_str(), this->password_.c_str(), this->database_.c_str(), 0, NULL,
 0)) {
 			this->isConnected_ = false;
 			this->error_ = String(mysql_error(this->conn_));
+			DEBUG(DBG_DEBUG,"No se pudo conectar a la base de datos: "<<this->error_);
 		}
 		else {
 			this->isConnected_ = true;
@@ -96,10 +99,14 @@ this->user_.c_str(), this->password_.c_str(), this->database_.c_str(), 0, NULL,
 }
 
 bool DaoMySql::disconnect() {
-	mysql_free_result(this->res_);
 	mysql_close(this->conn_);
-	this->init(this->database_, this->user_, this->password_, this->server_);
 	return true;
+}
+
+void DaoMySql::freeConnection() {
+	if (this->res_ != NULL) {
+		mysql_free_result(this->res_);
+	}
 }
 
 bool DaoMySql::executeCustomConsultativeQuery(String query) {
@@ -119,6 +126,7 @@ const char** DaoMySql::getNextRow() {
 		return (const_cast<const char**> (this->row_));
 	}
 	else {
+		mysql_free_result(this->res_);
 		return NULL;
 	}
 }

@@ -28,6 +28,7 @@ private:
 	MYSQL_RES *res_;
 	char **row_;
 	String lastQueryExecute_;
+	void freeConnection();
 	bool executeQuery(String query);
 	bool executeConsultativeQuery(String query);
 	bool executeModifiableQuery(String query);

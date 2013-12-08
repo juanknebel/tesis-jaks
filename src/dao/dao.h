@@ -33,6 +33,7 @@ protected:
 	String error_;
 	int fields_;
 	void init(String database, String user, String password, String server);
+	virtual void freeConnection() = 0;
 public:
 	Dao() {
 		this->init("", "", "", "");
