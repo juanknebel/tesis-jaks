@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include "executeSolver.h"
 #include "test/testSuites.h"
+#include "util/vectornorm.h"
 
 void usingTestHardcode(int argc, char *argv[]);
 void usingTestFiles(char *configFileName);
@@ -62,8 +63,10 @@ int main(int argc, char *argv[]) {
 }
 
 void usingTestHardcode(int argc, char *argv[]) {
+	initializeDefaultDebug();
+	insertSimilarity();
 	//testOverLoadFunction();
-	testDB();
+	//testDB();
 	//testMatrix();
 	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();
