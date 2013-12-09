@@ -20,7 +20,7 @@
 using namespace std;
 
 ProblemInstance* instanceTheProblemForDB(ConfigurationJaks& configFile) {
-	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
+	Dao *dao = new DaoMySql(configFile["db_database"], configFile["db_user"], configFile["db_password"], configFile["db_server"]);
 	dao->connect();
 	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, configFile["table_costs"], configFile["table_compat"], configFile["table_cover"], configFile["table_convertion_element_item"], configFile["field_cost"], configFile["field_compat"], configFile["field_cover"], configFile["field_primary"], configFile["field_primary_description"], configFile["field_item"], configFile["field_item_compat1"], configFile["field_item_compat2"], atof(configFile["budget"].c_str()));
 	return theProblem;

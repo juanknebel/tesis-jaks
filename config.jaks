@@ -3,7 +3,11 @@
 #Usa de la base de datos en lugar de los archivos
 USE_DATA_FROM_DB	1
 
-#--------------------------TABLAS y CAMPOS NECESARIOS------------------------------#
+#---------------CONEXION, TABLAS y CAMPOS NECESARIOS DE LA BD---------------------#
+DB_SERVER	localhost
+DB_USER	tesis
+DB_PASSWORD	tesis
+DB_DATABASE	test
 TABLE_COSTS	ARTICLES
 TABLE_COMPAT	SIMILARITY
 TABLE_COVER	ARTICLES
