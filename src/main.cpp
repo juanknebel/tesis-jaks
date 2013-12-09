@@ -10,6 +10,10 @@
 * Forma de uso: 
 * tesis-jaks -f <nombre_archivo_configuracion> (para usar con un archivo de configuracion)
 * tesis-jaks -t                                (para usar con los test internos)
+* 
+* Direction:
+* tesis-jaks -f <configuration_file_name>	(to use a configuration file)
+* tesis-jaks -t					(for use with the internal test)
 */
 
 #include <iostream>
@@ -29,7 +33,7 @@ void initializeDefaultDebug() {
 }
 
 int main(int argc, char *argv[]) {
-	std::string errorMsg = "Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion> (para usar con un archivo de configuracion)\ntesis-jaks -t (para usar con los test internos)\n";
+	std::string errorMsg = "Error. Directions:\ntesis-jaks -f <configuration_file_name> (to use a configuration file)\ntesis-jaks -t (for use with the internal test)\n";
 	if (argc <= 1) {
 		std::cerr<<errorMsg;
 	}
@@ -41,11 +45,11 @@ int main(int argc, char *argv[]) {
 			char option = argv[1][1];
 			switch(option) {
 				case 'f':
-					std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
+					std::cout<<"Using the configuration file ..."<<std::endl;
 					usingTestFiles(argv[2]);
 					break;
 				case 't':
-					std::cout<<"Usando los tests internos ..."<<std::endl;
+					std::cout<<"Using internal tests ..."<<std::endl;
 					usingTestHardcode(argc, argv);
 					break;
 				default:
@@ -71,7 +75,7 @@ void usingTestHardcode(int argc, char *argv[]) {
 void usingTestFiles(char *configFileName) {
 	if (configFileName == NULL) {
 		//Si no pasa ningun archivo como parametro, termina la ejecucion del programa
-		std::cerr<<"Nombre de archivo invalido"<<std::endl;
+		std::cerr<<"Invalid file name"<<std::endl;
 		exit(0);
 	}
 	else {
