@@ -21,9 +21,14 @@
 #ifndef VECTORNORM_H
 #define VECTORNORM_H
 
+#include <string>
 #include <cmath>
 #include "redefinitions.h"
 
-double normOf(IntVector* vector);
+float normOf(std::vector<float>* vector);
+float dotProductOf(std::vector<float>* vector1, std::vector<float>* vector2);
+float angleBetweenVectors(std::vector<float>* vector1, std::vector<float>* vector2);
+void insertSimilarity();
+int indexOf(String key);
 
 #endif // VECTORNORM_H
