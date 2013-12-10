@@ -159,6 +159,7 @@ void ProblemInstanceFromDataBase::normalizeNodeCompat() {
 }
 
 String ProblemInstanceFromDataBase::getNode(int id) {
+	/*
 	String node;
 	const char *fields [] =  {this->primaryField_.c_str()};
 	String primaryId = convertToString(this->getPrimaryId(id));
@@ -170,4 +171,6 @@ String ProblemInstanceFromDataBase::getNode(int id) {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
 	}
 	return node;
+	*/
+	return convertToString(id);
 }
