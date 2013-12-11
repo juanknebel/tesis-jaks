@@ -130,14 +130,6 @@ ProblemInstance* giveMeAnotherProblemInstance(std::string directory) {
 	return result;
 }
 
-void initDebug(String filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel) {
-	DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
-}
-
-void initDefaultDebug() {
-	initDebug("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
-}
-
 void configureFile(char* fileName) {
 	String value;
 	ConfigurationJaks configFiles = ConfigurationJaks(fileName);
@@ -183,7 +175,7 @@ void testDBGeneric(Dao& dao, String tableName) {
 }
 
 void testDB1() {
-	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
+	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 	std::cout<<dao->showConnection();
 	if (!connect) {
@@ -211,12 +203,14 @@ void testDBCustomQuery() {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
 			dao->showConnection();
-			//bool hasresult = dao->executeCustomConsultativeQuery("select distribution_KEY from TopicProfile_distribution group by distribution_KEY order by distribution_KEY asc");
-			bool hasresult = dao->executeCustomConsultativeQuery("select count(*) from ARTICLES");
-			if (hasresult) {
+			bool wasOk = dao->executeCustomConsultativeQuery("select * from ARTICLES where ArticleId=\'7777\'");
+			if (wasOk) {
+				std::cout<<"Ejecuto bien"<<std::endl;
 				const char** result;
 				int numOffields = dao->getNumberOfFields();
+				bool hasresult = false;
 				while(result = dao->getNextRow()) {
+					hasresult = true;
 					for (int i=0;i<numOffields;++i) {
 						if (result[i] != NULL) {
 							std::cout<<result[i];
@@ -229,6 +223,12 @@ void testDBCustomQuery() {
 						}
 					}
 					std::cout<<std::endl;
+				}
+				if (hasresult) {
+					std::cout<<"Encontró alguna fila que cumple con la condición"<<std::endl;
+				}
+				else {
+					std::cout<<"No encontró ninguna fila que cumple con la condición"<<std::endl;
 				}
 			}
 			else {
@@ -292,8 +292,7 @@ void testOverLoadFunction() {
 }
 
 void testDB() {
-	initDefaultDebug();
-	testDB1();
+	testDBCustomQuery();
 }
 
 void testMatrix() {
@@ -346,14 +345,12 @@ void testProblemInstance() {
 }
 
 void testProblemInstanceFromFiles(std::string directory) {
-	initDefaultDebug();
 	std::cout << "Test ProblemInstanceFromFiles" << std::endl;
 	TestingProblemInstanceFromFiles testProblemFiles(directory);
 	testProblemFiles.showTheProblem();
 }
 
 void testMetisWrapper() {
-	initDefaultDebug();
 	TestingMetisWrapper metis;
 	MatrixConcrete graph = giveMeSymetricMatrix3x3With0InDiagonal();
 	metis.testCluster(graph, 2);
@@ -368,7 +365,6 @@ void testClustering() {
 }
 
 void testClusterAndPickSolver ( std::string directory) {
-	initDefaultDebug();
 	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
 	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
 	anotherClusterPickSolver.testingSolve(4);

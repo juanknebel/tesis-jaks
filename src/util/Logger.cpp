@@ -134,8 +134,7 @@ void Logger::print(const unsigned int verbosityLevel,
 					const std::string& message)
 {
 	if (!configured_) {
-			std::cerr << "ERROR: Logger not configured!" << 
-				std::endl;
+			//std::cerr << "ERROR: Logger not configured!" << std::endl;
 			return;
 	}
 	struct timeval currentTime;

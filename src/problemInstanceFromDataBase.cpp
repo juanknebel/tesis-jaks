@@ -134,7 +134,8 @@ Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
 	String theId1 = convertToString(id1), theId2 = convertToString(id2);
 	const char *values [] = {theId1.c_str(), theId2.c_str()};
 	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCompat_, this->compatField_,fields, values, 2)) {
-		compat = atof(this->dao_->getNextRow()[0]);
+		const char** result = this->dao_->getNextRow();
+		compat = (result != NULL) ? atof(result[0]) : 0.00;
 	}
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());

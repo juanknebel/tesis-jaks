@@ -7,7 +7,7 @@ USE_DATA_FROM_DB	1
 DB_SERVER	localhost
 DB_USER	tesis
 DB_PASSWORD	tesis
-DB_DATABASE	test
+DB_DATABASE	tesis
 TABLE_COSTS	ARTICLES
 TABLE_COMPAT	SIMILARITY
 TABLE_COVER	ARTICLES
@@ -83,9 +83,6 @@ RANKING_STRATEGY	1
 WITH_SPECIFIC_ITEM	0
 #El elemento especifico
 SPECIFIC_ITEM	7
-
-#Inicilizar el log: 1 para si, 0 para no
-LOG	1
 
 #Escribir datos a archivo de salida: 1 para si, 0 para no
 WRITE_FILE	1

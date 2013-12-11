@@ -77,7 +77,7 @@ int createDistributionKeyMap(Dao *dao) {
 		while (result = dao->getNextRow()) {
 			(*distributonOrder)[String(result[0])] = order;
 			++order;
-			std::cout << String(result[0]) << std::endl;
+			//std::cout << String(result[0]) << std::endl;
 		}
 	}
 
@@ -89,7 +89,7 @@ int indexOf(String key) {
 }
 
 void insertSimilarity() {
-	Dao *dao = new DaoMySql("test", db_user, db_password, db_server);
+	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
 	bool connect = dao->connect();
 	if (!connect) {
 		std::cerr << "Error al conectarse a la base de datos" << std::endl;
@@ -127,15 +127,17 @@ ORDER BY ArticleId");
 				continue;
 			}
 			float angle = angleBetweenVectors(it->second, it2->second);
-			std::stringstream query;
-			int item = getMappedId(dao, it->first);
-			int item2 = getMappedId(dao, it2->first);
-			query << "INSERT INTO SIMILARITY (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
-			if (!dao->executeCustomModifiableQuery(query.str())) {
-				std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
-				std::cerr<<dao->getError()<<std::endl;
+			if (angle > 0.0001) {
+				std::stringstream query;
+				int item = getMappedId(dao, it->first);
+				int item2 = getMappedId(dao, it2->first);
+				query << "INSERT INTO SIMILARITY (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
+				if (!dao->executeCustomModifiableQuery(query.str())) {
+					std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
+					std::cerr<<dao->getError()<<std::endl;
+				}
+				//std::cout << item << " " << item2 << " " << angle << std::endl;
 			}
-			std::cout << item << " " << item2 << " " << angle << std::endl;
 		}
 	}
 }
