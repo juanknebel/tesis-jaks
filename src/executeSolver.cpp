@@ -56,7 +56,7 @@ Id2Str* instanceTheNodeName(ConfigurationJaks& configFile) {
 
 void showSolution(SnowFlakeVector& solution, ConfigurationJaks& configFile, const Id2Str* theNodeName) {
 	if(atoi(configFile["print_to_screen"].c_str())) {
-		cout<<SnowFlake::showSolution(solution,theNodeName)<<endl;
+		std::cout<<SnowFlake::showSolution(solution,theNodeName)<<endl;
 	}
 }
 
