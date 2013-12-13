@@ -8,6 +8,7 @@
 #include "solver.h"
 #include "../util/Logger.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 

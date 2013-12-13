@@ -97,7 +97,7 @@ Double SnowFlake::getSumIntraCompat() const {
 	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
 		for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
 			if (*it<*it2) {
-					sum += this->problem_->getCompat(*it, *it2);
+				sum += this->problem_->getCompat(*it, *it2);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVecto
 	std::sort(snowFlakesVector.begin(), snowFlakesVector.end());
 }
 
-IntSet& SnowFlake::ids() {
+IntSet& SnowFlake::ids() const {
 	return *(this->elements_);
 }
 
@@ -136,7 +136,7 @@ String SnowFlake::showSolution(std::vector<SnowFlake>& solution,const Id2Str* no
 	return result;
 }
 
-void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName) {
+void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight) {
 	FileOutput file(fileName.c_str());
 	for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
 		for (IntSet::iterator it = itSF->elements_->begin(); it != itSF->elements_->end(); ++it) {
@@ -144,5 +144,20 @@ void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fil
 		}
 		file << "\n";
 	}
+	file << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
 	file.close();
+}
+
+Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
+	Double sumIntraCompat = 0.00;
+	Double sumOneMinusInter = 0.00;
+	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
+		sumIntraCompat += it->getSumIntraCompat();
+	}
+	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
+		for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
+			sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
+		}
+	}
+	return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
 }

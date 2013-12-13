@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <iostream>
 
-std::map<String, int> *distributonOrder;
+std::map<String, int> *distributionOrder;
 
 int getMappedId(Dao *dao, int id) {
 	int theId = -1;
@@ -73,9 +73,9 @@ int createDistributionKeyMap(Dao *dao) {
 	int order = 0;
 	if (hasresult) {
 		const char **result;
-		distributonOrder = new std::map<String, int>;
+		distributionOrder = new std::map<String, int>;
 		while (result = dao->getNextRow()) {
-			(*distributonOrder)[String(result[0])] = order;
+			(*distributionOrder)[String(result[0])] = order;
 			++order;
 			//std::cout << String(result[0]) << std::endl;
 		}
@@ -85,11 +85,11 @@ int createDistributionKeyMap(Dao *dao) {
 }
 
 int indexOf(String key) {
-	return (*distributonOrder)[key];
+	return (*distributionOrder)[key];
 }
 
 void insertSimilarity() {
-	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
+	Dao *dao = new DaoMySql("test", db_user, db_password, db_server);
 	bool connect = dao->connect();
 	if (!connect) {
 		std::cerr << "Error al conectarse a la base de datos" << std::endl;

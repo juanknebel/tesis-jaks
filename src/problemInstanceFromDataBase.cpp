@@ -61,6 +61,7 @@ ProblemInstanceFromDataBase::ProblemInstanceFromDataBase(Dao *dao, String tableC
 }
 
 ProblemInstanceFromDataBase::~ProblemInstanceFromDataBase() {
+	delete this->dao_;
 }
 
 IntSet& ProblemInstanceFromDataBase::getIds() {
@@ -104,54 +105,56 @@ Double ProblemInstanceFromDataBase::getCost(int id) {
 }
 
 const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
-	IntSet *cover = new IntSet;
-	const char *fields [] =  {this->primaryField_.c_str()};
-	String primaryId = convertToString(this->getPrimaryId(id));
-	const char *values [] = {primaryId.c_str()};
-	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->coverField_,fields, values, 1)) {
-		const char** result;
+	if (this->nodeCover_->count(id) == 0) {
+		const char *fields [] =  {this->primaryField_.c_str()};
+		String primaryId = convertToString(this->getPrimaryId(id));
+		const char *values [] = {primaryId.c_str()};
+		if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->coverField_,fields, values, 1)) {
+			const char** result;
+			IntSet *aSet = new IntSet();
 			while(result = this->dao_->getNextRow()) {
-				cover->insert(atoi(result[0]));
+				aSet->insert(atoi(result[0]));
 			}
+			(*(*this).nodeCover_)[id] = aSet;
+		}
+		else {
+			throw Exception(__FILE__, __LINE__, this->dao_->getError());
+		}
 	}
-	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
-	}
-	return cover;
+	return this->nodeCover_->at(id);
 }
 
-Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
-	Double compat = -1.0;
-	int temp;
-	if (id1 > id2) {
-		std::swap(id1, id2);
-	}
-	if (id1 == id2) {
-		return 0;
-		//throw Exception(__FILE__, __LINE__, "The ids can not be equal");
-	}
-	const char *fields [] =  {this->itemCompat1_.c_str(), this->itemCompat2_.c_str()};
-	String theId1 = convertToString(id1), theId2 = convertToString(id2);
-	const char *values [] = {theId1.c_str(), theId2.c_str()};
-	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCompat_, this->compatField_,fields, values, 2)) {
-		const char** result = this->dao_->getNextRow();
-		compat = (result != NULL) ? atof(result[0]) : 0.00;
-	}
-	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
-	}
+/*Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
+	VectorToAngleSimilarity* similarity = VectorToAngleSimilarity::getInstance();
+	Double compat = similarity->getAngleBetweenVectors(this->dao_, id1, id2);
 	return compat;
+}*/
+
+Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
+        Double compat = -1.0;
+        int temp;
+        if (id1 > id2) {
+                std::swap(id1, id2);
+        }
+        if (id1 == id2) {
+                return 0;
+                //throw Exception(__FILE__, __LINE__, "The ids can not be equal");
+        }
+        const char *fields [] =  {this->itemCompat1_.c_str(), this->itemCompat2_.c_str()};
+        String theId1 = convertToString(id1), theId2 = convertToString(id2);
+        const char *values [] = {theId1.c_str(), theId2.c_str()};
+        if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCompat_, this->compatField_,fields, values, 2)) {
+                const char** result = this->dao_->getNextRow();
+                compat = (result != NULL) ? atof(result[0]) : 0.00;
+        }
+        else {
+                throw Exception(__FILE__, __LINE__, this->dao_->getError());
+        }
+        return compat;
 }
 
 SparseDoubleMatrix2D* ProblemInstanceFromDataBase::getCompat() {
-	int count = -1;
-	if (this->dao_->executeCountAllFrom(this->tableCompat_)) {
-		count = atoi(this->dao_->getNextRow()[0]);
-	}
-	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
-	}
-	throw Exception(__FILE__, __LINE__, "Imposible to retrieve so many registers: " + convertToString(count));
+	throw Exception(__FILE__, __LINE__, "Imposible to retrieve so many registers");
 	return 0;
 }
 
@@ -160,18 +163,5 @@ void ProblemInstanceFromDataBase::normalizeNodeCompat() {
 }
 
 String ProblemInstanceFromDataBase::getNode(int id) {
-	/*
-	String node;
-	const char *fields [] =  {this->primaryField_.c_str()};
-	String primaryId = convertToString(this->getPrimaryId(id));
-	const char *values [] = {primaryId.c_str()};
-	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->primaryDescription_,fields, values, 1)) {
-		node = this->dao_->getNextRow()[0];
-	}
-	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
-	}
-	return node;
-	*/
-	return convertToString(id);
+	return convertToString(this->getPrimaryId(id));
 }
