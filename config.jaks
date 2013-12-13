@@ -7,7 +7,7 @@ USE_DATA_FROM_DB	1
 DB_SERVER	localhost
 DB_USER	tesis
 DB_PASSWORD	tesis
-DB_DATABASE	tesis
+DB_DATABASE	test
 TABLE_COSTS	ARTICLES
 TABLE_COMPAT	SIMILARITY
 TABLE_COVER	ARTICLES
@@ -51,13 +51,16 @@ NAME_OUTPUT	output_data.csv
 #---------------------------------------------------------------------------------#
 
 #Cantidad de SnowFlakes
-NUM_FLAKES	2
+NUM_FLAKES	10
 
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10
 
 #Valor del budget (o presupuesto)
-BUDGET	2
+BUDGET	5
+
+#Cantidad a producir antes de elegir
+TO_PRODUCE	10
 
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0
@@ -68,10 +71,10 @@ BUDGET	2
 #ExhaustiveGreedyAnySimSolver = 5
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
-SOLVER	3
+SOLVER	6
 
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
-INTER_SIMILARITY_WEIGHT	0.32
+INTER_SIMILARITY_WEIGHT	0.1
 
 #Estrategia del solver, las opciones son
 #RANK_BY_INTRA = 0

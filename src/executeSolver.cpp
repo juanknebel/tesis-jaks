@@ -65,11 +65,20 @@ void showSolution(SnowFlakeVector& solution, ConfigurationJaks& configFile, cons
 	}
 }
 
-void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile, Double interSimilarityWeight) {
+/*void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile, Double interSimilarityWeight) {
 	if(atoi(configFile["write_file"].c_str())) {
 		String outputFileName = configFile["directory_work"] + configFile["name_output"];
 		std::cout<<"Writing the solution into the file: "<<outputFileName<<std::endl;
+		fileName<<checkAndReturnStrategy(configFile)<<
 		SnowFlake::writeSolution(solution, outputFileName, interSimilarityWeight);
+	}
+}*/
+
+void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile, Double interSimilarityWeight) {
+	if(atoi(configFile["write_file"].c_str())) {
+		std::stringstream fileName;		fileName<<configFile["directory_work"]<<configFile["solver"]<<"_"<<configFile["to_produce"]<<"_"<<configFile["inter_similarity_weight"];
+		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
+		SnowFlake::writeSolution(solution, fileName.str(), interSimilarityWeight);
 	}
 }
 
@@ -90,6 +99,7 @@ void execute(ConfigurationJaks& configFile) {
 	int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
 	Solver* theSolver = 0;
 	Double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
+	Double multiplier = atof(configFile["to_produce"].c_str());
 	switch(solverId) {
 		case ClusterAndPick:
 			std::cout<<"Running ClusterAndPickSolver ..."<<std::endl;
@@ -105,6 +115,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<RestrictedHACSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<RestrictedHACSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<RestrictedHACSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		case RestrictedHACSpecific:
@@ -113,6 +124,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		case RandomBOBO:
@@ -121,6 +133,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<RandomBOBOSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<RandomBOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<RandomBOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		case RandomSOBO:
@@ -129,6 +142,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<RandomSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<RandomSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<RandomSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		case ExAnySimSOBO:
@@ -137,6 +151,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		case ExSumSimSOBO:
@@ -145,6 +160,7 @@ void execute(ConfigurationJaks& configFile) {
 			if (strategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
 				dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setRankingStrategy(strategy);
 				dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+				dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
 			}
 			break;
 		default:
