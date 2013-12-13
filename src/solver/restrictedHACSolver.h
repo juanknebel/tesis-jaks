@@ -19,7 +19,7 @@ public:
 
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
-	bool tryMerge(Int2ObjectOpenHashMap& clustering);
+	bool tryMerge(Int2ObjectOpenHashMap* clustering);
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

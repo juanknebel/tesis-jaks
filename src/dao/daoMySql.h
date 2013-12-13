@@ -48,7 +48,7 @@ public:
 	bool executeCountAllFrom(String tableName);
 	bool executeSelectAllFrom(String tableName);
 	bool executeSelectAllFromProject(String tableName, String fieldToProjet);
-	bool executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet,const char *fields[], const char *values[], int count);
+	bool executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet, const char *fields[], const char *values[], int count);
 	bool executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count);
 	
 };

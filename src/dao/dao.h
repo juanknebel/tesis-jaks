@@ -58,7 +58,7 @@ public:
 	virtual bool executeCountAllFrom(String tableName) = 0;
 	virtual bool executeSelectAllFrom(String tableName) = 0;
 	virtual bool executeSelectAllFromProject(String tableName, String fieldToProjet) = 0;
-	virtual bool executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet,const char *fields[], const char *values[], int count) = 0;
+	virtual bool executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet, const char *fields[],  const char *values[], int count) = 0;
 	virtual bool executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count) = 0;
 };
 

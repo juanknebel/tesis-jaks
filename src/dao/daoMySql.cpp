@@ -143,7 +143,7 @@ bool DaoMySql::executeSelectAllFromProject(String tableName, String fieldToProje
 	return this->executeSelectProjectFromWithAndConditions(tableName, fieldToProjet, 0, 0, 0);
 }
 
-bool DaoMySql::executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet,const char *fields[], const char *values[], int count) {
+bool DaoMySql::executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet, const char *fields[], const char *values[], int count) {
 	String query = "SELECT " + fieldToProjet + " FROM " + tableName;
 	
 	if (count > 0) {

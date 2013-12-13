@@ -36,14 +36,23 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->item_ = item;//item
 	this->itemCompat1_ = itemCompat1;//item
 	this->itemCompat2_ = itemCompat2;//item2
+	this->getIds();
+	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
+	std::stringstream query;
+	query<<"select * from "<<this->tableCompat_;
+        if (this->dao_->executeCustomConsultativeQuery(query.str())) {
+                const char** result;
+		while(result = this->dao_->getNextRow()) {
+			this->nodeCompat_->set(atoi(result[0]), atoi(result[1]), atof(result[2]));
+		}
+        }
 }
 
 int ProblemInstanceFromDataBase::getPrimaryId(int id) {
 	int theId = -1;
-	const char *fields [] =  {this->item_.c_str()};
-	String primaryId = convertToString(id);
-	const char *values [] = {primaryId.c_str()};
-	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableConvertElementItem_, primaryField_, fields, values, 1)) {
+	std::stringstream query;
+	query<<"select "<<this->primaryField_<<" from "<<this->tableConvertElementItem_<<" where "<<this->item_<<" = "<<id;
+	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		theId = atoi(this->dao_->getNextRow()[0]);
 	}
 	else {
@@ -80,36 +89,31 @@ IntSet& ProblemInstanceFromDataBase::getIds() {
 }
 
 int ProblemInstanceFromDataBase::numNodes() {
-	int count = -1;
-	if (this->dao_->executeCountAllFrom(this->tableCosts_)) {
-		count = atoi(this->dao_->getNextRow()[0]);
-	}
-	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
-	}
-	return count;
+	return this->ids_->size();
 }
 
 Double ProblemInstanceFromDataBase::getCost(int id) {
-	Double cost = -1.0;
-	const char *fields [] =  {this->primaryField_.c_str()};
-	String primaryId = convertToString(this->getPrimaryId(id));
-	const char *values [] = {primaryId.c_str()};
-	if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->costField_,fields, values, 1)) {
+	return 1.0;
+	/*Double cost = -1.0;
+	int primaryId = this->getPrimaryId(id);
+	std::stringstream query;
+	query<<"select "<<this->costField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
+	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		cost = atof(this->dao_->getNextRow()[0]);
 	}
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
 	}
-	return cost;
+	
+	return cost;*/
 }
 
 const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 	if (this->nodeCover_->count(id) == 0) {
-		const char *fields [] =  {this->primaryField_.c_str()};
-		String primaryId = convertToString(this->getPrimaryId(id));
-		const char *values [] = {primaryId.c_str()};
-		if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCosts_, this->coverField_,fields, values, 1)) {
+		int primaryId = this->getPrimaryId(id);
+		std::stringstream query;
+		query<<"select "<<this->coverField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
+		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 			const char** result;
 			IntSet *aSet = new IntSet();
 			while(result = this->dao_->getNextRow()) {
@@ -121,6 +125,7 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 			throw Exception(__FILE__, __LINE__, this->dao_->getError());
 		}
 	}
+
 	return this->nodeCover_->at(id);
 }
 
@@ -130,7 +135,7 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 	return compat;
 }*/
 
-Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
+/*Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
         Double compat = -1.0;
         int temp;
         if (id1 > id2) {
@@ -140,10 +145,9 @@ Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
                 return 0;
                 //throw Exception(__FILE__, __LINE__, "The ids can not be equal");
         }
-        const char *fields [] =  {this->itemCompat1_.c_str(), this->itemCompat2_.c_str()};
-        String theId1 = convertToString(id1), theId2 = convertToString(id2);
-        const char *values [] = {theId1.c_str(), theId2.c_str()};
-        if (this->dao_->executeSelectProjectFromWithAndConditions(this->tableCompat_, this->compatField_,fields, values, 2)) {
+	std::stringstream query;
+	query<<"select "<<this->compatField_<<" from "<<this->tableCompat_<<" where "<<this->itemCompat1_<<" = "<<id1 << " and " << itemCompat2_<< " = "<<id2;
+        if (this->dao_->executeCustomConsultativeQuery(query.str())) {
                 const char** result = this->dao_->getNextRow();
                 compat = (result != NULL) ? atof(result[0]) : 0.00;
         }
@@ -151,7 +155,18 @@ Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
                 throw Exception(__FILE__, __LINE__, this->dao_->getError());
         }
         return compat;
+}*/
+
+Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
+	if (id1 > id2) {
+                std::swap(id1, id2);
+        }
+        if (id1 == id2) {
+                return 0;
+        }
+	return ProblemInstance::getCompat(id1, id2);
 }
+
 
 SparseDoubleMatrix2D* ProblemInstanceFromDataBase::getCompat() {
 	throw Exception(__FILE__, __LINE__, "Imposible to retrieve so many registers");

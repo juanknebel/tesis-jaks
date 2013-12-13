@@ -26,8 +26,7 @@ bool Solver::checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake,
 
 bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1,
 		const IntSet& snowflake2) {
-	return checkBudgetConstraint(snowflake1, snowflake2)
-			&& checkCoverageConstraint(snowflake1, snowflake2);
+	return checkBudgetConstraint(snowflake1, snowflake2) && checkCoverageConstraint(snowflake1, snowflake2);
 }
 
 bool Solver::checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode){
