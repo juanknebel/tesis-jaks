@@ -21,6 +21,7 @@
 #ifndef DAOMYSQL_H
 #define DAOMYSQL_H
 #include "dao.h"
+#include <mysql/mysql.h>
 
 class DaoMySql : public Dao {
 private:
@@ -44,13 +45,6 @@ public:
 	bool executeCustomConsultativeQuery(String query);
 	bool executeCustomModifiableQuery(String query);
 	const char** getNextRow();
-	
-	bool executeCountAllFrom(String tableName);
-	bool executeSelectAllFrom(String tableName);
-	bool executeSelectAllFromProject(String tableName, String fieldToProjet);
-	bool executeSelectProjectFromWithAndConditions(String tableName, String fieldToProjet, const char *fields[], const char *values[], int count);
-	bool executeInsertQueryWithValues(String tableName, const char *fields[], const char *values[], int count);
-	
 };
 
 #endif // DAOMYSQL_H

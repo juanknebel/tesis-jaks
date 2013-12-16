@@ -75,7 +75,9 @@ ProblemInstanceFromDataBase::~ProblemInstanceFromDataBase() {
 
 IntSet& ProblemInstanceFromDataBase::getIds() {
 	if (this->ids_->empty()) {
-		if (this->dao_->executeSelectAllFromProject(this->tableConvertElementItem_, this->item_)) {
+	  std::stringstream query;
+	query<<"select "<<this->item_<<" from "<<this->tableConvertElementItem_;
+		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 			const char** result;
 			while(result = this->dao_->getNextRow()) {
 				this->ids_->insert(atoi(result[0]));

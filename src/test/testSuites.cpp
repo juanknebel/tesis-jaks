@@ -145,7 +145,7 @@ void configureFile(char* fileName) {
 
 void testDBGeneric(Dao& dao, String tableName) {
 	if (dao.isConnected()) {
-		bool hasresult = dao.executeSelectAllFrom(tableName);
+		bool hasresult = dao.executeCustomConsultativeQuery("select * from " + tableName);
 		if (hasresult) {
 			const char** result;
 			int numOffields = dao.getNumberOfFields();
@@ -183,7 +183,7 @@ void testDB1() {
 		std::cerr<<dao->getError()<<std::endl;
 	}
 	else {
-		if (dao->executeCountAllFrom("ARTICLES")) {
+		if (dao->executeCustomConsultativeQuery("select count(*) from ARTICLES")) {
 			int count = atoi(dao->getNextRow()[0]);
 			std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
 		}
@@ -272,9 +272,7 @@ void testDBInsertPartial() {
 	else {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
-			const char *fields [] =  {"id", "descripcion", "valor"};
-			const char *values [] = {"6", "\'prueba seis\'", "333"};
-			bool isOk = dao->executeInsertQueryWithValues("tablaPrueba", fields, values, 3);
+			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba set id=6, descripcion=\'prueba tesis\',valor=3");
 			if (!isOk) {
 				std::cerr<<dao->getError()<<std::endl;
 			}

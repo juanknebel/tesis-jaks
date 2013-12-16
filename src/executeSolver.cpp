@@ -256,9 +256,11 @@ void execute(ConfigurationJaks& configFile) {
 	}
 	catch (Exception& e) {
 		std::cerr<<e.what()<<std::endl;
+		exit(0);
 	}
 	catch ( ... ) {
 		std::cerr<<"Unexpected error"<<std::endl;
+		exit(0);
 	}
 	showSolution(*solution);
 	writeSolution(*solution);
