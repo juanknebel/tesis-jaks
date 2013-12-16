@@ -118,67 +118,6 @@ void ProblemInstance::createIdNodeMappings(StrVector nodes) {
 	}
 }
 
-String ProblemInstance::showMe() {
-	String result;
-	result = this->showBudget();
-	result.append(this->showCosts());
-	result.append(this->showCompat());
-	result.append(this->showCover());
-	return result;
-}
-
-String ProblemInstance::showBudget() {
-	String result;
-	result = "----------------------El presupuesto---------------------------------\n";
-	result.append(convertToString(this->budget_) + "\n");
-	result.append("---------------------------------------------------------------------\n");
-	return result;
-}
-
-String ProblemInstance::showCosts() {
-	String result;
-	result = "-----------------------Nodo, Costo-----------------------------------\n";
-	for(Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
-		result.append(this->getNode(it->first) + ", " + convertToString(it->second) + "\n");
-	}
-	result.append("---------------------------------------------------------------------\n");
-	return result;
-}
-
-String ProblemInstance::showCompat() {
-	String result;
-	result = "-------------------Nodo1, Nodo2, Compatibilidad----------------------\n";
-	for(int r = 0; r < this->nodeCompat_->getRows(); ++r) {
-		for(int c = 0; c < this->nodeCompat_->getCols(); ++c) {
-			result.append(this->getNode(r) + "," + this->getNode(c) + ", " + convertToString(this->getCompat(r, c)) + "\n");
-		}
-	}
-	result.append("---------------------------------------------------------------------\n");
-	return result;
-}
-
-String ProblemInstance::showCover() {
-	String result;
-	result = "---------------------Node, {Cubrimiento}:----------------------------\n";
-	bool withComma;
-	for (Int2ObjectOpenHashMap::iterator it=this->nodeCover_->begin();it!=this->nodeCover_->end();++it) {
-		result.append(this->getNode(it->first)+", {");
-		withComma = false;
-		for(IntSet::iterator it1=it->second->begin();it1!=it->second->end();++it1) {
-			if (!withComma) {
-				result.append(this->getNode(*it1));
-				withComma = true;
-			}
-			else {
-				result.append("," + this->getNode(*it1));
-			}
-		}
-		result.append("}\n");
-	}
-	result.append("---------------------------------------------------------------------\n");
-	return result;
-}
-
 void ProblemInstance::setSpecificItem(int specificItem){
 	this->specificItem_ = specificItem;
 }

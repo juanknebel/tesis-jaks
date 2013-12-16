@@ -35,7 +35,3 @@ void TestingProblemInstanceFromFiles::init(String directory) {
 	this->fileTypeName_ = this->directory_ + "type_name.csv";
 	this->theProblem_ = 0;
 }
-
-void TestingProblemInstanceFromFiles::showTheProblem() {
-	this->theProblem_->showMe();
-}

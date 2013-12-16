@@ -347,7 +347,6 @@ void testProblemInstance() {
 void testProblemInstanceFromFiles(std::string directory) {
 	std::cout << "Test ProblemInstanceFromFiles" << std::endl;
 	TestingProblemInstanceFromFiles testProblemFiles(directory);
-	testProblemFiles.showTheProblem();
 }
 
 void testMetisWrapper() {

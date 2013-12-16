@@ -136,11 +136,12 @@ String SnowFlake::showSolution(std::vector<SnowFlake>& solution,const Id2Str* no
 	return result;
 }
 
-void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight) {
+void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) {
 	FileOutput file(fileName.c_str());
 	for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
 		for (IntSet::iterator it = itSF->elements_->begin(); it != itSF->elements_->end(); ++it) {
-			file << itSF->problem_->getNode(*it) << "\t";
+			String node = itSF->problem_->getNode(*it);
+			file << (node2name == NULL ? node : node2name->getNodebyName(node)) << "\t";
 		}
 		file << "\n";
 	}

@@ -19,72 +19,158 @@
 #include <iostream>
 using namespace std;
 
-ProblemInstance* instanceTheProblemForDB(ConfigurationJaks& configFile) {
-	Dao *dao = new DaoMySql(configFile["db_database"], configFile["db_user"], configFile["db_password"], configFile["db_server"]);
+Id2Str* theNodeName;
+std::string useDataFromDb;
+std::string database;
+std::string user;
+std::string password;
+std::string server;
+std::string tableOfCosts;
+std::string tableOfCompatibility;
+std::string tableOfCover;
+std::string tableOfMappingIds;
+std::string fieldForCost;
+std::string fieldForCompatibility;
+std::string fieldForCover;
+std::string fieldPrimary;
+std::string fieldPrimaryDescription;
+std::string fieldItem;
+std::string fieldItemCompat1;
+std::string fieldItemCompat2;
+std::string directoryOfWork;
+std::string fileOfCosts;
+std::string fileOfCompatibility;
+std::string fileOfCover;
+std::string nodeName;
+bool withSpecificItem;
+int specificItem;
+int solverId;
+double budget;
+int numberOfSnowFlakes;
+double interSimilarityWeight;
+double multiplier;
+int toProduce;
+double similarity;
+int strategy;
+bool printToScreen;
+bool writeToFile;
+
+void settingGlobalVariables(ConfigurationJaks& configFile) {
+	useDataFromDb = configFile["use_data_from_db"];
+	
+	database = configFile["db_database"];
+	user = configFile["db_user"];
+	password = configFile["db_password"];
+	server = configFile["db_server"];
+	
+	tableOfCosts = configFile["table_costs"];
+	tableOfCompatibility = configFile["table_compat"];
+	tableOfCover = configFile["table_cover"];
+	tableOfMappingIds = configFile["table_convertion_element_item"];
+	
+	fieldForCost = configFile["field_cost"];
+	fieldForCompatibility = configFile["field_compat"];
+	fieldForCover = configFile["field_cover"];
+	fieldPrimary = configFile["field_primary"];
+	fieldPrimaryDescription = configFile["field_primary_description"];
+	fieldItem = configFile["field_item"];
+	fieldItemCompat1 = configFile["field_item_compat1"];
+	fieldItemCompat2 = configFile["field_item_compat2"];
+	
+	directoryOfWork = configFile["directory_work"];
+	fileOfCosts = configFile["file_costs"];
+	fileOfCompatibility = configFile["file_compat"];
+	fileOfCover = configFile["file_cover"];
+	nodeName = configFile["file_node_name"];
+	
+	withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
+	specificItem = atoi(configFile["specific_item"].c_str());
+	solverId = atoi(configFile["solver"].c_str());
+	budget = atof(configFile["budget"].c_str());
+	numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
+	interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
+	multiplier = atof(configFile["to_produce"].c_str());
+	toProduce = multiplier * numberOfSnowFlakes;
+	similarity = atof(configFile["inter_similarity_weight"].c_str());
+	strategy = atoi(configFile["ranking_strategy"].c_str());
+	
+	printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
+	writeToFile = ((configFile["write_file"] == "1") ? true : false);
+}
+
+ProblemInstance* instanceTheProblemForDB() {
+	Dao *dao = new DaoMySql(database, user, password, server);
 	dao->connect();
 	std::cout<<dao->showConnection()<<std::endl;
-	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, configFile["table_costs"], configFile["table_compat"], configFile["table_cover"], configFile["table_convertion_element_item"], configFile["field_cost"], configFile["field_compat"], configFile["field_cover"], configFile["field_primary"], configFile["field_primary_description"], configFile["field_item"], configFile["field_item_compat1"], configFile["field_item_compat2"], atof(configFile["budget"].c_str()));
+	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds, fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary, fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
+	theNodeName = new Id2Str(dao, tableOfCosts, fieldPrimary, fieldPrimaryDescription);
 	return theProblem;
 }
 
-ProblemInstance* instanceTheProblemForFiles(ConfigurationJaks& configFile) {
-	std::string directory = configFile["directory_work"];
-	ProblemInstance* theProblem = new ProblemInstanceFromFiles(directory+configFile["file_costs"], directory+configFile["file_compat"], directory+configFile["file_cover"], atof(configFile["budget"].c_str()));
-	bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
-	int specificItem = atoi(configFile["specific_item"].c_str());
+ProblemInstance* instanceTheProblemForFiles() {
+	ProblemInstance* theProblem = new ProblemInstanceFromFiles(directoryOfWork+fileOfCosts, directoryOfWork+fileOfCompatibility, directoryOfWork+fileOfCover, budget);
 	if (withSpecificItem) {
 		theProblem->setSpecificItem(specificItem);
 	}
+	theNodeName = new Id2Str(directoryOfWork + nodeName);
 	return theProblem;
 }
 
-ProblemInstance* instanceTheProblem(ConfigurationJaks& configFile) {
+ProblemInstance* instanceTheProblem() {
 	ProblemInstance* theProblem = 0;
-	if (configFile["use_data_from_db"] == "1") {
-		theProblem = instanceTheProblemForDB(configFile);
+	if (useDataFromDb == "1") {
+		theProblem = instanceTheProblemForDB();
 	}
 	else {
-		theProblem = instanceTheProblemForFiles(configFile);
+		theProblem = instanceTheProblemForFiles();
 	}
 	return theProblem;
 }
 
-Id2Str* instanceTheNodeName(ConfigurationJaks& configFile) {
-	Id2Str* theNodeName = NULL;
-	if (configFile["use_data_from_db"] != "1") {
-		std::string directory = configFile["directory_work"];
-		theNodeName = new Id2Str(configFile["directory_work"] + configFile["file_node_name"]);
-	}
-	
-	return theNodeName;
-}
-
-void showSolution(SnowFlakeVector& solution, ConfigurationJaks& configFile, const Id2Str* theNodeName) {
-	if(atoi(configFile["print_to_screen"].c_str())) {
+void showSolution(SnowFlakeVector& solution) {
+	if(printToScreen) {
 		std::cout<<SnowFlake::showSolution(solution,theNodeName)<<endl;
 	}
 }
 
-/*void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile, Double interSimilarityWeight) {
-	if(atoi(configFile["write_file"].c_str())) {
-		String outputFileName = configFile["directory_work"] + configFile["name_output"];
-		std::cout<<"Writing the solution into the file: "<<outputFileName<<std::endl;
-		fileName<<checkAndReturnStrategy(configFile)<<
-		SnowFlake::writeSolution(solution, outputFileName, interSimilarityWeight);
-	}
-}*/
-
-void writeSolution(const SnowFlakeVector& solution, ConfigurationJaks& configFile, Double interSimilarityWeight) {
-	if(atoi(configFile["write_file"].c_str())) {
-		std::stringstream fileName;		fileName<<configFile["directory_work"]<<configFile["solver"]<<"_"<<configFile["to_produce"]<<"_"<<configFile["inter_similarity_weight"];
+void writeSolution(const SnowFlakeVector& solution) {
+	if(writeToFile) {
+		std::stringstream fileName;
+		fileName << directoryOfWork<<"Solver-";
+		Double gamma = 1.00 - interSimilarityWeight;
+		switch(solverId) {
+			case ClusterAndPick:
+				fileName<<"ClusterAndPick";
+				break;
+			case SeqScan:
+				fileName<<"SeqScan";
+				break;
+			case RestrictedHAC:
+				fileName<<"RestrictedHAC";
+				break;
+			case RestrictedHACSpecific:
+				fileName<<"RestrictedHACSpecific";
+				break;
+			case RandomBOBO:
+				fileName<<"RandomBOBO";
+				break;
+			case RandomSOBO:
+				fileName<<"RandomSOBO";
+				break;
+			case ExAnySimSOBO:
+				fileName<<"ExAnySimSOBO";
+				break;
+			case ExSumSimSOBO:
+				fileName<<"ExSumSimSOBO";
+				break;
+		}
+		fileName << "_ToProduce-"<<toProduce<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
-		SnowFlake::writeSolution(solution, fileName.str(), interSimilarityWeight);
+		SnowFlake::writeSolution(solution, fileName.str(), theNodeName, interSimilarityWeight);
 	}
 }
 
-ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks& configFile) {
-	Double similarity = atof(configFile["inter_similarity_weight"].c_str());
-	int strategy = atoi(configFile["ranking_strategy"].c_str());
+ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy() {
 	if (similarity != 0.00 && strategy == 0) {
 		throw Exception(__FILE__, __LINE__, "If INTER_SIMILARITY_WEIGHT similarity is used, the strategy should be #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)");
 	}
@@ -92,14 +178,10 @@ ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(ConfigurationJaks
 }
 
 void execute(ConfigurationJaks& configFile) {
-	int solverId = atoi(configFile["solver"].c_str());
-	ProblemInstance* theProblem = instanceTheProblem(configFile);
-	Id2Str* theNodeName = instanceTheNodeName(configFile);
-	ProduceAndChooseSolver::RankingStrategy strategy = checkAndReturnStrategy(configFile);
-	int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
+	settingGlobalVariables(configFile);
+	ProblemInstance* theProblem = instanceTheProblem();
+	ProduceAndChooseSolver::RankingStrategy strategy = checkAndReturnStrategy();
 	Solver* theSolver = 0;
-	Double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
-	Double multiplier = atof(configFile["to_produce"].c_str());
 	switch(solverId) {
 		case ClusterAndPick:
 			std::cout<<"Running ClusterAndPickSolver ..."<<std::endl;
@@ -178,9 +260,10 @@ void execute(ConfigurationJaks& configFile) {
 	catch ( ... ) {
 		std::cerr<<"Unexpected error"<<std::endl;
 	}
-	showSolution(*solution, configFile, theNodeName);
-	writeSolution(*solution, configFile, interSimilarityWeight);
+	showSolution(*solution);
+	writeSolution(*solution);
 	delete solution;
 	delete theProblem;
 	delete theSolver;
+	delete theNodeName;
 }

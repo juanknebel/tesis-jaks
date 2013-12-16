@@ -29,8 +29,28 @@
 const std::string useMode = "tesis-jaks -f <configuration_file_name> [-l]\t(to use a configuration file)\ntesis-jaks -t [-l]\t\t\t\t(for use with the internal test)\ntesis-jaks -s [-l]\t\t\t\t(to calculate the similarity)\ntesis-jaks -h\t\t\t\t\t(to see this help)\nThe Argument -l initialize the logger.\nArguments in [] are optional.";
 std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
 
-void usingTestHardcode(int argc, char *argv[]);
-void usingTestFiles(char *configFileName);
+void usingTestHardcode(int argc, char *argv[]) {
+	//testOverLoadFunction();
+	testDB();
+	//testMatrix();
+	//testProblemInstanceFromFiles("../files/");
+	//testMetisWrapper();
+	//testClustering();
+	//testClusterAndPickSolver("../files/");
+	//testConfiguration(argc, argv);
+}
+
+void usingTestFiles(char *configFileName) {
+	if (configFileName == NULL) {
+		//Si no pasa ningun archivo como parametro, termina la ejecucion del programa
+		std::cerr<<"Invalid file name"<<std::endl;
+		exit(0);
+	}
+	else {
+		ConfigurationJaks configFile = ConfigurationJaks(configFileName);
+		execute(configFile);
+	}
+}
 
 void initializeLogger(std::string filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel) {
 	DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
@@ -93,27 +113,4 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	return 0;
-}
-
-void usingTestHardcode(int argc, char *argv[]) {
-	//testOverLoadFunction();
-	testDB();
-	//testMatrix();
-	//testProblemInstanceFromFiles("../files/");
-	//testMetisWrapper();
-	//testClustering();
-	//testClusterAndPickSolver("../files/");
-	//testConfiguration(argc, argv);
-}
-
-void usingTestFiles(char *configFileName) {
-	if (configFileName == NULL) {
-		//Si no pasa ningun archivo como parametro, termina la ejecucion del programa
-		std::cerr<<"Invalid file name"<<std::endl;
-		exit(0);
-	}
-	else {
-		ConfigurationJaks configFile = ConfigurationJaks(configFileName);
-		execute(configFile);
-	}
 }

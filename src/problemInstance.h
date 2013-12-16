@@ -44,11 +44,6 @@ protected:
 	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
 	 */
 	IntSet *ids_;
-	String showBudget();
-	String showCosts();
-	String showCompat();
-	String showCover();
-
 public:
 	ProblemInstance();
 	ProblemInstance(Double budget);
@@ -67,7 +62,6 @@ public:
 	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
 	void createIdNodeMappings(StrVector nodes);
-	String showMe();
 
 	void setSpecificItem(int specificItem);
 	int getSpecificItem();

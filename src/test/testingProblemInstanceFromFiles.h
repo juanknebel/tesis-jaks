@@ -25,8 +25,6 @@ public:
 	TestingProblemInstanceFromFiles(String directory="/home/$USER/");
 	TestingProblemInstanceFromFiles(const TestingProblemInstanceFromFiles& );
 	~TestingProblemInstanceFromFiles();
-
-	void showTheProblem();
 };
 
 #endif /* TESTINGPROBLEMINSTANCEFROMFILES_H_ */

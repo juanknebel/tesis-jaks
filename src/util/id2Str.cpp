@@ -10,6 +10,7 @@
 
 Id2Str::Id2Str() {
 	this->node2name_ = 0;
+	this->dao_ = 0;
 }
 
 Id2Str::Id2Str(String fileName) {
@@ -23,6 +24,18 @@ Id2Str::Id2Str(String fileName) {
 		(*(this->node2name_))[tokens[0]] = tokens[1]; 
 	}
 	file.close();
+}
+
+Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
+	this->node2name_ = new Object2ObjectOpenHashMap;
+	std::stringstream query;
+	query << "SELECT " << node << "," << fieldToProyect << " FROM " << tableName;
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		const char **result;
+		while (result = dao->getNextRow()) {
+			(*(this->node2name_))[result[0]] = result[1];
+		}
+	}
 }
 
 Id2Str::~Id2Str() {
