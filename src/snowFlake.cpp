@@ -138,14 +138,21 @@ String SnowFlake::showSolution(std::vector<SnowFlake>& solution,const Id2Str* no
 
 void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) {
 	FileOutput file(fileName.c_str());
+	int sizeOfSolution = (solution.at(0)).elements_->size();
+	for (int i=0; i < sizeOfSolution; ++i) {
+		file << "\tElement " << i + 1;
+	}
+	file << "\n";
+	int bundle = 0;
 	for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
+		file << "Bundle " << ++bundle << "\t";
 		for (IntSet::iterator it = itSF->elements_->begin(); it != itSF->elements_->end(); ++it) {
 			String node = itSF->problem_->getNode(*it);
 			file << (node2name == NULL ? node : node2name->getNodebyName(node)) << "\t";
 		}
 		file << "\n";
 	}
-	file << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
+	file << "Objetive function \t" << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
 	file.close();
 }
 
