@@ -29,11 +29,24 @@ Id2Str::Id2Str(String fileName) {
 Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 	this->node2name_ = new Object2ObjectOpenHashMap;
 	std::stringstream query;
-	query << "SELECT " << node << "," << fieldToProyect << " FROM " << tableName;
+	query<<	"select \
+		a.ArticleId as ArticleId \
+		,a.title as Title \
+		,b.name as VenueName \
+		,c.name as Author \
+		from ARTICLES a, VENUES b, AUTHORS c, Article_Author d \
+		where a.venue_VenueId=b.VenueId and a.ArticleId=d.ARTICLES_ArticleId and \
+		d.authors_AuthorId=c.AuthorId";
 	if (dao->executeCustomConsultativeQuery(query.str())) {
 		const char **result;
 		while (result = dao->getNextRow()) {
-			(*(this->node2name_))[result[0]] = result[1];
+			Object2ObjectOpenHashMap::iterator it = (*(this->node2name_)).find(result[0]);
+			if (it == this->node2name_->end()) {
+				(*(this->node2name_))[result[0]] = String(result[1]) + " Venue: " + String(result[2]) + " Authors: "  + String(result[3]);
+			}
+			else {
+				it->second.append(", " + String(result[3]));
+			}
 		}
 	}
 }
