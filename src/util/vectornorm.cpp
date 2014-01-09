@@ -21,6 +21,7 @@
 #include "vectornorm.h"
 #include "../dao/daoMySql.h"
 #include "../util/dbConnection.h"
+#include "../util/stringUtilities.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -31,7 +32,9 @@ int getMappedId(Dao *dao, int id) {
 	std::stringstream query;
 	query << "SELECT Item FROM ARTICLE_ITEM WHERE ArticleId = " <<id;
 	if (dao->executeCustomConsultativeQuery(query.str())) {
-		theId = atoi(dao->getNextRow()[0]);
+		if (dao->fetch()) {
+			theId = convertToInt(dao->getField(1));
+		}
 	}
 	else {
 		//throw Exception(__FILE__, __LINE__, this->dao_->getError());
@@ -72,12 +75,10 @@ int createDistributionKeyMap(Dao *dao) {
 	        "select distinct distribution_KEY from TopicProfile_distribution order by distribution_KEY asc");
 	int order = 0;
 	if (hasresult) {
-		const char **result;
 		distributionOrder = new std::map<String, int>;
-		while (result = dao->getNextRow()) {
-			(*distributionOrder)[String(result[0])] = order;
+		while (dao->fetch()) {
+			(*distributionOrder)[dao->getField(1)] = order;
 			++order;
-			//std::cout << String(result[0]) << std::endl;
 		}
 	}
 
@@ -89,7 +90,7 @@ int indexOf(String key) {
 }
 
 void insertSimilarity() {
-	Dao *dao = new DaoMySql("test", db_user, db_password, db_server);
+	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
 	bool connect = dao->connect();
 	if (!connect) {
 		std::cerr << "Error al conectarse a la base de datos" << std::endl;
@@ -108,16 +109,15 @@ WHERE a.topicProfile_identifier = t.topicProfile_identifier \
 ORDER BY ArticleId");
 
 	if (hasresult) {
-		const char **result;
 		int lastItemId = 0;
-		while (result = dao->getNextRow()) {
-			int itemId = atoi(result[0]);
+		while (dao->fetch()) {
+			int itemId = convertToInt(dao->getField(1));
 			if (lastItemId != itemId) {
 				lastItemId = itemId;
 				topicProfile[itemId] = new std::vector<float>(len, 0);
 			}
-			int indexKey = indexOf(String(result[2]));
-			(*topicProfile[itemId])[indexKey] = atof(result[1]);
+			int indexKey = indexOf(dao->getField(3));
+			(*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
 		}
 	}
 
@@ -136,8 +136,10 @@ ORDER BY ArticleId");
 					std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
 					std::cerr<<dao->getError()<<std::endl;
 				}
-				//std::cout << item << " " << item2 << " " << angle << std::endl;
 			}
 		}
+	}
+	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
+		delete it->second;
 	}
 }

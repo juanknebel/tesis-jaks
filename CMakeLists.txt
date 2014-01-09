@@ -39,6 +39,6 @@ src/solver/solver.cpp
 src/cluster/clustering.cpp
 src/cluster/metisWrapper.cpp
 )
-link_directories("/usr/lib/mysql/")
+#link_directories("/usr/lib/mysql/")
 add_executable(tesis-jaks ${tesis-jaks_source_files})
-target_link_libraries(tesis-jaks mysqlclient)
+target_link_libraries(tesis-jaks mysqlcppconn)

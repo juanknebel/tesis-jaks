@@ -32,7 +32,6 @@ protected:
 	String error_;
 	int fields_;
 	void init(String database, String user, String password, String server);
-	virtual void freeConnection() = 0;
 public:
 	Dao() {
 		this->init("", "", "", "");
@@ -52,7 +51,9 @@ public:
 	
 	virtual bool executeCustomConsultativeQuery(String query) = 0;
 	virtual bool executeCustomModifiableQuery(String query) = 0;
-	virtual const char** getNextRow() = 0;
+	virtual bool fetch() = 0;
+	virtual String getField(int index) = 0;
+	virtual String getField(String fieldName) = 0;
 };
 
 #endif // DAO_H

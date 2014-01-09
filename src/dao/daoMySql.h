@@ -21,18 +21,25 @@
 #ifndef DAOMYSQL_H
 #define DAOMYSQL_H
 #include "dao.h"
-#include <mysql/mysql.h>
+
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
 
 class DaoMySql : public Dao {
 private:
-	MYSQL *conn_;
-	MYSQL_RES *res_;
-	char **row_;
+	sql::Driver *driver_;
+	sql::Connection *con_;
+	sql::Statement *stmt_;
+	sql::PreparedStatement *pstmt_;
+	sql::ResultSet *res_;
+	sql::ResultSetMetaData *res_meta_;
 	String lastQueryExecute_;
-	void freeConnection();
-	bool executeQuery(String query);
 	bool executeConsultativeQuery(String query);
 	bool executeModifiableQuery(String query);
+	void manageException(sql::SQLException& e);
 public:
 	DaoMySql();
 	DaoMySql(String database, String user, String password, String server);
@@ -44,7 +51,9 @@ public:
 	
 	bool executeCustomConsultativeQuery(String query);
 	bool executeCustomModifiableQuery(String query);
-	const char** getNextRow();
+	bool fetch();
+	String getField(int index);
+	String getField(String fieldName);
 };
 
 #endif // DAOMYSQL_H

@@ -147,12 +147,11 @@ void testDBGeneric(Dao& dao, String tableName) {
 	if (dao.isConnected()) {
 		bool hasresult = dao.executeCustomConsultativeQuery("select * from " + tableName);
 		if (hasresult) {
-			const char** result;
 			int numOffields = dao.getNumberOfFields();
-			while(result = dao.getNextRow()) {
+			while(dao.fetch()) {
 				for (int i=0;i<numOffields;++i) {
-					if (result[i] != NULL) {
-						std::cout<<result[i];
+					if (!(dao.getField(i)).empty()) {
+						std::cout<<dao.getField(i);
 					}
 					else {
 						std::cout<<"NULL";
@@ -184,8 +183,10 @@ void testDB1() {
 	}
 	else {
 		if (dao->executeCustomConsultativeQuery("select count(*) from ARTICLES")) {
-			int count = atoi(dao->getNextRow()[0]);
-			std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
+			if (dao->fetch()) {
+				int count = convertToInt(dao->getField(1));
+				std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
+			}
 		}
 		testDBGeneric(*dao,"ARTICLES");
 	}
@@ -193,7 +194,7 @@ void testDB1() {
 }
 
 void testDBCustomQuery() {
-	Dao *dao = new DaoMySql(db_database,db_user,db_password,db_server);
+	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
@@ -202,18 +203,16 @@ void testDBCustomQuery() {
 	else {
 		std::cout<<dao->showConnection();
 		if (dao->isConnected()) {
-			dao->showConnection();
-			bool wasOk = dao->executeCustomConsultativeQuery("select * from ARTICLES where ArticleId=\'7777\'");
+			bool wasOk = dao->executeCustomConsultativeQuery("select * from ARTICLES");
 			if (wasOk) {
 				std::cout<<"Ejecuto bien"<<std::endl;
-				const char** result;
 				int numOffields = dao->getNumberOfFields();
 				bool hasresult = false;
-				while(result = dao->getNextRow()) {
+				while(dao->fetch()) {
 					hasresult = true;
-					for (int i=0;i<numOffields;++i) {
-						if (result[i] != NULL) {
-							std::cout<<result[i];
+					for (int i=1;i<=numOffields;++i) {
+						if (!(dao->getField(i)).empty()) {
+							std::cout<<dao->getField(i);
 						}
 						else {
 							std::cout<<"NULL";
@@ -235,12 +234,12 @@ void testDBCustomQuery() {
 				std::cerr<<"Error al obtener resutlados"<<std::endl;
 				std::cerr<<dao->getError()<<std::endl;
 			}
+			delete dao;
 		}
 		else {
 			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 		}
 	}
-	delete dao;
 }
 
 void testDBInsertCustom() {

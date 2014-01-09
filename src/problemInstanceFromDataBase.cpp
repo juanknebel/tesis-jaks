@@ -41,9 +41,8 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	std::stringstream query;
 	query<<"select * from "<<this->tableCompat_;
         if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-                const char** result;
-		while(result = this->dao_->getNextRow()) {
-			this->nodeCompat_->set(atoi(result[0]), atoi(result[1]), atof(result[2]));
+		while(this->dao_->fetch()) {
+			this->nodeCompat_->set(convertToInt(dao->getField(1)), convertToInt(dao->getField(2)), convertToInt(dao->getField(3)));
 		}
         }
 }
@@ -53,7 +52,9 @@ int ProblemInstanceFromDataBase::getPrimaryId(int id) {
 	std::stringstream query;
 	query<<"select "<<this->primaryField_<<" from "<<this->tableConvertElementItem_<<" where "<<this->item_<<" = "<<id;
 	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-		theId = atoi(this->dao_->getNextRow()[0]);
+		if (this->dao_->fetch()) {
+			theId = convertToInt(this->dao_->getField(1));
+		}
 	}
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
@@ -78,9 +79,8 @@ IntSet& ProblemInstanceFromDataBase::getIds() {
 	  std::stringstream query;
 	query<<"select "<<this->item_<<" from "<<this->tableConvertElementItem_;
 		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-			const char** result;
-			while(result = this->dao_->getNextRow()) {
-				this->ids_->insert(atoi(result[0]));
+			while(this->dao_->fetch()) {
+				this->ids_->insert(convertToInt(this->dao_->getField(1)));
 			}
 		}
 		else {
@@ -116,10 +116,9 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 		std::stringstream query;
 		query<<"select "<<this->coverField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
 		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-			const char** result;
 			IntSet *aSet = new IntSet();
-			while(result = this->dao_->getNextRow()) {
-				aSet->insert(atoi(result[0]));
+			while(this->dao_->fetch()) {
+				aSet->insert(convertToInt(this->dao_->getField(1)));
 			}
 			(*(*this).nodeCover_)[id] = aSet;
 		}

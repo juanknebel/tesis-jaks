@@ -20,8 +20,10 @@
 
 #include "vectorToAngleSimilarity.h"
 #include "exception.h"
+#include "stringUtilities.h"
 #include <cmath>
 #include <cstdlib>
+
 
 VectorToAngleSimilarity* VectorToAngleSimilarity::instance_;
 
@@ -41,7 +43,9 @@ int VectorToAngleSimilarity::getPrimaryId(Dao* dao, int id) {
 	std::stringstream query;
 	query << "SELECT ArticleId FROM ARTICLE_ITEM WHERE item = " <<id;
 	if (dao->executeCustomConsultativeQuery(query.str())) {
-		theId = atoi(dao->getNextRow()[0]);
+		if(dao->fetch()) {
+			theId = convertToInt(dao->getField(1));
+		}
 	}
 	else {
 		throw Exception(__FILE__, __LINE__, dao->getError());
@@ -55,9 +59,8 @@ void VectorToAngleSimilarity::createDistributionKeyMap(Dao *dao) {
 		int order = 0;
 		if (dao->executeCustomConsultativeQuery(
 			"SELECT distinct distribution_KEY FROM TopicProfile_distribution ORDER BY distribution_KEY ASC")) {
-			const char **result;
-			while (result = dao->getNextRow()) {
-				(*this->distributionOrder_)[String(result[0])] = order;
+			while (dao->fetch()) {
+				(*this->distributionOrder_)[dao->getField(1)] = order;
 				++order;
 			}
 		}
@@ -73,10 +76,9 @@ DblVector* VectorToAngleSimilarity::vectorizeElement(Dao *dao, int id, int len) 
 	query << "WHERE a.topicProfile_identifier = t.topicProfile_identifier AND a.ArticleId = " << id;
 	DblVector* theVector = new DblVector(len, 0.00);
 	if (dao->executeCustomConsultativeQuery(query.str())) {
-		const char **result;
-		while (result = dao->getNextRow()) {
-			int indexKey = (*this->distributionOrder_)[String(result[2])];
-			(*theVector)[indexKey] = atof(result[1]);
+		while (dao->fetch()) {
+			int indexKey = (*this->distributionOrder_)[dao->getField(3)];
+			(*theVector)[indexKey] = convertToDouble(dao->getField(2));
 		}
 	}
 	

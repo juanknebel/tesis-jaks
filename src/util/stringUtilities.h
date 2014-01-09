@@ -19,5 +19,9 @@ String convertToString(int aNumber);
 
 String convertToString(Double aNumber);
 
+int convertToInt(const String& aNumber);
+
+Double convertToDouble(const String& aNumber);
+
 
 #endif /* STRINGUTILITIES_H_ */

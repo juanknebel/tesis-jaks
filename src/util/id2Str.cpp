@@ -38,14 +38,13 @@ Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 		where a.venue_VenueId=b.VenueId and a.ArticleId=d.ARTICLES_ArticleId and \
 		d.authors_AuthorId=c.AuthorId";
 	if (dao->executeCustomConsultativeQuery(query.str())) {
-		const char **result;
-		while (result = dao->getNextRow()) {
-			Object2ObjectOpenHashMap::iterator it = (*(this->node2name_)).find(result[0]);
+		while (dao->fetch()) {
+			Object2ObjectOpenHashMap::iterator it = (*(this->node2name_)).find(dao->getField(1));
 			if (it == this->node2name_->end()) {
-				(*(this->node2name_))[result[0]] = String(result[1]) + " Venue: " + String(result[2]) + " Authors: "  + String(result[3]);
+				(*(this->node2name_))[dao->getField(1)] = dao->getField(2) + "\t" + dao->getField(3) + "\t"  + dao->getField(4);
 			}
 			else {
-				it->second.append(", " + String(result[3]));
+				it->second.append(", " + dao->getField(4));
 			}
 		}
 	}

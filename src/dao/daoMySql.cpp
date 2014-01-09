@@ -20,93 +20,94 @@
 
 #include "daoMySql.h"
 
-bool DaoMySql::executeQuery(String query) {
-	this->freeConnection();
-	this->lastQueryExecute_ = query;
-	DEBUG(DBG_DEBUG,"Se ejecuto la query: "<<this->lastQueryExecute_);
-	if(mysql_query(this->conn_, query.c_str())) {
-		this->error_ = String(mysql_error(this->conn_));
-		return false;
-	}
-	return true;
-}
-
 bool DaoMySql::executeConsultativeQuery(String query) {
-	bool wasOk = false;
-	if (this->isConnected_) {
-		wasOk = this->executeQuery(query);
-		if (wasOk){
-			//this->res_ = mysql_use_result(this->conn_);
-			this->res_ = mysql_store_result(this->conn_);
-			this->fields_ = mysql_num_fields(this->res_);
-		}
+	//if (this->res_) delete this->res_;
+	this->lastQueryExecute_ = query;
+	//DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
+	bool result = true;
+	try {
+		this->stmt_ = this->con_->createStatement();
+		this->res_ = this->stmt_->executeQuery(query);
+		this->res_meta_ = this->res_->getMetaData();
+		this->fields_ = this->res_meta_->getColumnCount();
 	}
-	else {
-		this->error_ = "Not connected to database";
+	catch (sql::SQLException &e) {
+		this->manageException(e);
+		result = false;
 	}
-	return wasOk;
+	delete this->stmt_;
+	return result;
 }
 
 bool DaoMySql::executeModifiableQuery(String query) {
-	bool wasOk = false;
-	if (this->isConnected_) {
-		wasOk = this->executeQuery(query);
+	//if (this->res_) delete this->res_;
+	this->lastQueryExecute_ = query;
+	//DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
+	bool result = true;
+	try {
+		this->stmt_ = this->con_->createStatement();
+		this->stmt_->execute(query);
 	}
-	else {
-		this->error_ = "Not connected to database";
+	catch (sql::SQLException &e) {
+		this->manageException(e);
+		result = false;
 	}
-	return wasOk;
+	delete this->stmt_;
+	return result;
+}
+
+void DaoMySql::manageException(sql::SQLException &e) {
+	std::stringstream error;
+	this->error_.clear();
+	error <<  "Error: " << e.what() << "\nMySqlErrorCode: " << e.getErrorCode() << "\nMySqlState: " << e.getSQLState() << "\n";
+	this->error_ = error.str();
 }
 
 DaoMySql::DaoMySql() : Dao() {
-	this->conn_ = mysql_init(NULL);
-	this->row_ = NULL;
-	this->res_ = NULL;
 }
 
 DaoMySql::DaoMySql(String database, String user, String password, String server) : Dao(database, user, password, server) {
-	this->conn_ = mysql_init(NULL);
-	this->row_ = NULL;
-	this->res_ = NULL;
 }
 
 DaoMySql::DaoMySql(const DaoMySql& dao) : Dao(dao.database_, dao.user_, dao.password_, dao.server_) {
-	this->conn_ = mysql_init(NULL);
-	this->row_ = NULL;
-	this->res_ = NULL;
 }
 	
 DaoMySql::~DaoMySql() {
 	this->disconnect();
-	this->row_ = NULL;
-	this->res_ = NULL;
 }
 
 bool DaoMySql::connect() {
-	if (!this->isConnected_) {
-		if (!mysql_real_connect(this->conn_, this->server_.c_str(), 
-this->user_.c_str(), this->password_.c_str(), this->database_.c_str(), 0, NULL, 
-0)) {
-			this->isConnected_ = false;
-			this->error_ = String(mysql_error(this->conn_));
-			DEBUG(DBG_DEBUG,"No se pudo conectar a la base de datos: "<<this->error_);
-		}
-		else {
-			this->isConnected_ = true;
-		}
+	this->res_ = NULL;
+	this->stmt_ = NULL;
+	this->pstmt_ = NULL;
+	this->con_ = NULL;
+	this->res_meta_ = NULL;
+	try {
+		this->driver_ = get_driver_instance();
+		this->con_ = driver_->connect(this->server_, this->user_, this->password_);
+		con_->setSchema(this->database_);
+		this->isConnected_ = true;
+	}
+	catch (sql::SQLException &e) {
+		this->manageException(e);
 	}
 	return this->isConnected_;
 }
 
 bool DaoMySql::disconnect() {
-	mysql_close(this->conn_);
-	return true;
-}
-
-void DaoMySql::freeConnection() {
-	if (this->res_ == NULL) {
-		mysql_free_result(this->res_);
+	bool result = true;
+	try {
+		delete this->res_;
+		delete this->stmt_;
+		delete this->pstmt_;
+		this->con_->close();
+		delete this->con_;
 	}
+	catch (sql::SQLException &e) {
+		this->manageException(e);
+		result = false;
+	}
+	return result;
 }
 
 bool DaoMySql::executeCustomConsultativeQuery(String query) {
@@ -117,16 +118,14 @@ bool DaoMySql::executeCustomModifiableQuery(String query) {
 	return this->executeModifiableQuery(query);
 }
 
-const char** DaoMySql::getNextRow() {
-	MYSQL_ROW row;
-	if ((row = mysql_fetch_row(this->res_)) != NULL) {
-		for (int i = 0; i < this->fields_; ++i) {
-			this->row_ = row;
-		}
-		return (const_cast<const char**> (this->row_));
-	}
-	else {
-		mysql_free_result(this->res_);
-		return NULL;
-	}
+bool DaoMySql::fetch() {
+	return this->res_->next();
+}
+
+String DaoMySql::getField(int index) {
+	return this->res_->getString(index);
+}
+
+String DaoMySql::getField(String fieldName) {
+	return this->res_->getString(fieldName);
 }

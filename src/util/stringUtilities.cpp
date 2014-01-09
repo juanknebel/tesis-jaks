@@ -7,6 +7,9 @@
 
 #include "stringUtilities.h"
 #include <sstream>
+#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE 1
+#include <boost/lexical_cast.hpp>
+ 
 
 void stringToVectorSplit(String aLine, String aSeparator, StrVector& outVector) {
 	String::size_type pos;
@@ -51,4 +54,10 @@ String convertToString(Double aNumber) {
 	return out.str();
 }
 
+int convertToInt(const String& aNumber) {
+	return boost::lexical_cast<int>(aNumber);
+}
 
+Double convertToDouble(const String& aNumber) {
+	return boost::lexical_cast<Double>(aNumber);
+}
