@@ -42,7 +42,7 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	query<<"select * from "<<this->tableCompat_;
         if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
-			this->nodeCompat_->set(convertToInt(dao->getField(1)), convertToInt(dao->getField(2)), convertToInt(dao->getField(3)));
+			this->nodeCompat_->set(convertToInt(dao->getField(1)), convertToInt(dao->getField(2)), convertToDouble(dao->getField(3)));
 		}
         }
 }

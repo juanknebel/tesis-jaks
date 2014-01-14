@@ -21,9 +21,8 @@
 #include "daoMySql.h"
 
 bool DaoMySql::executeConsultativeQuery(String query) {
-	//if (this->res_) delete this->res_;
 	this->lastQueryExecute_ = query;
-	//DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
+	DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
 	bool result = true;
 	try {
 		this->stmt_ = this->con_->createStatement();
@@ -40,9 +39,8 @@ bool DaoMySql::executeConsultativeQuery(String query) {
 }
 
 bool DaoMySql::executeModifiableQuery(String query) {
-	//if (this->res_) delete this->res_;
 	this->lastQueryExecute_ = query;
-	//DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
+	DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
 	bool result = true;
 	try {
 		this->stmt_ = this->con_->createStatement();
@@ -98,7 +96,6 @@ bool DaoMySql::disconnect() {
 	bool result = true;
 	try {
 		delete this->res_;
-		delete this->stmt_;
 		delete this->pstmt_;
 		this->con_->close();
 		delete this->con_;

@@ -1,0 +1,350 @@
+0	Dynamic Scheduling of Hard Real-Time Tasks and Real-Time Threads.
+1	A Testing Framework for Mobile Computing Software.
+2	Mawl: A Domain-Specific Language for Form-Based Services.
+3	Grammar Recovery from Parse Trees and Metrics-Guided Grammar Refactoring.
+4	Validating the ISO/IEC 15504 Measure of Software Requirements Analysis Process Capability.
+5	Discovering Architectures from Running Systems.
+6	An Extension of Nortons's Theorem for Queueing Networks.
+7	Numerical Analysis of Superposed GSPNs.
+8	PSL/PSA: A Computer Aided Technique for Structured Documentation and Analysis of Information Processing Systems.
+9	Optimal Partitioning of Random Programs Across two Processors.
+10	Methods for the Measurement of Memory Utilization and the Improvement of Program Locality.
+11	Distributed Simulation: A Case Study in Design and Verification of Distributed Programs.
+12	An Empirical Study of Test Case Filtering Techniques Based on Exercising Information Flows.
+13	Environment Evolution: The Prism Model of Changes.
+14	The Accuracy of the Clock Synchronization Achieved by TEMPO in Berkeley UNIX 4.3BSD.
+15	A Formally Verified Application-Level Framework for Real-Time Scheduling on POSIX Real-Time Operating Systems.
+16	Rapid Transaction-Undo Recovery Using Twin-Page Storage Management.
+17	Synthesis of Decision-Free Concurrent Systems for Prescribed Resources and Performance.
+18	Automatic Synthesis of SARA Design Models From System Requirements.
+19	Independent Recovery in Large-Scale Distributed Systems.
+20	Comments on Program Slicing.
+21	Methodology for Business System Development.
+22	A New Verification Rule and Its Applications.
+23	Software Development Productivity of European Space, Military, and Industrial Applications.
+24	Communication Metrics for Software Development.
+25	A Visual Language Compiler.
+26	Automated Software Test Data Generation.
+27	Real-Time Behavior of Programs.
+28	Learning Communicating Automata from MSCs.
+29	A UML-Based Pattern Specification Technique.
+30	On Parallel Processing Systems: Amdahl's Law Generalized and Some Results on Optimal Design.
+31	Performance Comparison of Three Modern DBMS Architectures.
+32	A Framework for Model-Based Design of Agent-Oriented Software.
+33	The Study of a New Perfect Hash Scheme.
+34	Exception Handlers in Functional Programming Languages.
+35	The Influence of Different Workload Descriptions on a Heuristic Load Balancing Scheme.
+36	An Empirical Study of the Complex Relationships between Requirements Engineering Processes and Other Processes that Lead to Payoffs in Productivity, Quality, and Risk Management.
+37	Design and Specification of Iterators Using the Swapping Paradigm.
+38	Identifying Failure Causes in Java Programs: An Application of Change Impact Analysis.
+39	Scheduling Tasks with Resource Requirements in Hard Real-Time Systems.
+40	The Model Multiplicity Problem: Experimenting with Real-Time Specification Methods.
+41	Resilient Extended True-Copy Token Scheme for a Distributed Database System.
+42	Impact of Budget and Schedule Pressure on Software Development Cycle Time and Effort.
+43	Partition Analysis: A Method Combining Testing and Verification.
+44	An Argument in Favor of Mechanized Software Production.
+45	Implementing Remote Evaluation.
+46	Optimal Load Balancing in a Multiple Processor System with Many Job Classes.
+47	Interface Grammars for Modular Software Model Checking.
+48	Modeling and Analysis of Distributed Database Concurrency Control Algorithms Using an Extended Petri Net Formalism.
+49	Enhancing the Security of Statistical Databases with a Question-Answering System and a Kernel Design.
+50	A Unified High-Level Petri Net Formalism for Time-Critical Systems.
+51	The Location Based Paradigm for Replication: Achieving Efficiency and Availability in Distributed Systems.
+52	Validating a Demonstration Tool for Graphics-Assisted Debugging of Ada Concurrent Programs.
+53	On the Optimal Total Processing Time Using Checkpoints.
+54	A Formal Analysis of the Fault-Detecting Ability of Testing Methods.
+55	Criteria for Software Reliability Model Comparisons.
+56	Experience Using Web-Based Shotgun Measures for Large-System Characterization and Improvement.
+57	Performance of Storage Management in an Implementation of SNOBOL4.
+58	Identifying High Performance ERP Projects.
+59	Performance Analysis of Concurrency Control Using Locking with Deferred Blocking.
+60	A Statistical Approach to the Inspection Checklist Formal Synthesis and Improvement.
+61	RSF: A Formalism for Executable Requirement Specifications.
+62	The Object-Oriented Functional Data Language.
+63	A Model of Code Sharing for Estimating Software Failure on Demand Probabilities.
+64	An Application of a Method for Analysis of Cyclic Programs.
+65	A Uniform Presentation of Confidentiality Properties.
+66	A Pessimistic Consistency Control Algorithm for Replicated Files which Achieves High Availability.
+67	Software Architecture Reconstruction: A Process-Oriented Taxonomy.
+68	An Exercise in Automatic Program Verification.
+69	Lock Conversion in Non-Two-Phase Locking Protocols.
+70	Verifying security protocols with Brutus.
+71	TACCLE: a methodology for object-oriented software testing at the class and cluster levels.
+72	A Time-Sensitive Object Model for Real-Time Systems.
+73	A Visual Model for Ada Tasking.
+74	Distributed Real-Time System Specification and Verification in APTL.
+75	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.
+76	Impact of software engineering research on the practice of software configuration management.
+77	A Meta-Environment for Generating Programming Environments.
+78	Reengineering of Configurations Based on Mathematical Concept Analysis.
+79	Mixin layers: an object-oriented implementation technique for refinements and collaboration-based designs.
+80	Reifying Variants in Configuration Management.
+81	Conjunction as Composition.
+82	A generic model for reflective design.
+83	Reasoning about static and dynamic properties in alloy: A purely relational approach.
+84	Reasoning about inconsistencies in natural language requirements.
+85	Graph Models for Reachability of Concurrent Programs.
+86	An Evolutionary Approach to Constructing Effective Software Reuse Repositories.
+87	The role of outcome feedback in improving the uncertainty assessment of software development effort estimates.
+88	Test conditions for fault classes in Boolean specifications.
+89	Discovering Models of Software Processes from Event-Based Data.
+90	Modeling software architectures in the Unified Modeling Language.
+91	Double Iterative Framework for Flow-Sensitive Interprocedural Data Flow Analysis.
+92	Architecting families of software systems with process algebras.
+93	OBSERV - A Prototyping Language and Environment.
+94	An inheritance-based technique for building simulation proofs incrementally.
+95	An extended fault class hierarchy for specification-based testing.
+96	Program Integration for Languages with Procedure Calls.
+97	Unified Versioning Through Feature Logic.
+98	Retrieving Reusable Software by Sampling Behaviour.
+99	Topology analysis of software dependencies.
+100	Modular aspect-oriented design with XPIs.
+101	Understanding the Sources of Variation in Software Inspections.
+102	Designing and comparing automated test oracles for GUI-based software applications.
+103	Formal interpreters for diagram notations.
+104	Semantic parameterization: A process for modeling domain descriptions.
+105	Recovering traceability links in software artifact management systems using information retrieval methods.
+106	Metamodel-based model conformance and multiview consistency checking.
+107	Law-governed interaction: a coordination and control mechanism for heterogeneous distributed systems.
+108	Using a pilot study to derive a GUI model for automated testing.
+109	Designing data marts for data warehouses.
+110	Generating Testing and Analysis Tools with Aria.
+111	A Program Integration Algorithm that Accommodates Semantics-Preserving Transformations.
+112	Automatic high-quality reengineering of database programs by abstraction, transformation and reimplementation.
+113	Unifying aspect- and object-oriented design.
+114	Aspect: Detecting Bugs with Abstract Dependences.
+115	Coupling and cohesion metrics for knowledge-based systems using frames and rules.
+116	The Design and Implementation of Hierarchical Software Systems with Reusable Components.
+117	A framework and tool support for the systematic testing of model-based specifications.
+118	The ASTOOT Approach to Testing Object-Oriented Programs.
+119	An empirical investigation of software reuse benefits in a large telecom product.
+120	Software Process Modeling and Execution Within Virtual Environments.
+121	A Safe, Efficient Regression Test Selection Technique.
+122	Fault classes and error detection capability of specification-based testing.
+123	DSD-Crasher: A hybrid analysis tool for bug finding.
+124	Protecting privacy using the decentralized label model.
+125	Runtime Verification for LTL and TLTL.
+126	Address translation in telecommunication features.
+127	Behavior-consistent specialization of object life cycles.
+128	Breaking up is hard to do: An evaluation of automated assume-guarantee reasoning.
+129	Parallel changes in large-scale software development: an observational case study.
+130	Formalizing Style to Understand Descriptions of Software Architecture.
+131	Model checking the Java metalocking algorithm.
+132	Wrapper-based evolution of legacy information systems.
+133	A comparative study of coarse- and fine-grained safe regression test-selection techniques.
+134	Applying GQM in an Industrial Software Factory.
+135	Flexible consistency checking.
+136	Composition and Refinement of Discrte Real-Time Systems.
+137	Mobile UNITY: Reasoning and Specification in Mobile Computing.
+138	Context Constraints for Compositional Reachability Analysis.
+139	Building Integrated Software Development Environments Part I: Tool Specification.
+140	A lightweight approach for program analysis and debugging.
+141	Modeling ontologies as executable domain specific languages.
+142	Distributed software development projects: work breakdown approaches to overcome key coordination challenges.
+143	Modeling and Verification of Distributed Real-Time Systems Based on CafeOBJ.
+144	A unified fitness function calculation rule for flag conditions to improve evolutionary testing.
+145	The power of software.
+146	Enabling Iterative Software Architecture Derivation Using Early Non-Functional Property Evaluation.
+147	Bogor/Kiasan: A k-bounded Symbolic Execution for Checking Strong Heap Properties of Open Systems.
+148	A dynamic birthmark for java.
+149	Automated Comprehension Tasks in Software Exploration.
+150	A Specification Language for Static Analysis of Student Exercises.
+151	Monitoring Programs Using Rewriting.
+152	On CASE Tool Usage at Nokia.
+153	VUML : a Viewpoint oriented UML Extension.
+154	TestEra: A Novel Framework for Automated Testing of Java Programs.
+155	Automated gui testing guided by usage profiles.
+156	Automatically Restructuring Programs for the We.
+157	Concolic testing.
+158	MTSA: The Modal Transition System Analyser.
+159	DESERT: a decentralized monitoring tool generator.
+160	A Verification-Driven Approach to Traceability and Documentation for Auto-Generated Mathematical Software.
+161	Towards Usable and Relevant Model Checking Techniques for the Analysis of Dependable Interactive Systems.
+162	Security Specification and Verification.
+163	Netstub: a framework for verification of distributed java applications.
+164	Sieve: A Tool for Automatically Detecting Variations Across Program Versions.
+165	Semi-Automated Verification of Erlang Code.
+166	Constructing Corba-Supported Oracles for Testing: A Case Study in Automated Software Testing.
+167	Automated Software Engineering Using Concurrent Class Machines.
+168	Spectrum-Based Multiple Fault Localization.
+169	Japanese Workshop on Leveraging Web2.0 Technologies in Software Development Environments (WebSDE).
+170	Automatic Test Cases Optimization Using a Bacteriological Adaptation Model: Application to .NET Component.
+171	Self-Repair through Reconfiguration: A Requirements Engineering Approach.
+172	Programs Are Abstract Data Types.
+173	Fault Localization With Nearest Neighbor Queries.
+174	Eliminating products to test in a software product line.
+175	KaitoroBase: Visual Exploration of Software Architecture Documents.
+176	Tutorial on JML, the java modeling language.
+177	A Tool for Attributed Goal-Oriented Requirements Analysis.
+178	Towards Certifying Domain-Specific Properties of Synthesized Code.
+179	Mining concepts from code with probabilistic topic models.
+180	A rigorous approach for proving model refactorings.
+181	Automated Validation of Software Models.
+182	Knowledge Base Approach to Consistency Management of UML Specification.
+183	Precise identification of composition relationships for UML class diagrams.
+184	A buffer overflow benchmark for software model checkers.
+185	Aspectizing Server-Side Distribution.
+186	Query-Aware Test Generation Using a Relational Constraint Solver.
+187	Round-Trip Engineering of Framework-Based Software using Framework-Specific Modeling Languages.
+188	Generative Design Patterns.
+189	Visual Constraint Diagrams: Runtime Conformance Checking of UML Object Models versus Implementations.
+190	REMES tool-chain: a set of integrated tools for behavioral modeling and analysis of embedded systems.
+191	Automating the performance management of component-based enterprise systems through the use of redundancy.
+192	Testing Database Transaction Concurrency.
+193	Empirical evaluation of the tarantula automatic fault-localization technique.
+194	How Program History Can Improve Code Completion.
+195	Predicting Software Stability Using Case-Based Reasoning.
+196	Scalable automatic test data generation from modeling diagrams.
+197	A similarity-aware approach to testing based fault localization.
+198	Software design sketching with calico.
+199	Software Library Usage Pattern Extraction Using a Software Model Checker.
+200	Predicting Fault Prone Modules by the Dempster-Shafer Belief Networks.
+201	Automating Software Traceability in Very Small Companies: A Case Study and Lessons Learne.
+202	Automata-Based Verification of Temporal Properties on Running Programs.
+203	An Approach to Rapid Prototyping of Large Multi-Agent Systems.
+204	Enabling Automated Traceability Maintenance by Recognizing Development Activities Applied to Models.
+205	Verifying Specifications with Proof Scores in CafeOBJ.
+206	VIATRA - Visual Automated Transformations for Formal Verification and Validation of UML Models.
+207	Generation of visual editors as eclipse plug-ins.
+208	Improving Structural Testing of Object-Oriented Programs via Integrating Evolutionary Testing and Symbolic Execution.
+209	Theoretical Foundations of Updating Systems.
+210	Heuristics for Scalable Dynamic Test Generation.
+211	A visual language and environment for composing web services.
+212	Driving the selection of cots components on the basis of system requirements.
+213	Calysto: scalable and precise extended static checking.
+214	Augmenting SADT to Develop Computer Support for Cooperative Work.
+215	Automating the Detection of Reusable Parts in Existing Software.
+216	Verification support for workflow design with UML activity graphs.
+217	The Property Vector Specification of a Multiset Iterator.
+218	A Scalable, Automated Process for Year 2000 System Correction.
+219	A multiple case study on the impact of pair programming on product quality.
+220	Experimental program analysis: a new paradigm for program analysis.
+221	Analyzing software architectures with Argus-I.
+222	A Systematic Survey of CMM Experience and Results.
+223	Software Reuse Experience at Hewlett-Packard.
+224	How we refactor, and how we know it.
+225	Applying and adjusting a software process improvement model in practice: the use of the IDEAL model in a small software enterprise.
+226	Experience with Performing Architecture Tradeoff Analysis.
+227	Using Simulation to Empirically Investigate Test Coverage Criteria Based on Statechart.
+228	Safe query objects: statically typed objects as remotely executable queries.
+229	Panel on Collaborative Software Engineering.
+230	Assume-Guarantee Verification of Source Code with Design-Level Assumptions.
+231	Adding High Availability and Autonomic Behavior to Web Services.
+232	Testing-based interactive fault localization.
+233	Algorithmic cost estimation for software evolution.
+234	A quality-driven systematic approach for architecting distributed software applications.
+235	An evaluation of the paired comparisons method for software sizing.
+236	Platform-independent and tool-neutral test descriptions for automated software testing.
+237	Model-Based Testing in Practice.
+238	Analysis of multi-agent systems based on KAOS modeling.
+239	A cross-program investigation of students' perceptions of agile methods.
+240	An Analytical Comparison of the Fault-Detecting Ability of Data Flow Testing Techniques.
+241	Balancing Agility and Discipline: Evaluating and Integrating Agile and Plan-Driven Methods.
+242	Software Evolution through Iterative Prototyping.
+243	An Experimental Evaluation of Selective Mutation.
+244	Reliable Software and Communication: Software Quality, Reliability, and Safety.
+245	Automatic Checking of Instruction Specifications.
+246	Analyzing Partially-Implemented Real-Time Systems.
+247	Open Implementation Design Guidelines.
+248	Specification-Based Test Oracles for Reactive Systems.
+249	Main effects screening: a distributed continuous quality assurance process for monitoring performance degradation in evolving software systems.
+250	Software Architecture: Practice, Potential, and Pitfalls.
+251	Reuse Library Interoperability and the World Wide Web.
+252	SoftGUESS: Visualization and Exploration of Code Clones in Context.
+253	Supporting dynamic composition of components.
+254	ASADAL: a tool system for co-development of software and test environment based on product line engineering.
+255	Complete and accurate clone detection in graph-based models.
+256	On the Inference of Configuration Structures from Source Code.
+257	Network abstractions for context-aware mobile computing.
+258	Defect Type and Its Impact on the Growth Curve.
+259	Second international workshop on software engineering for high performance computing system applications.
+260	SYNTHESIS: A Tool for Automatically Assembling Correct and Distributed Component-Based Systems.
+261	Automatically finding patches using genetic programming.
+262	An Empirical Study of Software Reuse vs. Defect-Density and Stability.
+263	Why use the model driven architecture to design and build distributed applications?
+264	Hybrid Concolic Testing.
+265	Requirements engineering in the year 00: a research perspective.
+266	Detection of Duplicate Defect Reports Using Natural Language Processing.
+267	License integration patterns: Addressing license mismatches in component-based development.
+268	Fraunhofer: the German model for applied research and technology transfer.
+269	Lessons on Converting Batch Systems to Support Interaction (Experience Report).
+270	Enriching software engineering courses with service-learning projects and the open-source approach.
+271	Productivity Analysis of Software Development with an Integrated CASE Tool.
+272	Theme: An Approach for Aspect-Oriented Analysis and Design.
+273	Security attribute evaluation method: a cost-benefit approach.
+274	Daily build and feature development in large distributed projects.
+275	The SMART Approach for Software Process Engineering.
+276	Accurate Interprocedural Null-Dereference Analysis for Java.
+277	HighSpec: a tool for building and checking OZTA models.
+278	Software Development Environments for Scientific and Engineering Software: A Series of Case Studies.
+279	A Component- and Message-Based Architectural Style for GUI Software.
+280	Performing Data Flow Testing on Classes.
+281	Hybrid Slicing: An Approach for Refining Static Slices Using Dynamic Information.
+282	Compiler and tool support for debugging object protocols.
+283	The universe model: an approach for improving the modularity and reliability of concurrent programs.
+284	Using an SQL coverage measurement for testing database applications.
+285	On-Line Change Mechanisms.
+286	Testing context-aware middleware-centric programs: a data flow approach and an RFID-based experimentation.
+287	Secure systems development based on the common criteria: the PalME project.
+288	Automatic Generation of State Invariants from Requirements Specifications.
+289	Predicting failures with developer networks and social network analysis.
+290	An empirical study of regression testing techniques incorporating context and lifetime factors and improved cost-benefit models.
+291	Explaining abstract counterexamples.
+292	Local analysis of atomicity sphere for B2B collaboration.
+293	Automatically locating framework extension examples.
+294	Isolating cause-effect chains from computer programs.
+295	An Intermedicate Design Language and Its Analysis.
+296	Work experience versus refactoring to design patterns: a controlled experiment.
+297	Automating first-order relational logic.
+298	Empirical evidence of the benefits of workspace awareness in software configuration management.
+299	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.
+300	Generating Oracles from Your Favorite Temporal Logic Specifications.
+301	SYNERGY: a new algorithm for property checking.
+302	Tool Support for Planning the Restructuring of Data Abstractions in Large Systems.
+303	A type system for object models.
+304	COM revisited: tool-assisted modelling of an architectural framework.
+305	Test Case Generation by Means of Learning Techniques.
+306	A Unified Version Model for Configuration Management.
+307	How is aliasing used in systems software?
+308	Interconnecting Formalisms: Supporting Modularity, Reuse and Incrementality.
+309	A micro-economic approach to conflict resolution in mobile computing.
+310	Making embedded software reuse practical and safe.
+311	Engineering human trust in mobile system collaborations.
+312	Software Reflexion Models: Bridging the Gap Between Source and High-Level Models.
+313	Towards Scalable Compositional Analysis.
+314	Reasoning about partial goal satisfaction for requirements and design engineering.
+315	Using redundancies to find errors.
+316	Using assertions to help end-user programmers create dependable web macros.
+317	Formal Modeling and Analysis of the HLA Component Integration Standard.
+318	Mechanisms for Generic Process Support.
+319	Inter-context control-flow and data-flow test adequacy criteria for nesC applications.
+320	Verifying aspect advice modularly.
+321	Detecting increases in feature coupling using regression tests.
+322	Egocentric context-aware programming in ad hoc mobile environments.
+323	Compositional Reachability Analysis of Finite-State Distributed Systems with User-Specified Constraints.
+324	Further Empirical Studies of Test Effectiveness.
+325	Semi-automating small-scale source code reuse via structural correspondence.
+326	An enhanced test case selection approach for model-based testing: an industrial case study.
+327	Speeding up Slicing.
+328	Software Measure Specification.
+329	Automated identification of parameter mismatches in web applications.
+330	A Practical Approach to Software Engineering Using Z and the Refinement Calculus.
+331	Signature Matching: A Key to Reuse.
+332	Model Checking Software Systems: A Case Study.
+333	What makes a good bug report?
+334	Enhancing Compositional Reachability Analysis with Context Constraints.
+335	Differential symbolic execution.
+336	Using task context to improve programmer productivity.
+337	Heuristic-guided counterexample search in FLAVERS.
+338	An empirical study of the effect of time constraints on the cost-benefits of regression testing.
+339	Interpolation for data structures.
+340	Composable semantics for model-based notations.
+341	Scaling regression testing to large software systems.
+342	Automated Test Data Generation Using an Iterative Relaxation Method.
+343	Bit level types for high level reasoning.
+344	Containment units: a hierarchically composable architecture for adaptive systems.
+345	Using Object-Oriented Typing to Support Architectural Design in the C2 Style.
+346	Using Style to Understand Descriptions of Software Architecture.
+347	An efficient and backwards-compatible transformation to ensure memory safety of C programs.
+348	Correlation exploitation in error ranking.
+349	Using Specialized Procedures and Specification-Based Analysis to Reduce the Runtime Costs of Modularity.
