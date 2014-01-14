@@ -83,7 +83,7 @@ bool DaoMySql::connect() {
 	try {
 		this->driver_ = get_driver_instance();
 		this->con_ = driver_->connect(this->server_, this->user_, this->password_);
-		con_->setSchema(this->database_);
+		this->con_->setSchema(this->database_);
 		this->isConnected_ = true;
 	}
 	catch (sql::SQLException &e) {
