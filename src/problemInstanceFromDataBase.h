@@ -23,7 +23,7 @@
 
 #include "problemInstance.h"
 #include "dao/dao.h"
-#include "util/vectorToAngleSimilarity.h"
+//#include "util/vectorToAngleSimilarity.h"
 
 class ProblemInstanceFromDataBase :  public ProblemInstance {
 private:
