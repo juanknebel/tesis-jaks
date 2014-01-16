@@ -21,5 +21,8 @@
 # Binary Directory
 build/
 
+# Debug Directory
+debug/
+
 # Output file
 output_data.csv
