@@ -16,7 +16,11 @@
 #include "../problemInstanceFromDataBase.h"
 #include "../util/configurationJaks.h"
 #include "../dao/daoMySql.h"
-#include "../util/dbConnection.h"
+
+#define db_database "tesis"
+#define db_user "tesis"
+#define db_password "tesis"
+#define db_server "localhost"
 
 MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
 	MatrixConcrete matrix(2,2);

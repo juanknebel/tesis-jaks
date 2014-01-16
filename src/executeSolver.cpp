@@ -2,7 +2,6 @@
 #include "util/Logger.h"
 #include "util/id2Str.h"
 #include "util/exception.h"
-#include "util/dbConnection.h"
 #include "dao/daoMySql.h"
 #include "executeSolver.h"
 #include "problemInstanceFromFiles.h"

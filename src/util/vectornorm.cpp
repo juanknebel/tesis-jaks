@@ -20,10 +20,14 @@
 
 #include "vectornorm.h"
 #include "../dao/daoMySql.h"
-#include "../util/dbConnection.h"
 #include "../util/stringUtilities.h"
 #include <cstdlib>
 #include <iostream>
+
+#define db_database "tesis"
+#define db_user "tesis"
+#define db_password "tesis"
+#define db_server "localhost"
 
 std::map<String, int> *distributionOrder;
 
