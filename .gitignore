@@ -29,3 +29,6 @@ debug/
 
 # Output file
 output_data.csv
+
+#QtCreator FIles
+CMakeLists.txt.user
