@@ -15,6 +15,9 @@
 # Temp Files
 *~
 
+# Qtcreator Files
+CMakeLists.txt.user
+
 # Kdevelop Files
 *.kdev4
 
