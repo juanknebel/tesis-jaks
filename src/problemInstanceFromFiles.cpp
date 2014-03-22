@@ -55,7 +55,7 @@ void ProblemInstanceFromFiles::loadInt2Double(String fileName) {
 		}
 	}
 	file.close();
-	for (Int2DoubleOpenHashMap::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
+	for (MapIntDouble::iterator it = this->nodeCost_->begin(); it != this->nodeCost_->end(); ++it) {
 		this->ids_->insert(it->first);
 	}
 }

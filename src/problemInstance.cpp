@@ -22,18 +22,18 @@ ProblemInstance::ProblemInstance() {
 
 ProblemInstance::ProblemInstance(Double budget) {
 	this->budget_ = budget;
-	this->nodeCost_ = new Int2DoubleOpenHashMap;
-	this->nodeCover_ = new Int2ObjectOpenHashMap;
+	this->nodeCost_ = new MapIntDouble;
+	this->nodeCover_ = new MapIntIntSet;
 	this->nodeCompat_ = 0;
-	this->node2id_ = new Object2IntOpenHashMap;
-	this->id2node_ = new Int2ObjectOpenHashMapString;
+	this->node2id_ = new MapStringInt;
+	this->id2node_ = new MapIntString;
 	this->ids_ = new IntSet();
 	this->specificItem_ = -1;
 }
 
 ProblemInstance::~ProblemInstance() {
 	delete this->nodeCost_;
-	for (Int2ObjectOpenHashMap::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
+	for (MapIntIntSet::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
 		it->second->clear();
 	}
 	this->nodeCover_->clear();

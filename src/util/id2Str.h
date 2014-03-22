@@ -13,7 +13,7 @@
 
 class Id2Str {
 private:
-	Object2ObjectOpenHashMap *node2name_;
+	MapStringString *node2name_;
 	Dao* dao_;
 
 public:

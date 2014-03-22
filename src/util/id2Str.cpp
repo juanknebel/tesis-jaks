@@ -14,7 +14,7 @@ Id2Str::Id2Str() {
 }
 
 Id2Str::Id2Str(String fileName) {
-	this->node2name_ = new Object2ObjectOpenHashMap;
+	this->node2name_ = new MapStringString;
 	FileInput file;
 	file.open(fileName.c_str());
 	String line;
@@ -27,7 +27,7 @@ Id2Str::Id2Str(String fileName) {
 }
 
 Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
-	this->node2name_ = new Object2ObjectOpenHashMap;
+	this->node2name_ = new MapStringString;
 	std::stringstream query;
 	query<<	"select \
 		a.ArticleId as ArticleId \
@@ -39,7 +39,7 @@ Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 		d.authors_AuthorId=c.AuthorId";
 	if (dao->executeCustomConsultativeQuery(query.str())) {
 		while (dao->fetch()) {
-			Object2ObjectOpenHashMap::iterator it = (*(this->node2name_)).find(dao->getField(1));
+			MapStringString::iterator it = (*(this->node2name_)).find(dao->getField(1));
 			if (it == this->node2name_->end()) {
 				(*(this->node2name_))[dao->getField(1)] = dao->getField(2) + "\t" + dao->getField(3) + "\t"  + dao->getField(4);
 			}

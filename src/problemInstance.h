@@ -26,11 +26,11 @@ protected:
 	/**
 	 * Cost of adding a node to the solution.
 	 */
-	Int2DoubleOpenHashMap *nodeCost_;
+	MapIntDouble *nodeCost_;
 	/**
 	 * Attribute to be covered.
 	 */
-	Int2ObjectOpenHashMap *nodeCover_;
+	MapIntIntSet *nodeCover_;
 	/**
 	 * Compatibility between two nodes.
 	 */	
@@ -38,8 +38,8 @@ protected:
 	/**
 	 * Identifiers of nodes.
 	 */
-	Object2IntOpenHashMap *node2id_;
-	Int2ObjectOpenHashMapString *id2node_;
+	MapStringInt *node2id_;
+	MapIntString *id2node_;
 	/**
 	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
 	 */

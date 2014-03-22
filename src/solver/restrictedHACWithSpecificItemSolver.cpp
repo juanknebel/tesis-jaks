@@ -16,7 +16,7 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 		throw Exception(__FILE__, __LINE__, "Too few nodes");
 	}
 	// Put each item with specific item in its own cluster
-	Int2ObjectOpenHashMap clustering = Int2ObjectOpenHashMap();
+	MapIntIntSet clustering = MapIntIntSet();
 	IntSet ids = this->problem_->getIds();
 	for (IntSet::iterator it = ids.begin(); it != ids.end(); ++it) {
 		// Make sure all singleton clusters are within budget
@@ -40,28 +40,28 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	}
 
 
-	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it){
+	for (MapIntIntSet::iterator it = clustering.begin(); it != clustering.end(); ++it){
 		SnowFlake *snowflake = new SnowFlake(*it->second, this->problem_);
 		std::set<int> ids = snowflake->ids();
 		delete snowflake;
 	}
 
 	SnowFlakeVector* solution = new SnowFlakeVector;
-	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it) {
+	for (MapIntIntSet::iterator it = clustering.begin(); it != clustering.end(); ++it) {
 		SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
 		solution->push_back(*aFlake);
 	}
 	return solution;
 }
 
-bool RestrictedHACSWithSpecificItemSolver::tryMerge(Int2ObjectOpenHashMap& clustering) {
+bool RestrictedHACSWithSpecificItemSolver::tryMerge(MapIntIntSet& clustering) {
 	// Compute all distances
 	int bestC1 = -1;
 	int bestC2 = -1;
 	Double maxCompatibility = -1.00;
-	for (Int2ObjectOpenHashMap::iterator it = clustering.begin(); it != clustering.end(); ++it) {
+	for (MapIntIntSet::iterator it = clustering.begin(); it != clustering.end(); ++it) {
 		IntSet *cluster1 = it->second;
-		for (Int2ObjectOpenHashMap::iterator it2 = it; it2 != clustering.end(); ++it2) {
+		for (MapIntIntSet::iterator it2 = it; it2 != clustering.end(); ++it2) {
 			if (it == it2) {
 				continue;
 			}

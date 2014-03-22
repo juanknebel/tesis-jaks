@@ -21,7 +21,7 @@ void PairsToJaccardSimilarity::execute(String fileParams) {
 
 void PairsToJaccardSimilarity::execute(String fileNameInput, String fileNameOutput, bool intersection, int keyField) {
 	PairsToJaccardSimilarity pairs(fileNameInput,fileNameOutput, intersection, keyField);
-	StringToStringSet sets;
+	MapStringStringSet sets;
 	FileInput inFile;
 	inFile.open(fileNameInput.c_str());
 	FileOutput outFile;
@@ -43,10 +43,10 @@ void PairsToJaccardSimilarity::execute(String fileNameInput, String fileNameOutp
 			mappedSet.insert(value);
 		}
 	}
-	for (StringToStringSet::iterator it = sets.begin(); it != sets.end(); ++it) {
+	for (MapStringStringSet::iterator it = sets.begin(); it != sets.end(); ++it) {
 		String k1 = it->first;
 		StringSet& s1 = it->second;
-		for (StringToStringSet::iterator it2 = it; it2 != sets.end(); ++it2) {
+		for (MapStringStringSet::iterator it2 = it; it2 != sets.end(); ++it2) {
 			if (it2 == it) {
 				continue;
 			}

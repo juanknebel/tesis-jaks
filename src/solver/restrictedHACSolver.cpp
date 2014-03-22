@@ -16,7 +16,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
 		throw Exception(__FILE__, __LINE__, "IllegalArgumentException Too few nodes");
 	}
 	// Put each item in its own cluster
-	Int2ObjectOpenHashMap *clustering = new Int2ObjectOpenHashMap();
+    MapIntIntSet *clustering = new MapIntIntSet();
 	IntSet ids = this->problem_->getIds();
 	for (IntSet::iterator it = ids.begin(); it != ids.end(); ++it) {
 		// Make sure all singleton clusters are within budget
@@ -36,7 +36,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
 		DEBUG(DBG_DEBUG,"Could not merge more, stopped at "<<clustering->size());
 	}
 	SnowFlakeVector* solution = new SnowFlakeVector;
-	for (Int2ObjectOpenHashMap::iterator it = clustering->begin(); it != clustering->end(); ++it) {
+    for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
 		SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
 		solution->push_back(*aFlake);
 	}
@@ -45,14 +45,14 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
 	return solution;
 }
 
-bool RestrictedHACSolver::tryMerge(Int2ObjectOpenHashMap* clustering) {
+bool RestrictedHACSolver::tryMerge(MapIntIntSet* clustering) {
 	// Compute all distances
 	int bestC1 = -1;
 	int bestC2 = -1;
 	Double maxCompatibility = -1.00;
-	for (Int2ObjectOpenHashMap::iterator it = clustering->begin(); it != clustering->end(); ++it) {
+    for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
 		IntSet *cluster1 = it->second;
-		for (Int2ObjectOpenHashMap::iterator it2 = it; it2 != clustering->end(); ++it2) {
+        for (MapIntIntSet::iterator it2 = it; it2 != clustering->end(); ++it2) {
 			if (it == it2) {
 				continue;
 			}
