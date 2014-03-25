@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(tesis-jaks_exe)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 set(tesis-jaks_source_files src/problemInstanceFromDataBase.cpp src/util/vectornorm.cpp
 src/dao/daoMySql.cpp 
 src/dao/dao.cpp 
@@ -39,6 +40,5 @@ src/solver/solver.cpp
 src/cluster/clustering.cpp
 src/cluster/metisWrapper.cpp
 )
-#link_directories("/usr/lib/mysql/")
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks mysqlcppconn)
