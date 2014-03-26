@@ -19,7 +19,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     MapIntIntSet *clustering = new MapIntIntSet();
     int totalElements = this->problem_->numNodes();
 
-    matrix<TupleIntDouble> *theMatrixC = new matrix<TupleIntDouble> (totalElements, totalElements);
+    matrix<Double> *theMatrixC = new matrix<Double> (totalElements, totalElements);
     IntVector *theIVector = new IntVector;
     TupleIntDoubleVector *nbm = new TupleIntDoubleVector;
     Double tempMaxSimilarity, similarity;
@@ -39,8 +39,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
                 tempMaxIndex = j;
                 tempMaxSimilarity = similarity;
             }
-            TupleIntDouble aValue(j, similarity);
-            theMatrixC->insert_element(i, j, aValue);
+            theMatrixC->insert_element(i, j, similarity);
         }
         theIVector->push_back(i);
         TupleIntDouble otherValue (tempMaxIndex, tempMaxSimilarity);
@@ -90,12 +89,11 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         for (int i = 0; i < totalElements; ++i) {
             if (theIVector->at(i) == i && i != anElementi1 && i != otherElementi2) {
 
-                TupleIntDouble aTupleToCompare = (*theMatrixC)(anElementi1, i);
-                TupleIntDouble otherTupleToCompare = (*theMatrixC)(otherElementi2, i);
-                int index = std::get<0>((*theMatrixC)(anElementi1, i));
-                Double maxSimilarity = (std::get<1>(aTupleToCompare) > std::get<1>(otherTupleToCompare)) ? std::get<1>(aTupleToCompare) : std::get<1>(otherTupleToCompare);
-                theMatrixC->insert_element(anElementi1, i, TupleIntDouble(index, maxSimilarity));
-                theMatrixC->insert_element(i, anElementi1, TupleIntDouble(index, maxSimilarity));
+                Double similarityI1 = (*theMatrixC)(anElementi1, i);
+                Double similarityI2 = (*theMatrixC)(otherElementi2, i);
+                Double maxSimilarity = (similarityI1 > similarityI2) ? similarityI1 : similarityI2;
+                theMatrixC->insert_element(anElementi1, i, maxSimilarity);
+                theMatrixC->insert_element(i, anElementi1, maxSimilarity);
 
             }
             if (theIVector->at(i) == otherElementi2) {
@@ -106,10 +104,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         DEBUG(DBG_DEBUG,"actualizo nbm");
         tempMaxSimilarity = -1.00;
         for (int i = 0; i < totalElements; ++i) {
-            TupleIntDouble tempTuple = (*theMatrixC)(anElementi1, i);
-            if (std::get<1>(tempTuple) > tempMaxSimilarity && i != anElementi1 && theIVector->at(i) == i) {
-                tempMaxSimilarity = std::get<1>(tempTuple);
-                //(*nbm)[anElementi1] = tempTuple;
+            Double tempSimilarity = (*theMatrixC)(anElementi1, i);
+            if (tempSimilarity > tempMaxSimilarity && i != anElementi1 && theIVector->at(i) == i) {
+                tempMaxSimilarity = tempSimilarity;
                 (*nbm)[anElementi1] = TupleIntDouble (i, tempMaxSimilarity);
             }
         }
