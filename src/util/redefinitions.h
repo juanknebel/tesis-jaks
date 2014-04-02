@@ -20,6 +20,7 @@
 typedef double Double;
 typedef unsigned int Uint;
 typedef std::tuple<int, Double> TupleIntDouble;
+typedef std::tuple<Double, bool> TupleDoubleBool;
 typedef std::string String;
 typedef std::set<int> IntSet;
 typedef std::set<String> StringSet;

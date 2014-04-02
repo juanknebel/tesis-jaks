@@ -7,7 +7,7 @@ USE_DATA_FROM_DB	1
 DB_SERVER	localhost
 DB_USER	tesis
 DB_PASSWORD	tesis
-DB_DATABASE	test
+DB_DATABASE	tesis
 TABLE_COSTS	ARTICLES
 TABLE_COMPAT	SIMILARITY
 TABLE_COVER	ARTICLES
@@ -25,11 +25,11 @@ FIELD_COMPAT	Similarity
 
 #---------------------------DIRECTORIO DE TRABAJO---------------------------------#
 DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/papers/
+#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products/
+#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
 #---------------------------------------------------------------------------------#
 
-#---------------------------DIRECTORIOS Y ARCHIVOS--------------------------------#
-#Nombre del directorio de trabajo
-#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/products/
+#------------------------------------ARCHIVOS-------------------------------------#
 #Nombre de los archivos
 #FILE_COSTS	node_cost.csv
 #FILE_COMPAT	node_compatibility.csv
@@ -37,17 +37,12 @@ DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/papers/
 #FILE_NODE_NAME	node_name.csv
 #FILE_TYPE_NAME	type_name.csv
 
-#Nombre del directorio de trabajo
-#DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
 #Nombre de los archivos
 FILE_COSTS	node_cost.txt
 FILE_COMPAT	node_compatibility.txt
 FILE_COVER	node_cover_attribute.txt
 FILE_NODE_NAME	node_id.txt
 FILE_TYPE_NAME	type_name.txt
-
-#Nombre del archivo donde se va a guardar los datos
-NAME_OUTPUT	output_data.csv
 #---------------------------------------------------------------------------------#
 
 #Cantidad de SnowFlakes
@@ -60,7 +55,7 @@ MAX_TRIALS	10
 BUDGET	5
 
 #Cantidad a producir antes de elegir
-TO_PRODUCE	10
+TO_PRODUCE	1
 
 #Algoritmo que se va a ejecutar, las opciones son:
 #ClusterAndPickSolver = 0
@@ -71,7 +66,7 @@ TO_PRODUCE	10
 #ExhaustiveGreedyAnySimSolver = 5
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
-SOLVER	6
+SOLVER	1
 
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
 INTER_SIMILARITY_WEIGHT	0.1
