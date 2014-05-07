@@ -50,6 +50,7 @@ protected:
 	static ProduceAndChooseSolver::RankingStrategy getDefault();
 	SnowFlakeVector* getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested);
 	SnowFlakeVector* getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested);
+    SnowFlakeVector* getTopSolutionsByInterIntraByTuples(SnowFlakeVector* produced, int numRequested);
 
 	/**
 	* Score a set of snowflakes composed of all the elements in 'selected' plus the element
@@ -67,6 +68,7 @@ protected:
 	* @return the score of the union
 	*/
 	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
 
 	/**
 	*

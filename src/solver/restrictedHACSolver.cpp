@@ -40,7 +40,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
             aSetWithElementI.insert(i);
             IntSet aSetWithElementJ = IntSet();
             aSetWithElementJ.insert(j);
-            bool canMergeIandJ = this->checkCoverageConstraint(aSetWithElementI, aSetWithElementJ);
+            bool canMergeIandJ = this->checkBudgetAndCoverageConstraint(aSetWithElementI, aSetWithElementJ);
 
             if (similarity > tempMaxSimilarity && canMergeIandJ) {
                 tempMaxIndex = j;

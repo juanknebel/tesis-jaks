@@ -28,6 +28,7 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
+    DEBUG(DBG_DEBUG, "Cantidad de cluser "<<produced->size())
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -42,7 +43,8 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionByRankingStrategy(SnowFla
 			if (this->interSimilarityWeight_ < 0.0) {
 				throw Exception(__FILE__, __LINE__, "This ranking strategy requires an inter similarity weight");
 			}
-			ret = this->getTopSolutionsByInterIntra(produced, numRequested);
+            ret = this->getTopSolutionsByInterIntra(produced, numRequested);
+            //ret = this->getTopSolutionsByInterIntraByTuples(produced, numRequested);
 			break;
 		case ProduceAndChooseSolver::RANK_BY_DENSEST_SUBGRAPH:
 			if (this->interSimilarityWeight_ < 0.0) {
@@ -74,27 +76,84 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntra(SnowFlakeVector*
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested){
+    if(this->interSimilarityWeight_ < 0.00) {
+        throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
+    }
+    SnowFlake::sortByDecresingSumCompat(*produced);
+    SnowFlakeVector available(*produced);
+    SnowFlakeVector *selected = new SnowFlakeVector();
+    Double currentSumIntra = 0.0;
+    Double currentSumOneMinusInter = 0.0;
+    while (selected->size() < numRequested && selected->size() < produced->size()) {
+        Double maxScore = -1.0;
+        int bestCandidateId = -1;
+        if (available.size() == 0) {
+            throw Exception(__FILE__, __LINE__, "There are no available condidates");
+        }
+        for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
+            SnowFlake candidate = available[candidateId];
+            Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            if (score > maxScore) {
+                bestCandidateId = candidateId;
+                maxScore = score;
+            }
+        }
+
+        if (bestCandidateId == -1) {
+            throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
+                    + ", maxScore==" + convertToString(maxScore) + ")");
+        }
+
+        //Calcula las nuevas puntuaciones
+        SnowFlake bestCandidate = available[bestCandidateId];
+        currentSumIntra += bestCandidate.getSumIntraCompat();
+        for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
+            currentSumOneMinusInter += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
+        }
+
+        //Borro el candidato que ya use
+        available.erase(available.begin() + bestCandidateId);
+        //Agrego el elemento a la solucion
+        selected->push_back(bestCandidate);
+    }
+    return selected;
+}
+
+SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntraByTuples(SnowFlakeVector* produced, int numRequested){
 	if(this->interSimilarityWeight_ < 0.00) {
 		throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
 	}
 	SnowFlake::sortByDecresingSumCompat(*produced);
 	SnowFlakeVector available(*produced);
+    Uint sizeOfBundles = produced->size();
+    bool *canUseSnowFlake = new bool[sizeOfBundles];
+    for (Uint i = 0; i < sizeOfBundles; ++i) {
+        canUseSnowFlake[i] = true;
+    }
+
 	SnowFlakeVector *selected = new SnowFlakeVector();
 	Double currentSumIntra = 0.0;
 	Double currentSumOneMinusInter = 0.0;
-	while (selected->size() < numRequested && selected->size() < produced->size()) {
+    while (selected->size() < numRequested && selected->size() < produced->size()) {
 		Double maxScore = -1.0;
 		int bestCandidateId = -1;
+        int bestCandidateIdTwo = -1;
 		if (available.size() == 0) {
 			throw Exception(__FILE__, __LINE__, "There are no available condidates");
 		}
-		for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
-			SnowFlake candidate = available[candidateId];
-			Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
-			if (score > maxScore) {
-				bestCandidateId = candidateId;
-				maxScore = score;
-			}
+        for (Uint candidateId = 0; candidateId < sizeOfBundles; ++candidateId) {
+            for (Uint candidateIdTwo = candidateId + 1; candidateIdTwo < sizeOfBundles; ++candidateIdTwo) {
+                if (canUseSnowFlake[candidateId] && canUseSnowFlake[candidateIdTwo]) {
+                    SnowFlake candidate = available[candidateId];
+                    SnowFlake candidateTwo = available[candidateIdTwo];
+                    Double score = scoreSetIntraInter(selected, candidate, candidateTwo, currentSumIntra, currentSumOneMinusInter);
+                    if (score > maxScore) {
+                        bestCandidateId = candidateId;
+                        bestCandidateIdTwo = candidateIdTwo;
+                        maxScore = score;
+                    }
+                }
+            }
 		}
 
 		if (bestCandidateId == -1) {
@@ -104,15 +163,21 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
 
 		//Calcula las nuevas puntuaciones
 		SnowFlake bestCandidate = available[bestCandidateId];
-		currentSumIntra += bestCandidate.getSumIntraCompat();
+        SnowFlake bestCandidateTwo = available[bestCandidateIdTwo];
+        currentSumIntra += bestCandidate.getSumIntraCompat() + bestCandidateTwo.getSumIntraCompat();
+        Double currentSumInter = currentSumOneMinusInter, currentSumInterTwo = currentSumOneMinusInter;
 		for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
-			currentSumOneMinusInter += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
+            currentSumInter += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
+            currentSumInterTwo += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidateTwo.ids());
 		}
-
-		//Borro el candidato que ya use
-		available.erase(available.begin() + bestCandidateId);
+        Double sumInterCandidates = 1.0 - this->problem_->maxPairwiseCompatibility(bestCandidate.ids(), bestCandidateTwo.ids());
+        currentSumOneMinusInter = currentSumInter + currentSumInterTwo + sumInterCandidates;
+        //Marco como usado los candidatos usados
+        canUseSnowFlake[bestCandidateId] = false;
+        canUseSnowFlake[bestCandidateIdTwo] = false;
 		//Agrego el elemento a la solucion
 		selected->push_back(bestCandidate);
+        selected->push_back(bestCandidateTwo);
 	}
 	return selected;
 }
@@ -123,7 +188,22 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
 	for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
 		sumOneMinusInter += 1.0 - this->problem_->maxPairwiseCompatibility(it->ids(), candidate.ids());
 	}
-	return ((1.0 - this->interSimilarityWeight_) * sumIntra) + (this->interSimilarityWeight_ * sumOneMinusInter);
+    Double gamma = 1.0 - this->interSimilarityWeight_;
+    return (gamma * sumIntra) + ((1.0 - gamma) * sumOneMinusInter);
+}
+
+Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter) {
+    Double sumIntra = selectedSumIntra + candidate.getSumIntraCompat() + candidateTwo.getSumIntraCompat();
+    Double sumInter = selectedSumOneMinusInter;
+    Double sumInterTwo = selectedSumOneMinusInter;
+    for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
+        sumInter += 1.0 - this->problem_->maxPairwiseCompatibility(it->ids(), candidate.ids());
+        sumInterTwo += 1.0 - this->problem_->maxPairwiseCompatibility(it->ids(), candidateTwo.ids());
+    }
+    Double sumInterCandidates = 1.0 - this->problem_->maxPairwiseCompatibility(candidate.ids(), candidateTwo.ids());
+    Double sumOneMinusInter = sumInter + sumInterTwo + sumInterCandidates;
+    Double gamma = 1.0 - this->interSimilarityWeight_;
+    return (gamma * sumIntra) + ((1.0 - gamma) * sumOneMinusInter);
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
