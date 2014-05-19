@@ -27,7 +27,7 @@ bool DaoMySql::executeConsultativeQuery(String query) {
     }
 
     this->lastQueryExecute_ = query;
-	DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
+    //DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
 	bool result = true;
 	try {
 		this->stmt_ = this->con_->createStatement();

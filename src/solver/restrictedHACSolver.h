@@ -20,6 +20,7 @@ public:
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
 	bool tryMerge(MapIntIntSet* clustering);
+    void singleLinkClustering(MapIntIntSet* clustering);
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

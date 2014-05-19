@@ -25,7 +25,15 @@ public:
 			/**
 			* Apply a densest-subgraph heuristic.
 			*/
-			RANK_BY_DENSEST_SUBGRAPH
+            RANK_BY_DENSEST_SUBGRAPH,
+            /**
+            * Hace lo mismo que el INTRA_INTER pero genera tuplas para la seleccion
+            */
+            RANK_BY_INTRA_INTER_TUPLE,
+            /**
+             * Aplica una seleccion similiar al RANK_BY_INTRA_INTER pero compensa la primer parte
+             */
+            RANK_BY_INTRA_INTER_PROPORTIONAL
 		};
 
 	ProduceAndChooseSolver(ProblemInstance* problem) : Solver(problem) {
@@ -50,6 +58,8 @@ protected:
 	static ProduceAndChooseSolver::RankingStrategy getDefault();
 	SnowFlakeVector* getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested);
 	SnowFlakeVector* getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested);
+    SnowFlakeVector* getTopSolutionsByInterIntraByTuples(SnowFlakeVector* produced, int numRequested);
+    SnowFlakeVector* getTopSolutionsByIntraInterProportional(SnowFlakeVector* produced, int numRequested);
 
 	/**
 	* Score a set of snowflakes composed of all the elements in 'selected' plus the element
@@ -67,6 +77,8 @@ protected:
 	* @return the score of the union
 	*/
 	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter, Double alpha, Double beta);
 
 	/**
 	*

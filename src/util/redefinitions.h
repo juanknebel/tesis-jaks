@@ -14,10 +14,13 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <tuple>
 #include "Logger.h"
 
 typedef double Double;
 typedef unsigned int Uint;
+typedef std::tuple<int, Double> TupleIntDouble;
+typedef std::tuple<Double, bool> TupleDoubleBool;
 typedef std::string String;
 typedef std::set<int> IntSet;
 typedef std::set<String> StringSet;
@@ -27,6 +30,7 @@ typedef std::map<String, int> MapStringInt;
 typedef std::map<String, String> MapStringString;
 typedef std::map<int, IntSet*> MapIntIntSet;
 typedef std::map<String, StringSet> MapStringStringSet;
+typedef std::vector<TupleIntDouble> TupleIntDoubleVector;
 typedef std::vector<String> StrVector;
 typedef std::vector<Double> DblVector;
 typedef std::vector<int> IntVector;
