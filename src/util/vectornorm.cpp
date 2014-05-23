@@ -124,7 +124,7 @@ ORDER BY ArticleId");
 			(*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
 		}
 	}
-
+	//hasta aca tengo los vectores con el itemId del articulo y y el profile
 	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
 		for (std::map<int, std::vector<float>* >::iterator it2 = it; it2 != topicProfile.end(); ++it2) {
 			if (it == it2) {
@@ -146,4 +146,59 @@ ORDER BY ArticleId");
 	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
 		delete it->second;
 	}
+}
+
+void insertSimilarityOfTheAuthor() {
+	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
+	bool connect = dao->connect();
+	if (!connect) {
+		std::cerr << "Error al conectarse a la base de datos" << std::endl;
+		std::cerr << dao->getError() << std::endl;
+		return ;
+	}
+
+	int len = createDistributionKeyMap(dao);
+
+	std::map<int, std::vector<float>* > topicProfile;
+	bool hasresult =
+	    dao->executeCustomConsultativeQuery(
+	        "SELECT authors_AuthorId, distributionAuthor, distribution_KEY \
+			FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId limit 0,27");
+
+	if (hasresult) {
+		int lastItemId = 0;
+		while (dao->fetch()) {
+			int itemId = convertToInt(dao->getField(1));
+			if (lastItemId != itemId) {
+				lastItemId = itemId;
+				topicProfile[itemId] = new std::vector<float>(len, 0);
+			}
+			int indexKey = indexOf(dao->getField(3));
+			(*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
+		}
+	}
+	//hasta aca tengo los vectores con el itemId del articulo y y el profile
+	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
+		for (std::map<int, std::vector<float>* >::iterator it2 = it; it2 != topicProfile.end(); ++it2) {
+			if (it == it2) {
+				continue;
+			}
+			float angle = angleBetweenVectors(it->second, it2->second);
+			if (angle > 0.0001) {
+				std::stringstream query;
+				int item = it->first;
+				DEBUG(DBG_DEBUG, item)
+				int item2 = it2->first;
+				query << "INSERT INTO SIMILARITY_AUTHOR (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
+				if (!dao->executeCustomModifiableQuery(query.str())) {
+					std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
+					std::cerr<<dao->getError()<<std::endl;
+				}
+			}
+		}
+	}
+	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
+		delete it->second;
+	}
+	
 }
