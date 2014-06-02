@@ -46,6 +46,21 @@ int getMappedId(Dao *dao, int id) {
 	return theId;
 }
 
+int getMappedIdForAuthor(Dao *dao, int id) {
+	int theId = -1;
+	std::stringstream query;
+	query << "SELECT Item FROM AUTHOR_ITEM WHERE AuthorId = " <<id;
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		if (dao->fetch()) {
+			theId = convertToInt(dao->getField(1));
+		}
+	}
+	else {
+		//throw Exception(__FILE__, __LINE__, this->dao_->getError());
+	}
+	return theId;
+}
+
 float dotProductOf(std::vector<float> *vector1, std::vector<float> *vector2) {
 	float product = 0.0;
 	int size = vector1->size();
@@ -163,7 +178,7 @@ void insertSimilarityOfTheAuthor() {
 	bool hasresult =
 	    dao->executeCustomConsultativeQuery(
 	        "SELECT authors_AuthorId, distributionAuthor, distribution_KEY \
-			FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId limit 0,27");
+			FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId");
 
 	if (hasresult) {
 		int lastItemId = 0;
@@ -186,9 +201,8 @@ void insertSimilarityOfTheAuthor() {
 			float angle = angleBetweenVectors(it->second, it2->second);
 			if (angle > 0.0001) {
 				std::stringstream query;
-				int item = it->first;
-				DEBUG(DBG_DEBUG, item)
-				int item2 = it2->first;
+				int item = getMappedIdForAuthor(dao, it->first);
+				int item2 = getMappedIdForAuthor(dao, it2->first);
 				query << "INSERT INTO SIMILARITY_AUTHOR (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
 				if (!dao->executeCustomModifiableQuery(query.str())) {
 					std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
