@@ -32,3 +32,12 @@ output_data.csv
 
 #QtCreator FIles
 CMakeLists.txt.user
+
+#idea files
+*.idea
+
+#compiled python files
+*.pyc
+
+#directory
+.directory
