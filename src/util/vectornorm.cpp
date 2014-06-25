@@ -71,6 +71,15 @@ float dotProductOf(std::vector<float> *vector1, std::vector<float> *vector2) {
 	return product;
 }
 
+float differenceBetweenVectors(std::vector<float> *vector1, std::vector<float> *vector2) {
+	int size = vector1->size();
+	std::vector<float> *differenceVector = new std::vector<float>(size, 0);
+	for (unsigned i = 0; i < size; ++i) {
+		(*differenceVector)[i] = vector1->at(i) - vector2->at(i);
+	}
+	float norm = normOf(differenceVector);
+}
+
 float angleBetweenVectors(std::vector<float> *vector1, std::vector<float> *vector2) {
 	float norm1 = normOf(vector1);
 	float norm2 = normOf(vector2);
@@ -198,12 +207,14 @@ void insertSimilarityOfTheAuthor() {
 			if (it == it2) {
 				continue;
 			}
-			float angle = angleBetweenVectors(it->second, it2->second);
-			if (angle > 0.0001) {
+			//float angle = angleBetweenVectors(it->second, it2->second);
+			float difference = differenceBetweenVectors(it->second, it2->second);
+			if (difference > 0.0001) {
 				std::stringstream query;
 				int item = getMappedIdForAuthor(dao, it->first);
 				int item2 = getMappedIdForAuthor(dao, it2->first);
-				query << "INSERT INTO SIMILARITY_AUTHOR (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
+				//query << "INSERT INTO SIMILARITY_AUTHOR (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
+				query << "INSERT INTO SIMILARITY_AUTHOR_DIFFERENCE (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << difference << ")";
 				if (!dao->executeCustomModifiableQuery(query.str())) {
 					std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
 					std::cerr<<dao->getError()<<std::endl;

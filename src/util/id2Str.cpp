@@ -26,7 +26,7 @@ Id2Str::Id2Str(String fileName) {
 	file.close();
 }
 
-Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
+/*Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 	this->node2name_ = new MapStringString;
 	std::stringstream query;
 	query<<	"select \
@@ -37,6 +37,7 @@ Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 		from ARTICLES a, VENUES b, AUTHORS c, Article_Author d \
 		where a.venue_VenueId=b.VenueId and a.ArticleId=d.ARTICLES_ArticleId and \
 		d.authors_AuthorId=c.AuthorId";
+	
 	if (dao->executeCustomConsultativeQuery(query.str())) {
 		while (dao->fetch()) {
 			MapStringString::iterator it = (*(this->node2name_)).find(dao->getField(1));
@@ -45,6 +46,24 @@ Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
 			}
 			else {
 				it->second.append(", " + dao->getField(4));
+			}
+		}
+	}
+}*/
+
+Id2Str::Id2Str(Dao *dao, String tableName, String node, String fieldToProyect) {
+	this->node2name_ = new MapStringString;
+	std::stringstream query;
+	query<<"select AuthorId, name, affiliation_title from AUTHORS";
+	
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		while (dao->fetch()) {
+			MapStringString::iterator it = (*(this->node2name_)).find(dao->getField(1));
+			if (it == this->node2name_->end()) {
+				(*(this->node2name_))[dao->getField(1)] = dao->getField(2) + "\t" + dao->getField(3);
+			}
+			else {
+				//error no puede pasar!!!
 			}
 		}
 	}
