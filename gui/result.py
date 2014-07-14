@@ -93,7 +93,7 @@ class Ui_DialogResult(object):
         self.comboConfig.setItemText(0, _translate("DialogResult", "Ayuda", None))
         self.comboConfig.setItemText(1, _translate("DialogResult", "Calculo de similitud", None))
         self.comboConfig.setItemText(2, _translate("DialogResult", "Ejecutar con archivo de configuracion", None))
-        self.comboConfig.setItemText(3, _translate("DialogResult", "Ejutar tests internos", None))
+        self.comboConfig.setItemText(3, _translate("DialogResult", "Ejecutar tests internos", None))
         self.label_3.setText(_translate("DialogResult", "Archivo configuracion", None))
         self.checkBoxLog.setText(_translate("DialogResult", "Activar el log", None))
         self.label.setText(_translate("DialogResult", "Nombre del binario", None))

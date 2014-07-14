@@ -13,8 +13,8 @@
 #include "../util/Logger.h"
 
 int MetisWrapper::PRECISION_DOUBLE_TO_INTEGER = 1000;
-//String MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis
-String MetisWrapper::METIS_COMMAND = "kmetis"; //para la version 4.x o anterior de metis
+String MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis
+//String MetisWrapper::METIS_COMMAND = "kmetis"; //para la version 4.x o anterior de metis
 String MetisWrapper::TEMP_METIS_FILENAME = "metis-input.tmp";
 
 String MetisWrapper::run(int argc, char *argv[]) {

@@ -95,6 +95,8 @@ int ProblemInstanceFromDataBase::numNodes() {
 }
 
 Double ProblemInstanceFromDataBase::getCost(int id) {
+	//if (id == 3730 || id == 3735 || id == 3791 || id == 3971 || id == 4032)
+	//	return 10.0;
 	return 1.0;
 	/*Double cost = -1.0;
 	int primaryId = this->getPrimaryId(id);

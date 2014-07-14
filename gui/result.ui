@@ -59,7 +59,7 @@
         </item>
         <item>
          <property name="text">
-          <string extracomment="t">Ejutar tests internos</string>
+          <string extracomment="t">Ejecutar tests internos</string>
          </property>
         </item>
        </widget>
