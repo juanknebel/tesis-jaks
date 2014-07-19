@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(tesis-jaks_exe)
+set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(tesis-jaks_source_files src/problemInstanceFromDataBase.cpp src/util/vectornorm.cpp
 src/dao/daoMySql.cpp 
 src/dao/dao.cpp 
