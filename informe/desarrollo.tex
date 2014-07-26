@@ -1,0 +1,33 @@
+\section{Definición de similitud y complementariedad}
+Como paso preliminar a la búsqueda de las soluciones se definió la noción de similitud y 
+complementariedad para los grupos de elementos.
+\subsection{Papers}
+Ya se contaba con los perfiles de los papers, con lo cuál decidimos definir la similitud entre 
+papers a través de la distancia entre los perfiles de cada uno de ellos. Cada perfil se interpreta 
+como un vector de \texttt{n} posiciones, dónde cada posición pertenece a un tópico particular. 
+Entonces la similitud entre dos papers la interpretamos como el ángulo vectorial entre dos 
+vectores.\\
+La complementariedad de dos papers se definió al lugar de presentación de dicho paper.
+\subsection{Autores}
+Para determinar que \textquotedblleft tan iguales\textquotedblright son dos autores tuvimos que 
+crear primero un perfil de autor para luego poder compararlos. Para lograrlo lo primero que se hizo 
+fue tener en cuenta todos los perfiles de papers en los que participaron cada uno de ellos. Como 
+cada paper tenía ya calculado su perfil el cuál representamos como un vector de \texttt{n} 
+posiciones, dónde cada posición pertenece a un tópico particular. De esta manera tomamos todos 
+perfiles (vectores) de los papers en los cuáles el autor participó e hicimos una suma componente a 
+componente para así obtener un perfil de cada uno de los autores.\\
+El paso siguiente fue determinar la similitud de los autores, la primer aproximación fue similar al 
+cálculo de similitud de los papers y calculamos los ángulos entre todos los vectores. Como similitud
+alternativa decidimos restar el perfil de cada autor componente a componente y calcular el valor de 
+su norma, así de esta forma a mayor norma mayor similitud entre autores.\\
+La complementariedad de dos papers se definió al lugar de pertenencia del autor en cuestión.
+\section{Generación de soluciones}
+\subsection{Papers}
+Originalmente la base de datos contenía unos 7777 papers, de los cuáles se tuvo que hacer una 
+depuración, ya que había papers que no tenían ningún autor asociado o perfil creado. Luego de la 
+depuración obtuvimos 4937 que cumplen los requisitos para la búsqueda de las soluciones.\\
+Se generaron soluciones con distintos valores de $\gamma$ ($0,1$; $0,3$; $0,5$; $0,7$; $0,9$), las 
+cuáles fueron de 10 bundles con 5 items cada una.\\
+Las heurísticas utilizadas fueran la generación jerárquica (\textbf{HAC}) y la aleatoria 
+(\textbf{BOBO}) para la producción de bundles y una estrategia en forma de algoritmo goloso para la 
+selección de los bundles.
