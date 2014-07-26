@@ -11,11 +11,8 @@
 
 %%%% CARATULA
 % Comentar y descomentar según corresponda
-\def\titulo{Licenciada }
-%\def\titulo{Licenciado }
-
-\def\autor{Amit Stein}
-\def\autor{Juan Andres Knebel}
+\def\titulo{Licenciado }
+\def\autor{Amit Stein, Juan Andrés Knebel}
 \def\tituloTesis{Composite Retrival: \mbox{Algo}}
 \def\runtitulo{Composite Retrival en español}
 \def\runtitle{Composite Retrival en ingles}
@@ -27,16 +24,16 @@
 %%%% ABSTRACTS, AGRADECIMIENTOS Y DEDICATORIA
 \frontmatter
 \pagestyle{empty}
-\input{abs_esp.tex}
+%\input{abs_esp.tex}
 
-\cleardoublepage
-\input{abs_en.tex}
+%\cleardoublepage
+%\input{abs_en.tex}
 
-\cleardoublepage
-\input{agradecimientos.tex} % OPCIONAL: comentar si no se quiere
+%\cleardoublepage
+%\input{agradecimientos.tex} % OPCIONAL: comentar si no se quiere
 
-\cleardoublepage
-\input{dedicatoria.tex}  % OPCIONAL: comentar si no se quiere
+%\cleardoublepage
+%\input{dedicatoria.tex}  % OPCIONAL: comentar si no se quiere
 
 \cleardoublepage
 \tableofcontents
@@ -47,30 +44,16 @@
 %%%% ACA VA EL CONTENIDO DE LA TESIS
 
 \chapter{Introducción}
-\section{Explicación}
-{\begin{small}%
-\begin{flushright}%
-\it
-Explicar el tema en que consiste
-\end{flushright}%
-\end{small}%
-\vspace{.5cm}}
-
-\section{Que se va a hacer}
-{\begin{small}%
-\begin{flushright}%
-\it
-Las cosas que se van hacer
-\end{flushright}%
-\end{small}%
-\vspace{.5cm}}
-
+\input{introduccion.tex}
 \chapter{Desarrollo}
+\input{desarrollo.tex}
 \chapter{Resultados}
+\input{resultados.tex}
 \chapter{Conclusiones}
+\input{conclusiones.tex}
 
 %%%% BIBLIOGRAFIA
 \backmatter
-%\bibliography{tesis}
+\bibliography{tesis}
 
 \end{document}

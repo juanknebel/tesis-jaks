@@ -41,3 +41,10 @@ CMakeLists.txt.user
 
 #directory
 .directory
+
+# Kile files
+*.aux
+*.bbl
+*.blg
+*.log
+*.toc
