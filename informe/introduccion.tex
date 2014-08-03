@@ -5,70 +5,73 @@
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-Partiendo del tema planteado en el paper \textit{\textquotedblleft Composite Retrieval of Diverse 
-and Complementary Bundles\textquotedblright} en el cuál se buscan elementos complementarios que 
-persiguen un mismo objetivo.
-
+Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
+and Complementary Bundles\textquotedblright} se decidió implementar búsquedas de soluciones para la 
+base de datos \textit{\textquotedblleft A Data-Driven Journey through Software 
+Engineering Research\textquotedblright}
 \section{Primeros pasos}
 {\begin{small}%
 \begin{flushright}%
 \it
-Un gran poder conlleva una gran responsabilidad.\\
-Tío Ben.
+Todo Pasa.\\
+Julio G.
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
 Se utilizó la base de datos de \textit{\textquotedblleft A Data-Driven Journey through Software 
 Engineering Research\textquotedblright} con el objetivo de obtener conjunto de bundles 
-complementarios. La base de datos contiene información sobre cerca de 5000 papers y sus 7000 
-autores, además cuenta con un perfil para cada paper, llamado \texttt{topicProfile} que nos 
-ofrece una clasificación en porcentajes de que tema se refiere cada paper. Los temas incluidos son:
-\begin{itemize}
- \item Adaptive Systems
- \item Algorithm
- \item Architectures
- \item Artificial Intelligence
- \item Autonomic Systems
- \item Concurrency
- \item Database
- \item Distributed Systems
- \item Education
- \item Embedded
- \item Empirical Software Engineering
- \item Evolution
- \item Formal Methods
- \item Hardware
- \item Human Computer Interaction
- \item Information Systms
- \item Knowledge Engineering
- \item Languages
- \item Maintenance
- \item Methodologies
- \item Metrics
- \item Models
- \item Operating Systems
- \item Performance
- \item Process
- \item Product Lines
- \item Program Analysis
- \item Program Comprehension
- \item Real Time Systems
- \item Reliability
- \item Requirements
- \item Reverse Engineering
- \item Security
- \item Services
- \item Software Quality
- \item Synthesis
- \item Testing
- \item Visualization
-\end{itemize}
-Para generar la soluciones de bundles se debe definir algún atributo de los items para comparar su 
-similitud y otro para conocer su complementariedad. Además para la búsqueda de soluciones se 
-define una variable \texttt{$\gamma$} ($0 < \gamma < 1$) usada para ponderar la selección de 
-bundles y de esta manera obtener soluciones más cohesivas en las que cada bundle esta conformado 
-por items muy parecidos entre sí o soluciones con bundles más dispersos en dónde es más importante 
-que la relación entre los bundles sea lo más alejada posible\\.
+complementarios. La base de datos contiene información sobre cerca de $7777$ papers y sus $9865$ 
+autores, además cuenta con un perfil para cada paper, llamado \texttt{topicProfile} que ofrece una 
+clasificación en porcentajes de que tema se refiere cada paper. Los temas son:
+\begin{multicols}{4}
+  \begin{itemize}
+  \item Adaptive Systems
+  \item Algorithm
+  \item Architectures
+  \item Artificial Intelligence
+  \item Autonomic Systems
+  \item Concurrency
+  \item Database
+  \item Distributed Systems
+  \item Education
+  \item Embedded
+  \item Empirical Software Engineering
+  \item Evolution
+  \item Formal Methods
+  \item Hardware
+  \item Human Computer Interaction
+  \item Information Systms
+  \item Knowledge Engineering
+  \item Languages
+  \item Maintenance
+  \item Methodologies
+  \item Metrics
+  \item Models
+  \item Operating Systems
+  \item Performance
+  \item Process
+  \item Product Lines
+  \item Program Analysis
+  \item Program Comprehension
+  \item Real Time Systems
+  \item Reliability
+  \item Requirements
+  \item Reverse Engineering
+  \item Security
+  \item Services
+  \item Software Quality
+  \item Synthesis
+  \item Testing
+  \item Visualization
+  \end{itemize}
+\end{multicols}
+La generación de soluciones de bundles se realizó, como propone el paper \textit{\textquotedblleft 
+Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}, maximizando la función 
+objetivo: $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v))\ 
++\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
+\in S_{j}} s(u,v))$$ Dónde la función \textit{s} representa la similitud entre dos items y 
+$\gamma$ ($0 < \gamma < 1$) es un parámetro para ponderar entre la calidad de un bundle (intra) y 
+la separación entre ellos (inter).\\
 A partir de información provista por la base de datos y con la definición de funciones de 
 similitud, que se verán más adelante, tanto para autores y papers se generaron conjuntos de bundles 
 para los siguientes criterios:

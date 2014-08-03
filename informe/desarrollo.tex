@@ -2,32 +2,98 @@
 Como paso preliminar a la búsqueda de las soluciones se definió la noción de similitud y 
 complementariedad para los grupos de elementos.
 \subsection{Papers}
-Ya se contaba con los perfiles de los papers, con lo cuál decidimos definir la similitud entre 
-papers a través de la distancia entre los perfiles de cada uno de ellos. Cada perfil se interpreta 
-como un vector de \texttt{n} posiciones, dónde cada posición pertenece a un tópico particular. 
-Entonces la similitud entre dos papers la interpretamos como el ángulo vectorial entre dos 
-vectores.\\
+La similitud entre papers se definió como la distancia entre los \texttt{topicProfile} de cada uno. 
+Cada perfil se interpreta como un vector de \texttt{n} posiciones, dónde cada posición pertenece a 
+un tópico particular. Entonces la similitud entre dos papers la interpretamos como el ángulo 
+vectorial entre dos vectores.\\
 La complementariedad de dos papers se definió al lugar de presentación de dicho paper.
 \subsection{Autores}
-Para determinar que \textquotedblleft tan iguales\textquotedblright son dos autores tuvimos que 
-crear primero un perfil de autor para luego poder compararlos. Para lograrlo lo primero que se hizo 
-fue tener en cuenta todos los perfiles de papers en los que participaron cada uno de ellos. Como 
-cada paper tenía ya calculado su perfil el cuál representamos como un vector de \texttt{n} 
-posiciones, dónde cada posición pertenece a un tópico particular. De esta manera tomamos todos 
-perfiles (vectores) de los papers en los cuáles el autor participó e hicimos una suma componente a 
-componente para así obtener un perfil de cada uno de los autores.\\
+Para determinar la similitud entre los autores se creó un perfil de cada uno. Para lograrlo lo 
+primero que se hizo fue tener en cuenta todos los perfiles de papers en los que participaron cada 
+uno de ellos. Al igual que con los papers, el perfil de los autores se representó con un vector. 
+Este vector se cálculo sumarizando los vectores de cada uno de los papers en el que participó.\\
 El paso siguiente fue determinar la similitud de los autores, la primer aproximación fue similar al 
 cálculo de similitud de los papers y calculamos los ángulos entre todos los vectores. Como similitud
 alternativa decidimos restar el perfil de cada autor componente a componente y calcular el valor de 
 su norma, así de esta forma a mayor norma mayor similitud entre autores.\\
 La complementariedad de dos papers se definió al lugar de pertenencia del autor en cuestión.
-\section{Generación de soluciones}
-\subsection{Papers}
-Originalmente la base de datos contenía unos 7777 papers, de los cuáles se tuvo que hacer una 
-depuración, ya que había papers que no tenían ningún autor asociado o perfil creado. Luego de la 
-depuración obtuvimos 4937 que cumplen los requisitos para la búsqueda de las soluciones.\\
-Se generaron soluciones con distintos valores de $\gamma$ ($0,1$; $0,3$; $0,5$; $0,7$; $0,9$), las 
-cuáles fueron de 10 bundles con 5 items cada una.\\
-Las heurísticas utilizadas fueran la generación jerárquica (\textbf{HAC}) y la aleatoria 
-(\textbf{BOBO}) para la producción de bundles y una estrategia en forma de algoritmo goloso para la 
-selección de los bundles.
+\section{Generación de bundles}
+Para la generación de bundles se usaron diferentes algoritmos, cada uno con sus ventajas.\\
+El algoritmo jerárquico \texttt{HAC} comienza con cluster conformado por un solo ítem y en cada paso 
+une los dos clusters que maximizan su similitud y que respeten las restricciones, que en estos 
+casos fueron no superar una cierta cantidad de elementos por bundles.\\
+El algoritmo \texttt{BOBO-x} genera los clusters a partir de un ítem, llamado pivote, y luego de 
+forma golosa selecciona los ítems que maximizan la función intra-cluster. La $x$ representa el 
+número de bundles que va a generar\\
+El algoritmo \texttt{BOBO-Ex} es similar a \texttt{BOBO-x} pero prueba con todos los ítems como 
+pivots para la generación de bundles.
+\section{Selección de bundles}
+Se utilizaron tres estrategias de selección de bundles para generar las soluciones finales.
+\subsection{Selección golosa}
+Para la selección de los bundles se utilizó un algoritmo goloso que comienza seleccionando el 
+cluster con mayor valor intra y en cada iteración se elige el cluster que maximiza la función 
+objetivo.\\
+Durante las primeras pruebas notamos que todas las soluciones contenían varios bundles en común 
+teniendo en cuenta que se utilizaron distintos valores gammas. Supusimos que esto se debía a que en 
+el momento de hacer la selección en todos los casos, sin importar el gamma, se seleccionaba el mismo 
+bundle (que es el de mayor intra). Al siguiente paso al seleccionar el bundle que maximiza la 
+función objetivo, ocurre que el valor intra del bundle es mucho más significativo que el inter. Por 
+lo tanto, lo que ocurre es que en los primeros pasos se seleccionan los mismos bundles para todos 
+los gammas sin tener en cuenta que cuando se optó por un gamma cercano a cero se pedía que la 
+solución sea más diversificada.\\
+\subsection{Selección de a pares}
+Para mejorar el proceso de selección se decidió modificar el algoritmo para que en vez de realizar 
+la selección de a un bundle, se generan pares de bundles y el algoritmo goloso selecciona el que 
+maximiza la función objetivo.
+\begin{algorithm}
+\begin{algorithmic}[1]
+\REQUIRE Aca va la entrada del algoritmo.
+\ENSURE Aca va la salida del algoritmo.
+\WHILE {alguna conodicion}
+\STATE Descripcion con palabras.
+\IF{alguna conodicion copada} \label{lin:marcacionLinea}
+\RETURN devuelve algo
+\ELSE
+\STATE alguna asignacion o algo
+\ENDIF
+\ENDWHILE
+\FOR{alguna otra condicion}
+\IF{alguna conodicion}
+\STATE hace algo
+\RETURN devuelve algo
+\ENDIF
+\ENDFOR
+\RETURN devuelve otra cosa
+\end{algorithmic}
+\caption{Selección de bundles de a pares}\label{alg:algSelTuple}
+\end{algorithm}
+%El algoritmo~\ref{alg:algSelTuple} es bastante raro, hago referencia a la~\ref{lin:marcacionLinea}
+\subsection{Selección proporcional}
+Además como tercera opción de selección se implementó un algoritmo proporcional que en cada paso se 
+ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
+\textquotedblleft adivinar \textquotedblright el valor de las próximas iteraciones y de esta manera 
+dar más importancia en los primeras iteraciones al valor del inter.
+\begin{algorithm}
+\begin{algorithmic}[1]
+\REQUIRE Aca va la entrada del algoritmo.
+\ENSURE Aca va la salida del algoritmo.
+\WHILE {alguna conodicion}
+\STATE Descripcion con palabras.
+\IF{alguna conodicion copada}
+\RETURN devuelve algo
+\ELSE
+\STATE alguna asignacion o algo
+\ENDIF
+\ENDWHILE
+\FOR{alguna otra condicion}
+\IF{alguna conodicion}
+\STATE hace algo
+\RETURN devuelve algo
+\ENDIF
+\ENDFOR
+\RETURN devuelve otra cosa
+\end{algorithmic}
+\caption{Selección de bundles proporcional}\label{alg:algSelProp}
+\end{algorithm}
+
+
