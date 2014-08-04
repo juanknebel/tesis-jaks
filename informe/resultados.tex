@@ -22,31 +22,56 @@ producción y su tiempo de ejecución:\\
 \begin{table}[h]
   \centering
   \resizebox{\textwidth}{!} {
-    \begin{tabular}{lcc}
+    \begin{tabular}{|lcc|}
+    \hline
     Algoritmo & Bundles Generados & Tiempo de Ejecución (minutos) \\
-    \hline \\
-    HAC       & $2378$              & $6$                             \\
-    BOBO-10   & $100$               & $2$                             \\
-    BOBO-160  & $1600$              & $5$                             \\
+    \hline
+    HAC       & $2378$ & $6$ \\
+    BOBO-10   & $100$  & $2$ \\
+    BOBO-160  & $1600$ & $5$ \\
+    \hline
     \end{tabular}
   }
-    \caption {Tabla 1}
+    \caption {Cantidad de bundles generados antes de la selección final}
 \end{table}
 A continuación se muestran los valores de la función objetivo obtenidos:\\
 \begin{table}[h]
-  \centering
+\centering
   \resizebox{\textwidth}{!} {
-    \begin{tabular}{c|ccccc}
-    ~          & \multicolumn{5}{c}{$\gamma$} \\
-    Algoritmo  & $0,1$ & $0,3$ & $0,5$ & $0,7$ & $0,9$ \\
-    \hline \\
-    HAC        & $48,8922$ & $58,7049$ & $70,205$ & $81,8331$ & $93,7189$ \\
-    BOBO-10    & $30,5376$ & $26,68$ & $22,9482$ & $23,2333$ & $21,9347$ \\
-    BOBO-160   & $35,1979$ & $34,4164$ & $37,0669$ & $40,1762$ & $44,9824$\\
+    \begin{tabular}{|lc|cccc|}
+    \hline
+    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
+ejecución (mm:ss)} \\
+    Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
+         & Selección proporcional \\ 
+    \hline
+    HAC & $0,1$ & $48,9470$  & $35,1979$ & $10:00$ & $40:00$ \\
+    HAC & $0,3$ & $59,1852$  & $58,7049$ & $10:00$ & $40:00$ \\
+    HAC & $0,5$ & $70,5931$  & $70,205$ & $10:00$ & $40:00$ \\
+    HAC & $0,7$ & $82,0687$  & $81,8331$ & $10:00$ & $40:00$ \\
+    HAC & $0,9$ & $93,8227$  & $93,7189$ & $10:00$ & $40:00$ \\
+    BOBO-160 & $0,1$ & $33,3762$  & $35,1979$ & $6:00$ & $46:00$ \\
+    BOBO-160 & $0,3$ & $33,2741$  & $34,4164$ & $6:00$ & $46:00$ \\
+    BOBO-160 & $0,5$ & $37,3484$  & $37,0669$ & $6:00$ & $46:00$ \\
+    BOBO-160 & $0,7$ & $40,4186$  & $40,1762$ & $6:00$ & $46:00$ \\
+    BOBO-160 & $0,9$ & $49,0972$  & $44,9824$ & $6:00$ & $46:00$ \\
+    BOBO-10 & $0,1$ & $29,3038$  & $30,5376$ & $1:30$ & $2:00$ \\
+    BOBO-10 & $0,3$ & $25,9363$  & $26,6800$ & $1:30$ & $2:00$ \\
+    BOBO-10 & $0,5$ & $20,9841$  & $22,9482$ & $1:30$ & $2:00$ \\
+    BOBO-10 & $0,7$ & $22,3052$  & $23,2333$ & $1:30$ & $2:00$ \\
+    BOBO-10 & $0,9$ & $18,8381$  & $21,9347$ & $1:30$ & $2:00$ \\
+    BOBO-ex & $0,1$ & $35,5786$  & - & $14:00$ & - \\
+    BOBO-ex & $0,3$ & $35,4117$  & - & $14:00$ & - \\
+    BOBO-ex & $0,5$ & $39,4408$  & - & $14:00$ & - \\
+    BOBO-ex & $0,7$ & $45,0940$  & - & $14:00$ & - \\
+    BOBO-ex & $0,9$ & $51,2695$  & - & $14:00$ & - \\
+    \hline
     \end{tabular}
   }
-    \caption {Tabla 2}
+  \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de papers similares}
 \end{table}
+
+
 Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la 
 diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ 
 se acerca a $1$. Suponemos que esto se debe a la estrategía \texttt{produce and choose}. El objetivo 
@@ -65,42 +90,44 @@ Se genraron soluciones con las siguientes características:\\
 \Solucion
 {}
 {simple y proporcional}
-{\texttt{HAC} y \texttt{BOBO-x}, con  $x \in$ $(10, 160)$}
+{\texttt{HAC} y \texttt{BOBO-x}, con  $x \in$ $(10, 160)$ y \texttt{BOBO-ex}}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10 y 20}
 {5 y 10}
 \begin{table}[h]
 \centering
   \resizebox{\textwidth}{!} {
-    \begin{tabular}{cccccc}
-    ~         & ~     & \multicolumn{2}{c}{Valor función objectivo} & \multicolumn{2}{c}{Duración de 
-la ejecución (minutos)} \\
-    Algoritmo & gamma & Selección simple        & Selección proporcional & Selección simple          
+    \begin{tabular}{|lc|cccc|}
+    \hline
+    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
+ejecución (mm:ss)} \\
+    Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
          & Selección proporcional \\ 
-    \hline \\
-    HAC       & 0,1   & ~                       & ~                      & ~                         
-         & ~                      \\
-    HAC       & 0,3   & ~                       & ~                      & ~                         
-         & ~                      \\
-    HAC       & 0,5   & ~                       & ~                      & ~                         
-         & ~                      \\
-    HAC       & 0,7   & ~                       & ~                      & ~                         
-         & ~                      \\
-    HAC       & 0,9   & ~                       & ~                      & ~                         
-         & ~                      \\
-    BOBO-160  & 0,1   & ~                       & ~                      & ~                         
-         & ~                      \\
-    BOBO-160  & 0,3   & ~                       & ~                      & ~                         
-         & ~                      \\
-    BOBO-160  & 0,5   & ~                       & ~                      & ~                         
-         & ~                      \\
-    BOBO-160  & 0,7   & ~                       & ~                      & ~                         
-         & ~                      \\
-    BOBO-160  & 0,9   & ~                       & ~                      & ~                         
-         & ~                      \\
+    \hline
+    HAC & $0,1$ & $50,5$  & $50,5$ & $8:40$ & $9:00$ \\
+    HAC & $0,3$ & $61,5$  & $61,5$ & $8:40$ & $9:00$ \\
+    HAC & $0,5$ & $72,5$  & $72,5$ & $8:40$ & $9:00$ \\
+    HAC & $0,7$ & $83,5$  & $83,5$ & $8:40$ & $9:00$ \\
+    HAC & $0,9$ & $94,5$  & $94,5$ & $8:40$ & $9:00$ \\
+    BOBO-160 & $0,1$ & $38,6883$  & $36,8917$ & $10:00$ & $8:00$ \\
+    BOBO-160 & $0,3$ & $43,4380$  & $41,4767$ & $10:00$ & $8:00$ \\
+    BOBO-160 & $0,5$ & $47,3612$  & $47,9337$ & $10:00$ & $8:00$ \\
+    BOBO-160 & $0,7$ & $51,5712$  & $52,1462$ & $10:00$ & $8:00$ \\
+    BOBO-160 & $0,9$ & $57,2009$  & $57,5260$ & $10:00$ & $8:00$ \\
+    BOBO-10 & $0,1$ & $30,2956$  & $31,6080$ & $2:30$ & $2:30$ \\
+    BOBO-10 & $0,3$ & $33,6794$  & $35,4411$ & $2:30$ & $2:30$ \\
+    BOBO-10 & $0,5$ & $33,0506$  & $37,5776$ & $2:30$ & $2:30$ \\
+    BOBO-10 & $0,7$ & $37,2855$  & $34,5657$ & $2:30$ & $2:30$ \\
+    BOBO-10 & $0,9$ & $41,0119$  & $35,2511$ & $2:30$ & $2:30$ \\
+    BOBO-ex & $0,1$ & $39,9767$  & $39,9767$ & $27:00$ & $27:00$ \\
+    BOBO-ex & $0,3$ & $44,0043$  & $44,0043$ & $27:00$ & $27:00$ \\
+    BOBO-ex & $0,5$ & $48,5481$  & $48,5481$ & $27:00$ & $27:00$ \\
+    BOBO-ex & $0,7$ & $53,1993$  & $53,1993$ & $27:00$ & $27:00$ \\
+    BOBO-ex & $0,9$ & $57,7400$  & $57,7400$ & $27:00$ & $27:00$ \\
+    \hline
     \end{tabular}
   }
-  \caption {Tabla 3}
+  \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de autores similares}
 \end{table}
 Para todas las soluciones obtenidas con la generación \texttt{HAC} y utilizando cualquiera de los 
 dos algoritmos de selección de selección, todas las soluciones formaron los mismos bundles a 
