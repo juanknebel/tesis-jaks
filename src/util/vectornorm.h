@@ -25,12 +25,8 @@
 #include <cmath>
 #include "redefinitions.h"
 
-float normOf(std::vector<float>* vector);
-float dotProductOf(std::vector<float>* vector1, std::vector<float>* vector2);
-float angleBetweenVectors(std::vector<float>* vector1, std::vector<float>* vector2);
 void insertSimilarity();
-void insertSimilarityOfTheAuthor();
-void insertSimilarityOfTheAffiliation();
-int indexOf(String key);
+
+
 
 #endif // VECTORNORM_H

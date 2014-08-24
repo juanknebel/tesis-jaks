@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
 				case 's':
 					std::cout<<"Calculating the similarity ..."<<std::endl;
 					initializeDefaultLogger(argv[2]);
-					insertSimilarityOfTheAuthor();
+                    insertSimilarity();
 					break;
 				case 'h':
 					std::cout<<"Use mode:"<<std::endl<<useMode<<std::endl;
