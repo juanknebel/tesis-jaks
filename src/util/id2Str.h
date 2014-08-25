@@ -9,7 +9,7 @@
 #define ID2STR_H_
 
 #include "redefinitions.h"
-#include "../dao/daoMySql.h"
+#include "identificationGeneretor.h"
 
 class Id2Str {
 private:
@@ -19,7 +19,7 @@ private:
 public:
 	Id2Str();
 	Id2Str(String fileName);
-	Id2Str(Dao* dao, String tableName,String node, String fieldToProyect);
+    Id2Str(IdentificationGeneretor* theIdentificator);
 	~Id2Str();
 
 	String getNodebyName(String node) const;

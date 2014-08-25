@@ -2,6 +2,9 @@
 #include "util/Logger.h"
 #include "util/id2Str.h"
 #include "util/exception.h"
+#include "util/identificationGeneretorArticle.h"
+#include "util/identificationGeneretorAuthor.h"
+#include "util/identificationGeneretorAffiliation.h"
 #include "dao/daoMySql.h"
 #include "executeSolver.h"
 #include "problemInstanceFromFiles.h"
@@ -102,7 +105,10 @@ ProblemInstance* instanceTheProblemForDB() {
 	dao->connect();
 	std::cout<<dao->showConnection()<<std::endl;
 	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds, fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary, fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
-	theNodeName = new Id2Str(dao, tableOfCosts, fieldPrimary, fieldPrimaryDescription);
+    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorArticle(dao);
+    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAuthor(dao);
+    IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAffiliation(dao);
+    theNodeName = new Id2Str(theIdentificator);
 	return theProblem;
 }
 
