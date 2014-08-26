@@ -1,11 +1,12 @@
 #include "identificationGeneretor.h"
 
-IdentificationGeneretor::IdentificationGeneretor(Dao *dao) {
-    this->dao = dao;
+IdentificationGeneretor::IdentificationGeneretor(Dao *dao, String separator) {
+    this->dao_ = dao;
+    this->separator_ = separator;
 }
 
 String IdentificationGeneretor::getQuery() const {
-    return this->query;
+    return this->query_;
 }
 
 IdentificationGeneretor::~IdentificationGeneretor() {

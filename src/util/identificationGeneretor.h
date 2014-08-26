@@ -6,10 +6,11 @@
 
 class IdentificationGeneretor {
 protected:
-    Dao *dao;
-    String query;
+    Dao *dao_;
+    String query_;
+    String separator_;
 public:
-    IdentificationGeneretor(Dao* dao);
+    IdentificationGeneretor(Dao* dao, String separator);
     String getQuery() const;
     virtual void fillTheMapping(MapStringString *node2name) = 0;
     virtual ~IdentificationGeneretor();

@@ -5,8 +5,8 @@
 
 class IdentificationGeneretorAuthor : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAuthor(Dao* dao) : IdentificationGeneretor(dao) {
-        this->query = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
+    IdentificationGeneretorAuthor(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+        this->query_ = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
     }
 
     void fillTheMapping(MapStringString *node2name);

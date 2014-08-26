@@ -5,8 +5,8 @@
 
 class IdentificationGeneretorArticle : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorArticle(Dao* dao) : IdentificationGeneretor(dao) {
-        this->query = "SELECT \
+    IdentificationGeneretorArticle(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+        this->query_ = "SELECT \
                 a.ArticleId as ArticleId \
                 ,a.title as Title \
                 ,b.name as VenueName \

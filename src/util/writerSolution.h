@@ -13,6 +13,8 @@ public:
 
     virtual void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) = 0;
 
+    virtual void writeInterAndIntraValues(const std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight);
+
     virtual ~WriterSolution();
 };
 

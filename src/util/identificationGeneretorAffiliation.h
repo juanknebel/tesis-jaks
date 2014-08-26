@@ -5,8 +5,8 @@
 
 class IdentificationGeneretorAffiliation : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAffiliation(Dao *dao) : IdentificationGeneretor(dao) {
-        this->query = "SELECT affiliationId, title, location FROM AFFILIATIONS";
+    IdentificationGeneretorAffiliation(Dao *dao, String separator) : IdentificationGeneretor(dao, separator) {
+        this->query_ = "SELECT affiliationId, title, location FROM AFFILIATIONS";
     }
 
     void fillTheMapping(MapStringString *node2name);

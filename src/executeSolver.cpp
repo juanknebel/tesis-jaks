@@ -110,9 +110,9 @@ ProblemInstance* instanceTheProblemForDB() {
 	dao->connect();
 	std::cout<<dao->showConnection()<<std::endl;
 	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds, fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary, fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
-    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorArticle(dao);
-    IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAuthor(dao);
-    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAffiliation(dao);
+    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorArticle(dao, "\t");
+    IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAuthor(dao, "\t");
+    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAffiliation(dao, "\t");
     theNodeName = new Id2Str(theIdentificator);
 	return theProblem;
 }

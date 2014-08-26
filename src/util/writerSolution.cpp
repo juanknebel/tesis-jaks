@@ -28,6 +28,10 @@ String WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2S
     return result;
 }
 
+void WriterSolution:: writeInterAndIntraValues(const std::vector<SnowFlake> &solution, String fileName, Double interSimilarityWeight) {
+
+}
+
 WriterSolution::~WriterSolution() {
 
 }
