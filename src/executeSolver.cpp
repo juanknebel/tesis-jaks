@@ -5,6 +5,9 @@
 #include "util/identificationGeneretorArticle.h"
 #include "util/identificationGeneretorAuthor.h"
 #include "util/identificationGeneretorAffiliation.h"
+#include "util/writerSolutionAffiliations.h"
+#include "util/writerSolutionAuthors.h"
+#include "util/writerSolutionArticles.h"
 #include "dao/daoMySql.h"
 #include "executeSolver.h"
 #include "problemInstanceFromFiles.h"
@@ -56,6 +59,7 @@ double similarity;
 int strategy;
 bool printToScreen;
 bool writeToFile;
+WriterSolution *theWriter;
 
 void settingGlobalVariables(ConfigurationJaks& configFile) {
 	useDataFromDb = configFile["use_data_from_db"];
@@ -98,6 +102,7 @@ void settingGlobalVariables(ConfigurationJaks& configFile) {
 	
 	printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
 	writeToFile = ((configFile["write_file"] == "1") ? true : false);
+    theWriter = new WriterSolutionAuthors();
 }
 
 ProblemInstance* instanceTheProblemForDB() {
@@ -106,8 +111,8 @@ ProblemInstance* instanceTheProblemForDB() {
 	std::cout<<dao->showConnection()<<std::endl;
 	ProblemInstance *theProblem = new ProblemInstanceFromDataBase(dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds, fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary, fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
     //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorArticle(dao);
-    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAuthor(dao);
-    IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAffiliation(dao);
+    IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAuthor(dao);
+    //IdentificationGeneretor *theIdentificator = new IdentificationGeneretorAffiliation(dao);
     theNodeName = new Id2Str(theIdentificator);
 	return theProblem;
 }
@@ -134,7 +139,7 @@ ProblemInstance* instanceTheProblem() {
 
 void showSolution(SnowFlakeVector& solution) {
 	if(printToScreen) {
-		std::cout<<SnowFlake::showSolution(solution,theNodeName)<<endl;
+        std::cout<<theWriter->showInScreen(solution, theNodeName)<<std::endl;
 	}
 }
 
@@ -171,7 +176,7 @@ void writeSolution(const SnowFlakeVector& solution) {
 		}
 		fileName << "_ToProduce-"<<toProduce<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
-		SnowFlake::writeSolution(solution, fileName.str(), theNodeName, interSimilarityWeight);
+        theWriter->writeSolution(solution, fileName.str(), theNodeName, interSimilarityWeight);
 	}
 }
 

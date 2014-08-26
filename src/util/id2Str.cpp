@@ -27,6 +27,7 @@ Id2Str::Id2Str(String fileName) {
 }
 
 Id2Str::Id2Str(IdentificationGeneretor* theIdentificator) {
+    this->node2name_ = new MapStringString;
     theIdentificator->fillTheMapping(this->node2name_);
 }
 

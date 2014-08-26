@@ -112,46 +112,8 @@ IntSet& SnowFlake::ids() const {
 	return *(this->elements_);
 }
 
-String SnowFlake::showSolution(std::vector<SnowFlake>& solution,const Id2Str* node2name) {
-	String result = "\n";
-	int avgCost = 0;
-	int avgCover = 0;
-	int avgSize = 0;
-	int avgSumIntraCompat = 0;
-	int solutionsSize = solution.size();
-	for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
-		avgCost += it->getCost();
-		avgCover += it->getCoverSize();
-		avgSize += it->ids().size();
-		avgSumIntraCompat += it->getSumIntraCompat();
-		result.append(it->toString(node2name));
-	}
-	result.append("-------------------------------------------------\n");
-	result.append("SOLUTION_SIZE = " + convertToString(solutionsSize) + "\n");
-	result.append("AVG_COST = " + convertToString(avgCost / (double) solutionsSize) + "\n");
-	result.append("AVG_COVER = " + convertToString(avgCover / (double) solutionsSize) + "\n");
-	result.append("AVG_SIZE = " + convertToString(avgSize / (double) solutionsSize) + "\n");
-	result.append("AVG_SUM_INTRA_COMPAT = " + convertToString(avgSumIntraCompat / (double) solutionsSize) + "\n");
-	
-	return result;
-}
-
-void SnowFlake::writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) {
-	FileOutput file(fileName.c_str());
-	int sizeOfSolution = (solution.at(0)).elements_->size();
-	file << "Bundle\tAuthor\tAffiliation\n";
-	int bundle = 0;
-	for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
-		//file << "Bundle " << ++bundle << "\t";
-		++bundle;
-		for (IntSet::iterator it = itSF->elements_->begin(); it != itSF->elements_->end(); ++it) {
-			String node = itSF->problem_->getNode(*it);
-			file << "Bundle " << bundle << "\t" << (node2name == NULL ? node : node2name->getNodebyName(node)) << "\t\n";
-		}
-		//file << "\n";
-	}
-	file << "Objetive function \t" << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
-	file.close();
+String SnowFlake::getProblemNode(int aNode) const {
+    return this->problem_->getNode(aNode);
 }
 
 Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {

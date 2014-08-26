@@ -23,6 +23,7 @@
 #include "util/exception.h"
 
 void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2) {
+    //TODO: hay que mejorar esta porqueria!!!!!!!!!!!
 	this->dao_ = dao;
 	this->tableCosts_ = tableCosts;//ARTICLES
 	this->tableCompat_ = tableCompat;//SIMILARITY
@@ -40,11 +41,11 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
 	std::stringstream query;
 	query<<"select * from "<<this->tableCompat_;
-        if (this->dao_->executeCustomConsultativeQuery(query.str())) {
+    if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
 			this->nodeCompat_->set(convertToInt(dao->getField(1)), convertToInt(dao->getField(2)), convertToDouble(dao->getField(3)));
 		}
-        }
+    }
 }
 
 int ProblemInstanceFromDataBase::getPrimaryId(int id) {

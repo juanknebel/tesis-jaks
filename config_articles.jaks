@@ -29,7 +29,7 @@ DIRECTORY_WORK	/home/ubuntu/tesis-jaks/files/papers/
 
 #------------------------CONFIGURACIONES GENERALES--------------------------------#
 #Cantidad de SnowFlakes
-NUM_FLAKES	30
+NUM_FLAKES	10
 
 #Cantidad maxima de iteraciones
 MAX_TRIALS	10

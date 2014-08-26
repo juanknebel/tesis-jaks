@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 project(tesis-jaks_exe)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
-set(tesis-jaks_source_files src/util/identificationGeneretor.cpp
+set(tesis-jaks_source_files src/util/writerSolution.cpp
+src/util/writerSolutionAffiliations.cpp
+src/util/writerSolutionAuthors.cpp
+src/util/writerSolutionArticles.cpp
+src/util/identificationGeneretor.cpp
 src/util/identificationGeneretorAffiliation.cpp
 src/util/identificationGeneretorAuthor.cpp
 src/util/identificationGeneretorArticle.cpp

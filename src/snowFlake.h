@@ -38,8 +38,7 @@ public:
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids() const;
-	static String showSolution(std::vector<SnowFlake>& solution, const Id2Str* node2name);
-	static void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
+    String getProblemNode(int aNode) const;
 	static Double objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
 };
 
