@@ -6,7 +6,7 @@
 class WriterSolutionAuthors : public WriterSolution
 {
 public:
-    WriterSolutionAuthors() : WriterSolution() {}
+    WriterSolutionAuthors(String separator) : WriterSolution(separator) {}
 
     void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
 

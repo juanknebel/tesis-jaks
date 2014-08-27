@@ -24,6 +24,8 @@ private:
 
 	Double getMinCompat();
 
+    Uint identificator_;
+
 public:
 	SnowFlake();
 	SnowFlake(const SnowFlake& snowflake);
@@ -40,6 +42,9 @@ public:
 	IntSet& ids() const;
     String getProblemNode(int aNode) const;
 	static Double objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
+    Uint getIdentificator() const;
+    void setIdentificator(Uint theIdentificator);
+    static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
 };
 
 #endif /* SNOWFLAKE_H_ */

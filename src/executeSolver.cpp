@@ -102,7 +102,7 @@ void settingGlobalVariables(ConfigurationJaks& configFile) {
 	
 	printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
 	writeToFile = ((configFile["write_file"] == "1") ? true : false);
-    theWriter = new WriterSolutionAuthors();
+    theWriter = new WriterSolutionAuthors("\t");
 }
 
 ProblemInstance* instanceTheProblemForDB() {
@@ -143,7 +143,7 @@ void showSolution(SnowFlakeVector& solution) {
 	}
 }
 
-void writeSolution(const SnowFlakeVector& solution) {
+void writeSolution(SnowFlakeVector& solution) {
 	if(writeToFile) {
 		std::stringstream fileName;
 		fileName << directoryOfWork<<"Solver-";
@@ -177,6 +177,7 @@ void writeSolution(const SnowFlakeVector& solution) {
 		fileName << "_ToProduce-"<<toProduce<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
         theWriter->writeSolution(solution, fileName.str(), theNodeName, interSimilarityWeight);
+        theWriter->writeInterAndIntraValues(solution, fileName.str(), interSimilarityWeight);
 	}
 }
 

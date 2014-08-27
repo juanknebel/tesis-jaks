@@ -6,14 +6,17 @@
 #include "redefinitions.h"
 
 class WriterSolution {
+protected:
+    String separator_;
+    String endOfLIne_;
 public:
-    WriterSolution();
+    WriterSolution(String separator);
 
     virtual String showInScreen(std::vector<SnowFlake>& solution,const Id2Str* node2name);
 
     virtual void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) = 0;
 
-    virtual void writeInterAndIntraValues(const std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight);
+    virtual void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight);
 
     virtual ~WriterSolution();
 };

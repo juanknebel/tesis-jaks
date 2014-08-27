@@ -27,21 +27,25 @@ Double SnowFlake::getMinCompat() {
 SnowFlake::SnowFlake() {
 	this->elements_ = 0;
 	this->problem_ = 0;
+    this->identificator_ = 0;
 }
 
 SnowFlake::SnowFlake(const IntSet& elements, ProblemInstance* problem) {
 	this->problem_ = problem;
 	this->elements_ = new IntSet(elements);
+    this->identificator_ = 0;
 }
 
 SnowFlake::SnowFlake(const SnowFlake& snowflake){
 	this->problem_ = snowflake.problem_;
 	this->elements_ = new IntSet(*(snowflake.elements_));
+    this->identificator_ = snowflake.getIdentificator();
 }
 
 SnowFlake& SnowFlake::operator=(const SnowFlake& snowflake) {
 	this->problem_ = snowflake.problem_;
 	this->elements_ = new IntSet(*(snowflake.elements_));
+    this->identificator_ = snowflake.getIdentificator();
 	return *this;
 }
 
@@ -128,4 +132,16 @@ Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Doubl
 		}
 	}
 	return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
+}
+
+Uint SnowFlake::getIdentificator() const {
+    return this->identificator_;
+}
+
+void SnowFlake::setIdentificator(Uint theIdentificator) {
+    this->identificator_ = theIdentificator;
+}
+
+Double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake) {
+    return aSnowFlake.problem_->maxPairwiseCompatibility(aSnowFlake.ids(), otherSnowFlake.ids());
 }
