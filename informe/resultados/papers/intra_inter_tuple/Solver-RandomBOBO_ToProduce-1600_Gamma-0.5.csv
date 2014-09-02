@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 1	Automated Support for Encapsulating Abstract Data Types.	SIGSOFT FSE	Robert W. Bowdidge, William G. Griswold	
+Bundle 1	Petri Net Performance Models.	IEEE Trans. Software Eng.	Guy Juanole	
+Bundle 1	RCAT: A Performance Analysis Tool.	ASE	Zakarya Alzamil	
+Bundle 1	An Introduction to the Programmer's Workbench.	ICSE	John R. Mashey, Ted A. Dolotta	
+Bundle 2	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.	ACM Trans. Softw. Eng. Methodol.	Carol Smidts, Avik Sinha	
+Bundle 2	Reducing the Cost of Path Property Monitoring Through Sampling.	ASE	Sebastian G. Elbaum, Matthew B. Dwyer, Madeline Diep	
+Bundle 2	An Empirical Study of Communication in Code Inspections.	ICSE	Victor R. Basili, Carolyn B. Seaman	
+Bundle 2	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 2	Guest Editor's Introduction Formal Methods in Software Engineering.	IEEE Trans. Software Eng.	Nancy G. Leveson	
+Bundle 3	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 3	Distributed software development projects: work breakdown approaches to overcome key coordination challenges.	ICSE	Jude Fernandez, Sanjay Mohan	
+Bundle 3	On CASE Tool Usage at Nokia.	ASE	Alessandro Maccari, Claudio Riva, Francesco Maccari	
+Bundle 3	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 3	Reuse of Software Through Generation of Partial Systems.	IEEE Trans. Software Eng.	Franz-Josef Polster	
+Bundle 4	Efficient Analysis of DynAlloy Specifications.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, Marcelo F. Frias, Carlos López Pombo, Juan P. Galeotti	
+Bundle 4	A context-sensitive structural heuristic for guided search model checking.	ASE	Neha Rungta, Eric G. Mercer	
+Bundle 4	Dealing with Non-Functional Requirements: Three Experimental Studies of a Process-Oriented Approach.	ICSE	Brian A. Nixon, Lawrence Chung	
+Bundle 4	Architectural primitives for distribution and mobility.	SIGSOFT FSE	José Luiz Fiadeiro, Michel Wermelinger, Antónia Lopes	
+Bundle 4	A Rational Design Process: How and Why to Fake it.	IEEE Trans. Software Eng.	David Lorge Parnas, Paul C. Clements	
+Bundle 5	SLAN-4 - A Software Specification and Design Language.	IEEE Trans. Software Eng.	Otthein Herzog, Friedrich W. Beichter, Heiko Petzsch	
+Bundle 5	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 5	Using return on investment to compare agile and plan-driven practices in undergraduate group projects.	ICSE	R. G. Dewar, P. J. Rundle	
+Bundle 5	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 5	An Empirical Study of the Evolution of a Software System.	ASE	Rachel Harrison, Brian Warboys, R. Mark Greenwood, Peter Henderson	
+Bundle 6	An Approach to Distributed Computing System Software Design.	IEEE Trans. Software Eng.	Sol M. Shatz, Stephen S. Yau, Chen-Chau Yang	
+Bundle 6	Amoeba: A methodology for modeling and evolving cross-organizational business processes.	ACM Trans. Softw. Eng. Methodol.	Nirmit Desai, Amit K. Chopra, Munindar P. Singh	
+Bundle 6	Light-weight context recovery for efficient and accurate program analyses.	ICSE	Mary Jean Harrold, Donglin Liang	
+Bundle 6	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 6	Application of Formal Methods to the Development of a Software Maintenance Tool.	ASE	Philippe Facon, Sandrine Blazy	
+Bundle 7	Reasoning About Probabilistic Behavior in Concurrent Systems.	IEEE Trans. Software Eng.	P. A. Subrahmanyam, S. Purushothaman	
+Bundle 7	Reasoning about static and dynamic properties in alloy: A purely relational approach.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, T. S. E. Maibaum, Gabriel A. Baum, Marcelo F. Frias, Carlos López Pombo	
+Bundle 7	Towards Certifying Domain-Specific Properties of Synthesized Code.	ASE	Jon Whittle, Grigore Rosu	
+Bundle 7	Automatic generation and maintenance of correct spreadsheets.	ICSE	Martin Erwig, Robin Abraham, Irene Cooperstein, Steve Kollmansberger	
+Bundle 7	Architectural primitives for distribution and mobility.	SIGSOFT FSE	José Luiz Fiadeiro, Michel Wermelinger, Antónia Lopes	
+Bundle 8	Shortening Matching Time in OPS5 Production Systems.	IEEE Trans. Software Eng.	Jeong A. Kang, Albert Mo Kim Cheng	
+Bundle 8	Test conditions for fault classes in Boolean specifications.	ACM Trans. Softw. Eng. Methodol.	Jonathan P. Bowen, Kalpesh Kapoor	
+Bundle 8	Pallino: automation to support regression test selection for cots-based applications.	ASE	Jiang Zheng 0001, Brian Robinson, Laurie Williams	
+Bundle 8	On Formal Requirements Modeling Languages: RML Revisited.	ICSE	Alexander Borgida, John Mylopoulos, Sol J. Greenspan	
+Bundle 8	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 9	Real-Time Execution Monitoring.	IEEE Trans. Software Eng.	Bernhard Plattner	
+Bundle 9	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 9	Automated Software Testing Using a Metaheuristic Technique Based on Tabu Search.	ASE	Raquel Blanco, Eugenia Díaz, Javier Tuya	
+Bundle 9	Building modular object-oriented systems with reusable collaborations (tutorial session).	ICSE	Karl J. Lieberherr, Mira Mezini, David H. Lorenz	
+Bundle 9	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 10	An Engineering Approach to Software Test Data Design.	IEEE Trans. Software Eng.	Samuel T. Redwine Jr.	
+Bundle 10	Avoiding coincidental correctness in boundary value analysis.	ACM Trans. Softw. Eng. Methodol.	Robert M. Hierons	
+Bundle 10	A unified fitness function calculation rule for flag conditions to improve evolutionary testing.	ASE	Hehui Liu, Bin Wang, Xiyang Liu, Ping Chen, Xiyao Cai	
+Bundle 10	Secure systems development based on the common criteria: the PalME project.	SIGSOFT FSE	Guido Wimmel, Alexander K. Wißpeintner, Monika Vetterling	
+Bundle 10	A System for Parallel Programming.	ICSE	Karsten Schwan, Sridhar Vasudevan, Rajiv Ramnath, David M. Ogle	
+Objetive function 	37.0669

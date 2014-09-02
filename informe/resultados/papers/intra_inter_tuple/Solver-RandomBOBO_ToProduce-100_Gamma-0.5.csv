@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	Approximate Reasoning About the Semantic Effects of Program Changes.	IEEE Trans. Software Eng.	Mark Moriconi, Timothy C. Winkler	
+Bundle 1	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 1	Experience applying the SPIN model checker to an industrial telecommunications system.	ICSE	T. C. Nicholas Graham, Jürgen Dingel, Barry Long	
+Bundle 1	Containment units: a hierarchically composable architecture for adaptive systems.	SIGSOFT FSE	Leon J. Osterweil, Barbara Staudt Lerner, Alexander E. Wise, Jamieson M. Cobleigh	
+Bundle 1	Group Support for Distributed Collaborative Concurrent Software Modeling.	ASE	Naoufel Boulila	
+Bundle 2	Validation on an Approach for Improving Existing Measurement Frameworks.	IEEE Trans. Software Eng.	Victor R. Basili, Manoel G. Mendonça	
+Bundle 2	A Visual Model for Ada Tasking.	ACM Trans. Softw. Eng. Methodol.	Laura K. Dillon	
+Bundle 2	UMLtoCSP: a tool for the formal verification of UML/OCL models using constraint programming.	ASE	Jordi Cabot, Robert Clarisó, Daniel Riera	
+Bundle 2	Augmenting SADT to Develop Computer Support for Cooperative Work.	ICSE	David A. Marca	
+Bundle 2	Toward a Formal Theory of Extensible Software.	SIGSOFT FSE	Shriram Krishnamurthi, Matthias Felleisen	
+Bundle 3	A Formal Analysis of the Fault-Detecting Ability of Testing Methods.	IEEE Trans. Software Eng.	Phyllis G. Frankl, Elaine J. Weyuker	
+Bundle 3	Reifying Variants in Configuration Management.	ACM Trans. Softw. Eng. Methodol.	Jean-Marc Jézéquel	
+Bundle 3	Experience in using a process language to define scientific workflow and generate dataset provenance.	SIGSOFT FSE	Lori A. Clarke, Leon J. Osterweil, Alexander E. Wise, Rodion M. Podorozhny, Aaron M. Ellison, Julian L. Hadley, Emery R. Boose	
+Bundle 3	Semantic Links and Co-Evolution in Object-Oriented Software Development.	ASE	Ragnhild Van Der Straeten	
+Bundle 3	The Design of a Template Structure for a Generalized Data Structure Definition Facility.	ICSE	Billy G. Claybrook	
+Bundle 4	Finding Clones with Dup: Analysis of an Experiment.	IEEE Trans. Software Eng.	Brenda S. Baker	
+Bundle 4	DSD-Crasher: A hybrid analysis tool for bug finding.	ACM Trans. Softw. Eng. Methodol.	Tao Xie, Yannis Smaragdakis, Christoph Csallner	
+Bundle 4	UMLtoCSP: a tool for the formal verification of UML/OCL models using constraint programming.	ASE	Jordi Cabot, Robert Clarisó, Daniel Riera	
+Bundle 4	High-Pressure Steam Engines and Computer Software.	ICSE	Nancy G. Leveson	
+Bundle 4	Reasoning about Implicit Invocation.	SIGSOFT FSE	David Garlan, David Notkin, Somesh Jha	
+Bundle 5	Reasoning About Probabilistic Behavior in Concurrent Systems.	IEEE Trans. Software Eng.	P. A. Subrahmanyam, S. Purushothaman	
+Bundle 5	Structural Testing of Rule-Based Expert Systems.	ACM Trans. Softw. Eng. Methodol.	James D. Kiper	
+Bundle 5	Automated Verification Tool for DHTML.	ASE	Takaaki Tateishi, Kouichi Ono, Hisashi Miyashita, Shin Saito	
+Bundle 5	Dragonfly: linking conceptual and implementation architectures of multiuser interactive systems.	ICSE	T. C. Nicholas Graham, Gary E. Anderson, Timothy N. Wright	
+Bundle 5	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 6	A Case History Analysis of Software Error Cause-Effect Relationships.	IEEE Trans. Software Eng.	Takeshi Nakajo, Hitoshi Kume	
+Bundle 6	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 6	Marple: a demand-driven path-sensitive buffer overflow detector.	SIGSOFT FSE	Mary Lou Soffa, Wei Le	
+Bundle 6	NAVCo: Negotiation-based Adaptive View Coordination.	ASE	Prasanta K. Bose, Mark G. Matthews	
+Bundle 6	Test Procedures: A New Approach to Software Verification.	ICSE	David J. Panzl	
+Bundle 7	A Noninterference Monitoring and Replay Mechanism for Real-Time Software Testing and Debugging.	IEEE Trans. Software Eng.	Jeffrey J. P. Tsai, Yao-Dong Bi, Horng-Yuan Chen, Kwang-Ya Fang	
+Bundle 7	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 7	Automatic code stylizing.	ASE	Steven P. Reiss	
+Bundle 7	Experience applying the SPIN model checker to an industrial telecommunications system.	ICSE	T. C. Nicholas Graham, Jürgen Dingel, Barry Long	
+Bundle 7	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 8	On Programming by Iterations.	IEEE Trans. Software Eng.	Wladyslaw M. Turski	
+Bundle 8	The Pan Language-Based Editing System.	ACM Trans. Softw. Eng. Methodol.	Susan L. Graham, Robert A. Ballance, Michael L. Van de Vanter	
+Bundle 8	Validating Automotive Control Software Using Instrumentation-Based Verification.	ASE	Rance Cleaveland, Arnab Ray, Chris Martin, Charles P. Shelton, Iris Morschhaeuser, Christopher Ackermann	
+Bundle 8	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 8	On The Supervision and Assessment Of Part-Time Postgraduate Software Engineering Projects.	ICSE	Andrew Martin, Andrew Simpson, Jeremy Gibbons, Steve McKeever, Jim Davies	
+Bundle 9	Engineering of Framework-Specific Modeling Languages.	IEEE Trans. Software Eng.	Matthew Stephan, Krzysztof Czarnecki, Michal Antkiewicz	
+Bundle 9	Software Process Modeling and Execution Within Virtual Environments.	ACM Trans. Softw. Eng. Methodol.	Alexander L. Wolf, Dennis Heimbigner, John C. Doppke	
+Bundle 9	Software Cost Estimation using Fuzzy Decision Trees.	ASE	Andreas S. Andreou, Efi Papatheocharous	
+Bundle 9	Why use the model driven architecture to design and build distributed applications?	ICSE	Jon Siegel	
+Bundle 9	Experience in using a process language to define scientific workflow and generate dataset provenance.	SIGSOFT FSE	Lori A. Clarke, Leon J. Osterweil, Alexander E. Wise, Rodion M. Podorozhny, Aaron M. Ellison, Julian L. Hadley, Emery R. Boose	
+Bundle 10	A Reference Architecture for the Component Factory.	ACM Trans. Softw. Eng. Methodol.	Victor R. Basili, Gianluigi Caldiera, Giovanni Cantone	
+Bundle 10	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 10	NAVCo: Negotiation-based Adaptive View Coordination.	ASE	Prasanta K. Bose, Mark G. Matthews	
+Bundle 10	Load-Leveling in Fault-Tolerant Distributed Computing Systems.	IEEE Trans. Software Eng.	Lalit M. Patnaik, Kailasam Viswanathan Iyer	
+Bundle 10	Test Procedures: A New Approach to Software Verification.	ICSE	David J. Panzl	
+Objetive function 	22.9482

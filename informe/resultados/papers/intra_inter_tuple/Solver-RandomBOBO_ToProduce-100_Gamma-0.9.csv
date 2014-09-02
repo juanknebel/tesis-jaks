@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	A Remote Procedure Call Facility for Interconnecting Heterogeneous Computer Systems.	IEEE Trans. Software Eng.	Dennis T. Ching, Brian N. Bershad, Michael F. Schwartz, Jan Sanislo, Edward D. Lazowska	
+Bundle 1	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 1	Experiences and results from initiating field defect prediction and product test prioritization efforts at ABB Inc.	ICSE	Mary Shaw, James D. Herbsleb, Brian Robinson, Paul Luo Li	
+Bundle 1	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 1	Combining the Best Attributes of Qualitative and Quantitative Risk Management Tool Support.	ASE	Martin S. Feather, Timothy W. Larson, Steven L. Cornford	
+Bundle 2	Reusability in Programming: A Survey of the State of the Art.	IEEE Trans. Software Eng.	T. Capers Jones	
+Bundle 2	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 2	Predicting Effectiveness of Automatic Testing Tools.	ASE	Brett Daniel, Marat Boshernitsan	
+Bundle 2	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 2	In Defense of Coverage Criteria.	ICSE	Elaine J. Weyuker	
+Bundle 3	Distributed Checkpointing for Globally Consistent States of Databases.	IEEE Trans. Software Eng.	Sang Hyuk Son, Ashok K. Agrawala	
+Bundle 3	Combining and Adapting Software Quality Predictive Models by Genetic Algorithms.	ASE	Houari A. Sahraoui, Balázs Kégl, Doina Precup, Salah Bouktif, Danielle Azar	
+Bundle 3	Lessons learnt from the analysis of large-scale corporate databases.	ICSE	D. Ross Jeffery, Barbara Kitchenham, Cat Kutay, Colin Connaughton	
+Bundle 3	Semi-automating small-scale source code reuse via structural correspondence.	SIGSOFT FSE	Robert J. Walker, Rylan Cottrell, Jörg Denzinger	
+Bundle 3	3 Language.	ACM Trans. Softw. Eng. Methodol.	Gian Pietro Picco, Maria Letizia Jaccheri, Patricia Lago	
+Bundle 4	Prudent Engineering Practice for Cryptographic Protocols.	IEEE Trans. Software Eng.	Roger M. Needham, Martín Abadi	
+Bundle 4	Formal Specification and Designof a Message Router.	ACM Trans. Softw. Eng. Methodol.	Gruia-Catalin Roman, Christian Creveuil	
+Bundle 4	VUML : a Viewpoint oriented UML Extension.	ASE	Mahmoud Nassar	
+Bundle 4	The Role of Experience and Ability in Comprehension Tasks Supported by UML Stereotypes.	ICSE	Marco Torchiano, Massimiliano Di Penta, Paolo Tonella, Mariano Ceccato, Filippo Ricca	
+Bundle 4	Making embedded software reuse practical and safe.	SIGSOFT FSE	Nancy G. Leveson, Kathryn Anne Weiss	
+Bundle 5	Identifying Extended Entity-Relationship Object Structures in Relational Schemas.	IEEE Trans. Software Eng.	Victor M. Markowitz, Johann A. Makowsky	
+Bundle 5	A Visual Model for Ada Tasking.	ACM Trans. Softw. Eng. Methodol.	Laura K. Dillon	
+Bundle 5	Tools for Traceability in Secure Software Development.	ASE	Jan Jürjens, Yijun Yu, Jörg Schreck	
+Bundle 5	Model-based security analysis for mobile communications.	ICSE	Jan Jürjens, Jörg Schreck, Peter Bartmann	
+Bundle 5	Toward a Formal Theory of Extensible Software.	SIGSOFT FSE	Shriram Krishnamurthi, Matthias Felleisen	
+Bundle 6	Tolerating Deviations in Process Support Systems via Flexible Enactment of Process Models.	IEEE Trans. Software Eng.	Gianpaolo Cugola	
+Bundle 6	Empirical evaluation of a nesting testability transformation for evolutionary testing.	ACM Trans. Softw. Eng. Methodol.	David Binkley, Mark Harman, Phil McMinn	
+Bundle 6	Alattin: Mining Alternative Patterns for Detecting Neglected Conditions.	ASE	Tao Xie, Suresh Thummalapenta	
+Bundle 6	Component design of retargetable program analysis tools that reuse intermediate representations.	ICSE	William G. Griswold, James Hayes, Stuart Moskovics	
+Bundle 6	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 7	Formal Modeling of Virtual Machines.	IEEE Trans. Software Eng.	Armin B. Cremers, Thomas N. Hibbard	
+Bundle 7	Measuring the strength of information flows in programs.	ACM Trans. Softw. Eng. Methodol.	Wes Masri, Andy Podgurski	
+Bundle 7	A parameterized interpreter for modeling different AOP mechanisms.	ASE	Naoyasu Ubayashi, Tetsuo Tamai, Genki Moriyama, Hidehiko Masuhara	
+Bundle 7	Temporal dependency based checkpoint selection for dynamic verification of fixed-time constraints in grid workflow systems.	ICSE	Yun Yang, Jinjun Chen	
+Bundle 7	Abstracting Dependencies between Software Configuration Items.	SIGSOFT FSE	Carl A. Gunter	
+Bundle 8	Caching Hints in Distributed Systems.	IEEE Trans. Software Eng.	Douglas B. Terry	
+Bundle 8	Using a pilot study to derive a GUI model for automated testing.	ACM Trans. Softw. Eng. Methodol.	Atif M. Memon, Qing Xie	
+Bundle 8	Random Test Run Length and Effectiveness.	ASE	James H. Andrews, Alex Groce, Ru-Gang Xu, Melissa Weston	
+Bundle 8	The challenges of software engineering education.	ICSE	Dino Mandrioli, Carlo Ghezzi	
+Bundle 8	An empirical study of the effect of time constraints on the cost-benefits of regression testing.	SIGSOFT FSE	Gregg Rothermel, Hyunsook Do, Siavash Mirarab, Ladan Tahvildari	
+Bundle 9	Incremental Maintenance of Software Artifacts.	IEEE Trans. Software Eng.	Steven P. Reiss	
+Bundle 9	Feature-Oriented Programming and the AHEAD Tool Suite.	ICSE	Don S. Batory	
+Bundle 9	Refining code-design mapping with flow analysis.	SIGSOFT FSE	Michal Young, Xiaofang Zhang, John Howard Eli Fiskio-Lasseter	
+Bundle 9	A Comparison of Questionnaire-Based and GUI-Based Requirements Gathering.	ASE	J. Michael Moore, Frank M. Shipman III	
+Bundle 9	3 Language.	ACM Trans. Softw. Eng. Methodol.	Gian Pietro Picco, Maria Letizia Jaccheri, Patricia Lago	
+Bundle 10	Measuring Process Consistency: Implications for Reducing Software Defects.	IEEE Trans. Software Eng.	Mayuram S. Krishnan, Marc I. Kellner	
+Bundle 10	The Larch/Smalltalk Interface Specification Language.	ACM Trans. Softw. Eng. Methodol.	Yoonsik Cheon, Gary T. Leavens	
+Bundle 10	Modeling ontologies as executable domain specific languages.	ICSE	Dragan Djuric, Jelena Jovanovic, Ramo Sendelj, Vladan Devedzic	
+Bundle 10	Blowtorch: a framework for firewall test automation.	ASE	Daniel Hoffman, Kevin Yoo	
+Bundle 10	A scalable technique for characterizing the usage of temporaries in framework-intensive Java applications.	SIGSOFT FSE	Barbara G. Ryder, Bruno Dufour, Gary Sevitsky	
+Objetive function 	21.9347

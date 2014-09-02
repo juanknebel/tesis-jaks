@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	Analogy-X: Providing Statistical Inference to Analogy-Based Software Cost Estimation.	IEEE Trans. Software Eng.	D. Ross Jeffery, Jacky Keung, Barbara A. Kitchenham	
+Bundle 1	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 1	Statistical Techniques for Software Engineering Practice.	ICSE	David N. Card	
+Bundle 1	Formal Refinement Patterns for Goal-Driven Requirements Elaboration.	SIGSOFT FSE	Axel van Lamsweerde, Robert Darimont	
+Bundle 1	An Empirical Study on Groupware Support for Software Inspection Meetings.	ASE	Stefan Biffl, Michael Halling, Paul Grünbacher	
+Bundle 2	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.	ACM Trans. Softw. Eng. Methodol.	Carol Smidts, Avik Sinha	
+Bundle 2	Reducing the Cost of Path Property Monitoring Through Sampling.	ASE	Sebastian G. Elbaum, Matthew B. Dwyer, Madeline Diep	
+Bundle 2	An Empirical Study of Communication in Code Inspections.	ICSE	Victor R. Basili, Carolyn B. Seaman	
+Bundle 2	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 2	Guest Editor's Introduction Formal Methods in Software Engineering.	IEEE Trans. Software Eng.	Nancy G. Leveson	
+Bundle 3	Real-Time Execution Monitoring.	IEEE Trans. Software Eng.	Bernhard Plattner	
+Bundle 3	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 3	Automated Software Testing Using a Metaheuristic Technique Based on Tabu Search.	ASE	Raquel Blanco, Eugenia Díaz, Javier Tuya	
+Bundle 3	Building modular object-oriented systems with reusable collaborations (tutorial session).	ICSE	Karl J. Lieberherr, Mira Mezini, David H. Lorenz	
+Bundle 3	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 4	Model checking the Java metalocking algorithm.	ACM Trans. Softw. Eng. Methodol.	Scott A. Smolka, Samik Basu	
+Bundle 4	A threat-driven approach to modeling and verifying secure software.	ASE	Kendall E. Nygard, Dianxiang Xu	
+Bundle 4	Toward a Formal Theory of Extensible Software.	SIGSOFT FSE	Shriram Krishnamurthi, Matthias Felleisen	
+Bundle 4	A Distributed Specification Model and Its Prototyping.	IEEE Trans. Software Eng.	Yu Wang	
+Bundle 4	Blending Object-Z and Timed CSP: An Introduction to TCOZ.	ICSE	Jin Song Dong, Brendan P. Mahony	
+Bundle 5	Efficient Analysis of DynAlloy Specifications.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, Marcelo F. Frias, Carlos López Pombo, Juan P. Galeotti	
+Bundle 5	A context-sensitive structural heuristic for guided search model checking.	ASE	Neha Rungta, Eric G. Mercer	
+Bundle 5	Dealing with Non-Functional Requirements: Three Experimental Studies of a Process-Oriented Approach.	ICSE	Brian A. Nixon, Lawrence Chung	
+Bundle 5	Architectural primitives for distribution and mobility.	SIGSOFT FSE	José Luiz Fiadeiro, Michel Wermelinger, Antónia Lopes	
+Bundle 5	A Rational Design Process: How and Why to Fake it.	IEEE Trans. Software Eng.	David Lorge Parnas, Paul C. Clements	
+Bundle 6	Reasoning About Probabilistic Behavior in Concurrent Systems.	IEEE Trans. Software Eng.	P. A. Subrahmanyam, S. Purushothaman	
+Bundle 6	Reasoning about static and dynamic properties in alloy: A purely relational approach.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, T. S. E. Maibaum, Gabriel A. Baum, Marcelo F. Frias, Carlos López Pombo	
+Bundle 6	Towards Certifying Domain-Specific Properties of Synthesized Code.	ASE	Jon Whittle, Grigore Rosu	
+Bundle 6	Automated test case generation for spreadsheets.	ICSE	Gregg Rothermel, Marc Fisher II, Margaret M. Burnett, Curtis R. Cook, Mingming Cao	
+Bundle 6	Architectural primitives for distribution and mobility.	SIGSOFT FSE	José Luiz Fiadeiro, Michel Wermelinger, Antónia Lopes	
+Bundle 7	A Two-Person Inspection Method to Improve Programming Productivity.	IEEE Trans. Software Eng.	James R. Lyle, David B. Bisant	
+Bundle 7	Address translation in telecommunication features.	ACM Trans. Softw. Eng. Methodol.	Pamela Zave	
+Bundle 7	An Object-Oriented Modeling Method for Algebraic Specifications in CafeOBJ.	ICSE	Kokichi Futatsugi, Shin Nakajima	
+Bundle 7	Algebra and Models.	SIGSOFT FSE	C. A. R. Hoare	
+Bundle 7	Formal Framework for Automated Analysis and Verification of Web-Based Applications.	ASE	May Haydar	
+Bundle 8	Functional Data Structures as Updatable Objects.	IEEE Trans. Software Eng.	Jaroslaw Milewski	
+Bundle 8	The Larch/Smalltalk Interface Specification Language.	ACM Trans. Softw. Eng. Methodol.	Yoonsik Cheon, Gary T. Leavens	
+Bundle 8	Residual dynamic typestate analysis exploiting static analysis: results to reformulate and reduce the cost of dynamic analysis.	ASE	Matthew B. Dwyer, Rahul Purandare	
+Bundle 8	Detecting increases in feature coupling using regression tests.	SIGSOFT FSE	Martin P. Robillard, Olivier Giroux	
+Bundle 8	Software Technology in an Automotive Company - Major Challenges.	ICSE	Klaus Grimm	
+Bundle 9	Interface Compilation: Steps Toward Compiling Program Interfaces as Languages.	IEEE Trans. Software Eng.	Dawson R. Engler	
+Bundle 9	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.	ACM Trans. Softw. Eng. Methodol.	Carol Smidts, Avik Sinha	
+Bundle 9	Enforcing Business Policies Through Automated Reconfiguration.	ASE	José Luiz Fiadeiro, Michel Wermelinger, Luis Filipe Andrade	
+Bundle 9	Software test program: a software residency experience.	ICSE	Luis Figueiredo, Carlos Albuquerque, Luckerson Cruz, João Vasconcelos, Augusto Sampaio, Sérgio Cavalcante	
+Bundle 9	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 10	Knowledge Representation and Reasoning in a Software Synthesis Architecture.	IEEE Trans. Software Eng.	Rob A. Rutenbar, Dorothy E. Setliff	
+Bundle 10	Measuring the strength of information flows in programs.	ACM Trans. Softw. Eng. Methodol.	Wes Masri, Andy Podgurski	
+Bundle 10	DiffGen: Automated Regression Unit-Test Generation.	ASE	Tao Xie, Kunal Taneja	
+Bundle 10	Accurate Interprocedural Null-Dereference Analysis for Java.	ICSE	Saurabh Sinha, Mangala Gowri Nanda	
+Bundle 10	Javert: fully automatic mining of general temporal properties from dynamic traces.	SIGSOFT FSE	Zhendong Su, Mark Gabel	
+Objetive function 	44.9824

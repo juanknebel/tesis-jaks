@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	An Exercise in Automatic Program Verification.	IEEE Trans. Software Eng.	Wolfgang Polak	
+Bundle 1	Parallel and Distributed Incremental Attribute Evaluation Algorithms for Multiuser Software Development Environments.	ACM Trans. Softw. Eng. Methodol.	Gail E. Kaiser, Simon M. Kaplan	
+Bundle 1	AGATE, Access Graph-Based Tools for Handling Encapsulation.	ASE	Gilles Ardourel, Marianne Huchard	
+Bundle 1	Listening to programmers - Taxonomies and characteristics of comments in operating system code.	ICSE	Yuanyuan Zhou, Yoann Padioleau, Lin Tan	
+Bundle 1	A scalable technique for characterizing the usage of temporaries in framework-intensive Java applications.	SIGSOFT FSE	Barbara G. Ryder, Bruno Dufour, Gary Sevitsky	
+Bundle 2	Learning Communicating Automata from MSCs.	IEEE Trans. Software Eng.	Benedikt Bollig, Martin Leucker, Carsten Kern, Joost-Pieter Katoen	
+Bundle 2	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.	ACM Trans. Softw. Eng. Methodol.	Carol Smidts, Avik Sinha	
+Bundle 2	A lightweight approach for program analysis and debugging.	ICSE	M. G. Rakesh	
+Bundle 2	DESERT: a decentralized monitoring tool generator.	ASE	Paola Inverardi, Leonardo Mostarda	
+Bundle 2	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 3	Interface Grammars for Modular Software Model Checking.	IEEE Trans. Software Eng.	Tevfik Bultan, Graham Hughes	
+Bundle 3	Amoeba: A methodology for modeling and evolving cross-organizational business processes.	ACM Trans. Softw. Eng. Methodol.	Nirmit Desai, Amit K. Chopra, Munindar P. Singh	
+Bundle 3	Japanese Workshop on Leveraging Web2.0 Technologies in Software Development Environments (WebSDE).	ASE	Makoto Matsushita, Katsuhisa Maruyama, Shinichiro Yamamoto	
+Bundle 3	Architectures and Technologies for Enterprise Application Integration.	ICSE	Ian Gorton, Anna Liu	
+Bundle 3	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 4	Comments on Program Slicing.	IEEE Trans. Software Eng.	Hareton K. N. Leung, Hassan K. Reghbati	
+Bundle 4	Software reuse for scientific computing through program generation.	ACM Trans. Softw. Eng. Methodol.	Martin Erwig, Zhe Fu	
+Bundle 4	Automatic Generation of Content Management Systems from EER-Based Specifications.	ASE	Sebastiano Vigna	
+Bundle 4	Enhancing Software Testing by Judicious Use of Code Coverage Information.	ICSE	Roland Weber, Stefan Berner, Rudolf K. Keller	
+Bundle 4	Automatically locating framework extension examples.	SIGSOFT FSE	Harold Ossher, Barthélémy Dagenais	
+Bundle 5	GUI Interaction Testing: Incorporating Event Context.	IEEE Trans. Software Eng.	Myra B. Cohen, Atif M. Memon, Xun Yuan	
+Bundle 5	Test conditions for fault classes in Boolean specifications.	ACM Trans. Softw. Eng. Methodol.	Jonathan P. Bowen, Kalpesh Kapoor	
+Bundle 5	Test suite reduction and prioritization with call trees.	ASE	Mary Lou Soffa, Gregory M. Kapfhammer, Joshua Geiger, Adam M. Smith	
+Bundle 5	Experimental program analysis: a new paradigm for program analysis.	ICSE	Joseph R. Ruthruff	
+Bundle 5	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 6	On the Optimal Total Processing Time Using Checkpoints.	IEEE Trans. Software Eng.	Zohel Khalil, Boyan Dimitrov, Nikolay Kolev, Peter Petrov	
+Bundle 6	Equivalence analysis and its application in improving the efficiency of program slicing.	ACM Trans. Softw. Eng. Methodol.	Mary Jean Harrold, Donglin Liang	
+Bundle 6	Synthesizing client load models for performance engineering via web crawling.	ASE	John C. Grundy, John G. Hosking, Yuhong Cai	
+Bundle 6	Spontaneous software: a Web-based, object computing paradigm.	ICSE	Glêdson Elias da Silveira	
+Bundle 6	Containment units: a hierarchically composable architecture for adaptive systems.	SIGSOFT FSE	Leon J. Osterweil, Barbara Staudt Lerner, Alexander E. Wise, Jamieson M. Cobleigh	
+Bundle 7	A Formal Model of the Software Test Process.	IEEE Trans. Software Eng.	João W. Cangussu, Raymond A. DeCarlo, Aditya P. Mathur	
+Bundle 7	Estimation of Software Reliability by Stratified Sampling.	ACM Trans. Softw. Eng. Methodol.	Andy Podgurski, Charles Yang, Yolanda McCleese, Francis G. Wolff, Wassim Masri	
+Bundle 7	Automating experimentation on distributed testbeds.	ASE	Alexander L. Wolf, Antonio Carzaniga, Matthew J. Rutherford, Yanyan Wang	
+Bundle 7	Foundations of Software Testing: Dependability Theory.	SIGSOFT FSE	Richard G. Hamlet	
+Bundle 7	Software Quality = Test Accuracy * Test Coverage.	ICSE	H. Ohba	
+Bundle 8	Experiences Using Lightweight Formal Methods for Requirements Modeling.	IEEE Trans. Software Eng.	David Hamilton, Steve M. Easterbrook, Robyn R. Lutz, John Kelly, Richard Covington, Yoko Ampo	
+Bundle 8	Metamodel-based model conformance and multiview consistency checking.	ACM Trans. Softw. Eng. Methodol.	Jonathan S. Ostroff, Richard F. Paige, Phillip J. Brooke	
+Bundle 8	Automating Software Traceability in Very Small Companies: A Case Study and Lessons Learne.	ASE	Paul Grünbacher, Christian Neumuller	
+Bundle 8	Metrics for model driven requirements development.	ICSE	Brian Berenbach, Gail Borotto	
+Bundle 8	Composable semantics for model-based notations.	SIGSOFT FSE	Jianwei Niu, Joanne M. Atlee, Nancy A. Day	
+Bundle 9	An Interval Logic for Real-Time System Specification.	IEEE Trans. Software Eng.	Paolo Nesi, Riccardo Mattolini	
+Bundle 9	Reasoning about static and dynamic properties in alloy: A purely relational approach.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, T. S. E. Maibaum, Gabriel A. Baum, Marcelo F. Frias, Carlos López Pombo	
+Bundle 9	Automated Software Engineering Using Concurrent Class Machines.	ASE	Scott A. Smolka, Yanhong A. Liu, Jingyu Yan, Scott D. Stoller, Radu Grosu	
+Bundle 9	HighSpec: a tool for building and checking OZTA models.	ICSE	Shengchao Qin, Jin Song Dong, Ping Hao, Xian Zhang	
+Bundle 9	COM revisited: tool-assisted modelling of an architectural framework.	SIGSOFT FSE	Daniel Jackson, Kevin J. Sullivan	
+Bundle 10	A Systematic Survey of Program Comprehension through Dynamic Analysis.	IEEE Trans. Software Eng.	Bas Cornelissen, Andy Zaidman, Arie van Deursen, Rainer Koschke, Leon Moonen	
+Bundle 10	Topology analysis of software dependencies.	ACM Trans. Softw. Eng. Methodol.	Martin P. Robillard	
+Bundle 10	Timna: a framework for automatically combining aspect mining analyses.	ASE	Lori L. Pollock, Jeffrey Palm, Mark Chu-Carroll, David Shepherd	
+Bundle 10	Software systems as cities: a controlled experiment.	ICSE	Michele Lanza, Romain Robbes, Richard Wettel	
+Bundle 10	Lightweight Source Model Extraction.	SIGSOFT FSE	Gail C. Murphy, David Notkin	
+Objetive function 	58.7049

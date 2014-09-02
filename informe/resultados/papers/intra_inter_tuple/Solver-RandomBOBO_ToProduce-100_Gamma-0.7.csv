@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	An Essay on Software Reuse.	IEEE Trans. Software Eng.	Thomas A. Standish	
+Bundle 1	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 1	Secure systems development based on the common criteria: the PalME project.	SIGSOFT FSE	Guido Wimmel, Alexander K. Wißpeintner, Monika Vetterling	
+Bundle 1	RCAT: A Performance Analysis Tool.	ASE	Zakarya Alzamil	
+Bundle 1	An Introduction to the Programmer's Workbench.	ICSE	John R. Mashey, Ted A. Dolotta	
+Bundle 2	A Remote Procedure Call Facility for Interconnecting Heterogeneous Computer Systems.	IEEE Trans. Software Eng.	Dennis T. Ching, Brian N. Bershad, Michael F. Schwartz, Jan Sanislo, Edward D. Lazowska	
+Bundle 2	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 2	Experiences and results from initiating field defect prediction and product test prioritization efforts at ABB Inc.	ICSE	Mary Shaw, James D. Herbsleb, Brian Robinson, Paul Luo Li	
+Bundle 2	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 2	Combining the Best Attributes of Qualitative and Quantitative Risk Management Tool Support.	ASE	Martin S. Feather, Timothy W. Larson, Steven L. Cornford	
+Bundle 3	PELAS - Program Error-Locating Assistant System.	IEEE Trans. Software Eng.	Bogdan Korel	
+Bundle 3	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 3	PARTS: A Temporal Logic-Based Real-Time Software Specification and Verification Method.	ICSE	Kyo Chul Kang, Kwang-Il Ko	
+Bundle 3	Formalization and Application of a Unifying Model for Name Management.	SIGSOFT FSE	Jack C. Wileden, Alan Kaplan	
+Bundle 3	A Comparison of Questionnaire-Based and GUI-Based Requirements Gathering.	ASE	J. Michael Moore, Frank M. Shipman III	
+Bundle 4	Identifying High Performance ERP Projects.	IEEE Trans. Software Eng.	Erik Stensrud, Ingunn Myrtveit	
+Bundle 4	The Larch/Smalltalk Interface Specification Language.	ACM Trans. Softw. Eng. Methodol.	Yoonsik Cheon, Gary T. Leavens	
+Bundle 4	Applying the Value/Petri process to ERP software development in China.	ICSE	Barry W. Boehm, LiGuo Huang, Cheng Qian, Hao Hu, Jian Lü, JiDong Ge	
+Bundle 4	Scalable SMT-based verification of GPU kernel functions.	SIGSOFT FSE	Ganesh Gopalakrishnan, Guodong Li	
+Bundle 4	Modeling and Simulation of Context-Aware Mobile Systems.	ASE	Reiko Heckel, Ping Guo	
+Bundle 5	How Software Developers Use Tagging to Support Reminding and Refinding.	IEEE Trans. Software Eng.	Janice Singer, Jody Ryall, Del Myers, Michael J. Muller, Margaret-Anne D. Storey, Li-Te Cheng	
+Bundle 5	Verifying security protocols with Brutus.	ACM Trans. Softw. Eng. Methodol.	Edmund M. Clarke, Somesh Jha, Wilfredo R. Marrero	
+Bundle 5	From MCC and CMM: technology transfers bright and dim.	ICSE	Bill Curtis	
+Bundle 5	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 5	An Empirical Study of the Evolution of a Software System.	ASE	Rachel Harrison, Brian Warboys, R. Mark Greenwood, Peter Henderson	
+Bundle 6	Integrated Performance Models for Distributed Processing in Computer Communication Networks.	IEEE Trans. Software Eng.	Alexander Thomasian, Paul F. Bay	
+Bundle 6	Software Process Modeling and Execution Within Virtual Environments.	ACM Trans. Softw. Eng. Methodol.	Alexander L. Wolf, Dennis Heimbigner, John C. Doppke	
+Bundle 6	Software Cost Estimation using Fuzzy Decision Trees.	ASE	Andreas S. Andreou, Efi Papatheocharous	
+Bundle 6	Why use the model driven architecture to design and build distributed applications?	ICSE	Jon Siegel	
+Bundle 6	Experience in using a process language to define scientific workflow and generate dataset provenance.	SIGSOFT FSE	Lori A. Clarke, Leon J. Osterweil, Alexander E. Wise, Rodion M. Podorozhny, Aaron M. Ellison, Julian L. Hadley, Emery R. Boose	
+Bundle 7	Virtual Benchmarking and Model Continuity in Prototyping Embedded Multiprocessor Signal Processing Systems.	IEEE Trans. Software Eng.	Linda M. Wills, Lewis B. Baumstark Jr., Randall S. Janka	
+Bundle 7	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 7	Locating causes of program failures.	ICSE	Andreas Zeller, Holger Cleve	
+Bundle 7	Using assertions to help end-user programmers create dependable web macros.	SIGSOFT FSE	Gregg Rothermel, Sebastian G. Elbaum, Lorin Hochstein, Christopher Scaffidi, Kathryn T. Stolee, Andhy Koesnandar	
+Bundle 7	Declarative Specification of Software Architectures.	ASE	John Penix, Klaus Havelund, Perry Alexander	
+Bundle 8	GUI Interaction Testing: Incorporating Event Context.	IEEE Trans. Software Eng.	Myra B. Cohen, Atif M. Memon, Xun Yuan	
+Bundle 8	Equivalence analysis and its application in improving the efficiency of program slicing.	ACM Trans. Softw. Eng. Methodol.	Mary Jean Harrold, Donglin Liang	
+Bundle 8	A methodology for automated test generation guided by functional coverage constraints at specification level.	ASE	Virginie Wiels, Christel Seguin, Odile Laurent	
+Bundle 8	Aspectual mixin layers: aspects and features in concert.	ICSE	Thomas Leich, Sven Apel, Gunter Saake	
+Bundle 8	Automating comprehensive safety analysis of concurrent programs using verisoft and TXL.	SIGSOFT FSE	Jürgen Dingel, Hongzhi Liang	
+Bundle 9	Performance Characterization of Optimizing Compilers.	IEEE Trans. Software Eng.	Alan Jay Smith, Rafael H. Saavedra	
+Bundle 9	The Larch/Smalltalk Interface Specification Language.	ACM Trans. Softw. Eng. Methodol.	Yoonsik Cheon, Gary T. Leavens	
+Bundle 9	Software Improvements in an International Company.	ICSE	Susan Rosenbaum, Harvey Wohlwend	
+Bundle 9	Scalable SMT-based verification of GPU kernel functions.	SIGSOFT FSE	Ganesh Gopalakrishnan, Guodong Li	
+Bundle 9	Rule-Based Strategic Reflection: Observing and Modifying Behavior at the Architectural Level.	ASE	Francesco Tisato, Walter Cazzola, Andrea Sosio, Andrea Savigni	
+Bundle 10	Compiling Real-Time Programs With Timing Constraint Refinement and Structural Code Motion.	IEEE Trans. Software Eng.	Seongsoo Hong, Richard Gerber	
+Bundle 10	A Time-Sensitive Object Model for Real-Time Systems.	ACM Trans. Softw. Eng. Methodol.	H. Rebecca Callison	
+Bundle 10	Maturity Status within Front-End Support Organisations.	ICSE	Mira Kajko-Mattsson	
+Bundle 10	A scalable technique for characterizing the usage of temporaries in framework-intensive Java applications.	SIGSOFT FSE	Barbara G. Ryder, Bruno Dufour, Gary Sevitsky	
+Bundle 10	AML: An Architecture Meta-Language.	ASE	David S. Wile	
+Objetive function 	23.2333

@@ -1,0 +1,33 @@
+\section{Introduction}
+In this document we present five results, which contain ten bundles (sets) of five papers of 
+different venues each.\\
+A number of heuristics are applied to a set of papers to find bundles with similar topics presented 
+in different venues.\\
+To define what is a similar topic, we present the topic profile as a vector of n dimension, where 
+$n$ is the number of topics, then the similarity between two papers is given by the vector angle of 
+the two vectors.\\
+We tested this over the original database that contains more than 8000 papers.\\
+We have five solutions with different  $\gamma$ (0,1; 0,3; 0,5; 0,7; 0,9). When $\gamma$ is closer 
+to 1 the solutions has more cohesion inside the bundles and when it is closer to 0 the solution 
+reflects diversity of the answer loosing cohesion inside the bundle.
+
+\cleardoublepage
+\section{Solutions}
+\subsection{$\gamma$ $=$ $0.9$}
+\input{resultados/papers/intra_inter/hac-09.tex}
+
+\cleardoublepage
+\subsection{$\gamma$ $=$ $0.7$}
+\input{resultados/papers/intra_inter/hac-07.tex}
+
+\cleardoublepage
+\subsection{$\gamma$ $=$ $0.5$}
+\input{resultados/papers/intra_inter/hac-05.tex}
+
+\cleardoublepage
+\subsection{$\gamma$ $=$ $0.3$}
+\input{resultados/papers/intra_inter/hac-03.tex}
+
+\cleardoublepage
+\subsection{$\gamma$ $=$ $0.1$}
+\input{resultados/papers/intra_inter/hac-01.tex}

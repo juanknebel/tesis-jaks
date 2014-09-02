@@ -1,0 +1,52 @@
+Bundle	Paper	Venue	Author
+Bundle 1	Real-Time Execution Monitoring.	IEEE Trans. Software Eng.	Bernhard Plattner	
+Bundle 1	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 1	Automated Software Testing Using a Metaheuristic Technique Based on Tabu Search.	ASE	Raquel Blanco, Eugenia Díaz, Javier Tuya	
+Bundle 1	Building modular object-oriented systems with reusable collaborations (tutorial session).	ICSE	Karl J. Lieberherr, Mira Mezini, David H. Lorenz	
+Bundle 1	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 2	Efficient Analysis of DynAlloy Specifications.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, Marcelo F. Frias, Carlos López Pombo, Juan P. Galeotti	
+Bundle 2	A context-sensitive structural heuristic for guided search model checking.	ASE	Neha Rungta, Eric G. Mercer	
+Bundle 2	Dealing with Non-Functional Requirements: Three Experimental Studies of a Process-Oriented Approach.	ICSE	Brian A. Nixon, Lawrence Chung	
+Bundle 2	Architectural primitives for distribution and mobility.	SIGSOFT FSE	José Luiz Fiadeiro, Michel Wermelinger, Antónia Lopes	
+Bundle 2	A Rational Design Process: How and Why to Fake it.	IEEE Trans. Software Eng.	David Lorge Parnas, Paul C. Clements	
+Bundle 3	Software Hut: A Computer Program Engineering Project in the Form of a Game.	IEEE Trans. Software Eng.	David B. Wortman, James J. Horning	
+Bundle 3	Testing by Means of Inductive Program Learning.	ACM Trans. Softw. Eng. Methodol.	Francesco Bergadano, Daniele Gunetti	
+Bundle 3	Automated Web Performance Analysis.	ASE	Martin Pinzger 0002	
+Bundle 3	Moving from a plan driven culture to agile development.	ICSE	Michael Hirsch	
+Bundle 3	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 4	Detecting Unsafe Error Recovery Schedules.	IEEE Trans. Software Eng.	Robyn R. Lutz, Johnny S. Wong	
+Bundle 4	Double Iterative Framework for Flow-Sensitive Interprocedural Data Flow Analysis.	ACM Trans. Softw. Eng. Methodol.	István Forgács	
+Bundle 4	From Capability Specifications to Code for Multi-Agent Software.	ASE	John Mylopoulos, Angelo Susi, Anna Perini, Loris Penserini	
+Bundle 4	A tool for analyzing and detecting malicious mobile code.	ICSE	Akira Mori, Toshimi Sawada, Tomonori Izumida, Tadashi Inoue	
+Bundle 4	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 5	Engineering Dynamic Real-Time Distributed Systems: Architecture, System Description Language, and Middleware.	IEEE Trans. Software Eng.	Binoy Ravindran	
+Bundle 5	Reifying Variants in Configuration Management.	ACM Trans. Softw. Eng. Methodol.	Jean-Marc Jézéquel	
+Bundle 5	A Framework for Dynamic Service Discovery.	ASE	Andrea Zisman, George Spanoudakis, James Dooley	
+Bundle 5	Controlling the Complexity of Software Design.	ICSE	Karl J. Lieberherr	
+Bundle 5	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 6	Modeling of Software Partition for Distributed Real-Time Applications.	IEEE Trans. Software Eng.	James P. Huang	
+Bundle 6	Reifying Variants in Configuration Management.	ACM Trans. Softw. Eng. Methodol.	Jean-Marc Jézéquel	
+Bundle 6	Multiple mass-market applications as components.	ICSE	Kevin J. Sullivan, David Coppit	
+Bundle 6	Finding a History for Software Engineering.	SIGSOFT FSE	Michael S. Mahony	
+Bundle 6	Declarative Specification of Software Architectures.	ASE	John Penix, Klaus Havelund, Perry Alexander	
+Bundle 7	Modeling of Software Partition for Distributed Real-Time Applications.	IEEE Trans. Software Eng.	James P. Huang	
+Bundle 7	Composing expressive runtime security policies.	ACM Trans. Softw. Eng. Methodol.	David Walker, Lujo Bauer, Jay Ligatti	
+Bundle 7	Modeling and Verification of Distributed Real-Time Systems Based on CafeOBJ.	ASE	Kazuhiro Ogata, Kokichi Futatsugi	
+Bundle 7	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 7	3rd International Workshop on Adoption-centric Software Engineering ACSE 2003.	ICSE	Robert Balzer, Margaret-Anne D. Storey, Hausi A. Müller, Marin Litoiu, Scott R. Tilley, Dennis B. Smith, Ken Wong, Jens H. Jahnke	
+Bundle 8	On Homogeneity and On-Line=Off-Line Behavior in M/G/1 Queueing Systems.	IEEE Trans. Software Eng.	Raymond M. Bryant	
+Bundle 8	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 8	Validating Automotive Control Software Using Instrumentation-Based Verification.	ASE	Rance Cleaveland, Arnab Ray, Chris Martin, Charles P. Shelton, Iris Morschhaeuser, Christopher Ackermann	
+Bundle 8	Cooperating Evolving Components: A Rigorous Approach to Evolving Large Software Systems.	ICSE	Jin Sa, Brian Warboys, R. Mark Greenwood	
+Bundle 8	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 9	Analysis of Real-Time Systems by Data Flowgraphs.	IEEE Trans. Software Eng.	Uno R. Kodres	
+Bundle 9	Amoeba: A methodology for modeling and evolving cross-organizational business processes.	ACM Trans. Softw. Eng. Methodol.	Nirmit Desai, Amit K. Chopra, Munindar P. Singh	
+Bundle 9	From Capability Specifications to Code for Multi-Agent Software.	ASE	John Mylopoulos, Angelo Susi, Anna Perini, Loris Penserini	
+Bundle 9	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 9	Generative Techniques for Product Lines.	ICSE	Don S. Batory, Gregory Butler, Krzysztof Czarnecki, Ulrich W. Eisenecker	
+Bundle 10	How Software Developers Use Tagging to Support Reminding and Refinding.	IEEE Trans. Software Eng.	Janice Singer, Jody Ryall, Del Myers, Michael J. Muller, Margaret-Anne D. Storey, Li-Te Cheng	
+Bundle 10	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 10	Automated Aspect Recommendation through Clustering-Based Fan-in Analysis.	ASE	Yao Guo, Danfeng Zhang, Xiangqun Chen	
+Bundle 10	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 10	Edmas: A Locally Distributed Mail System.	ICSE	Andrew P. Black, Guy T. Almes, D. Wiebe, C. Bunje	
+Objetive function 	35.1979
