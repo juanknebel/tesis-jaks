@@ -77,6 +77,12 @@ void initializeDefaultLogger(char *log) {
 	}
 }
 
+std::vector<float>* generateVector(char *theVector) {
+    std::vector<float> *vectorProfile = new std::vector<float>();
+
+    return vectorProfile;
+}
+
 int main(int argc, char *argv[]) {
 	if (argc <= 1) {
 		std::cerr<<errorMsg<<std::endl;
@@ -88,27 +94,39 @@ int main(int argc, char *argv[]) {
 		else {
 			char option = argv[1][1];
 			switch(option) {
-				case 'f':
+                case 'f': {
 					std::cout<<"Using the configuration file ..."<<std::endl;
 					initializeDefaultLogger(argv[3]);
 					usingTestFiles(argv[2]);
 					break;
-				case 't':
+                }
+                case 't': {
 					std::cout<<"Using internal tests ..."<<std::endl;
 					initializeDefaultLogger(argv[2]);
 					usingTestHardcode(argc, argv);
 					break;
-				case 's':
+                }
+                case 's': {
 					std::cout<<"Calculating the similarity ..."<<std::endl;
 					initializeDefaultLogger(argv[2]);
                     insertSimilarity();
 					break;
-				case 'h':
+                }
+                case 'p': {
+                    std::cout<<"Calculating the similarity of the specific profile ..."<<std::endl;
+                    initializeDefaultLogger(argv[3]);
+                    std::vector<float> *specificProfile = generateVector(argv[2]);
+                    insertSimilarity(specificProfile);
+                    break;
+                }
+                case 'h': {
 					std::cout<<"Use mode:"<<std::endl<<useMode<<std::endl;
 					break;
-				default:
+                }
+                default: {
 					std::cerr<<errorMsg<<std::endl;
 					break;
+                }
 			}
 		}
 	}

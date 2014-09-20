@@ -181,6 +181,28 @@ void insertSimilarity() {
     insertSimilarity(tableNameAffiliations, fieldIdAffiliations, tableNameSimilarityAffiliations, queryAffiliations);
 }
 
+void insertSimilarity(std::vector<float> *vector1) {
+    /*
+    String tableNameArticles = "ARTICLE_ITEM";
+    String fieldIdArticles = "ArticleId";
+    String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
+    String tableNameSimilarityArticles = "SIMILARITY";
+
+    String tableNameAuthors = "AUTHOR_ITEM";
+    String fieldIdAuthors = "AuthorId";
+    String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
+    String tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
+    */
+    String tableNameAffiliations = "AFFILIATION_ITEM";
+    String fieldIdAffiliations = "affiliationId";
+    String queryAffiliations = "SELECT AFFILIATION_affiliationId, distributionAffiliation, distribution_KEY FROM tesis.TopicProfileAffiliations ORDER BY AFFILIATION_affiliationId";
+    String tableNameSimilarityAffiliations = "SIMILARITY_AFFILIATIONS";
+
+    //insertSimilarity(tableNameArticles, fieldIdArticles, queryArticles, tableNameSimilarityArticles);
+    //insertSimilarity(tableNameAuthors, fieldIdAuthors, queryAuthors, tableNameSimilarityAuthors);
+    insertSimilarity(tableNameAffiliations, fieldIdAffiliations, tableNameSimilarityAffiliations, queryAffiliations);
+}
+
 void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, String fieldId, String tableNameSimilarity, String query){
 	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
 	bool connect = dao->connect();

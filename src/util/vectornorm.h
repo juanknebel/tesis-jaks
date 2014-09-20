@@ -26,7 +26,6 @@
 #include "redefinitions.h"
 
 void insertSimilarity();
-
-
+void insertSimilarity(std::vector<float> *vector1);
 
 #endif // VECTORNORM_H
