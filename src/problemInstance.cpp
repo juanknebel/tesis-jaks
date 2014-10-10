@@ -72,6 +72,17 @@ Double ProblemInstance::getCompat(int id1, int id2) {
 	return this->nodeCompat_->get(id1, id2);
 }
 
+Double ProblemInstance::getCompatWithSpecificProfile(int id1, int id2) {
+    Double compatWithId1 = 0.0, compatWithId2 = 0.0;
+    if (this->nodeSpecificCompat_->count(id1) > 0) {
+        compatWithId1 = this->nodeSpecificCompat_->at(id1);
+    }
+    if (this->nodeSpecificCompat_->count(id2) > 0) {
+        compatWithId2 = this->nodeSpecificCompat_->at(id2);
+    }
+    return this->getCompat(id1,id2) + compatWithId1 + compatWithId2;
+}
+
 SparseDoubleMatrix2D* ProblemInstance::getCompat() {
 	return this->nodeCompat_;
 }

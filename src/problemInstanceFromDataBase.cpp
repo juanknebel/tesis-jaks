@@ -39,12 +39,19 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->itemCompat2_ = itemCompat2;//item2
 	this->getIds();
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
-	std::stringstream query;
+    std::stringstream query, query1;
 	query<<"select * from "<<this->tableCompat_;
     if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
-			this->nodeCompat_->set(convertToInt(dao->getField(1)), convertToInt(dao->getField(2)), convertToDouble(dao->getField(3)));
+            this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
 		}
+    }
+    this->nodeSpecificCompat_ = new MapIntDouble;
+    query1<<"select * from SIMILARITY_AUX";
+    if (this->dao_->executeCustomConsultativeQuery(query1.str())) {
+        while(this->dao_->fetch()) {
+            (*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(1))] = convertToDouble(this->dao_->getField(2));
+        }
     }
 }
 

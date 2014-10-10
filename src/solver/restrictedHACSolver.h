@@ -17,7 +17,8 @@ public:
 	}
 	virtual ~RestrictedHACSolver();
 
-	SnowFlakeVector* produceManySnowflakes(int numToProduce);
+    SnowFlakeVector* produceManySnowflakesOLD(int numToProduce);
+    SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
 	bool tryMerge(MapIntIntSet* clustering);
     void singleLinkClustering(MapIntIntSet* clustering);

@@ -159,6 +159,46 @@ void insertSimilarity(String tableName, String fieldId, String tableNameSimilari
     deleteTheMapping();
 }
 
+void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, String fieldId, String tableNameSimilarity, String query){
+    Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
+    bool connect = dao->connect();
+    if (!connect) {
+        std::cerr << "Error al conectarse a la base de datos" << std::endl;
+        std::cerr << dao->getError() << std::endl;
+        return ;
+    }
+    int len = createDistributionKeyMap(dao);
+    createMappedId(dao, tableName, fieldId);
+    std::map<int, std::vector<float>* > topicProfile;
+    bool hasresult = dao->executeCustomConsultativeQuery(query);
+
+    if (hasresult) {
+        int lastItemId = 0;
+        while (dao->fetch()) {
+            int itemId = convertToInt(dao->getField(1));
+            if (lastItemId != itemId) {
+                lastItemId = itemId;
+                topicProfile[itemId] = new std::vector<float>(len, 0);
+            }
+            int indexKey = indexOf(dao->getField(3));
+            (*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
+        }
+    }
+
+    for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
+        float angle = angleBetweenVectors(it->second, vector1);
+        if (angle > 0.0001) {
+            std::stringstream query;
+            int item = internalId(it->first);
+            query << "INSERT INTO " + tableNameSimilarity + " (Item, Similarity) VALUES (" << item << ","  << angle << ")";
+            if (!dao->executeCustomModifiableQuery(query.str())) {
+                std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
+                std::cerr<<dao->getError()<<std::endl;
+            }
+        }
+    }
+}
+
 void insertSimilarity() {
     /*
     String tableNameArticles = "ARTICLE_ITEM";
@@ -182,63 +222,10 @@ void insertSimilarity() {
 }
 
 void insertSimilarity(std::vector<float> *vector1) {
-    /*
     String tableNameArticles = "ARTICLE_ITEM";
     String fieldIdArticles = "ArticleId";
     String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
-    String tableNameSimilarityArticles = "SIMILARITY";
+    String tableNameSimilarityArticles = "SIMILARITY_AUX";
 
-    String tableNameAuthors = "AUTHOR_ITEM";
-    String fieldIdAuthors = "AuthorId";
-    String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
-    String tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
-    */
-    String tableNameAffiliations = "AFFILIATION_ITEM";
-    String fieldIdAffiliations = "affiliationId";
-    String queryAffiliations = "SELECT AFFILIATION_affiliationId, distributionAffiliation, distribution_KEY FROM tesis.TopicProfileAffiliations ORDER BY AFFILIATION_affiliationId";
-    String tableNameSimilarityAffiliations = "SIMILARITY_AFFILIATIONS";
-
-    //insertSimilarity(tableNameArticles, fieldIdArticles, queryArticles, tableNameSimilarityArticles);
-    //insertSimilarity(tableNameAuthors, fieldIdAuthors, queryAuthors, tableNameSimilarityAuthors);
-    insertSimilarity(tableNameAffiliations, fieldIdAffiliations, tableNameSimilarityAffiliations, queryAffiliations);
-}
-
-void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, String fieldId, String tableNameSimilarity, String query){
-	Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
-	bool connect = dao->connect();
-	if (!connect) {
-		std::cerr << "Error al conectarse a la base de datos" << std::endl;
-		std::cerr << dao->getError() << std::endl;
-		return ;
-	}
-	int len = createDistributionKeyMap(dao);
-	createMappedId(dao, tableName, fieldId);
-	std::map<int, std::vector<float>* > topicProfile;
-	bool hasresult = dao->executeCustomConsultativeQuery(query);
-
-	if (hasresult) {
-		int lastItemId = 0;
-		while (dao->fetch()) {
-			int itemId = convertToInt(dao->getField(1));
-			if (lastItemId != itemId) {
-				lastItemId = itemId;
-				topicProfile[itemId] = new std::vector<float>(len, 0);
-			}
-			int indexKey = indexOf(dao->getField(3));
-			(*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
-		}
-	}
-
-	for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
-		float angle = angleBetweenVectors(it->second, vector1);
-		if (angle > 0.0001) {
-			std::stringstream query;
-			int item = internalId(it->first);
-			query << "INSERT INTO " + tableNameSimilarity + " (Item, Similarity) VALUES (" << item << ","  << angle << ")";
-			if (!dao->executeCustomModifiableQuery(query.str())) {
-				std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
-				std::cerr<<dao->getError()<<std::endl;
-			}
-		}
-	}
+    calculateSpecificSimilarity(vector1,tableNameArticles, fieldIdArticles, tableNameSimilarityArticles, queryArticles);
 }

@@ -32,9 +32,11 @@ protected:
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
 	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
+    SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
-	SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
-	SnowFlake* pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
+    SnowFlake* pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
+    SnowFlake* pickFlakeSpecificProfile(int pivot, const IntSet& clusterMembers);
+    SnowFlake* pickFlakeSpecificProfile(int specificItem, int pivot, const IntSet& clusterMembers);
 	
 private:
 	struct compatCompare {
@@ -57,6 +59,15 @@ private:
 				return node2_compat >  node1_compat;
 			}
 		};
+
+    struct compatCompareSpecificProfile {
+        compatCompareSpecificProfile(ProblemInstance& aProblem, int pivot) : pivot_(pivot), problem_(aProblem) {}
+        ProblemInstance& problem_;
+        int pivot_;
+        inline bool operator() (int node1, int node2) {
+            return problem_.getCompatWithSpecificProfile(pivot_, node2) >  problem_.getCompatWithSpecificProfile(pivot_, node1);
+        }
+    };
 
 public:
 	Solver(ProblemInstance* problem) {

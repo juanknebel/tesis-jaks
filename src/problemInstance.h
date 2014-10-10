@@ -35,6 +35,10 @@ protected:
 	 * Compatibility between two nodes.
 	 */	
 	SparseDoubleMatrix2D *nodeCompat_;
+    /**
+     * Compatibility with specific profile
+     */
+    MapIntDouble *nodeSpecificCompat_;
 	/**
 	 * Identifiers of nodes.
 	 */
@@ -55,6 +59,7 @@ public:
 	Double getbudget();
 	virtual const IntSet* getCover(int id);
 	virtual Double getCompat(int id1, int id2);
+    virtual Double getCompatWithSpecificProfile(int id1, int id2);
 	virtual SparseDoubleMatrix2D* getCompat();
 	virtual void normalizeNodeCompat();
 	virtual String getNode(int id);

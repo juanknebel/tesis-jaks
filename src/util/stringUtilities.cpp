@@ -61,3 +61,21 @@ int convertToInt(const String& aNumber) {
 Double convertToDouble(const String& aNumber) {
 	return boost::lexical_cast<Double>(aNumber);
 }
+
+/*void removeString(String& str, const String& strToRemove) {
+    String::size_type pos = str.find_last_not_of(strToRemove);
+    str.find_first_not_of(strToRemove);
+
+
+
+    if(pos != String::npos) {
+        str.erase(pos + 1);
+        pos = str.find_first_not_of(strToRemove);
+        if(pos != String::npos) {
+            str.erase(0, pos);
+        }
+    }
+    else {
+        str.erase(str.begin(), str.end());
+    }
+}*/
