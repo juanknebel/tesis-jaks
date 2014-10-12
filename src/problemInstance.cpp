@@ -115,6 +115,21 @@ Double ProblemInstance::maxPairwiseCompatibility(const IntSet& aSet, const IntSe
 	return maxCompatibility;
 }
 
+Double ProblemInstance::maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet) {
+    Double maxCompatibility = 0.0;
+    for (IntSet::iterator it1 = aSet.begin(); it1 != aSet.end(); ++it1) {
+        for (IntSet::iterator it2 = otherSet.begin(); it2 != otherSet.end(); ++it2){
+            int n1 = (int) *it1;
+            int n2 = (int) *it2;
+            Double compatValue = this->getCompatWithSpecificProfile(n1, n2);
+            if (compatValue > maxCompatibility) {
+                maxCompatibility = compatValue;
+            }
+        }
+    }
+    return maxCompatibility;
+}
+
 /*Double ProblemInstance::maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow) {
 	return this->maxPairwiseCompatibility(aSnow.ids(), otherSnow.ids());
 }*/

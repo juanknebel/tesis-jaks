@@ -45,6 +45,7 @@ public:
     Uint getIdentificator() const;
     void setIdentificator(Uint theIdentificator);
     static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
+    Double getSumIntraCompatWithSpecificProfile() const;
 };
 
 #endif /* SNOWFLAKE_H_ */

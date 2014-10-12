@@ -65,6 +65,7 @@ public:
 	virtual String getNode(int id);
 	int getId(String);
 	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
+    Double maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet);
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
 	void createIdNodeMappings(StrVector nodes);
 

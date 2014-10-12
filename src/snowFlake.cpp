@@ -108,6 +108,19 @@ Double SnowFlake::getSumIntraCompat() const {
 	return sum;
 }
 
+Double SnowFlake::getSumIntraCompatWithSpecificProfile() const {
+    Double sum = 0.0;
+    for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+        for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
+            if (*it<*it2) {
+                sum += this->problem_->getCompatWithSpecificProfile(*it, *it2);
+            }
+        }
+    }
+    return sum;
+
+}
+
 void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector) {
 	std::sort(snowFlakesVector.begin(), snowFlakesVector.end());
 }
