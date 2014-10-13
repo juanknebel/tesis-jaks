@@ -1,6 +1,6 @@
 #include "configurator.h"
 
-Configurator::Configurator() {
+Configurator::Configurator(Solver* solver, WriterSolution* writer, IdentificationGeneretor* identificator) {
 }
 
 WriterSolution* Configurator::getTheWrtiter() const {
@@ -8,7 +8,7 @@ WriterSolution* Configurator::getTheWrtiter() const {
 }
 
 Solver* Configurator::getTheSolver() const {
-    return this->theSolver_
+    return this->theSolver_;
 }
 
 String Configurator::getSolverName() const {
