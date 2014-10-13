@@ -21,7 +21,7 @@
 #ifndef TESTINGCLUSTERING_H
 #define TESTINGCLUSTERING_H
 
-#include "../matrixConcrete.h"
+#include "../matrix/matrixConcrete.h"
 #include "../cluster/clustering.h"
 
 class TestingClustering {

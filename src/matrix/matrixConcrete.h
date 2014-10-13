@@ -9,7 +9,7 @@
 #define MATRIXCONCRETE_H_
 
 #include "matrixWrapper.h"
-#include "util/redefinitions.h"
+#include "../util/redefinitions.h"
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
 using namespace boost::numeric::ublas;

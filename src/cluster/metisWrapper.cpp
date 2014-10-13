@@ -8,9 +8,9 @@
 #include <cstdlib>
 #include <cassert>
 #include "metisWrapper.h"
-#include "../util/stringUtilities.h"
-#include "../util/systemUtilities.h"
-#include "../util/Logger.h"
+#include "../util/system/stringUtilities.h"
+#include "../util/system/systemUtilities.h"
+#include "../util/system/Logger.h"
 
 int MetisWrapper::PRECISION_DOUBLE_TO_INTEGER = 1000;
 String MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis

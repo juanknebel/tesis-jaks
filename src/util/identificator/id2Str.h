@@ -8,7 +8,7 @@
 #ifndef ID2STR_H_
 #define ID2STR_H_
 
-#include "redefinitions.h"
+#include "../redefinitions.h"
 #include "identificationGeneretor.h"
 
 class Id2Str {

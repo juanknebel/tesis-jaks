@@ -6,7 +6,7 @@
  */
 
 #include "pairsToJaccardSimilarity.h"
-#include "../util/stringUtilities.h"
+#include "../system/stringUtilities.h"
 
 String PairsToJaccardSimilarity::DEFAULT_FIELD_SEPARATOR = "\t";
 

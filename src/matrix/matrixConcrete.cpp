@@ -10,7 +10,7 @@
 #include <functional>
 #include <iostream>
 #include "matrixConcrete.h"
-#include "util/Logger.h"
+#include "../util/system/Logger.h"
 
 MatrixConcrete::MatrixConcrete(int rows, int cols) : MatrixWrapper(rows, cols) {
 	this->theMatrix_ = new mapped_matrix<Double>(rows, cols);

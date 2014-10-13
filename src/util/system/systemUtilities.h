@@ -8,7 +8,7 @@
 #ifndef SYSTEMUTILITIES_H_
 #define SYSTEMUTILITIES_H_
 
-#include "redefinitions.h"
+#include "../redefinitions.h"
 
 String runExternalProgram(int argc, char *argv[]);
 

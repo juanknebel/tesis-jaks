@@ -6,7 +6,7 @@
  */
 
 #include "id2Str.h"
-#include "stringUtilities.h"
+#include "../system/stringUtilities.h"
 
 Id2Str::Id2Str() {
 	this->node2name_ = 0;

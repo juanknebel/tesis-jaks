@@ -1,8 +1,8 @@
 #ifndef IDENTIFICATIONGENERETOR_H
 #define IDENTIFICATIONGENERETOR_H
 
-#include "redefinitions.h"
-#include "../dao/daoMySql.h"
+#include "../redefinitions.h"
+#include "../../dao/daoMySql.h"
 
 class IdentificationGeneretor {
 protected:

@@ -8,7 +8,7 @@
 #ifndef TESTINGPROBLEMINSTANCE_H_
 #define TESTINGPROBLEMINSTANCE_H_
 
-#include "../problemInstance.h"
+#include "../problem/problemInstance.h"
 
 class TestingProblemInstance {
 private:

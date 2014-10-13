@@ -23,7 +23,7 @@
 #include <fstream>
 #include <vector>
 #include <stdexcept>
-#include "stringUtilities.h"
+#include "system/stringUtilities.h"
 
 char ConfigurationJaks::COMMENT = '#';
 std::string ConfigurationJaks::SEPARATOR = "\t";

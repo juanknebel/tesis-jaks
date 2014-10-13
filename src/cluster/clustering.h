@@ -8,7 +8,7 @@
 #ifndef CLUSTERING_H_
 #define CLUSTERING_H_
 
-#include "../matrixWrapper.h"
+#include "../matrix/matrixWrapper.h"
 
 class Clustering {
 public:

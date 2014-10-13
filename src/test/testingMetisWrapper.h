@@ -8,7 +8,7 @@
 #ifndef TESTINGMETISWRAPPER_H_
 #define TESTINGMETISWRAPPER_H_
 
-#include "../matrixConcrete.h"
+#include "../matrix/matrixConcrete.h"
 #include "../cluster/metisWrapper.h"
 
 class TestingMetisWrapper {

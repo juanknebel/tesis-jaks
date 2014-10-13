@@ -8,7 +8,7 @@
 #ifndef TESTINGMATRIX_H_
 #define TESTINGMATRIX_H_
 
-#include "../matrixConcrete.h"
+#include "../matrix/matrixConcrete.h"
 
 class TestingMatrix {
 private:

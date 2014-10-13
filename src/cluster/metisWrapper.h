@@ -8,7 +8,7 @@
 #ifndef METISWRAPPER_H_
 #define METISWRAPPER_H_
 
-#include "../matrixConcrete.h"
+#include "../matrix/matrixConcrete.h"
 
 class MetisWrapper {
 private:

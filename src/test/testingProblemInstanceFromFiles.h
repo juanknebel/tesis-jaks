@@ -8,7 +8,7 @@
 #ifndef TESTINGPROBLEMINSTANCEFROMFILES_H_
 #define TESTINGPROBLEMINSTANCEFROMFILES_H_
 
-#include "../problemInstanceFromFiles.h"
+#include "../problem/problemInstanceFromFiles.h"
 
 class TestingProblemInstanceFromFiles {
 private:

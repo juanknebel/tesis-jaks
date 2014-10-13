@@ -13,7 +13,7 @@
 #include "testingMetisWrapper.h"
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
-#include "../problemInstanceFromDataBase.h"
+#include "../problem/problemInstanceFromDataBase.h"
 #include "../util/configurationJaks.h"
 #include "../dao/daoMySql.h"
 

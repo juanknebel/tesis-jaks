@@ -6,7 +6,7 @@
  */
 
 #include "produceAndChooseSolver.h"
-#include "../util/stringUtilities.h"
+#include "../util/system/stringUtilities.h"
 #include <float.h>
 
 void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy) {

@@ -7,7 +7,7 @@
 
 #include "clusterAndPickSolver.h"
 #include "../cluster/clustering.h"
-#include "../util/Logger.h"
+#include "../util/system/Logger.h"
 
 
 ClusterAndPickSolver::~ClusterAndPickSolver() {

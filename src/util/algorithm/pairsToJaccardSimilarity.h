@@ -8,7 +8,7 @@
 #ifndef PAIRSTOJACCARDSIMILARITY_H_
 #define PAIRSTOJACCARDSIMILARITY_H_
 
-#include "redefinitions.h"
+#include "../redefinitions.h"
 
 class PairsToJaccardSimilarity {
 public:

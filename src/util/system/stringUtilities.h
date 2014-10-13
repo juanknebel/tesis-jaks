@@ -8,7 +8,7 @@
 #ifndef STRINGUTILITIES_H_
 #define STRINGUTILITIES_H_
 
-#include "redefinitions.h"
+#include "../redefinitions.h"
 
 
 void stringToVectorSplit(String aLine, String aSeparator, StrVector& outVector);

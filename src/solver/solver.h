@@ -9,9 +9,9 @@
 #define SOLVER_H_
 
 #include "../util/redefinitions.h"
-#include "../problemInstance.h"
-#include "../snowFlake.h"
-#include "../util/exception.h"
+#include "../problem/problemInstance.h"
+#include "../problem/snowFlake.h"
+#include "../util/system/exception.h"
 
 typedef std::vector<SnowFlake> SnowFlakeVector;
 

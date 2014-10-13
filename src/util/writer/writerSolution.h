@@ -1,9 +1,9 @@
 #ifndef WRITERSOLUTION_H
 #define WRITERSOLUTION_H
 
-#include "../snowFlake.h"
-#include "id2Str.h"
-#include "redefinitions.h"
+#include "../../problem/snowFlake.h"
+#include "../identificator/id2Str.h"
+#include "../redefinitions.h"
 
 class WriterSolution {
 protected:

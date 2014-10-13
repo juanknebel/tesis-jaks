@@ -19,8 +19,8 @@
  */
 
 #include "vectornorm.h"
-#include "../dao/daoMySql.h"
-#include "../util/stringUtilities.h"
+#include "../../dao/daoMySql.h"
+#include "../system/stringUtilities.h"
 #include <cstdlib>
 #include <iostream>
 

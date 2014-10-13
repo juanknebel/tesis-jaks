@@ -1,5 +1,5 @@
 #include "writerSolution.h"
-#include "stringUtilities.h"
+#include "../system/stringUtilities.h"
 
 WriterSolution::WriterSolution(String separator) {
     this->separator_ = separator;

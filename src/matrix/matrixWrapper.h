@@ -9,7 +9,7 @@
 #define MATRIXWRAPPER_H_
 
 #include <cmath>
-#include "util/redefinitions.h"
+#include "../util/redefinitions.h"
 
 class MatrixWrapper {
 protected:

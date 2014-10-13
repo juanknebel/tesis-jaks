@@ -9,7 +9,7 @@
 #define TESTSUITES_H_
 
 #include <string>
-#include "../util/Logger.h"
+#include "../util/system/Logger.h"
 #include "../solver/restrictedHACWithSpecificItemSolver.h"
 
 void initDefaultDebug();
