@@ -71,7 +71,6 @@ ejecución (mm:ss)} \\
   \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de papers similares}
 \end{table}
 
-
 Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la 
 diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ 
 se acerca a $1$. Suponemos que esto se debe a la estrategía \texttt{produce and choose}. El objetivo 
@@ -143,3 +142,11 @@ $\gamma$ en la etapa de producción se producen los mismos bundles.\\
 Por otro lado todas las soluciones generadas por el algoritmo \texttt{HAC} prácticamente no 
 comparten bundles similares con las demás soluciones, ni siquiera autores similares en toda la 
 solución.
+
+\section{Búsqueda con perfil específico}
+En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
+lo cuál, si bien genero resultados diferentes al algoritmo original, no se veía reflejado en los 
+resultados las temáticas de los bundles con la elegida para la búsqueda. \\
+A partir de ello se decidió modificar también la selección de los bundles para intentar obtener 
+bundles relevantes con el perfil elegido. \\
+A continuación mostramos la temáticas obtenidas con un perfil específico.

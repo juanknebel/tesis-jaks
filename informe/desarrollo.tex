@@ -96,4 +96,23 @@ dar más importancia en los primeras iteraciones al valor del inter.
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
 
+\section{Búsqueda de papers a partid de un perfil específico}
+Partiendo de perfil previamente generado con los temas existentes, se espera una solución en la 
+cuál el conjunto de bundles obtenido contenga papers de los tópicos especificados. \\
+Para esta búsqueda se agregó un parámetro que representa el porcentaje para cada tópico. Este 
+parámetro se representó como un vector y se calculó la distancia con el resto de los papers usando 
+el mismo algoritmo para el cuál había realizado la distancia entre papers. \\
+Para la obtención de la solución se modificó la producción de bundles como así también la 
+selección de los mismos (Produce and Choose). \\
+En la producción de bundles en el algoritmo jerárquico, se utilizó la similitud del perfil 
+específico con los papers en cada paso que intenta unificar dos clusters. A diferencia del cálculo 
+original que la compatibilidad de dos nodos esta dada por su distancia previamente obtenida, en 
+este nuevo caso se agrega a ese resultado la compatibilidad de cada uno de ellos con el perfil 
+específico. \\
+Para la producción del algoritmo BOBO, se agregó junto al pivote en todos los clusters. \\
+Para la selección de los bundles que formarán parte de la solución, a cada cluster se le 
+calculo el valor intra también se tuvo en cuenta la similitud de todos los elmentos con el perfil  
+específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
+vector especifico se le dio mayor peso.
+
 

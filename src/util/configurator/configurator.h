@@ -9,28 +9,49 @@
 #include "../../solver/exhaustiveGreedySumSimSOBOSolver.h"
 #include "../../solver/sequentialScanSolver.h"
 #include "../../solver/restrictedHACWithSpecificItemSolver.h"
-#include "../system/Logger.h"
-#include "../identificator/id2Str.h"
-#include "../system/exception.h"
 #include "../identificator/identificationGeneretorArticle.h"
 #include "../identificator/identificationGeneretorAuthor.h"
 #include "../identificator/identificationGeneretorAffiliation.h"
 #include "../writer/writerSolutionAffiliations.h"
 #include "../writer/writerSolutionAuthors.h"
 #include "../writer/writerSolutionArticles.h"
+#include "../system/Logger.h"
+#include "../identificator/id2Str.h"
+#include "../system/exception.h"
+#include "../../problem/problemInstanceFromDataBase.h"
+#include "../../problem/problemInstanceFromFiles.h"
+
 
 class Configurator {
 private:
     WriterSolution *theWriter_;
     Solver* theSolver_;
-    String solverName_;
+    IdentificationGeneretor* theIdentificator_;
+    Id2Str* theNodeName_;
+    ProduceAndChooseSolver::RankingStrategy theStrategy_;
+    std::string solverName_;
+    int numToProduce_;
+    bool printToScreen_;
+    bool writeToFile_;
+    std::string directoryOfWork_;
+    double gamma_;
 public:
-    Configurator(Solver* solver, WriterSolution* writer, IdentificationGeneretor* identificator);
+    Configurator(Solver* solver, WriterSolution* writer, IdentificationGeneretor* identificator, Id2Str* nodeName,
+                 ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
+                 bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma);
 
     ~Configurator();
     WriterSolution* getTheWrtiter() const;
     Solver* getTheSolver() const;
-    String getSolverName() const;
+    IdentificationGeneretor* getTheIdentificator() const;
+    Id2Str* getTheNodeName() const;
+    ProduceAndChooseSolver::RankingStrategy getTheStrategy() const;
+    std::string getSolverName() const;
+    int getNumToProduce() const;
+    bool getPrintToScreen() const;
+    bool getWriteToFile() const;
+    std::string getDirectoryOfWork() const;
+    double getGamma() const;
 };
 
 #endif // CONFIGURATOR_H
