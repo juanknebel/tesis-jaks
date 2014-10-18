@@ -1,0 +1,52 @@
+Bundle	ArticleId	Paper	Venue	Author
+Bundle 1	1014	From CSP Models to Markov Models.	IEEE Trans. Software Eng.	Jens Nordahl, Erling Vagn Sørensen, Niels Herman Hansen	
+Bundle 1	2621	Topology analysis of software dependencies.	ACM Trans. Softw. Eng. Methodol.	Martin P. Robillard	
+Bundle 1	3022	Model-based self-monitoring embedded programs with temporal logic specifications.	ASE	Li Tan	
+Bundle 1	5169	Risk Management in Software Development: A Technology Overview and the Riskit Method.	ICSE	Jyrki Kontio	
+Bundle 1	5201	Testing context-aware middleware-centric programs: a data flow approach and an RFID-based experimentation.	SIGSOFT FSE	T. H. Tse, W. K. Chan, Heng Lu 0001	
+Bundle 2	1162	Optimizing Shadow Recovery Algorithms.	IEEE Trans. Software Eng.	Jack Kent, Hector Garcia-Molina	
+Bundle 2	2829	Comparing test sets and criteria in the presence of test hypotheses and fault domains.	ACM Trans. Softw. Eng. Methodol.	Robert M. Hierons	
+Bundle 2	3894	Automatic generation of software behavioral models.	ICSE	Mauro Pezzè, Leonardo Mariani, Davide Lorenzoli	
+Bundle 2	5442	Scalable SMT-based verification of GPU kernel functions.	SIGSOFT FSE	Ganesh Gopalakrishnan, Guodong Li	
+Bundle 2	6655	NORA/HAMMR: Making Deduction-Based Software Component Retrieval Practical.	ASE	Bernd Fischer 0002, Johann Schumann	
+Bundle 3	2686	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 3	2887	A unified fitness function calculation rule for flag conditions to improve evolutionary testing.	ASE	Hehui Liu, Bin Wang, Xiyang Liu, Ping Chen, Xiyao Cai	
+Bundle 3	3836	Reverse Engineering to the Architectural Level.	ICSE	David R. Harris, Howard B. Reubenstein, Alexander S. Yeh	
+Bundle 3	5370	Doloto: code splitting for network-bound web 2.0 applications.	SIGSOFT FSE	V. Benjamin Livshits, Emre Kiciman	
+Bundle 3	8833	Analysis of Software Availability/Reliability Under the Influence of Hardware Failures.	IEEE Trans. Software Eng.	Ushio Sumita, Yasushi Masuda	
+Bundle 4	1142	A Reflective Implementation of Java Multi-Methods.	IEEE Trans. Software Eng.	Rémi Forax, Gilles Roussel, Étienne Duris	
+Bundle 4	2834	The interpretation and utility of three cohesion metrics for object-oriented design.	ACM Trans. Softw. Eng. Methodol.	Steve Counsell, Stephen Swift, Jason Crampton	
+Bundle 4	5151	HOLMES: Effective statistical debugging via efficient path profiling.	ICSE	Aditya V. Nori, Ben Liblit, Kapil Vaswani, Krishna K. Mehra, Trishul M. Chilimbi	
+Bundle 4	5429	CAIS: Collaborative Asynchronous Inspection of Software.	SIGSOFT FSE	John Riedl, Vahid Mashayekhi, Chris Feulner	
+Bundle 4	6640	Automatically Structuring Textual Requirement Scenarios.	ASE	Jörg Köller, Andreas Becks	
+Bundle 5	1431	Time-Sensitive Cost Models in the Commercial MIS Environment.	IEEE Trans. Software Eng.	D. Ross Jeffery	
+Bundle 5	2822	Composing expressive runtime security policies.	ACM Trans. Softw. Eng. Methodol.	David Walker, Lujo Bauer, Jay Ligatti	
+Bundle 5	3520	Eliminating navigation errors in web applications via model checking and runtime enforcement of navigation state machines.	ASE	Tevfik Bultan, Sylvain Hallé, Chris Bunch, Taylor Ettema	
+Bundle 5	5498	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 5	9480	Software Architecture Based on Communicating Residential Environments.	ICSE	Erik Sandewall, Claes Strömberg, Henrik Sörensen	
+Bundle 6	2825	An empirical study of industrial requirements engineering process assessment and improvement.	ACM Trans. Softw. Eng. Methodol.	Ian Sommerville, Jane Ransom	
+Bundle 6	3071	Inferring Method Effect Summaries for Nested Heap Regions.	ASE	Danny Dig, Ralph E. Johnson, Jeffrey Overbey, Robert L. Bocchino Jr., Vikram S. Adve, Mohsen Vakilian	
+Bundle 6	5472	Javert: fully automatic mining of general temporal properties from dynamic traces.	SIGSOFT FSE	Zhendong Su, Mark Gabel	
+Bundle 6	8802	Flexible Software Development for Multiple Computer Systems.	IEEE Trans. Software Eng.	Karsten Schwan, Anita K. Jones	
+Bundle 6	9466	Architecture-Oriented Programming Using FRED.	ICSE	Kai Koskimies, Juha Hautamäki, Jukka Paakki, Antti Viljamaa, Jukka Viljamaa, Markku Hakala	
+Bundle 7	1786	Xstream: A Middleware for Streaming XML Contents over Wireless Environments.	IEEE Trans. Software Eng.	Alvin T. S. Chan, Hong Va Leong, Eugene Y. C. Wong	
+Bundle 7	2856	Formal Specification and Designof a Message Router.	ACM Trans. Softw. Eng. Methodol.	Gruia-Catalin Roman, Christian Creveuil	
+Bundle 7	3366	Composition of Qualitative Adaptation Policies.	ASE	Jean-Marc Jézéquel, Olivier Barais, Franck Chauvel, Isabelle Borne	
+Bundle 7	4118	Predicting faults using the complexity of code changes.	ICSE	Ahmed E. Hassan	
+Bundle 7	5491	Efficient online monitoring of web-service SLAs.	SIGSOFT FSE	James Skene, Franco Raimondi, Wolfgang Emmerich	
+Bundle 8	454	An Investigation into the Functional Form of the Size-Defect Relationship for Software Modules.	IEEE Trans. Software Eng.	Khaled El Emam, Akif Günes Koru, Dongsong Zhang, Hongfang Liu	
+Bundle 8	2589	Verifying security protocols with Brutus.	ACM Trans. Softw. Eng. Methodol.	Edmund M. Clarke, Somesh Jha, Wilfredo R. Marrero	
+Bundle 8	2899	On CASE Tool Usage at Nokia.	ASE	Alessandro Maccari, Claudio Riva, Francesco Maccari	
+Bundle 8	4019	Process issues in course projects.	ICSE	Wilson P. Paula Filho	
+Bundle 8	5485	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 9	397	Timed Automata Patterns.	IEEE Trans. Software Eng.	Wang Yi, Jun Sun 0001, Shengchao Qin, Jin Song Dong, Ping Hao	
+Bundle 9	2822	Composing expressive runtime security policies.	ACM Trans. Softw. Eng. Methodol.	David Walker, Lujo Bauer, Jay Ligatti	
+Bundle 9	3513	A strategy for efficient verification of relational specifications, based on monotonicity analysis.	ASE	Marcelo F. Frias, Rodolfo Gamarra, Gabriela Steren, Lorena Bourg	
+Bundle 9	4363	Object-oriented inspection in the face of delocalisation.	ICSE	Marc Roper, Murray Wood, Alastair Dunsmore	
+Bundle 9	5234	Test Case Generation by Means of Learning Techniques.	SIGSOFT FSE	Francesco Bergadano	
+Bundle 10	948	A Retrospective on the VAX VMM Security Kernel.	IEEE Trans. Software Eng.	Mary Ellen Zurko, Andrew H. Mason, Paul A. Karger, Clifford E. Kahn, Douglas W. Bonin	
+Bundle 10	2825	An empirical study of industrial requirements engineering process assessment and improvement.	ACM Trans. Softw. Eng. Methodol.	Ian Sommerville, Jane Ransom	
+Bundle 10	2899	On CASE Tool Usage at Nokia.	ASE	Alessandro Maccari, Claudio Riva, Francesco Maccari	
+Bundle 10	5498	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 10	5552	Empowering Software Engineers in Human-Centered Design.	ICSE	Alina Andreevskaia, Ahmed Seffah	
+Objetive function	24.381

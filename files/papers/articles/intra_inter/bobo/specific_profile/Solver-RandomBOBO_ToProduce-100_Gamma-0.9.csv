@@ -1,0 +1,52 @@
+Bundle	ArticleId	Paper	Venue	Author
+Bundle 1	2816	Effective typestate verification in the presence of aliasing.	ACM Trans. Softw. Eng. Methodol.	Stephen J. Fink, Eran Yahav, Emmanuel Geay, Nurit Dor, G. Ramalingam	
+Bundle 1	3303	Enhancing Partial-Order Reduction via Process Clustering.	ASE	Dragan Bosnacki, Twan Basten	
+Bundle 1	5502	A trace simplification technique for effective debugging of concurrent programs.	SIGSOFT FSE	Koushik Sen, Nicholas Jalbert	
+Bundle 1	6259	A Style-Aware Architectural Middleware for Resource-Constrained, Distributed Systems.	IEEE Trans. Software Eng.	Nenad Medvidovic, Marija Mikic-Rakic, Sam Malek	
+Bundle 1	9195	Knowledge-Based Communication Processes in Software Engineering.	ICSE	M. Schneider, G. Fischer	
+Bundle 2	1852	Using Coverage Information to Predict the Cost-Effectiveness of Regression Testing Strategies.	IEEE Trans. Software Eng.	Elaine J. Weyuker, David S. Rosenblum	
+Bundle 2	2599	Reifying Variants in Configuration Management.	ACM Trans. Softw. Eng. Methodol.	Jean-Marc Jézéquel	
+Bundle 2	5332	Formalization and Application of a Unifying Model for Name Management.	SIGSOFT FSE	Jack C. Wileden, Alan Kaplan	
+Bundle 2	6689	A Visualization Concept for Hierarchical Object Models.	ASE	Martin Glinz, Stefan Berner, Martin Arnold, Stefan Joos	
+Bundle 2	9677	ObNet: An Object-Oriented Approach for Supporting Large, Long-Lived, Highly Configurable Systems.	ICSE	Francesco Tisato, G. Serrano, T. Gallo	
+Bundle 3	259	The Effect of Pairs in Program Design Tasks.	IEEE Trans. Software Eng.	Kim Man Lui, John T. Nosek, Keith C. C. Chan	
+Bundle 3	2854	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 3	5047	Tracking down software bugs using automatic anomaly detection.	ICSE	Monica S. Lam, Sudheendra Hangal	
+Bundle 3	5332	Formalization and Application of a Unifying Model for Name Management.	SIGSOFT FSE	Jack C. Wileden, Alan Kaplan	
+Bundle 3	6731	Group Support for Distributed Collaborative Concurrent Software Modeling.	ASE	Naoufel Boulila	
+Bundle 4	2322	Support for Reusability in Genesis.	IEEE Trans. Software Eng.	C. V. Ramamoorthy, Atul Prakash, Vijay K. Garg	
+Bundle 4	2608	Test conditions for fault classes in Boolean specifications.	ACM Trans. Softw. Eng. Methodol.	Jonathan P. Bowen, Kalpesh Kapoor	
+Bundle 4	3507	An approach to mining call-usage patternswith syntactic context.	ASE	Michael L. Collard, Huzefa H. Kagdi, Jonathan I. Maletic	
+Bundle 4	5045	Mining exception-handling rules as sequence association rules.	ICSE	Tao Xie, Suresh Thummalapenta	
+Bundle 4	5276	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 5	198	Profiling an Incremental Data Flow Analysis Algorithm.	IEEE Trans. Software Eng.	Barbara G. Ryder, William Landi, Hemant D. Pande	
+Bundle 5	2854	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 5	2899	On CASE Tool Usage at Nokia.	ASE	Alessandro Maccari, Claudio Riva, Francesco Maccari	
+Bundle 5	4824	Simulating the Behaviour of Software Modules by Trace Rewriting.	ICSE	David Lorge Parnas, Yabo Wang	
+Bundle 5	5225	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 6	1767	Computing Bounds for the Performance Indices of Quasi-Lumpable Stochastic Well-Formed Nets.	IEEE Trans. Software Eng.	Giuliana Franceschinis, Richard R. Muntz	
+Bundle 6	2822	Composing expressive runtime security policies.	ACM Trans. Softw. Eng. Methodol.	David Walker, Lujo Bauer, Jay Ligatti	
+Bundle 6	2969	Visual Constraint Diagrams: Runtime Conformance Checking of UML Object Models versus Implementations.	ASE	Christopher Wolfe, Julian Ball, David Holman, Hugh D. Stewart, Arthur G. Ryman, T. C. Nicholas Graham, Christopher J. Turner	
+Bundle 6	4970	Reasoning about edits to feature models.	ICSE	Don S. Batory, Christian Kästner, Thomas Thüm	
+Bundle 6	5205	Secure systems development based on the common criteria: the PalME project.	SIGSOFT FSE	Guido Wimmel, Alexander K. Wißpeintner, Monika Vetterling	
+Bundle 7	754	The Software Engineering Shortage: A Third Choice.	IEEE Trans. Software Eng.	James P. McGill	
+Bundle 7	2803	Using shape analysis to reduce finite-state models of concurrent Java programs.	ACM Trans. Softw. Eng. Methodol.	James C. Corbett	
+Bundle 7	2992	Software design sketching with calico.	ASE	André van der Hoek, Nicolas Mangano, Mitch Dempsey, Alex Baker, Emily Oh Navarro	
+Bundle 7	4051	System Acquisition Based on Software Product Assessment.	ICSE	François Coallier, Jean Mayrand	
+Bundle 7	5537	Toward a Formal Theory of Extensible Software.	SIGSOFT FSE	Shriram Krishnamurthi, Matthias Felleisen	
+Bundle 8	2338	ZPL: A Machine Independent Programming Language for Parallel Computers.	IEEE Trans. Software Eng.	Derrick Weathersby, E. Christopher Lewis, Lawrence Snyder, Bradford L. Chamberlain, Sung-Eun Choi, Calvin Lin	
+Bundle 8	2745	A knowledge-based method for inferring semantic concepts from visual models of system behavior.	ACM Trans. Softw. Eng. Methodol.	Hassan Gomaa, Kevin L. Mills	
+Bundle 8	4717	Run-time efficient probabilistic model checking.	ICSE	Carlo Ghezzi, Giordano Tamburrelli, Antonio Filieri	
+Bundle 8	5537	Toward a Formal Theory of Extensible Software.	SIGSOFT FSE	Shriram Krishnamurthi, Matthias Felleisen	
+Bundle 8	6652	Towards a Theory for Integration of Mathematical Verification and Empirical Testing.	ASE	Michael R. Lowry, M. Boyd, D. Kulkarni	
+Bundle 9	1997	A New Architecture for Transformation-Based Generators.	IEEE Trans. Software Eng.	Ted J. Biggerstaff	
+Bundle 9	2792	A formal model of services.	ACM Trans. Softw. Eng. Methodol.	Manfred Broy, Ingolf H. Krüger, Michael Meisinger	
+Bundle 9	5426	Lightweight extraction of syntactic specifications.	SIGSOFT FSE	Daniel Jackson, Mana Taghdiri, Robert Seater	
+Bundle 9	7886	An Empirical Comparison of Automated Generation and Classification Techniques for Object-Oriented Unit Testing.	ASE	Michael D. Ernst, Tao Xie, Darko Marinov, Carlos Pacheco, Marcelo d'Amorim	
+Bundle 9	9291	User Perceived Quality of Interactive Systems.	ICSE	Wolfgang Dzida, Siegfried Herda, Wolf D. Itzfeldt	
+Bundle 10	1576	Analysis and Design in MSG.84: Formalizing Functional Specifications.	IEEE Trans. Software Eng.	Valdis Berzins, Michael Gray	
+Bundle 10	2651	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 10	3122	Automated Aspect Recommendation through Clustering-Based Fan-in Analysis.	ASE	Yao Guo, Danfeng Zhang, Xiangqun Chen	
+Bundle 10	5485	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 10	9597	Software Re-engineering Position Statement.	ICSE	Eric Bush	
+Objetive function	24.1985

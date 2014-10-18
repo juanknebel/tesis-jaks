@@ -1,0 +1,52 @@
+Bundle	ArticleId	Paper	Venue	Author
+Bundle 1	2037	A Logical Theory of Interfaces and Objects.	IEEE Trans. Software Eng.	Donald D. Cowan, Paulo S. C. Alencar, Carlos José Pereira de Lucena	
+Bundle 1	2822	Composing expressive runtime security policies.	ACM Trans. Softw. Eng. Methodol.	David Walker, Lujo Bauer, Jay Ligatti	
+Bundle 1	3513	A strategy for efficient verification of relational specifications, based on monotonicity analysis.	ASE	Marcelo F. Frias, Rodolfo Gamarra, Gabriela Steren, Lorena Bourg	
+Bundle 1	4154	Hooking into Object-Oriented Application Frameworks.	ICSE	Paul G. Sorenson, Ling Liu, H. James Hoover, Garry Froehlich	
+Bundle 1	5489	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 2	312	Quality, Productivity, and Learning in Framework-Based Development: An Exploratory Case Study.	IEEE Trans. Software Eng.	Maurizio Morisio, Daniele Romano, Ioannis Stamelos	
+Bundle 2	2592	A Visual Model for Ada Tasking.	ACM Trans. Softw. Eng. Methodol.	Laura K. Dillon	
+Bundle 2	4891	Precise memory leak detection for java software using container profiling.	ICSE	Atanas Rountev, Guoqing (Harry) Xu	
+Bundle 2	5442	Scalable SMT-based verification of GPU kernel functions.	SIGSOFT FSE	Ganesh Gopalakrishnan, Guodong Li	
+Bundle 2	6585	Computing Interfaces in Java.	ASE	Marianne Huchard, Hervé Leblanc	
+Bundle 3	1215	A Learning Agent that Assists the Browsing of Software Libraries.	IEEE Trans. Software Eng.	Chris Drummond, Dan Ionescu, Robert C. Holte	
+Bundle 3	2691	Efficient Analysis of DynAlloy Specifications.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, Marcelo F. Frias, Carlos López Pombo, Juan P. Galeotti	
+Bundle 3	2969	Visual Constraint Diagrams: Runtime Conformance Checking of UML Object Models versus Implementations.	ASE	Christopher Wolfe, Julian Ball, David Holman, Hugh D. Stewart, Arthur G. Ryman, T. C. Nicholas Graham, Christopher J. Turner	
+Bundle 3	5489	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 3	7544	Tutorial H2: An Overview of UML 2.0.	ICSE	Bran Selic	
+Bundle 4	447	User-Perceived Quality of Interactive Systems.	IEEE Trans. Software Eng.	Wolfgang Dzida, Siegfried Herda, Wolf D. Itzfeldt	
+Bundle 4	2828	Interprocedural Static Analysis of Sequencing Constraints.	ACM Trans. Softw. Eng. Methodol.	Leon J. Osterweil, Kurt M. Olender	
+Bundle 4	3494	Automated Verification Tool for DHTML.	ASE	Takaaki Tateishi, Kouichi Ono, Hisashi Miyashita, Shin Saito	
+Bundle 4	3981	UEMan: A tool to manage user evaluation in development environments.	ICSE	Tiziana Catarci, Yael Dubinsky, Shah Rukh Humayoun	
+Bundle 4	5485	Relevancy based semantic interoperation of reuse repositories.	SIGSOFT FSE	Lu Zhang 0023, Fuqing Yang, Ying Pan, Lei Wang, Bing Xie	
+Bundle 5	756	Interconnection of Local Computer Networks: Modeling and Optimization Problems.	IEEE Trans. Software Eng.	Guy Bernard	
+Bundle 5	2740	Software reuse for scientific computing through program generation.	ACM Trans. Softw. Eng. Methodol.	Martin Erwig, Zhe Fu	
+Bundle 5	4400	Using the ASTRAL Model Checker to Analyze Mobile IP.	ICSE	Richard A. Kemmerer, Zhe Dang	
+Bundle 5	5427	Refining code-design mapping with flow analysis.	SIGSOFT FSE	Michal Young, Xiaofang Zhang, John Howard Eli Fiskio-Lasseter	
+Bundle 5	6765	Retrieving Software Components that Minimize Adaptation Effort.	ASE	Ali Mili, Lamia Labed Jilani, Jules Desharnais, Rym Mili, Marc Frappier	
+Bundle 6	2057	Heterogeneous Data Translations Based on Environment Grammars.	IEEE Trans. Software Eng.	John L. Clevenger, Manfred Ruschitzka	
+Bundle 6	2602	Reasoning about static and dynamic properties in alloy: A purely relational approach.	ACM Trans. Softw. Eng. Methodol.	Nazareno Aguirre, T. S. E. Maibaum, Gabriel A. Baum, Marcelo F. Frias, Carlos López Pombo	
+Bundle 6	5524	Abstracting Dependencies between Software Configuration Items.	SIGSOFT FSE	Carl A. Gunter	
+Bundle 6	6822	Modeling and Simulation of Context-Aware Mobile Systems.	ASE	Reiko Heckel, Ping Guo	
+Bundle 6	9950	Maintenance Support Tools for JAVA Programs: CCFinder and JAAT.	ICSE	Katsuro Inoue, Shinji Kusumoto, Toshihiro Kamiya, Kazuhiro Kondou, Fumiaki Ohata	
+Bundle 7	2174	CSM: A Distributed Programming Language.	IEEE Trans. Software Eng.	Li Xining, Zhongxiu Sun	
+Bundle 7	2643	Unifying aspect- and object-oriented design.	ACM Trans. Softw. Eng. Methodol.	Kevin J. Sullivan, Hridesh Rajan	
+Bundle 7	5212	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 7	6564	Requirements Monitoring for Service-Based Systems: Towards a framework based on Event Calculus.	ASE	George Spanoudakis, Khaled Mahbub	
+Bundle 7	9545	Using Simulation to Build Inspection Efficiency Benchmarks for Development Projects.	ICSE	Khaled El Emam, Lionel C. Briand, Oliver Laitenberger, Thomas Fussbroich	
+Bundle 8	382	Software Bases for the Flexible Composition of Application Systems.	IEEE Trans. Software Eng.	Marcus Oppitz, Roland Mittermeir	
+Bundle 8	2829	Comparing test sets and criteria in the presence of test hypotheses and fault domains.	ACM Trans. Softw. Eng. Methodol.	Robert M. Hierons	
+Bundle 8	3894	Automatic generation of software behavioral models.	ICSE	Mauro Pezzè, Leonardo Mariani, Davide Lorenzoli	
+Bundle 8	5442	Scalable SMT-based verification of GPU kernel functions.	SIGSOFT FSE	Ganesh Gopalakrishnan, Guodong Li	
+Bundle 8	6655	NORA/HAMMR: Making Deduction-Based Software Component Retrieval Practical.	ASE	Bernd Fischer 0002, Johann Schumann	
+Bundle 9	348	Random Injection Control of Multiprogramming in Virtual Memory.	IEEE Trans. Software Eng.	Erol Gelenbe, Alain Kurinckx	
+Bundle 9	2781	Amoeba: A methodology for modeling and evolving cross-organizational business processes.	ACM Trans. Softw. Eng. Methodol.	Nirmit Desai, Amit K. Chopra, Munindar P. Singh	
+Bundle 9	5212	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 9	6581	NAVCo: Negotiation-based Adaptive View Coordination.	ASE	Prasanta K. Bose, Mark G. Matthews	
+Bundle 9	9878	Introduction to the Wellmade Design Methodology.	ICSE	Antonio Pizzarello, Donald L. Boyd	
+Bundle 10	1468	Parametric Fault Tree for the Dependability Analysis of Redundant Systems and Its High-Level Petri Net Semantics.	IEEE Trans. Software Eng.	Andrea Bobbio, Giuliana Franceschinis, Rossano Gaeta, Luigi Portinale	
+Bundle 10	2746	Power laws in software.	ACM Trans. Softw. Eng. Methodol.	Panagiotis Louridas, Vasileios Vlachos, Diomidis Spinellis	
+Bundle 10	5355	Marple: a demand-driven path-sensitive buffer overflow detector.	SIGSOFT FSE	Mary Lou Soffa, Wei Le	
+Bundle 10	6569	Task Oriented Software Understanding.	ASE	W. Lewis Johnson, Ali Erdem, Stacy Marsella	
+Bundle 10	9264	Theory-W Software Project Management: A Case Study.	ICSE	Barry W. Boehm, Rony Ross	
+Objetive function	30.2496
