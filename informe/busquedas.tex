@@ -1,0 +1,34 @@
+Se propusieron las siguientes búsquedas.
+\section{Papers similares, diferentes conferencias}\label{bus:papSimDisLug}
+El objetivo de esta búsqueda es generar una solución de bundles, en el que cada bundle contenga 
+papers de tópicos similares pero que se hayan presentado en distintas conferencias.\\
+Para realizar esta búsqueda se debe definir que se entiende por papers de tópicos similares y cual 
+es la presentación de la conferencia. Para ello en la base de datos ~\ref{int:baseDeDatos} cuenta 
+con la información de la presentación del paper, \texttt{venue} de ahora en adelante, y los 
+perfiles de cada paper ,\texttt{topicProfile} a partir de ahora.\\
+La primer característica se utilizó para la complementariedad de dos papers, por lo que en cada 
+bundle no habrá dos papes de un mismo \texttt{venue}. La segunda característica se utilizó para 
+la similitud entre papers, la cuál se definió como la distancia entre los \texttt{topicProfile}.\\
+Se decidió utilizar como distancia entre \texttt{topicProfile} al ángulo que forman dos 
+vectores, los cuáles en cada posición de ellos pertenece a un porcentaje de un tópico particular.
+\section{Autores similares, distintas universidades}
+Esta búsqueda consiste en encontrar una solución de bundles en el que cada bundle contiene autores 
+similares pero de distinta universidad de afiliación.\\
+Para determinar la similitud entre los autores se creó un perfil de cada uno. Para lograrlo lo 
+primero que se hizo fue tener en cuenta todos los perfiles de papers en los que participaron cada 
+uno de ellos. Al igual que con los papers, el perfil de los autores se representó con un vector. 
+Este vector se cálculo sumarizando los vectores de cada uno de los papers en el que participó.\\
+El paso siguiente fue determinar la similitud de los autores, la primer aproximación fue similar al 
+cálculo de similitud de los papers y calculamos los ángulos entre todos los vectores. Como similitud
+alternativa decidimos restar el perfil de cada autor componente a componente y calcular el valor de 
+su norma, así de esta forma a mayor norma mayor similitud entre autores.\\
+La complementariedad de dos papers se definió al lugar de pertenencia del autor en cuestión.
+\section{Papers similares, con un perfil específico}
+En esta búsqueda se ingresan porcentajes de tópicos predefinidos y encontrar una solución de 
+bundles de manera similar a ~\ref{bus:papSimDisLug} pero siempre teniendo en cuenta que cada 
+bundle además de compartir sus similitudes, también deben guardar relación con los tópicos 
+buscados.\\
+Para esta búsqueda, se especificó un vector con porcentajes de temáticas mencionadas en 
+~\ref{int:tblTopicos} y se cálculo su similitud contra todos los demás papers de la misma forma 
+que ~\ref{bus:papSimDisLug}.
+\section{Intituciones similares, diferentes regiones}

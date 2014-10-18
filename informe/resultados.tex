@@ -18,7 +18,7 @@ Se genraron soluciones con las siguientes características:\\
 {10}
 {5}
 Como primera observación podemos ver la cantidad de bundles que se generan para cada algoritmo de 
-producción y su tiempo de ejecución:\\
+producción:\\
 \begin{table}[h]
   \centering
   \resizebox{\textwidth}{!} {
@@ -34,56 +34,25 @@ producción y su tiempo de ejecución:\\
   }
     \caption {Cantidad de bundles generados antes de la selección final}
 \end{table}
-A continuación se muestran los valores de la función objetivo obtenidos:\\
-\begin{table}[h]
-\centering
-  \resizebox{\textwidth}{!} {
-    \begin{tabular}{|lc|cccc|}
-    \hline
-    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
-ejecución (mm:ss)} \\
-    Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
-         & Selección proporcional \\ 
-    \hline
-    HAC & $0,1$ & $48,9470$  & $35,1979$ & $10:00$ & $40:00$ \\
-    HAC & $0,3$ & $59,1852$  & $58,7049$ & $10:00$ & $40:00$ \\
-    HAC & $0,5$ & $70,5931$  & $70,205$ & $10:00$ & $40:00$ \\
-    HAC & $0,7$ & $82,0687$  & $81,8331$ & $10:00$ & $40:00$ \\
-    HAC & $0,9$ & $93,8227$  & $93,7189$ & $10:00$ & $40:00$ \\
-    BOBO-160 & $0,1$ & $33,3762$  & $35,1979$ & $6:00$ & $46:00$ \\
-    BOBO-160 & $0,3$ & $33,2741$  & $34,4164$ & $6:00$ & $46:00$ \\
-    BOBO-160 & $0,5$ & $37,3484$  & $37,0669$ & $6:00$ & $46:00$ \\
-    BOBO-160 & $0,7$ & $40,4186$  & $40,1762$ & $6:00$ & $46:00$ \\
-    BOBO-160 & $0,9$ & $49,0972$  & $44,9824$ & $6:00$ & $46:00$ \\
-    BOBO-10 & $0,1$ & $29,3038$  & $30,5376$ & $1:30$ & $2:00$ \\
-    BOBO-10 & $0,3$ & $25,9363$  & $26,6800$ & $1:30$ & $2:00$ \\
-    BOBO-10 & $0,5$ & $20,9841$  & $22,9482$ & $1:30$ & $2:00$ \\
-    BOBO-10 & $0,7$ & $22,3052$  & $23,2333$ & $1:30$ & $2:00$ \\
-    BOBO-10 & $0,9$ & $18,8381$  & $21,9347$ & $1:30$ & $2:00$ \\
-    BOBO-ex & $0,1$ & $35,5786$  & - & $14:00$ & - \\
-    BOBO-ex & $0,3$ & $35,4117$  & - & $14:00$ & - \\
-    BOBO-ex & $0,5$ & $39,4408$  & - & $14:00$ & - \\
-    BOBO-ex & $0,7$ & $45,0940$  & - & $14:00$ & - \\
-    BOBO-ex & $0,9$ & $51,2695$  & - & $14:00$ & - \\
-    \hline
-    \end{tabular}
-  }
-  \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de papers similares}
-\end{table}
 
-Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la 
-diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ 
-se acerca a $1$. Suponemos que esto se debe a la estrategía \texttt{produce and choose}. El objetivo 
-de la primer etapa es producir bundles con máximo valor de similitud. En el caso de que se requiera 
-una solución con mayor separación entre bundles, al haber producido menos cantidad de bundles 
-existen menos posibilidades para generar una solución más dispersa. Un mismo análisis se podría 
-hacer si comparamos \texttt{BOBO-10} y \texttt{HAC}.\\
-\colorbox{red}{ANALIZAR \texttt{BOBO-160} y \texttt{HAC}}\\
-Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección 
-de a pares obtuvimos que para \texttt{BOBO-160} y \texttt{HAC} los tiempos aumentaron a $40$ 
-minutos y para \texttt{BOBO-10} a $2$ minutos. En cuanto al valor de la función objetivo el único 
-beneficiado fue \texttt{BOBO-10} ya que para \texttt{HAC} empeoró y para \texttt{BOBO-160} el 
-aumento fue muy pequeño en comparación al incremento de tiempo.
+En los siguientes gráficos se visualiza los resultados obtenidos para los gammas 0.1 y 0.9. Cada 
+nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
+gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
+de la intra es menor y al rojo mayor.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo HAC}
+  \label{res:img-gamma01-hac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo HAC}
+  \label{res:img-gamma09-hac}
+\end{figure}
+
 \section{Autores}
 Se genraron soluciones con las siguientes características:\\
 \Solucion
@@ -93,41 +62,7 @@ Se genraron soluciones con las siguientes características:\\
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10 y 20}
 {5 y 10}
-\begin{table}[h]
-\centering
-  \resizebox{\textwidth}{!} {
-    \begin{tabular}{|lc|cccc|}
-    \hline
-    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
-ejecución (mm:ss)} \\
-    Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
-         & Selección proporcional \\ 
-    \hline
-    HAC & $0,1$ & $50,5$  & $50,5$ & $8:40$ & $9:00$ \\
-    HAC & $0,3$ & $61,5$  & $61,5$ & $8:40$ & $9:00$ \\
-    HAC & $0,5$ & $72,5$  & $72,5$ & $8:40$ & $9:00$ \\
-    HAC & $0,7$ & $83,5$  & $83,5$ & $8:40$ & $9:00$ \\
-    HAC & $0,9$ & $94,5$  & $94,5$ & $8:40$ & $9:00$ \\
-    BOBO-160 & $0,1$ & $38,6883$  & $36,8917$ & $10:00$ & $8:00$ \\
-    BOBO-160 & $0,3$ & $43,4380$  & $41,4767$ & $10:00$ & $8:00$ \\
-    BOBO-160 & $0,5$ & $47,3612$  & $47,9337$ & $10:00$ & $8:00$ \\
-    BOBO-160 & $0,7$ & $51,5712$  & $52,1462$ & $10:00$ & $8:00$ \\
-    BOBO-160 & $0,9$ & $57,2009$  & $57,5260$ & $10:00$ & $8:00$ \\
-    BOBO-10 & $0,1$ & $30,2956$  & $31,6080$ & $2:30$ & $2:30$ \\
-    BOBO-10 & $0,3$ & $33,6794$  & $35,4411$ & $2:30$ & $2:30$ \\
-    BOBO-10 & $0,5$ & $33,0506$  & $37,5776$ & $2:30$ & $2:30$ \\
-    BOBO-10 & $0,7$ & $37,2855$  & $34,5657$ & $2:30$ & $2:30$ \\
-    BOBO-10 & $0,9$ & $41,0119$  & $35,2511$ & $2:30$ & $2:30$ \\
-    BOBO-ex & $0,1$ & $39,9767$  & $39,9767$ & $27:00$ & $27:00$ \\
-    BOBO-ex & $0,3$ & $44,0043$  & $44,0043$ & $27:00$ & $27:00$ \\
-    BOBO-ex & $0,5$ & $48,5481$  & $48,5481$ & $27:00$ & $27:00$ \\
-    BOBO-ex & $0,7$ & $53,1993$  & $53,1993$ & $27:00$ & $27:00$ \\
-    BOBO-ex & $0,9$ & $57,7400$  & $57,7400$ & $27:00$ & $27:00$ \\
-    \hline
-    \end{tabular}
-  }
-  \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de autores similares}
-\end{table}
+
 Para todas las soluciones obtenidas con la generación \texttt{HAC} y utilizando cualquiera de los 
 dos algoritmos de selección de selección, todas las soluciones formaron los mismos bundles a 
 pesar de que el $\gamma$ sea distinto.\\ 
@@ -156,12 +91,12 @@ del algoritmo jerárquico con $\gamma$ = 0.1 y $\gamma$ = 0.9.
   \centering
     \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm01.png}
   \caption{$\gamma$ = 0.1}
-  \label{fig:img-gamma01-especifico}
+  \label{res:img-gamma01-especifico}
 \end{figure}
 
 \begin{figure}
   \centering
     \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm09.png}
   \caption{$\gamma$ = 0.9}
-  \label{fig:img-gamma09-especifico}
+  \label{res:img-gamma09-especifico}
 \end{figure}

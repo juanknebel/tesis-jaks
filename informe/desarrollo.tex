@@ -1,27 +1,9 @@
-\section{Definición de similitud y complementariedad}
-Como paso preliminar a la búsqueda de las soluciones se definió la noción de similitud y 
-complementariedad para los grupos de elementos.
-\subsection{Papers}
-La similitud entre papers se definió como la distancia entre los \texttt{topicProfile} de cada uno. 
-Cada perfil se interpreta como un vector de \texttt{n} posiciones, dónde cada posición pertenece a 
-un tópico particular. Entonces la similitud entre dos papers la interpretamos como el ángulo 
-vectorial entre dos vectores.\\
-La complementariedad de dos papers se definió al lugar de presentación de dicho paper.
-\subsection{Autores}
-Para determinar la similitud entre los autores se creó un perfil de cada uno. Para lograrlo lo 
-primero que se hizo fue tener en cuenta todos los perfiles de papers en los que participaron cada 
-uno de ellos. Al igual que con los papers, el perfil de los autores se representó con un vector. 
-Este vector se cálculo sumarizando los vectores de cada uno de los papers en el que participó.\\
-El paso siguiente fue determinar la similitud de los autores, la primer aproximación fue similar al 
-cálculo de similitud de los papers y calculamos los ángulos entre todos los vectores. Como similitud
-alternativa decidimos restar el perfil de cada autor componente a componente y calcular el valor de 
-su norma, así de esta forma a mayor norma mayor similitud entre autores.\\
-La complementariedad de dos papers se definió al lugar de pertenencia del autor en cuestión.
 \section{Generación de bundles}
 Para la generación de bundles se usaron diferentes algoritmos, cada uno con sus ventajas.\\
-El algoritmo jerárquico \texttt{HAC} comienza con cluster conformado por un solo ítem y en cada paso 
-une los dos clusters que maximizan su similitud y que respeten las restricciones, que en estos 
-casos fueron no superar una cierta cantidad de elementos por bundles.\\
+El algoritmo jerárquico \texttt{HAC} comienza con tantos clusters como cantidad de elementos, 
+cada uno está conformado por un solo ítem y en cada paso une los dos clusters que maximizan su 
+similitud y respeten las restricciones, que en estos casos fueron no superar los $5$ elementos por 
+bundle.\\
 El algoritmo \texttt{BOBO-x} genera los clusters a partir de un ítem, llamado pivote, y luego de 
 forma golosa selecciona los ítems que maximizan la función intra-cluster. La $x$ representa el 
 número de bundles que va a generar\\
@@ -45,7 +27,7 @@ solución sea más diversificada.\\
 Para mejorar el proceso de selección se decidió modificar el algoritmo para que en vez de realizar 
 la selección de a un bundle, se generan pares de bundles y el algoritmo goloso selecciona el que 
 maximiza la función objetivo.
-\begin{algorithm}
+\begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE Aca va la entrada del algoritmo.
 \ENSURE Aca va la salida del algoritmo.
@@ -73,7 +55,7 @@ Además como tercera opción de selección se implementó un algoritmo proporcio
 ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
 \textquotedblleft adivinar \textquotedblright el valor de las próximas iteraciones y de esta manera 
 dar más importancia en los primeras iteraciones al valor del inter.
-\begin{algorithm}
+\begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE Aca va la entrada del algoritmo.
 \ENSURE Aca va la salida del algoritmo.
@@ -96,12 +78,7 @@ dar más importancia en los primeras iteraciones al valor del inter.
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
 
-\section{Búsqueda de papers a partir de un perfil específico}
-Partiendo de perfil previamente generado con los temas existentes, se espera una solución en la 
-cuál el conjunto de bundles obtenido contenga papers de los tópicos especificados. \\
-Para esta búsqueda se agregó un parámetro que representa el porcentaje para cada tópico. Este 
-parámetro se representó como un vector y se calculó la distancia con el resto de los papers usando 
-el mismo algoritmo para el cuál había realizado la distancia entre papers. \\
+\section{Modificación de PAC para búsquedas específicas}
 Para la obtención de la solución se modificó la producción de bundles como así también la 
 selección de los mismos (Produce and Choose). \\
 En la producción de bundles en el algoritmo jerárquico, se utilizó la similitud del perfil 
