@@ -1,20 +1,14 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include "../../solver/clusterAndPickSolver.h"
-#include "../../solver/restrictedHACSolver.h"
-#include "../../solver/randomSOBOSolver.h"
-#include "../../solver/randomBOBOSolver.h"
-#include "../../solver/exhaustiveGreedyAnySimSOBOSolver.h"
-#include "../../solver/exhaustiveGreedySumSimSOBOSolver.h"
-#include "../../solver/sequentialScanSolver.h"
-#include "../../solver/restrictedHACWithSpecificItemSolver.h"
 #include "../identificator/identificationGeneretorArticle.h"
 #include "../identificator/identificationGeneretorAuthor.h"
 #include "../identificator/identificationGeneretorAffiliation.h"
 #include "../writer/writerSolutionAffiliations.h"
 #include "../writer/writerSolutionAuthors.h"
 #include "../writer/writerSolutionArticles.h"
+#include "../../solver/solver.h"
+#include "../../solver/produceAndChooseSolver.h"
 #include "../system/Logger.h"
 #include "../identificator/id2Str.h"
 #include "../system/exception.h"

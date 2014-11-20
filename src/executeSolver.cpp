@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "executeSolver.h"
-#include "util/factoryConfigurator.h"
+#include "util/configurator/factoryConfigurator.h"
 #include "util/writer/writerSolution.h"
 
 using namespace std;

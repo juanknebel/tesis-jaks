@@ -3,8 +3,10 @@ project(tesis-jaks_exe)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(tesis-jaks_source_files
+src/solver/factorySolver.cpp
 src/util/configurator/configurator.cpp
-src/util/factoryConfigurator.cpp
+src/util/configurator/factoryConfigurator.cpp
+src/util/configurator/configurationJaks.cpp
 src/util/writer/writerSolution.cpp
 src/util/writer/writerSolutionAffiliations.cpp
 src/util/writer/writerSolutionAuthors.cpp
@@ -20,7 +22,6 @@ src/util/system/exception.cpp
 src/util/system/Logger.cpp
 src/util/system/stringUtilities.cpp
 src/util/system/systemUtilities.cpp
-src/util/configurationJaks.cpp
 src/dao/daoMySql.cpp
 src/dao/dao.cpp
 src/executeSolver.cpp

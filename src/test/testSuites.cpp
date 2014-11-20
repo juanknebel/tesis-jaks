@@ -14,7 +14,7 @@
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
 #include "../problem/problemInstanceFromDataBase.h"
-#include "../util/configurationJaks.h"
+#include "../util/configurator/configurationJaks.h"
 #include "../dao/daoMySql.h"
 
 #define db_database "tesis"
