@@ -2,14 +2,15 @@
 #define FACTORYSOLVER_H
 
 #include "../problem/problemInstance.h"
-#include "../solver/clusterAndPickSolver.h"
-#include "../solver/restrictedHACSolver.h"
-#include "../solver/randomSOBOSolver.h"
-#include "../solver/randomBOBOSolver.h"
-#include "../solver/exhaustiveGreedyAnySimSOBOSolver.h"
-#include "../solver/exhaustiveGreedySumSimSOBOSolver.h"
-#include "../solver/sequentialScanSolver.h"
-#include "../solver/restrictedHACWithSpecificItemSolver.h"
+#include "clusterAndPickSolver.h"
+#include "restrictedHACSolver.h"
+#include "randomSOBOSolver.h"
+#include "randomBOBOSolver.h"
+#include "exhaustiveGreedyAnySimSOBOSolver.h"
+#include "exhaustiveGreedySumSimSOBOSolver.h"
+#include "sequentialScanSolver.h"
+#include "restrictedHACWithSpecificItemSolver.h"
+#include "localSearchSolver.h"
 
 
 
@@ -22,7 +23,7 @@ private:
 public:
     enum SolverAlgorithm {
         ClusterAndPick, RestrictedHAC, RestrictedHACSpecific, RandomBOBO,
-        RandomSOBO, ExAnySimSOBO, ExSumSimSOBO, SeqScan
+        RandomSOBO, ExAnySimSOBO, ExSumSimSOBO, SeqScan, LocalSolver
     };
 
     FactorySolver();

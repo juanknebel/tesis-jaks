@@ -20,6 +20,7 @@ protected:
 	ProblemInstance* problem_;
 	int pivot_;
 	int specificItem_;
+    Double interSimilarityWeight_;
 
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node, int excludeNode);

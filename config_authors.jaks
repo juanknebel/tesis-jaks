@@ -49,6 +49,7 @@ TO_PRODUCE	1
 #ExhaustiveGreedyAnySimSolver = 5
 #ExhaustiveGreedySumSimSolver = 6
 #SequentialScanSolver = 7
+#LocalSearchSolver = 8
 SOLVER	3
 
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)

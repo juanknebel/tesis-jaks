@@ -31,6 +31,7 @@ src/problem/problemInstance.cpp
 src/problem/problemInstanceFromFiles.cpp
 src/problem/snowFlake.cpp
 src/matrix/matrixConcrete.cpp
+src/solver/localSearchSolver.cpp
 src/solver/restrictedHACWithSpecificItemSolver.cpp
 src/solver/clusterAndPickSolver.cpp
 src/solver/exhaustiveGreedyAnySimSOBOSolver.cpp

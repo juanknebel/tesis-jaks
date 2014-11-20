@@ -62,6 +62,12 @@ Solver* FactorySolver::instanceTheSolver(int solverId, ProblemInstance* theProbl
                 dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
             break;
+        case LocalSolver:
+        theSolver = new LocalSearchSolver(theProblem);
+        if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
+            dynamic_cast<LocalSearchSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+        }
+            break;
         default:
             throw Exception(__FILE__, __LINE__, "Algoritmo de busqueda inexistente");
             break;
@@ -106,6 +112,9 @@ std::string FactorySolver::getTheSolverName(int solverId) {
             break;
         case ExSumSimSOBO:
             return "ExSumSimSOBO";
+            break;
+        case LocalSolver:
+            return "LocalSolver";
             break;
     }
 }
