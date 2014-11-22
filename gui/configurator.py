@@ -2,7 +2,8 @@
 
 # Form implementation generated from reading ui file 'configurator.ui'
 #
-# Created by: PyQt4 UI code generator 4.10.3
+# Created: Sat Nov 22 17:25:31 2014
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -151,6 +152,7 @@ class Ui_MainWindow(object):
         self.gridLayout_6.addWidget(self.fieldNumFlakes, 1, 1, 1, 1)
         self.comboSolver = QtGui.QComboBox(self.groupBox)
         self.comboSolver.setObjectName(_fromUtf8("comboSolver"))
+        self.comboSolver.addItem(_fromUtf8(""))
         self.comboSolver.addItem(_fromUtf8(""))
         self.comboSolver.addItem(_fromUtf8(""))
         self.comboSolver.addItem(_fromUtf8(""))
@@ -405,6 +407,7 @@ class Ui_MainWindow(object):
         self.comboSolver.setItemText(5, _translate("MainWindow", "ExhaustiveGreedyAnySimSolver", None))
         self.comboSolver.setItemText(6, _translate("MainWindow", "ExhaustiveGreedySumSimSolver", None))
         self.comboSolver.setItemText(7, _translate("MainWindow", "SequentialScanSolver", None))
+        self.comboSolver.setItemText(8, _translate("MainWindow", "LocalSearch", None))
         self.label_21.setText(_translate("MainWindow", "Cantidad de bundles antes de elegir", None))
         self.label_19.setText(_translate("MainWindow", "Cantidad de iteraciones", None))
         self.btnDirectoryWork.setText(_translate("MainWindow", "...", None))
