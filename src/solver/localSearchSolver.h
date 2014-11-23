@@ -1,16 +1,15 @@
 #ifndef LOCALSEARCHSOLVER_H
 #define LOCALSEARCHSOLVER_H
 
-#include "solver.h"
+#include "produceAndChooseSolver.h"
 
-class LocalSearchSolver : public Solver {
+class LocalSearchSolver : public ProduceAndChooseSolver {
 public:
-    LocalSearchSolver(ProblemInstance* problem) : Solver(problem) {
-
+    LocalSearchSolver(ProblemInstance* problem) : ProduceAndChooseSolver(problem) {
     }
-    void setInterSimilarityWeight(Double interSimilarityWeight);
     ~LocalSearchSolver() {}
-    SnowFlakeVector* solve(int numSnowFlakes);
+    SnowFlakeVector* produceManySnowflakes(int numSnowflakes);
+    int numToProduce(int numRequested);
 };
 
 #endif // LOCALSEARCHSOLVER_H

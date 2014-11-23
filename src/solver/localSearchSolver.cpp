@@ -1,10 +1,7 @@
 #include "localSearchSolver.h"
 
-void LocalSearchSolver::setInterSimilarityWeight(Double interSimilarityWeight) {
-    this->interSimilarityWeight_ = interSimilarityWeight;
-}
-
-SnowFlakeVector* LocalSearchSolver::solve(int numSnowFlakes) {
+SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
+    DEBUG(DBG_DEBUG, "numflakes "<<numSnowFlakes);
     IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
@@ -25,8 +22,10 @@ SnowFlakeVector* LocalSearchSolver::solve(int numSnowFlakes) {
     bool hasBetterFlake = false;
     bool hasBetterWorstFlake = false;
     bool isNotComplete = true;
+    int kk = 0;
 
     while(isNotComplete) {
+        DEBUG(DBG_DEBUG, "iteracion "<<kk++)
         Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
         bestFnObjective = objective;
         bestWorstFnObjetive = -1.0;
@@ -47,7 +46,6 @@ SnowFlakeVector* LocalSearchSolver::solve(int numSnowFlakes) {
                     }
                     else {
                         if (newFnObjective >= bestWorstFnObjetive) {
-                            DEBUG(DBG_DEBUG,"en el peor");
                             bestWorstFnObjetive = newFnObjective;
                             idBestWorstBundle = i;
                             hasBetterWorstFlake = true;
@@ -79,4 +77,8 @@ SnowFlakeVector* LocalSearchSolver::solve(int numSnowFlakes) {
         hasBetterWorstFlake = false;
     }
     return solution;
+}
+
+int LocalSearchSolver::numToProduce(int numRequested) {
+    return numRequested;
 }

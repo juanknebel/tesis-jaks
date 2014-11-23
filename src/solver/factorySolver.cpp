@@ -65,6 +65,7 @@ Solver* FactorySolver::instanceTheSolver(int solverId, ProblemInstance* theProbl
         case LocalSolver:
         theSolver = new LocalSearchSolver(theProblem);
         if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
+            dynamic_cast<LocalSearchSolver *> (theSolver)->setRankingStrategy(theStrategy);
             dynamic_cast<LocalSearchSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
         }
             break;
