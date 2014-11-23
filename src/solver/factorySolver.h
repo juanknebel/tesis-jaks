@@ -11,27 +11,23 @@
 #include "sequentialScanSolver.h"
 #include "restrictedHACWithSpecificItemSolver.h"
 #include "localSearchSolver.h"
+#include "../util/configurator/configurationJaks.h"
 
 
 
 class FactorySolver {
 private:
-    Solver* instanceTheSolver(int solverId, ProblemInstance* theProblem, int strategyId,
-            double interSimilarityWeight, double multiplier);
+    FactorySolver();
 
-    ProduceAndChooseSolver::RankingStrategy checkAndReturnStrategy(double similarity, int strategy);
 public:
     enum SolverAlgorithm {
         ClusterAndPick, RestrictedHAC, RestrictedHACSpecific, RandomBOBO,
         RandomSOBO, ExAnySimSOBO, ExSumSimSOBO, SeqScan, LocalSolver
     };
 
-    FactorySolver();
-    std::string getTheSolverName(int solverId);
-    Solver* getTheSolver(int solverId, ProblemInstance* theProblem, int strategyId,
-                         double interSimilarityWeight, double multiplier);
-
-    ProduceAndChooseSolver::RankingStrategy getTheStrategy(int strategy);
+    static std::string getTheSolverName(ConfigurationJaks& configFile);
+    static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem);
+    static ProduceAndChooseSolver::RankingStrategy getTheStrategy(ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYSOLVER_H

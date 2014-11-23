@@ -3,9 +3,12 @@
 FactorySolver::FactorySolver() {
 }
 
-Solver* FactorySolver::instanceTheSolver(int solverId, ProblemInstance* theProblem, int strategyId,
-                                         double interSimilarityWeight, double multiplier) {
-    ProduceAndChooseSolver::RankingStrategy theStrategy = this->checkAndReturnStrategy(interSimilarityWeight, strategyId);
+Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem) {
+    int solverId = atoi(configFile["solver"].c_str());
+    double multiplier = atof(configFile["to_produce"].c_str());
+    double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
+
+    ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
     Solver* theSolver = 0;
     switch(solverId) {
         case ClusterAndPick:
@@ -76,19 +79,8 @@ Solver* FactorySolver::instanceTheSolver(int solverId, ProblemInstance* theProbl
     return theSolver;
 }
 
-ProduceAndChooseSolver::RankingStrategy FactorySolver::checkAndReturnStrategy(double similarity, int strategy) {
-    if (similarity != 0.00 && strategy == 0) {
-        throw Exception(__FILE__, __LINE__, "If INTER_SIMILARITY_WEIGHT similarity is used, the strategy should be                      #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)");
-    }
-    return static_cast<ProduceAndChooseSolver::RankingStrategy> (strategy);
-}
-
-Solver* FactorySolver::getTheSolver(int solverId, ProblemInstance* theProblem, int strategyId,
-                     double interSimilarityWeight, double multiplier) {
-    return this->instanceTheSolver(solverId, theProblem, strategyId, interSimilarityWeight, multiplier);
-}
-
-std::string FactorySolver::getTheSolverName(int solverId) {
+std::string FactorySolver::getTheSolverName(ConfigurationJaks& configFile) {
+    int solverId = atoi(configFile["solver"].c_str());
     switch(solverId) {
         case ClusterAndPick:
             return "ClusterAndPick";
@@ -120,6 +112,7 @@ std::string FactorySolver::getTheSolverName(int solverId) {
     }
 }
 
-ProduceAndChooseSolver::RankingStrategy FactorySolver::getTheStrategy(int strategy) {
-    return this->checkAndReturnStrategy(0.0, strategy);
+ProduceAndChooseSolver::RankingStrategy FactorySolver::getTheStrategy(ConfigurationJaks& configFile) {
+    int strategy = atoi(configFile["ranking_strategy"].c_str());
+    return static_cast<ProduceAndChooseSolver::RankingStrategy> (strategy);
 }

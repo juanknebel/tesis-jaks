@@ -16,7 +16,8 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
     if(configurator.getWriteToFile()) {
         WriterSolution* theWriter = configurator.getTheWrtiter();
 		std::stringstream fileName;
-        fileName << configurator.getDirectoryOfWork() <<"Solver-";
+        fileName << configurator.getDirectoryOfWork() << "Solver-";
+        fileName << configurator.getSolverName();
         Double gamma = configurator.getGamma();
         Double interSimilarityWeight = 1.00 - gamma;
 

@@ -1,12 +1,11 @@
 #include "configurator.h"
 
 Configurator::Configurator(
-        Solver* solver, WriterSolution* writer, IdentificationGeneretor* identificator, Id2Str* nodeName,
+        Solver* solver, WriterSolution* writer, Id2Str* nodeName,
         ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
         bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma) {
     this->theSolver_ = solver;
     this->theWriter_ = writer;
-    this->theIdentificator_ = identificator;
     this->theNodeName_ = nodeName;
     this->theStrategy_ = strategy;
     this->solverName_ = solverName;
@@ -23,10 +22,6 @@ WriterSolution* Configurator::getTheWrtiter() const {
 
 Solver* Configurator::getTheSolver() const {
     return this->theSolver_;
-}
-
-IdentificationGeneretor* Configurator::getTheIdentificator() const {
-    return this->theIdentificator_;
 }
 
 Id2Str* Configurator::getTheNodeName() const {
@@ -64,6 +59,5 @@ double Configurator::getGamma() const {
 Configurator::~Configurator() {
     delete this->theSolver_;
     delete this->theWriter_;
-    delete this->theIdentificator_;
     delete this->theNodeName_;
 }

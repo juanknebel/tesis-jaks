@@ -17,10 +17,9 @@
 
 
 class Configurator {
-private:
+protected:
     WriterSolution *theWriter_;
     Solver* theSolver_;
-    IdentificationGeneretor* theIdentificator_;
     Id2Str* theNodeName_;
     ProduceAndChooseSolver::RankingStrategy theStrategy_;
     std::string solverName_;
@@ -30,14 +29,13 @@ private:
     std::string directoryOfWork_;
     double gamma_;
 public:
-    Configurator(Solver* solver, WriterSolution* writer, IdentificationGeneretor* identificator, Id2Str* nodeName,
+    Configurator(Solver* solver, WriterSolution* writer, Id2Str* nodeName,
                  ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
                  bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma);
 
     ~Configurator();
     WriterSolution* getTheWrtiter() const;
     Solver* getTheSolver() const;
-    IdentificationGeneretor* getTheIdentificator() const;
     Id2Str* getTheNodeName() const;
     ProduceAndChooseSolver::RankingStrategy getTheStrategy() const;
     std::string getSolverName() const;
