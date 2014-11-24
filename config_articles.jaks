@@ -52,6 +52,12 @@ TO_PRODUCE	1
 #LocalSearchSolver = 8
 SOLVER	3
 
+#Bundles de que tipo se van a traer, puede ser:
+#ARTICLE para traer articulos
+#AUTHOR para traer autores
+#AFFILIATION para traer universidades
+ELEMENT	ARTICLE
+
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
 INTER_SIMILARITY_WEIGHT	0.9
 
