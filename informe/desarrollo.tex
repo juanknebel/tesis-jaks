@@ -92,6 +92,39 @@ este nuevo caso se agrega a ese resultado la compatibilidad de cada uno de ellos
 específico. \\
 Para la producción del algoritmo BOBO, se agregó junto al pivote en todos los clusters. \\
 Para la selección de los bundles que formarán parte de la solución, a cada cluster se le 
-calculo el valor intra también se tuvo en cuenta la similitud de todos los elmentos con el perfil  
+calculo el valor intra también se tuvo en cuenta la similitud de todos los elementos con el perfil  
 específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
 vector especifico se le dio mayor peso.
+
+\section{Heurística Golosa}
+En todas los algoritmos previos se centraron en primero construir buenos bundles teniendo 
+maximizando solo el valor propio de cada bundle, para luego si seleccionar dependiendo de la 
+estrategia la solución final ahora si maximizando la función objetivo propuesta.\\
+Para este heurística golosa propusimos ir construyendo los bundles finales teniendo en cuenta en 
+cada paso la función objetivo, esto es, en cada paso cuando se intenta agregar un nuevo elemento a 
+un bundle se calcula su valor total de la función y se evalúa en que bundle conviene agregarlo. 
+Esto se repite para todos los items, haciendo que cuando tengo que agregar un nuevo ítem a la 
+solución ya calculé para todos los items que no se encuentran en la solución en que bundle conviene 
+agregarlo y cual es el valor de la función en ese caso, quedándome siempre con el mejor valor.
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE Aca va la entrada del algoritmo.
+\ENSURE Aca va la salida del algoritmo.
+\WHILE {alguna conodicion}
+\STATE Descripcion con palabras.
+\IF{alguna conodicion copada}
+\RETURN devuelve algo
+\ELSE
+\STATE alguna asignacion o algo
+\ENDIF
+\ENDWHILE
+\FOR{alguna otra condicion}
+\IF{alguna conodicion}
+\STATE hace algo
+\RETURN devuelve algo
+\ENDIF
+\ENDFOR
+\RETURN devuelve otra cosa
+\end{algorithmic}
+\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
+\end{algorithm}
