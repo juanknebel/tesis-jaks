@@ -1,0 +1,43 @@
+\section{Valores cercanos al óptimo}
+Dada la función que se está intentando maximizar $$\displaystyle\sum_{1 \leq i \leq k} 
+\displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
++\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
+\in S_{j}} s(u,v))$$ podemos hacer suposiciones para ver que tan lejos o cerca están de algunas de 
+los valores óptimos según el $\gamma$.\\
+Para las siguientes cotas supongamos escenarios ideales en el cuál la soluciones contiene bundles 
+donde todos sus elementos tienen una similitud máxima (igual a 1) y los bundles entre si son 
+completamente diferentes, o sea, la similitud entre cada bundle es 0. Con estas hipótesis podemos 
+ver que la reemplazar la función por $$\displaystyle\sum_{1 \leq i \leq k} 
+\displaystyle\sum_{u,v \in S_{i}} \gamma 1\ 
++\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
+\in S_{j}} 0)$$ que luego se transforma en $$\displaystyle\sum_{1 \leq i \leq k} 
+\displaystyle\sum_{u,v \in S_{i}} \gamma 1\ 
++\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) 1$$ como en nuestro caso $k\ =\ 10$ y la 
+cantidad de items por bundle es $5$ entonces la sumatoria se resume en $$\displaystyle\gamma\ 100\ 
++\ (1-\gamma)\ 45$$
+Para los $\gamma \in (0.1, 0.3, 0.5, 0.7, 0.9)$ los resultados de la función son los siguientes:\\
+\begin{table}[h]
+  \centering
+  \resizebox{0.5\textwidth}{!} {
+    \begin{tabular}{|lc|}
+    \hline
+    $\gamma$ & Valor función objetivo \\
+    \hline
+    $0.1$  & $50.5$ \\
+    $0.3$  & $61.5$ \\
+    $0.5$  & $72.5$ \\
+    $0.7$  & $83.5$ \\
+    $0.9$  & $94.5$ \\
+    \hline
+    \end{tabular}
+  }
+    \caption {Valor óptimo de la función para cada $\gamma$}
+\end{table}
+
+En las ejecuciones del algoritmo \textbf{HAC} para artículos en los $\gamma$ más altos los 
+resultados de los bundles eran los mismos lo cuál se explica porque a medida que $\gamma$ aumenta se 
+acerca cada vez más a la cota superior que establecimos. No sucediendo los mismo con $\gamma$ 
+menores.\\
+En cambio para las ejecuciones también del algoritmo \textbf{HAC} pero para autores en todas las 
+soluciones obtuvimos los mismos bundles y se ve reflejado porque la función objetivo para cada 
+$\gamma$ es igual a la cota.
