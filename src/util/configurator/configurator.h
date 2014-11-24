@@ -33,7 +33,7 @@ public:
                  ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
                  bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma);
 
-    ~Configurator();
+    virtual ~Configurator();
     WriterSolution* getTheWrtiter() const;
     Solver* getTheSolver() const;
     Id2Str* getTheNodeName() const;

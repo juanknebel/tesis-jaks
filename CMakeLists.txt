@@ -7,10 +7,12 @@ src/util/configurator/configuratorToDataBase.cpp
 src/util/configurator/configurator.cpp
 src/util/configurator/factoryConfigurator.cpp
 src/util/configurator/configurationJaks.cpp
+src/util/writer/factoryWriter.cpp
 src/util/writer/writerSolution.cpp
 src/util/writer/writerSolutionAffiliations.cpp
 src/util/writer/writerSolutionAuthors.cpp
 src/util/writer/writerSolutionArticles.cpp
+src/util/identificator/factoryIdentificationGenerator.cpp
 src/util/identificator/identificationGeneretor.cpp
 src/util/identificator/identificationGeneretorAffiliation.cpp
 src/util/identificator/identificationGeneretorAuthor.cpp

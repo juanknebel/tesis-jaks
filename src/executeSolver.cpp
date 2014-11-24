@@ -29,8 +29,7 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
 }
 
 void execute(ConfigurationJaks& configFile) {
-    FactoryConfigurator* theFactory = new FactoryConfigurator(configFile);
-    Configurator* theConfigurator = theFactory->getTheConfigurator();
+    Configurator* theConfigurator = FactoryConfigurator::getTheConfigurator(configFile);
     Solver* theSolver = theConfigurator->getTheSolver();
 
 	SnowFlakeVector* solution = 0;
@@ -49,5 +48,4 @@ void execute(ConfigurationJaks& configFile) {
     writeSolution(*solution, *theConfigurator);
 	delete solution;
     delete theConfigurator;
-    delete theFactory;
 }

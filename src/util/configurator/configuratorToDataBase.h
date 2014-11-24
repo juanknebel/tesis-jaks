@@ -15,6 +15,8 @@ public:
                      writeToFile, directoryOfWork, gamma) {
         this->theDao_ = dao;
     }
+    Dao* getDao();
+    ~ConfiguratorToDataBase();
 };
 
 #endif // CONFIGURATORTODATABASE_H

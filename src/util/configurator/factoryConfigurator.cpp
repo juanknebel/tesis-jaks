@@ -1,26 +1,33 @@
 #include "factoryConfigurator.h"
 
-FactoryConfigurator::FactoryConfigurator(ConfigurationJaks& configFile) {
-    IdentificationGeneretor *theIdentificator = 0;
-    Id2Str* theNodeName = 0;
+FactoryConfigurator::FactoryConfigurator() {
 
-    /*
-     *  Instanciacion del writter
-     */
-    //WriterSolution* theWriter = new WriterSolutionAuthors("\t");
-    WriterSolution* theWriter = new WriterSolutionArticles("\t");
-    //WriterSolution* theWriter = new WriterSolutionAffiliations("\t");
+}
 
+Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configFile) {
     /*
-     *  Instanciacion del problema
+     * Dato que indica si los datos seran obtenidos desde una base de datos o desde un archivo
      */
     bool useDataFromDb = ((configFile["use_data_from_db"] == "1") ? true : false);
+    /*
+     * Datos comunes a cualquier configurador
+     */
+    int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
+    double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
+    bool printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
+    bool writeToFile = ((configFile["write_file"] == "1") ? true : false);
     std::string directoryOfWork = configFile["directory_work"];
-    ProblemInstance* theProblem = 0;
 
-    if (useDataFromDb == true) {
+    /*
+     * Instanciacion del writter
+     */
+    WriterSolution* theWriter = FactoryWriter::getTheWriter(configFile);
+
+    Configurator* theConfigurator = 0;
+
+    if (useDataFromDb) {
         /*
-         *  Instanciacion del dao
+         * Instanciacion del dao
          */
         std::string database = configFile["db_database"];
         std::string user = configFile["db_user"];
@@ -29,41 +36,47 @@ FactoryConfigurator::FactoryConfigurator(ConfigurationJaks& configFile) {
 
         Dao* theDao = new DaoMySql(database, user, password, server);
         theDao->connect();
-        theProblem = FactoryProblem::getTheProblemInstance(configFile, theDao);
-        //theIdentificator =  new IdentificationGeneretorAuthor(dao, "\t");
-        theIdentificator =  new IdentificationGeneretorArticle(theDao, "\t");
-        //theIdentificator =  new IdentificationGeneretorAffiliation(dao, "\t");
-        theNodeName = new Id2Str(theIdentificator);
+
+        /*
+         * Instancio el problema y los identificadores de los elementos
+         */
+        ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile, theDao);
+        IdentificationGeneretor *theIdentificator =
+                FactoryIdentificationGenerator::getTheIdentificator(theDao, configFile);
+        Id2Str* theNodeName = new Id2Str(theIdentificator);
+
+        /*
+         * Instanciacion del solver y la estrategia
+         */
+        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
+        std::string theSolverName = FactorySolver::getTheSolverName(configFile);
+        ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+
+        /*
+         * Instanciacion del configurador
+         */
+        theConfigurator = new ConfiguratorToDataBase(theDao, theSolver, theWriter, theNodeName,
+                                                     theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,
+                                                     writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
     }
     else {
-        theProblem = FactoryProblem::getTheProblemInstance(configFile);
+        /*
+         * Instancio el problema y los identificadores de los elementos
+         */
+        ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile);
         std::string nodeName = configFile["file_node_name"];
-        theNodeName = new Id2Str(directoryOfWork + nodeName);
+        Id2Str* theNodeName = new Id2Str(directoryOfWork + nodeName);
+
+        /*
+         * Instanciacion del solver y la estrategia
+         */
+        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
+        std::string theSolverName = FactorySolver::getTheSolverName(configFile);
+        ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+
+        theConfigurator = new Configurator(theSolver, theWriter, theNodeName,
+                        theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,
+                        writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
     }
-
-    /*
-     *  Instanciacion del solver
-     */
-    Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
-    std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-    ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
-
-    /*
-     *  Instanciacion del configurador
-     */
-    int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
-    double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
-    bool printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
-    bool writeToFile = ((configFile["write_file"] == "1") ? true : false);
-    this->theConfigurator_ = new Configurator(
-                theSolver, theWriter, theNodeName,
-                theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,
-                writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
-}
-
-FactoryConfigurator::~FactoryConfigurator() {
-}
-
-Configurator* FactoryConfigurator::getTheConfigurator() {
-    return this->theConfigurator_;
+    return theConfigurator;
 }
