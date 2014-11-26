@@ -15,6 +15,7 @@
 #include <fstream>
 #include <iostream>
 #include <tuple>
+#include <queue>
 #include "system/Logger.h"
 
 typedef double Double;
@@ -34,7 +35,10 @@ typedef std::vector<TupleIntDouble> TupleIntDoubleVector;
 typedef std::vector<String> StrVector;
 typedef std::vector<Double> DblVector;
 typedef std::vector<int> IntVector;
+typedef std::vector<bool> BoolVector;
 typedef std::ifstream FileInput;
 typedef std::ofstream FileOutput;
+typedef std::priority_queue<TupleIntDouble> PrtyQueueTupleIntDouble;
+typedef std::vector<PrtyQueueTupleIntDouble*> VectorPrtyQueueTupleIntDouble;
 
 #endif /* REDEFINITIONS_H_ */
