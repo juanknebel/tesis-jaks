@@ -33,6 +33,7 @@ private:
             return problem_.getCompat(pivot_, node2) >  problem_.getCompat(pivot_, node1);
         }*/
     };
+    double sim(IntSet* cluster1, IntSet* cluster2);
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

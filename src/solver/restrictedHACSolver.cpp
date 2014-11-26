@@ -208,5 +208,38 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
 }
 
 void RestrictedHACSolver::singleLinkClustering(MapIntIntSet* clustering) {
+ 
+double sim(const IntSet& snowflake1, const IntSet& snowflake2) {
+    if (this->checkBudgetAndCoverageConstraint(snowflake1, snowflake2)) {
+      Double intra = 0.0;
+      for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
+		for (IntSet::iterator it2 = snowflake1->begin(); it2 != snowflake1->end(); ++it2) {
+			if (*it<*it2) {
+				intra += this->problem_->getCompat(*it, *it2);
+			}
+		}
+	}
+	for (IntSet::iterator it = snowflake2->begin(); it != snowflake2->end(); ++it) {
+		for (IntSet::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
+			if (*it<*it2) {
+				intra += this->problem_->getCompat(*it, *it2);
+			}
+		}
+	}
+	for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
+		for (IntSet::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
+			intra += this->problem_->getCompat(*it, *it2);
+		}
+	}
+	
+	Double gamma = 1.0 - this->interSimilarityWeight_;
+	double inter = this->problem_->maxPairwiseCompatibility(snowflake1, snowflake2);
+	
+	return (gamma * intra) + ((1.0 - gamma) * inter);
+      
+    }
+    
+    return -1.0;
+  }
 
 }
