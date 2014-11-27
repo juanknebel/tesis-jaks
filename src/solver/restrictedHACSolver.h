@@ -23,17 +23,14 @@ protected:
 	bool tryMerge(MapIntIntSet* clustering);
     void singleLinkClustering(MapIntIntSet* clustering);
 private:
+    double sim(IntSet* snowflake1, IntSet* snowflake2);
     struct compareTupleIntDouble {
-        compareTupleIntDouble(TupleIntDouble aTuple, TupleIntDouble anotherTuple) :
-            aTuple_(aTuple), anotherTuple_(anotherTuple) {}
-        TupleIntDouble aTuple_;
-        TupleIntDouble anotherTuple_;
-
-        /*inline bool operator() (int node1, int node2) {
-            return problem_.getCompat(pivot_, node2) >  problem_.getCompat(pivot_, node1);
-        }*/
+        bool operator() (const TupleIntDouble& aTuple, const TupleIntDouble& anotherTuple) const {
+            return std::get<1>(aTuple) < std::get<1>(anotherTuple);
+        }
     };
-    double sim(IntSet* cluster1, IntSet* cluster2);
+    typedef priority_queue<TupleIntDouble, VectorTupleIntDouble, compareTupleIntDouble> PrtyQueueTupleIntDouble;
+    typedef std::vector<PrtyQueueTupleIntDouble*> VectorPrtyQueueTupleIntDouble;
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

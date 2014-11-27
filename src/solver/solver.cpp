@@ -232,8 +232,8 @@ SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMember
 SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers) {
 	IntVector membersSorted(clusterMembers.begin(), clusterMembers.end());
 	this->pivot_ = pivot;
-    //std::sort(membersSorted.begin(), membersSorted.end(), compatCompare(*(this->problem_), this->pivot_));
-    std::sort(membersSorted.begin(), membersSorted.end(), compatCompareSpecificProfile(*(this->problem_), this->pivot_));
+    std::sort(membersSorted.begin(), membersSorted.end(), compatCompare(*(this->problem_), this->pivot_));
+    //std::sort(membersSorted.begin(), membersSorted.end(), compatCompareSpecificProfile(*(this->problem_), this->pivot_));
 	return pickFlakeGivenPermutation(pivot, membersSorted);
 }
 

@@ -12,13 +12,23 @@ RestrictedHACSolver::~RestrictedHACSolver() {
 }
 
 SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
+    MapIntIntSet *clustering = new MapIntIntSet();
     int totalElements = this->problem_->numNodes();
     matrix<TupleIntDouble> *theMatrixC = new matrix<TupleIntDouble> (totalElements, totalElements);
     BoolVector *theIVector = new BoolVector;
     VectorPrtyQueueTupleIntDouble *theVectorPriorityQueue = new VectorPrtyQueueTupleIntDouble;
 
-    //Inicializo la matriz de similitudes, vector de decision y vector con la cola de prioridad
+    /*
+     * Inicializo la matriz de similitudes, vector de decision y vector con la cola de prioridad
+     */
     for (int i = 0; i < totalElements; ++i) {
+        /*
+         * Inicializo el clustering
+         */
+        IntSet *temp = new IntSet();
+        temp->insert(i);
+        (*clustering)[i] = temp;
+
         for (int j = 0; j < totalElements; ++j) {
             /*
              * En la posicion (i,j) de la matriz esta la similitud de cada elemento y el
@@ -27,24 +37,89 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
             Double similarity = this->problem_->getCompat(i, j);
             theMatrixC->insert_element(i, j, TupleIntDouble(j, similarity));
         }
-        //Al principio todas las filas se pueden juntar
+        /*
+         * Al principio todas las filas se pueden juntar
+         */
         theIVector->push_back(true);
-        //Inicializo el vector de pilas de prioridades
-
+        /*
+         * Inicializo el vector de pilas de prioridades
+         */
         for (int j = 0; j < totalElements; ++j) {
             /*
              * En la posicion j del vector se encuentra la pila de prioridad de la fila i ordenada por la similitud
-             * entre el elemento i y j
+             * entre el elemento i y j. La similitud de un elemento consigo mismo no la guardo
              */
-            PrtyQueueTupleIntDouble *thePriorityQueue = new PrtyQueueTupleIntDouble;
-            //thePriorityQueue->push(((*theMatrixC)(i, j)), );
-            theVectorPriorityQueue->push_back(thePriorityQueue);
+            if (i != j) {
+                PrtyQueueTupleIntDouble *thePriorityQueue = new PrtyQueueTupleIntDouble();
+                TupleIntDouble aTuple = ((*theMatrixC)(i, j));
+                thePriorityQueue->push(aTuple);
+                theVectorPriorityQueue->push_back(thePriorityQueue);
+            }
         }
+    }
+
+    /*
+     * Empizo con la clusterizacion
+     */
+    for (int i = 0; i < numToProduce - 1; ++i) {
+        Double maxSimilarity = -1.0;
+        int k1Index = -1, k2Index = -1;
+        /*
+         * Busco la maxima similitud en todas las colas de prioridad
+         */
+        for (int j = 0; j < numToProduce; ++j) {
+            if (theIVector->at(j) == true) {
+                TupleIntDouble tempTuple = theVectorPriorityQueue->at(j)->top();
+                if (std::get<1>(tempTuple) > maxSimilarity) {
+                    maxSimilarity = std::get<1>(tempTuple);
+                    k1Index = j;
+                    k2Index = std::get<0>(tempTuple);
+                }
+            }
+        }
+        /*
+         * Actualizo la posicion del vector k2 porque ya lo uni a un cluster
+         * Y genero una nueva pila en la posicion k1 porque ahora tengo un nuevo cluster
+         */
+        (*theIVector)[k2Index] = false;
+        PrtyQueueTupleIntDouble *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
+        delete thePriorityQueueAtK1;
+        (*theVectorPriorityQueue)[k1Index] = new PrtyQueueTupleIntDouble();
+
+        /*
+         *  Agrego al cluster correspondiente del k1, los elementos del cluester del k2
+         */
+        IntSet *theK1Cluster;
+        try {
+            theK1Cluster = clustering->at(k1Index);
+        }
+        catch (const std::out_of_range& oor) {
+            throw Exception(__FILE__, __LINE__, oor.what());
+        }
+        IntSet *theK2Cluster;
+        try {
+            theK2Cluster = clustering->at(k2Index);
+        }
+        catch (const std::out_of_range& oor) {
+            throw Exception(__FILE__, __LINE__, oor.what());
+        }
+
+        theK1Cluster->insert(theK2Cluster->begin(), theK2Cluster->end());
+        clustering->erase(k2Index);
     }
 
     delete theMatrixC;
     delete theIVector;
     delete theVectorPriorityQueue;
+    delete clustering;
+
+    SnowFlakeVector* solution = new SnowFlakeVector;
+    for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
+        SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
+        solution->push_back(*aFlake);
+    }
+
+    return solution;
 }
 
 SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
@@ -207,10 +282,8 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
     return solution;
 }
 
-void RestrictedHACSolver::singleLinkClustering(MapIntIntSet* clustering) {
- 
-double sim(const IntSet& snowflake1, const IntSet& snowflake2) {
-    if (this->checkBudgetAndCoverageConstraint(snowflake1, snowflake2)) {
+double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
+    if (this->checkBudgetAndCoverageConstraint(*snowflake1, *snowflake2)) {
       Double intra = 0.0;
       for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
 		for (IntSet::iterator it2 = snowflake1->begin(); it2 != snowflake1->end(); ++it2) {
@@ -233,7 +306,7 @@ double sim(const IntSet& snowflake1, const IntSet& snowflake2) {
 	}
 	
 	Double gamma = 1.0 - this->interSimilarityWeight_;
-	double inter = this->problem_->maxPairwiseCompatibility(snowflake1, snowflake2);
+    double inter = this->problem_->maxPairwiseCompatibility(*snowflake1, *snowflake2);
 	
 	return (gamma * intra) + ((1.0 - gamma) * inter);
       
@@ -241,5 +314,5 @@ double sim(const IntSet& snowflake1, const IntSet& snowflake2) {
     
     return -1.0;
   }
-
+void RestrictedHACSolver::singleLinkClustering(MapIntIntSet* clustering) {
 }

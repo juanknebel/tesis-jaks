@@ -38,7 +38,6 @@ typedef std::vector<int> IntVector;
 typedef std::vector<bool> BoolVector;
 typedef std::ifstream FileInput;
 typedef std::ofstream FileOutput;
-typedef std::priority_queue<TupleIntDouble> PrtyQueueTupleIntDouble;
-typedef std::vector<PrtyQueueTupleIntDouble*> VectorPrtyQueueTupleIntDouble;
+typedef std::vector<TupleIntDouble> VectorTupleIntDouble;
 
 #endif /* REDEFINITIONS_H_ */
