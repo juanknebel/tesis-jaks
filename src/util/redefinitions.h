@@ -15,7 +15,6 @@
 #include <fstream>
 #include <iostream>
 #include <tuple>
-#include <queue>
 #include "system/Logger.h"
 
 typedef double Double;

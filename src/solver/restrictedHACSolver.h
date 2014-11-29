@@ -9,6 +9,7 @@
 #define RESTRICTEDHACSOLVER_H_
 
 #include "multiplicativeEffortProduceAndChooseSolver.h"
+#include "../queue/priorityQueue.h"
 
 class RestrictedHACSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
@@ -24,13 +25,7 @@ protected:
     void singleLinkClustering(MapIntIntSet* clustering);
 private:
     double sim(IntSet* snowflake1, IntSet* snowflake2);
-    struct compareTupleIntDouble {
-        bool operator() (const TupleIntDouble& aTuple, const TupleIntDouble& anotherTuple) const {
-            return std::get<1>(aTuple) < std::get<1>(anotherTuple);
-        }
-    };
-    typedef priority_queue<TupleIntDouble, VectorTupleIntDouble, compareTupleIntDouble> PrtyQueueTupleIntDouble;
-    typedef std::vector<PrtyQueueTupleIntDouble*> VectorPrtyQueueTupleIntDouble;
+    typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

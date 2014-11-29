@@ -50,7 +50,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
              * entre el elemento i y j. La similitud de un elemento consigo mismo no la guardo
              */
             if (i != j) {
-                PrtyQueueTupleIntDouble *thePriorityQueue = new PrtyQueueTupleIntDouble();
+                PriorityQueue *thePriorityQueue = new PriorityQueue();
                 TupleIntDouble aTuple = ((*theMatrixC)(i, j));
                 thePriorityQueue->push(aTuple);
                 theVectorPriorityQueue->push_back(thePriorityQueue);
@@ -61,7 +61,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     /*
      * Empizo con la clusterizacion
      */
-    for (int i = 0; i < numToProduce - 1; ++i) {
+    for (int k = 0; k < numToProduce - 1; ++k) {
         Double maxSimilarity = -1.0;
         int k1Index = -1, k2Index = -1;
         /*
@@ -82,9 +82,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
          * Y genero una nueva pila en la posicion k1 porque ahora tengo un nuevo cluster
          */
         (*theIVector)[k2Index] = false;
-        PrtyQueueTupleIntDouble *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
+        PriorityQueue *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
         delete thePriorityQueueAtK1;
-        (*theVectorPriorityQueue)[k1Index] = new PrtyQueueTupleIntDouble();
+        (*theVectorPriorityQueue)[k1Index] = new PriorityQueue();
 
         /*
          *  Agrego al cluster correspondiente del k1, los elementos del cluester del k2
@@ -104,8 +104,25 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
             throw Exception(__FILE__, __LINE__, oor.what());
         }
 
+        /*
+         * Actualizo la matriz y vectores
+         */
         theK1Cluster->insert(theK2Cluster->begin(), theK2Cluster->end());
         clustering->erase(k2Index);
+        for (int i = 0; i < numToProduce; ++i) {
+            if ((*theIVector)[i] == true && i != k1Index) {
+                theVectorPriorityQueue->at(i)->erase(k1Index);
+                theVectorPriorityQueue->at(i)->erase(k2Index);
+                double similarity = sim(theK1Cluster, clustering->at(i));
+                TupleIntDouble tupleAtIK1 = TupleIntDouble(k1Index, similarity);
+                TupleIntDouble tupleAtK1I = TupleIntDouble(i, similarity);
+                theMatrixC->insert_element(i, k1Index, tupleAtIK1);
+                theMatrixC->insert_element(k1Index, i, tupleAtK1I);
+                (*theVectorPriorityQueue)[i]->push(tupleAtIK1);
+                (*theVectorPriorityQueue)[k1Index]->push(tupleAtK1I);
+            }
+            DEBUG(DBG_DEBUG, "");
+        }
     }
 
     delete theMatrixC;
@@ -313,6 +330,7 @@ double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
     }
     
     return -1.0;
-  }
+}
+
 void RestrictedHACSolver::singleLinkClustering(MapIntIntSet* clustering) {
 }

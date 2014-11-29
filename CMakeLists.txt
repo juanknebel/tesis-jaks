@@ -33,6 +33,7 @@ src/problem/problemInstanceFromDataBase.cpp
 src/problem/problemInstance.cpp
 src/problem/problemInstanceFromFiles.cpp
 src/problem/snowFlake.cpp
+src/queue/priorityQueue.cpp
 src/matrix/matrixConcrete.cpp
 src/solver/factorySolver.cpp
 src/solver/localSearchSolver.cpp
