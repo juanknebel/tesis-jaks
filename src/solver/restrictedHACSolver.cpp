@@ -14,7 +14,7 @@ RestrictedHACSolver::~RestrictedHACSolver() {
 SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     MapIntIntSet *clustering = new MapIntIntSet();
     int totalElements = this->problem_->numNodes();
-    matrix<TupleIntDouble> *theMatrixC = new matrix<TupleIntDouble> (totalElements, totalElements);
+    matrix<int> *theMatrixC = new matrix<int> (totalElements, totalElements);
     BoolVector *theIVector = new BoolVector;
     VectorPrtyQueueTupleIntDouble *theVectorPriorityQueue = new VectorPrtyQueueTupleIntDouble;
 
@@ -29,14 +29,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         temp->insert(i);
         (*clustering)[i] = temp;
 
-        for (int j = 0; j < totalElements; ++j) {
-            /*
-             * En la posicion (i,j) de la matriz esta la similitud de cada elemento y el
-             * idenrificador de la j de la columna
-             */
-            Double similarity = this->problem_->getCompat(i, j);
-            theMatrixC->insert_element(i, j, TupleIntDouble(j, similarity));
-        }
         /*
          * Al principio todas las filas se pueden juntar
          */
@@ -51,8 +43,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
              * entre el elemento i y j. La similitud de un elemento consigo mismo no la guardo
              */
             if (i != j) {
-                TupleIntDouble aTuple = ((*theMatrixC)(i, j));
-                thePriorityQueue->push(aTuple);
+                Double similarity = this->problem_->getCompat(i, j);
+                int key = thePriorityQueue->push(TupleIntDouble(j, similarity));
+                theMatrixC->insert_element(i, j, key);
             }
         }
         theVectorPriorityQueue->push_back(thePriorityQueue);
@@ -71,14 +64,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
          */
         DEBUG(DBG_DEBUG,"inicio bucle buscar maxima: " << totalElements);
         for (int j = 0; j < totalElements; ++j) {
-            DEBUG(DBG_DEBUG,"iteracion j: " << j);
             if (theIVector->at(j) == true) {
-                DEBUG(DBG_DEBUG,"obtener cola: " << j);
                 PriorityQueue* queuep = theVectorPriorityQueue->at(j);
-                DEBUG(DBG_DEBUG,"obtener top");
                 TupleIntDouble tempTuple = queuep->top();
-                DEBUG(DBG_DEBUG,"tupla:");
-                DEBUG(DBG_DEBUG, std::get<0>(tempTuple) << " " << std::get<1>(tempTuple));
                 if (std::get<1>(tempTuple) > maxSimilarity) {
                     maxSimilarity = std::get<1>(tempTuple);
                     k1Index = j;
@@ -93,13 +81,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
          * Y genero una nueva pila en la posicion k1 porque ahora tengo un nuevo cluster
          */
         DEBUG(DBG_DEBUG,"Actualizo la posicion del vector");
-        DEBUG(DBG_DEBUG,"false en pos:" << k2Index);
         (*theIVector)[k2Index] = false;
-        DEBUG(DBG_DEBUG,"Obtener Pila: " << k1Index);
         PriorityQueue *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
-        DEBUG(DBG_DEBUG,"Eliminar pila");
         delete thePriorityQueueAtK1;
-        DEBUG(DBG_DEBUG,"Crear pila: " << k1Index);
         (*theVectorPriorityQueue)[k1Index] = new PriorityQueue();
 
         /*
@@ -120,32 +104,29 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         catch (const std::out_of_range& oor) {
             throw Exception(__FILE__, __LINE__, oor.what());
         }
+        theK1Cluster->insert(theK2Cluster->begin(), theK2Cluster->end());
+        clustering->erase(k2Index);
+
 
         /*
          * Actualizo la matriz y vectores
          */
         DEBUG(DBG_DEBUG,"Actualizo la matriz y vectores");
-        theK1Cluster->insert(theK2Cluster->begin(), theK2Cluster->end());
-        clustering->erase(k2Index);
         DEBUG(DBG_DEBUG,"inicio bucle actualizacion: " << totalElements);
         for (int i = 0; i < totalElements; ++i) {
-            DEBUG(DBG_DEBUG,"iteracion k: " << k << "iteracion i: " << i);
             if ((*theIVector)[i] == true && i != k1Index) {
-                DEBUG(DBG_DEBUG,"elim. pila: " << i << "elemento: " << k1Index);
-                theVectorPriorityQueue->at(i)->erase(k1Index);
-                DEBUG(DBG_DEBUG,"elim. pila: " << i << "elemento: " << k2Index);
-                theVectorPriorityQueue->at(i)->erase(k2Index);
-                DEBUG(DBG_DEBUG,"calc similitud");
+                ;
+                (*theMatrixC)(i, k2Index);
+                theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k1Index));
+                theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k2Index));
                 double similarity = sim(theK1Cluster, clustering->at(i));
-                DEBUG(DBG_DEBUG,"similitud: " << similarity);
                 TupleIntDouble tupleAtIK1 = TupleIntDouble(k1Index, similarity);
                 TupleIntDouble tupleAtK1I = TupleIntDouble(i, similarity);
-                DEBUG(DBG_DEBUG,"insertar en matriz");
-                theMatrixC->insert_element(i, k1Index, tupleAtIK1);
-                theMatrixC->insert_element(k1Index, i, tupleAtK1I);
-                DEBUG(DBG_DEBUG,"insertar en pila");
-                (*theVectorPriorityQueue)[i]->push(tupleAtIK1);
-                (*theVectorPriorityQueue)[k1Index]->push(tupleAtK1I);
+                int key1 = (*theVectorPriorityQueue)[i]->push(tupleAtIK1);
+                int key2= (*theVectorPriorityQueue)[k1Index]->push(tupleAtK1I);
+                theMatrixC->insert_element(i, k1Index, key1);
+                theMatrixC->insert_element(k1Index, i, key2);
+
             }
         }
         DEBUG(DBG_DEBUG,"fin bucle actualizacion");
@@ -330,7 +311,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
 
 double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
     bool check = this->checkBudgetAndCoverageConstraint(*snowflake1, *snowflake2);
-    DEBUG(DBG_DEBUG,"check constriant: " << check);
     if (check) {
         Double intra = 0.0;
         for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {

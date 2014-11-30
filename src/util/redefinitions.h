@@ -20,6 +20,7 @@
 typedef double Double;
 typedef unsigned int Uint;
 typedef std::tuple<int, Double> TupleIntDouble;
+typedef std::tuple<int,TupleIntDouble> KeyTupleIntDouble;
 typedef std::tuple<Double, bool> TupleDoubleBool;
 typedef std::string String;
 typedef std::set<int> IntSet;
@@ -38,5 +39,7 @@ typedef std::vector<bool> BoolVector;
 typedef std::ifstream FileInput;
 typedef std::ofstream FileOutput;
 typedef std::vector<TupleIntDouble> VectorTupleIntDouble;
+typedef std::vector<KeyTupleIntDouble> KeyVectorTupleIntDouble;
+
 
 #endif /* REDEFINITIONS_H_ */

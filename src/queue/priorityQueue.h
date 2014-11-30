@@ -6,20 +6,24 @@
 class PriorityQueue {
 private:
     struct compareTupleIntDouble {
-        bool operator() (const TupleIntDouble& aTuple, const TupleIntDouble& anotherTuple) const {
-            return std::get<1>(aTuple) < std::get<1>(anotherTuple);
+        bool operator() (const KeyTupleIntDouble& aTuple, const KeyTupleIntDouble& anotherTuple) const {
+            TupleIntDouble tuple1 = std::get<1>(aTuple);
+            TupleIntDouble tuple2 = std::get<1>(anotherTuple);
+
+            return std::get<1>(tuple1) < std::get<1>(tuple2);
         }
     };
-    typedef std::priority_queue<TupleIntDouble, VectorTupleIntDouble, compareTupleIntDouble> PrtyQueueTupleIntDouble;
+    typedef std::priority_queue<KeyTupleIntDouble, KeyVectorTupleIntDouble, compareTupleIntDouble> PrtyQueueTupleIntDouble;
 
     PrtyQueueTupleIntDouble *theQueue_;
     std::map<int, bool> *blackListElements_;
+    int nextKey;
 public:
     PriorityQueue();
-    void push(TupleIntDouble element);
+    int push(TupleIntDouble element);
     TupleIntDouble top();
     void pop();
-    void erase(int element);
+    void erase(int key);
     bool empty();
     int size();
     ~PriorityQueue();
