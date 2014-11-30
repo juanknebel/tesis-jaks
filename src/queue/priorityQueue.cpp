@@ -17,20 +17,19 @@ TupleIntDouble PriorityQueue::top() {
     }
     else {
         TupleIntDouble element = this->theQueue_->top();
-        if ((*this->blackListElements_)[std::get<0>(element)] == true) {
-            this->pop();
-            return this->top();
+        while (this->blackListElements_->find(std::get<0>(element)) != this->blackListElements_->end()
+                && (*this->blackListElements_)[std::get<0>(element)] == true) {
+            this->theQueue_->pop();
+            element = this->theQueue_->top();
         }
-        else {
-            return element;
-        }
+        return element;
     }
 }
 
 void PriorityQueue::pop() {
-    TupleIntDouble element = this->top();
+    TupleIntDouble element = this->theQueue_->top();
     this->theQueue_->pop();
-    (*this->blackListElements_)[std::get<0>(element)];
+    (*this->blackListElements_)[std::get<0>(element)] = true;
 }
 
 void PriorityQueue::erase(int element) {

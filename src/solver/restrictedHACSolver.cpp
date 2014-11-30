@@ -61,19 +61,24 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     /*
      * Empizo con la clusterizacion
      */
-    DEBUG(DBG_DEBUG, "Incio bucle clusterizacion: " << numToProduce);
-    for (int k = 0; k < numToProduce - 1; ++k) {
+    DEBUG(DBG_DEBUG, "Incio bucle clusterizacion: " << totalElements);
+    for (int k = 0; k < totalElements - 1; ++k) {
         DEBUG(DBG_DEBUG,"iteracion k: " << k);
         Double maxSimilarity = -1.0;
         int k1Index = -1, k2Index = -1;
         /*
          * Busco la maxima similitud en todas las colas de prioridad
          */
-        DEBUG(DBG_DEBUG,"inicio bucle buscar maxima: " << numToProduce);
-        for (int j = 0; j < numToProduce; ++j) {
+        DEBUG(DBG_DEBUG,"inicio bucle buscar maxima: " << totalElements);
+        for (int j = 0; j < totalElements; ++j) {
             DEBUG(DBG_DEBUG,"iteracion j: " << j);
             if (theIVector->at(j) == true) {
-                TupleIntDouble tempTuple = theVectorPriorityQueue->at(j)->top();
+                DEBUG(DBG_DEBUG,"obtener cola: " << j);
+                PriorityQueue* queuep = theVectorPriorityQueue->at(j);
+                DEBUG(DBG_DEBUG,"obtener top");
+                TupleIntDouble tempTuple = queuep->top();
+                DEBUG(DBG_DEBUG,"tupla:");
+                DEBUG(DBG_DEBUG, std::get<0>(tempTuple) << " " << std::get<1>(tempTuple));
                 if (std::get<1>(tempTuple) > maxSimilarity) {
                     maxSimilarity = std::get<1>(tempTuple);
                     k1Index = j;
@@ -122,8 +127,8 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         DEBUG(DBG_DEBUG,"Actualizo la matriz y vectores");
         theK1Cluster->insert(theK2Cluster->begin(), theK2Cluster->end());
         clustering->erase(k2Index);
-        DEBUG(DBG_DEBUG,"inicio bucle actualizacion: " << numToProduce);
-        for (int i = 0; i < numToProduce; ++i) {
+        DEBUG(DBG_DEBUG,"inicio bucle actualizacion: " << totalElements);
+        for (int i = 0; i < totalElements; ++i) {
             DEBUG(DBG_DEBUG,"iteracion k: " << k << "iteracion i: " << i);
             if ((*theIVector)[i] == true && i != k1Index) {
                 DEBUG(DBG_DEBUG,"elim. pila: " << i << "elemento: " << k1Index);
@@ -143,7 +148,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
                 (*theVectorPriorityQueue)[k1Index]->push(tupleAtK1I);
             }
         }
-        DEBUG(DBG_DEBUG,"fin bucle produce");
+        DEBUG(DBG_DEBUG,"fin bucle actualizacion");
     }
 
     SnowFlakeVector* solution = new SnowFlakeVector;
