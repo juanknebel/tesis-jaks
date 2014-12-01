@@ -7,6 +7,7 @@
 
 #include "restrictedHACSolver.h"
 #include "../util/system/Logger.h"
+#include "../util/writer/writerSolution.h"
 
 RestrictedHACSolver::~RestrictedHACSolver() {
 }
@@ -141,6 +142,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
         solution->push_back(*aFlake);
     }
+    WriterSolution::writeSnowFlakeIds(*solution, "/home/amit/clusters.txt");
     DEBUG(DBG_DEBUG,"fin bucle crear solucion");
 
     DEBUG(DBG_DEBUG,"eliminar objetos");

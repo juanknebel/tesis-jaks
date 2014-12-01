@@ -62,4 +62,17 @@ WriterSolution::~WriterSolution() {
 
 }
 
+void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName) {
+     FileOutput file(fileName.c_str());
+     Uint id = 1;
+     for (std::vector<SnowFlake>::iterator it = snowFlakeAll.begin(); it != snowFlakeAll.end(); ++it) {
+
+         IntSet idSet = it->ids();
+         for (IntSet::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
+             file << id << "," << (*itSF) << "\n";
+         }
+         ++id;
+     }
+     file.close();
+}
 

@@ -18,6 +18,8 @@ public:
 
     virtual void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight);
 
+    static void writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName);
+
     virtual ~WriterSolution();
 };
 
