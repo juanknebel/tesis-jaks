@@ -24,7 +24,7 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
         fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
         theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
-        theWriter->writeInterAndIntraValues(solution, fileName.str(), interSimilarityWeight);
+        WriterSolution::writeInterAndIntraValues(solution, fileName.str());
 	}
 }
 

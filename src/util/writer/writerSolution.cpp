@@ -30,22 +30,24 @@ String WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2S
     return result;
 }
 
-void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, String fileName, Double interSimilarityWeight) {
+void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, String fileName) {
+    String separator = "\t";
+    String endOfLIne = "\n";
     String fileNameIntra = fileName + "-nodes.csv";
     FileOutput fileIntra(fileNameIntra.c_str());
-    fileIntra << "id" << this->separator_ << "Label" << this->separator_ << "Intra" << this->endOfLIne_;
+    fileIntra << "id" << separator << "Label" << separator << "Intra" << endOfLIne;
     Uint id = 1;
 
     for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
         it->setIdentificator(id);
         id++;
-        fileIntra << it->getIdentificator() << this->separator_ << "Bundle" << it->getIdentificator() << this->separator_ << it->getSumIntraCompat() << this->endOfLIne_;
+        fileIntra << it->getIdentificator() << separator << "Bundle" << it->getIdentificator() << separator << it->getSumIntraCompat() << endOfLIne;
     }
     fileIntra.close();
 
     String fileNameInter = fileName + "-edges.csv";
     FileOutput fileInter(fileNameInter.c_str());
-    fileInter << "Source" << this->separator_ << "Target" << this->separator_ << "Type" << this->separator_ << "id" << this->separator_ << "Weight" << this->endOfLIne_;
+    fileInter << "Source" << separator << "Target" << separator << "Type" << separator << "id" << separator << "Weight" << endOfLIne;
     id = 1;
 
      for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
@@ -53,7 +55,7 @@ void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution,
              if (it->getIdentificator() == it2->getIdentificator()) {
                  continue;
              }
-             fileInter << it->getIdentificator() << this->separator_ << it2->getIdentificator() << this->separator_ << "Undirected" << this->separator_ << id++ << this->separator_ << SnowFlake::maxPairwiseCompatibility(*it, *it2) << this->endOfLIne_;
+             fileInter << it->getIdentificator() << separator << it2->getIdentificator() << separator << "Undirected" << separator << id++ << separator << SnowFlake::maxPairwiseCompatibility(*it, *it2) << endOfLIne;
          }
      }
 }
