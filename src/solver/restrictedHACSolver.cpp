@@ -43,9 +43,12 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
              * entre el elemento i y j. La similitud de un elemento consigo mismo no la guardo
              */
             if (i != j) {
-                Double similarity = this->problem_->getCompat(i, j);
+                IntSet *temp2 = new IntSet();
+                temp2->insert(j);
+                double similarity = sim(temp, temp2);
                 int key = thePriorityQueue->push(TupleIntDouble(j, similarity));
                 theMatrixC->insert_element(i, j, key);
+                delete temp2;
             }
         }
         theVectorPriorityQueue->push_back(thePriorityQueue);
