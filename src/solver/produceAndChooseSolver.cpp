@@ -104,8 +104,8 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         }
         for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
             SnowFlake candidate = available[candidateId];
-            //Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
-            Double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            //Double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             if (score > maxScore) {
                 bestCandidateId = candidateId;
                 maxScore = score;
