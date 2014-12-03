@@ -16,7 +16,7 @@ public:
 
     virtual void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) = 0;
 
-    virtual void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName, Double interSimilarityWeight);
+    static void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName);
 
     static void writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName);
 
