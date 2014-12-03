@@ -1,18 +1,24 @@
-El algoritmo que se utilizo para obtener las soluciones es \texttt{Produce-and-Choose}, cuenta con dos fases.
-En la primer fase se generar cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que
-son parte de la solucion.\\
+El algoritmo que se utilizó para obtener las soluciones es \tenxttt{Produce-and-Choose}, cuenta con dos fases.
+En la primer fase se generar cierta cantidad de bundles, e la fase siguiente se seleccionan los bundles que
+son parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \section{Generación de bundles}
-Para la generación de bundles se usaron diferentes algoritmos, cada uno con sus ventajas.\\
-El algoritmo jerárquico \texttt{HAC} comienza con tantos clusters como cantidad de elementos, 
-cada uno está conformado por un solo ítem y en cada paso une los dos clusters que maximizan su 
-similitud y respeten las restricciones, que en estos casos fueron no superar los $5$ elementos por 
-bundle.\\
-El algoritmo \texttt{BOBO-x} genera los clusters a partir de un ítem, llamado pivote, y luego de 
-forma golosa selecciona los ítems que maximizan la función intra-cluster. La $x$ representa el 
-número de bundles que va a generar\\
-El algoritmo \texttt{BOBO-Ex} es similar a \texttt{BOBO-x} pero prueba con todos los ítems como 
-pivots para la generación de bundles.
+El problema de la generación de bundles es NP-hard (agregar ref) por lo que se utilizaron heurísticas para aproximarse a una solución
+\subsection{Bundles One-By-One}
+La herurística \texttt{BOBO-x} en cada paso se elige un item, denominado pivote, se genera un bundle a partir del pivote. 
+El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los itmes son pivotes.\\
+\subsection{Hierarchical clustering}
+Para la heurística Hierarchical clustering \texttt{HAC} se define la función de distancia. 
+El algoritmo comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y 
+en cada paso se unen los dos clusters mas cercanos y que respeten las restricciones.\\
+Se realizaron soluciones con dos funciones de distancia diferentes. La primer función utilizada d1(u,v) = 1 - s(u, v).
+La función d1 no tiene en cuenta el gamma, para obtener soluciones de bundles más diversos o bundles más cohesivos.
+La función d2(u,v) = 1 - fn obj(u,v) tiene en cuenta el gamma para buscar una mejor solución.
+
+En la figura se ve la diferencia de utilizar d1 y d2
+
+
+
 \section{Selección de bundles}
 Se utilizaron tres estrategias de selección de bundles para generar las soluciones finales.
 \subsection{Selección golosa}
