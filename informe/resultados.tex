@@ -12,8 +12,8 @@ depuración obtuvimos 4937 que cumplen los requisitos para la búsqueda de las s
 Se genraron soluciones con las siguientes características:\\
 \Solucion
 {}
-{simple, por tuplas y proporcional}
-{\texttt{HAC} y \texttt{BOBO-x}, con  $x \in$ $(10, 160)$}
+{simple}
+{\texttt{SingleHAC}, \texttt{EfficientHAC} y \texttt{Greedy}}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
@@ -21,36 +21,65 @@ Como primera observación podemos ver la cantidad de bundles que se generan para
 producción:\\
 \begin{table}[h]
   \centering
-  \resizebox{\textwidth}{!} {
-    \begin{tabular}{|lcc|}
+  \resizebox{0.5\textwidth}{!} {
+    \begin{tabular}{|lc|}
     \hline
-    Algoritmo & Bundles Generados & Tiempo de Ejecución (minutos) \\
+    Algoritmo & Bundles Generados \\
     \hline
-    HAC       & $2378$ & $6$ \\
-    BOBO-10   & $100$  & $2$ \\
-    BOBO-160  & $1600$ & $5$ \\
+    SingleHAC & $2378$ \\
+    EfficientHAC & $2378$ \\
+    Greedy & $10$ \\
     \hline
     \end{tabular}
   }
     \caption {Cantidad de bundles generados antes de la selección final}
 \end{table}
 
-En los siguientes gráficos se visualiza los resultados obtenidos para los gammas 0.1 y 0.9. Cada 
+En los siguientes gráficos se visualiza los resultados obtenidos para $\gamma$ 0.1 y 0.9. Cada 
 nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
 gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
 de la intra es menor y al rojo mayor.
+
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo HAC}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC}
   \label{res:img-gamma01-hac}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo HAC}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC}
   \label{res:img-gamma09-hac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC}
+  \label{res:img-gamma01-effhac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC}
+  \label{res:img-gamma09-effhac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
+  \label{res:img-gamma01-greedy}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
+  \label{res:img-gamma09-greedy}
 \end{figure}
 
 \section{Autores}

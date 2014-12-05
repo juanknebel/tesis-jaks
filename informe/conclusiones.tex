@@ -1,3 +1,18 @@
+\section{Comparaciones entre los diferentes algoritmos}
+\subsection{Papers}
+Con los resutlados obtenidos podemos hacer dos tipos de análisis y comparaciones, la primera y más 
+clara es comparar entre los algoritmos \texttt{SingleHAC} y \texttt{EfficientHAC}, en la que 
+observamos que para $\gamma$ bajos obtuvimos los mismos resultados, pero para $\gamma$ altos a 
+partir de $0.7$ obtuvimos soluciones diferentes las cuáles tenían un valor con respecto a la 
+función objetivo prácticamente iguales pero se obtuvieron mejores relaciones interbundles.\\
+La otra comparación que surge es entre \texttt{EfficientHAC} y \texttt{Greedy} en el que se observa 
+que para $\gamma$ las soluciones obtenidas son \textquotedblleft similarmente 
+buenas\textquotedblright , dado que sus valores en términos de función objetivo están cercanos, 
+pero a la vez observamos que la relación interbundles es mejor las soluciones de la implementación 
+\texttt{Greedy}. En cambio para $\gamma$ altos, el valor de la función objetivo en la 
+implementación \texttt{EfficientHAC} fue muy superior pero la relación interbundles en el algoritmo 
+\texttt{Greedy} se ve que fue mejor, logrando soluciones mas interdependientes.
+
 \section{Valores cercanos al óptimo}
 Dada la función que se está intentando maximizar $$\displaystyle\sum_{1 \leq i \leq k} 
 \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
@@ -34,10 +49,10 @@ Para los $\gamma \in (0.1, 0.3, 0.5, 0.7, 0.9)$ los resultados de la función so
     \caption {Valor óptimo de la función para cada $\gamma$}
 \end{table}
 
-En las ejecuciones del algoritmo \textbf{HAC} para artículos en los $\gamma$ más altos los 
+En las ejecuciones del algoritmo \textbf{SingleHAC} para artículos en los $\gamma$ más altos los 
 resultados de los bundles eran los mismos lo cuál se explica porque a medida que $\gamma$ aumenta se 
 acerca cada vez más a la cota superior que establecimos. No sucediendo los mismo con $\gamma$ 
 menores.\\
-En cambio para las ejecuciones también del algoritmo \textbf{HAC} pero para autores en todas las 
-soluciones obtuvimos los mismos bundles y se ve reflejado porque la función objetivo para cada 
+En cambio para las ejecuciones también del algoritmo \textbf{SingleHAC} pero para autores en todas 
+las soluciones obtuvimos los mismos bundles y se ve reflejado porque la función objetivo para cada 
 $\gamma$ es igual a la cota.

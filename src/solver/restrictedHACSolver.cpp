@@ -12,7 +12,7 @@
 RestrictedHACSolver::~RestrictedHACSolver() {
 }
 
-SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
+SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
     MapIntIntSet *clustering = new MapIntIntSet();
     int totalElements = this->problem_->numNodes();
     matrix<int> *theMatrixC = new matrix<int> (totalElements, totalElements);
@@ -143,7 +143,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         solution->push_back(*aFlake);
     }
     //WriterSolution::writeSnowFlakeIds(*solution, "/home/zero/tmp/clusters.txt");
-    WriterSolution::writeInterAndIntraValues(*solution, "/home/zero/tmp/articles/intraintercompleto.txt");
+    //WriterSolution::writeInterAndIntraValues(*solution, "/home/zero/tmp/articles/intraintercompleto.txt");
     DEBUG(DBG_DEBUG,"fin bucle crear solucion");
 
     DEBUG(DBG_DEBUG,"eliminar objetos");
@@ -155,7 +155,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     return solution;
 }
 
-SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
+SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     if (this->problem_->numNodes() < numToProduce) {
         throw Exception(__FILE__, __LINE__, "IllegalArgumentException Too few nodes");
     }
