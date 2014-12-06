@@ -55,23 +55,19 @@ la selección de a un bundle, se generan pares de bundles y el algoritmo goloso 
 maximiza la función objetivo.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada} \label{lin:marcacionLinea}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
-\ENDIF
+\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
+\ENSURE $selected:Vector<SnowFlake>$.
+\WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
+%\STATE Buscamos la mejor tupla que maximice la función objetivo.
+\STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
+$\displaystyle\max_{i \neq j} (fn\ obj(produced_{i},produced_{j})) \wedge isNotUsed(i) \wedge 
+isNotUsed(j)$
+\STATE $markAsUsed(i)$
+\STATE $markAsUsed(j)$
+\STATE $selected.push(candidateOne)$
+\STATE $selected.push(candidateTwo)$
 \ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
-\ENDIF
-\ENDFOR
-\RETURN devuelve otra cosa
+\RETURN $selected$
 \end{algorithmic}
 \caption{Selección de bundles de a pares}\label{alg:algSelTuple}
 \end{algorithm}
@@ -79,7 +75,7 @@ maximiza la función objetivo.
 \subsection{Selección proporcional}
 Además como tercera opción de selección se implementó un algoritmo proporcional que en cada paso se 
 ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
-\textquotedblleft adivinar \textquotedblright el valor de las próximas iteraciones y de esta manera 
+\textquotedblleft adivinar\textquotedblright  el valor de las próximas iteraciones y de esta manera 
 dar más importancia en los primeras iteraciones al valor del inter.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
