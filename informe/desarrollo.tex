@@ -58,7 +58,6 @@ maximiza la función objetivo.
 \REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
 \ENSURE $selected:Vector<SnowFlake>$.
 \WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
-%\STATE Buscamos la mejor tupla que maximice la función objetivo.
 \STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
 $\displaystyle\max_{i \neq j} (fn\ obj(produced_{i},produced_{j})) \wedge isNotUsed(i) \wedge 
 isNotUsed(j)$
@@ -71,7 +70,6 @@ isNotUsed(j)$
 \end{algorithmic}
 \caption{Selección de bundles de a pares}\label{alg:algSelTuple}
 \end{algorithm}
-%El algoritmo~\ref{alg:algSelTuple} es bastante raro, hago referencia a la~\ref{lin:marcacionLinea}
 \subsection{Selección proporcional}
 Además como tercera opción de selección se implementó un algoritmo proporcional que en cada paso se 
 ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
