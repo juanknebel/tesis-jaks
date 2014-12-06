@@ -346,6 +346,3 @@ double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
     
     return -1.0;
 }
-
-void RestrictedHACSolver::singleLinkClustering(MapIntIntSet* clustering) {
-}

@@ -22,7 +22,7 @@ public:
     SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
 	bool tryMerge(MapIntIntSet* clustering);
-    void singleLinkClustering(MapIntIntSet* clustering);
+
 private:
     double sim(IntSet* snowflake1, IntSet* snowflake2);
     typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
