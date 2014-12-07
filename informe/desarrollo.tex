@@ -36,13 +36,16 @@ fusionado, utilizando las implementaciones \texttt{SingleHAC} y \texttt{Efficien
 \end{figure}
 
 \section{Selección de bundles}
-Se utilizaron tres estrategias de selección de bundles para generar las soluciones finales.
+Al finalizar la producción de bundles, se deben seleecionar los $k$ bundles para la solución.
+El problema de seleccionar los bundles que maximizan la función objetivo, se puede modelar como
+encontrar en un grafo con peso, en los nodos y aristas, él subgrafo $k$ de mayor peso.
+
+A continuación las herurísticas que se utilizaron para la selección.
 \subsection{Selección golosa}
-Para la selección de los bundles se utilizó un algoritmo goloso que comienza seleccionando el 
-cluster con mayor valor intra y en cada iteración se elige el cluster que maximiza la función 
-objetivo.\\
-Durante las primeras pruebas notamos que todas las soluciones contenían varios bundles en común 
-teniendo en cuenta que se utilizaron distintos valores gammas. Supusimos que esto se debía a que en 
+La herurística golosa comienza seleccionando el cluster con mayor valor intra y en cada iteración 
+se elige el cluster que maximiza la función objetivo.\\
+Durante las primeras ejecuciones se identificó que todas las soluciones contien varios bundles en común 
+teniendo en cuenta que se utilizaron distintos valores gammas. Se supuso que esto se debía a que en 
 el momento de hacer la selección en todos los casos, sin importar el gamma, se seleccionaba el mismo 
 bundle (que es el de mayor intra). Al siguiente paso al seleccionar el bundle que maximiza la 
 función objetivo, ocurre que el valor intra del bundle es mucho más significativo que el inter. Por 
@@ -77,23 +80,15 @@ ponderan los resultados de la función que calcula el intra y el inter restante,
 dar más importancia en los primeras iteraciones al valor del inter.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
-\ENDIF
-\ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
-\ENDIF
-\ENDFOR
-\RETURN devuelve otra cosa
+\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
+\ENSURE $selected:Vector<SnowFlake>$
+\STATE $w(u) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))$
+\STATE $available \leftarrow produced$
+\STATE $selected \leftarrow []$
+\WHILE {$selected.size$ < $numRequested\ AND\ selected.size$ < $produced.size$}
+\STATE $candidate \leftarrow max_{i}$
+\ENDWHILE sad
+\RETURN $selected$
 \end{algorithmic}
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
