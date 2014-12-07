@@ -17,8 +17,8 @@ Como primera implementación, que llamamos \texttt{SingleHAC}, utilizamos la fun
 = 1 - s(u, v)$. Ésta función no tiene en cuenta el $\gamma$ para obtener soluciones de bundles más 
 diversos o bundles más cohesivos.\\
 En cambio para la segunda implementación, \texttt{EfficientHAC} redefinimos la distancia como la 
-función $d2(u,v) = 1 - fn\ obj(u,v)$ que tiene en cuenta el $\gamma$ para buscar una mejor 
-solución.\\
+función $d2(u,v) = 1 - FO(\{u\} \cup \{v\})$ que tiene en cuenta el $\gamma$ para buscar una mejor 
+solución. Y $FO$ es la función definida en \eqref{eq:fnObj} \\
 En la figura ilustramos cuál es la diferencia, al momento de elegir el próximo cluster que debe ser 
 fusionado, utilizando las implementaciones \texttt{SingleHAC} y \texttt{EfficientHAC}.
 \begin{figure}[H]
@@ -60,12 +60,14 @@ maximiza la función objetivo.
 \begin{algorithmic}[1]
 \REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
 \ENSURE $selected:Vector<SnowFlake>$.
-\WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
+\STATE $selected:Vector<SnowFlake> \leftarrow []$
+\STATE $originalSize:Integer \leftarrow produced.size$
+\WHILE {$selected.size < numRequested\ AND\ selected.size < originalSize$}
+\STATE $selectedTemp \leftarrow selected$
 \STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
-$\displaystyle\max_{i \neq j} (fn\ obj(produced_{i},produced_{j})) \wedge isNotUsed(i) \wedge 
-isNotUsed(j)$
-\STATE $markAsUsed(i)$
-\STATE $markAsUsed(j)$
+$\displaystyle\max_{i \neq j} (fn\ obj(selectedTemp.push(produced_{i} \cup produced_{j})))$
+\STATE $produced.erase(i)$
+\STATE $produced.erase(j)$
 \STATE $selected.push(candidateOne)$
 \STATE $selected.push(candidateTwo)$
 \ENDWHILE
@@ -122,23 +124,32 @@ agregarlo y cual es el valor de la función en ese caso, quedándonos siempre co
 posible.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
+\REQUIRE $numOfSnowFlakes:Integer$
+\ENSURE $selected:Vector<SnowFlake>$
+\STATE $selected_{i}:Vector<SnowFlake> \leftarrow \emptyset_{0\leq i<numOfSnowFlakes}$
+\STATE $isComplete:Bool \leftarrow False$
+\STATE $elements:Set<Element> \leftarrow ElementsOfTheProblem$
+\WHILE {$isComplete == False$}
+\STATE $bestScore:Double \leftarrow -\infty$
+\STATE $bestElement:Element \leftarrow \varnothing$
+\STATE $bestBundle:SnowFlake \leftarrow \varnothing$
+\FOR {$elem:Element \in elements$}
+\FOR {$bundle:SnowFlake \in selected$}
+\IF {$isValidBundle(bundle \cup \{elem\}) == True$}
+\STATE $score:Double \leftarrow fn obj(selected.replace(bundle, bundle \cup \{elem\}))$
+\IF {$score > bestScore$}
+\STATE $bestScore \leftarrow score$
+\STATE $bestBundle \leftarrow bundle$
+\STATE $bestElement \leftarrow elem$
 \ENDIF
-\ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
 \ENDIF
 \ENDFOR
-\RETURN devuelve otra cosa
+\ENDFOR
+\STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
+\STATE $elements.erase(elem)$
+\STATE $isComplete \leftarrow bestElement == \varnothing$
+\ENDWHILE
+\RETURN $selected$
 \end{algorithmic}
 \caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
 \end{algorithm}

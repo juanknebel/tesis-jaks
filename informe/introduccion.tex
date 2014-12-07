@@ -13,7 +13,8 @@ Lo que se propone con este tipo de búsquedas es otorgar un conjunto de bundles.
 esta formado por elementos que se relacionan a través de una función de similitud y que sea el único 
 para algún atributo definido.\\
 Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
-and Complementary Bundles\textquotedblright} se decidió implementar búsquedas de soluciones para la 
+and Complementary Bundles\textquotedblright}\cite{compositeRetrival} se decidió implementar 
+búsquedas de soluciones para la 
 base de datos \textit{\textquotedblleft A Data-Driven Journey through Software 
 Engineering Research\textquotedblright} \label{int:baseDeDatos}
 \section{Primeros pasos}
@@ -73,9 +74,13 @@ clasificación en porcentajes de que tema se refiere cada paper. Los temas son:
 \end{multicols}
 La generación de soluciones de bundles se realizó, como propone el paper \textit{\textquotedblleft 
 Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}, maximizando la función 
-objetivo: $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
+objetivo: 
+\begin{equation}\label{eq:fnObj}
+\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
 +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
-\in S_{j}} s(u,v))$$ Dónde la función \textit{s} representa la similitud entre dos items y 
+\in S_{j}} s(u,v))
+\end{equation} 
+Dónde la función \textit{s} representa la similitud entre dos items y 
 $\gamma$ ($0 < \gamma < 1$) es un parámetro para ponderar entre la calidad de un bundle (intra) y 
 la separación entre ellos (inter).\\
 A partir de información provista por la base de datos y con la definición de funciones de 
