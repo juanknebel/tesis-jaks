@@ -44,9 +44,10 @@ Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
   \label{res:img-usingSingleHAC}
 \end{figure}
 
-Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad n2,
-mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que la complejidad es n2 * ln n.
-(Agregar referencia a paper utilizado para estos algoritmos).
+Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una 
+complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que 
+la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de 
+\cite{informationRetrival}
 
 
 \section{Selección de bundles}
@@ -54,7 +55,8 @@ Al finalizar la producción de bundles, se deben seleecionar los $k$ bundles par
 El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en 
 encontrar en el grafo G el k-subgrafo de mayor peso de nodos y aristas.
 
-Se implementó el algoritmo que propone ``Composite ...'' que transforma el grafo G 
+Se implementó el algoritmo que propone ``Composite ...''\cite{compositeRetrival} que transforma el 
+grafo G 
 en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la función:\\
 
 \begin{equation}
@@ -99,7 +101,7 @@ con coeficientes cada parte de la función. Con esto se mantiene la relación de
 \WHILE {$selected.size < numRequested\ AND\ selected.size < originalSize$}
 \STATE $selectedTemp \leftarrow selected$
 \STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
-$\displaystyle\max_{i \neq j} (fn\ obj(selectedTemp.push(produced_{i} \cup produced_{j})))$
+$\displaystyle\max_{i \neq j} (FO(selectedTemp.push(produced_{i} \cup produced_{j})))$
 \STATE $produced.erase(i)$
 \STATE $produced.erase(j)$
 \STATE $selected.push(candidateOne)$
@@ -121,9 +123,9 @@ dar más importancia en los primeras iteraciones al valor del inter.
 \STATE $w(u) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))$
 \STATE $available \leftarrow produced$
 \STATE $selected \leftarrow []$
-\WHILE {$selected.size$ < $numRequested\ AND\ selected.size$ < $produced.size$}
+\WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
 \STATE $candidate \leftarrow max_{i}$
-\ENDWHILE sad
+\ENDWHILE
 \RETURN $selected$
 \end{algorithmic}
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
@@ -143,7 +145,7 @@ calculo el valor intra también se tuvo en cuenta la similitud de todos los elem
 específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
 vector especifico se le dio mayor peso.
 
-\section{Heurística Golosa}
+\section{Heurística golosa para la obtención de una solución}
 En todas los algoritmos previos se centraron en, primero construir buenos bundles maximizando solo 
 el valor propio de cada bundle, o sea, el valor inter bundle. Una vez generado los suficientes 
 \textquotedblleft buenos\textquotedblright  para luego seleccionar dependiendo de la 
@@ -170,7 +172,7 @@ posible.
 \FOR {$elem:Element \in elements$}
 \FOR {$bundle:SnowFlake \in selected$}
 \IF {$isValidBundle(bundle \cup \{elem\}) == True$}
-\STATE $score:Double \leftarrow fn obj(selected.replace(bundle, bundle \cup \{elem\}))$
+\STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
 \IF {$score > bestScore$}
 \STATE $bestScore \leftarrow score$
 \STATE $bestBundle \leftarrow bundle$
