@@ -4,58 +4,86 @@ En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se 
 bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \section{Generación de bundles}
-El problema de la generación de bundles es NP-hard (agregar ref) por lo que se utilizaron heurísticas para aproximarse a una solución
+El problema de la generación de bundles es NP-hard (agregar ref, explicar problema de clusterizacion) 
+por lo que se utilizaron heurísticas para aproximarse a una solución
 \subsection{Bundles One-By-One}
 La herurística \texttt{BOBO-x} en cada paso se elige un item, denominado pivote, se genera un bundle a partir del pivote. 
 El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los itmes son pivotes.\\
 \subsection{Hierarchical clustering}
-Para la heurística Hierarchical clustering \texttt{HAC} se define la función de distancia. 
-El algoritmo comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y 
-en cada paso se unen los dos clusters mas cercanos y que respeten las restricciones.\\
-Se realizaron dos variantes con esta solución, cada una con funciones de distancia diferentes. 
-Como primera implementación, que llamamos \texttt{SingleHAC}, utilizamos la función $d1(u,v) 
-= 1 - s(u, v)$. Ésta función no tiene en cuenta el $\gamma$ para obtener soluciones de bundles más 
-diversos o bundles más cohesivos.\\
-En cambio para la segunda implementación, \texttt{EfficientHAC} redefinimos la distancia como la 
-función $d2(u,v) = 1 - FO(\{u\} \cup \{v\})$ que tiene en cuenta el $\gamma$ para buscar una mejor 
-solución. Y $FO$ es la función definida en \eqref{eq:fnObj} \\
-En la figura ilustramos cuál es la diferencia, al momento de elegir el próximo cluster que debe ser 
-fusionado, utilizando las implementaciones \texttt{SingleHAC} y \texttt{EfficientHAC}.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.3\textwidth]{img/cluster1.png}
-  \caption{Selección de bundles usando \texttt{SingleHAC}}
-  \label{res:img-usingSingleHAC}
-\end{figure}
+La heurística Hierarchical clustering \texttt{HAC} 
+se define la función de distancia entre clusters comienza con tantos clusters como cantidad de elementos, cada uno está 
+conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. 
+Para ello se define la función de distancia para los items $u$ y $v$ como:\\
+\begin{equation}
+d_{1}(u,v) = 1 - s(u, v)
+\end{equation}
+
+Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles,
+En la figura 1 se observa que el algoritmo selecciona los items más cercanos. En las búsquedas que se realizan en composite ...
+se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado. 
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.3\textwidth]{img/cluster2.png}
-  \caption{Selección de bundles usando \texttt{EfficientHAC}}
+  \caption{Selección de bundles usando $d_{1}$}
   \label{res:img-usingEfficientHAC}
 \end{figure}
 
+En caso de que el $\gamma$ sea pequeño, la 
+clusterizacion esperada para la misma instncia es la que se visualiza en la imágen 2, clusters no tan cohesivos pero más variados.
+Por lo que se define una función de distancia que considera el $\gamma$.\\
+\begin{equation}
+d2(u,v) = 1 - FO(\{u\} \cup \{v\})
+\end{equation}
+Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{img/cluster1.png}
+  \caption{Selección de bundles usando $d_{2}$}
+  \label{res:img-usingSingleHAC}
+\end{figure}
+
+Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad n2,
+mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que la complejidad es n2 * ln n.
+(Agregar referencia a paper utilizado para estos algoritmos).
+
+
 \section{Selección de bundles}
 Al finalizar la producción de bundles, se deben seleecionar los $k$ bundles para la solución.
-El problema de seleccionar los bundles que maximizan la función objetivo, se puede modelar como
-encontrar en un grafo con peso, en los nodos y aristas, él subgrafo $k$ de mayor peso.
+El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en 
+encontrar en el grafo G el k-subgrafo de mayor peso de nodos y aristas.
 
-A continuación las herurísticas que se utilizaron para la selección.
-\subsection{Selección golosa}
-La herurística golosa comienza seleccionando el cluster con mayor valor intra y en cada iteración 
-se elige el cluster que maximiza la función objetivo.\\
-Durante las primeras ejecuciones se identificó que todas las soluciones contien varios bundles en común 
-teniendo en cuenta que se utilizaron distintos valores gammas. Se supuso que esto se debía a que en 
-el momento de hacer la selección en todos los casos, sin importar el gamma, se seleccionaba el mismo 
-bundle (que es el de mayor intra). Al siguiente paso al seleccionar el bundle que maximiza la 
-función objetivo, ocurre que el valor intra del bundle es mucho más significativo que el inter. Por 
-lo tanto, lo que ocurre es que en los primeros pasos se seleccionan los mismos bundles para todos 
-los gammas sin tener en cuenta que cuando se optó por un gamma cercano a cero se pedía que la 
-solución sea más diversificada.\\
-\subsection{Selección de a pares}
-Para mejorar el proceso de selección se decidió modificar el algoritmo para que en vez de realizar 
-la selección de a un bundle, se generan pares de bundles y el algoritmo goloso selecciona el que 
-maximiza la función objetivo.
+Se implementó el algoritmo que propone ``Composite ...'' que transforma el grafo G 
+en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la función:\\
+
+\begin{equation}
+\omega_{1}(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
+\end{equation}
+
+(aca va el algoritmo)\\
+
+En la función $\omega_{1}(u,v)$ el valor de la función $\psi(u,v)$  es considerablemente menor al de
+$\omega(u) + \omega(v)$, (en el intra se suma los ejes de todos los nodos, el inter es el máximo entre los items)
+implica que $\gamma$ no cumple con el objetivo de balancear entre una solución cohesiva y una variada.
+Para esto se funciones $\omega$ alternativas.\\
+
+Con $\omega_{2}(u,v,w,y)$ la búsqueda se realiza con la combinación de cuatro nodos, por lo que el orden de complejidad
+aumenta a ...
+
+\begin{equation}
+\omega_{2}(u,v,w,y) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v) + \omega(w) + \omega(y)) + (1 - \gamma)(\psi(u,v) + \psi(u,w) + \psi(u,y)  + \psi(v,w) + \psi(v,y) + \psi(w,y))
+\end{equation}
+
+La función $\omega_{3}(u, k)$ recibe $u$ el conjunto de clusters seleccionados hasta el momento 
+y $k$ que es la cantidad de cluesters para la solución. Con $k$ y el tamaño de $u$ se calcula el 
+coeficiente con el propósito en que en cada paso se pondere el inter y el intra. Para eso se multiplica
+con coeficientes cada parte de la función. Con esto se mantiene la relación de inter e intra durante la selección de bundles
+
+\begin{equation}
+\omega_{3}(u,k) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))
+\end{equation}
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
