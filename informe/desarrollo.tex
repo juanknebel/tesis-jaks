@@ -72,7 +72,10 @@ Con $\omega_{2}(u,v,w,y)$ la búsqueda se realiza con la combinación de cuatro 
 aumenta a ...
 
 \begin{equation}
-\omega_{2}(u,v,w,y) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v) + \omega(w) + \omega(y)) + (1 - \gamma)(\psi(u,v) + \psi(u,w) + \psi(u,y)  + \psi(v,w) + \psi(v,y) + \psi(w,y))
+\begin{split}
+\omega_{2}(u,v,w,y) &= \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v) + \omega(w) + \omega(y)) \\
+&+ (1 - \gamma)(\psi(u,v) + \psi(u,w) + \psi(u,y)  + \psi(v,w) + \psi(v,y) + \psi(w,y))
+\end{split}
 \end{equation}
 
 La función $\omega_{3}(u, k)$ recibe $u$ el conjunto de clusters seleccionados hasta el momento 
@@ -81,7 +84,10 @@ coeficiente con el propósito en que en cada paso se pondere el inter y el intra
 con coeficientes cada parte de la función. Con esto se mantiene la relación de inter e intra durante la selección de bundles
 
 \begin{equation}
-\omega_{3}(u,k) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))
+\begin{split}
+\omega_{3}(u,k) &= \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) \\
+&+ \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))
+\end{split}
 \end{equation}
 
 \begin{algorithm}[H]
