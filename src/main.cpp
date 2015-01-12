@@ -85,7 +85,7 @@ std::vector<float>* generateVector(char *theVector, int dimension) {
     stringToVectorSplit(theVector,separator,vectorString);
 
     for (std::vector<std::string>::const_iterator i = vectorString.begin(); i != vectorString.end(); ++i) {
-        vectorProfile->push_back(convertToDouble(*i));git 
+        vectorProfile->push_back(convertToDouble(*i));
     }
 
     return vectorProfile;
