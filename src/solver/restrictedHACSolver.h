@@ -13,7 +13,7 @@
 
 class RestrictedHACSolver: public MultiplicativeEffortProduceAndChooseSolver {
 public:
-	RestrictedHACSolver(ProblemInstance* problem) :  MultiplicativeEffortProduceAndChooseSolver(problem) {
+	RestrictedHACSolver(ProblemInstance* problem, Selector* selector) : MultiplicativeEffortProduceAndChooseSolver(problem, selector) {
 
 	}
 	virtual ~RestrictedHACSolver();

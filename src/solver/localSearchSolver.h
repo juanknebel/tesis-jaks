@@ -5,7 +5,7 @@
 
 class LocalSearchSolver : public ProduceAndChooseSolver {
 public:
-    LocalSearchSolver(ProblemInstance* problem) : ProduceAndChooseSolver(problem) {
+    LocalSearchSolver(ProblemInstance* problem, Selector* selector) : ProduceAndChooseSolver(problem, selector) {
     }
     ~LocalSearchSolver() {}
     SnowFlakeVector* produceManySnowflakes(int numSnowflakes);

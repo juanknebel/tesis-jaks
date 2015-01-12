@@ -26,8 +26,7 @@ public:
     };
 
     static std::string getTheSolverName(ConfigurationJaks& configFile);
-    static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem);
-    static ProduceAndChooseSolver::RankingStrategy getTheStrategy(ConfigurationJaks& configFile);
+    static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem, Selector *theStrategySelector);
 };
 
 #endif // FACTORYSOLVER_H

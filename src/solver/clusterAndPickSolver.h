@@ -12,7 +12,7 @@
 
 class ClusterAndPickSolver: public Solver {
 public:
-	ClusterAndPickSolver(ProblemInstance* problem):Solver(problem){
+	ClusterAndPickSolver(ProblemInstance* problem, Selector* selector) : Solver(problem, selector){
 
 	}
 	~ClusterAndPickSolver();

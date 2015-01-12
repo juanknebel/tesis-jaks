@@ -12,7 +12,7 @@
 
 class ExhaustiveGreedyAnySimSOBOSolver : public ExhaustiveSOBOSolver {
 	public:
-	ExhaustiveGreedyAnySimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
+	ExhaustiveGreedyAnySimSOBOSolver(ProblemInstance* problem, Selector* selector) : ExhaustiveSOBOSolver(problem, selector) {
 
 	}
 	~ExhaustiveGreedyAnySimSOBOSolver() {};

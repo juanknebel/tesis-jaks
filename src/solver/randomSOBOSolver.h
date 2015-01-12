@@ -11,7 +11,7 @@
 #include "snowflakesOneByOneSolver.h"
 class RandomSOBOSolver : public SnowflakesOneByOneSolver {
 public:
-	RandomSOBOSolver(ProblemInstance *problem) : SnowflakesOneByOneSolver(problem) {
+	RandomSOBOSolver(ProblemInstance *problem, Selector* selector) : SnowflakesOneByOneSolver(problem, selector) {
 		this->SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
 	}
 	~RandomSOBOSolver() {};

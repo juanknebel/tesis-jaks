@@ -8,13 +8,13 @@ using namespace std;
 
 void showSolution(SnowFlakeVector& solution, Configurator& configurator) {
     if(configurator.getPrintToScreen()) {
-        std::cout<<configurator.getTheWrtiter()->showInScreen(solution, configurator.getTheNodeName())<<std::endl;
+        std::cout<< configurator.getTheWriter()->showInScreen(solution, configurator.getTheNodeName())<<std::endl;
 	}
 }
 
 void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
     if(configurator.getWriteToFile()) {
-        WriterSolution* theWriter = configurator.getTheWrtiter();
+        WriterSolution* theWriter = configurator.getTheWriter();
 		std::stringstream fileName;
         fileName << configurator.getDirectoryOfWork() << "Solver-";
         fileName << configurator.getSolverName();

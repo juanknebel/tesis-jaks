@@ -21,7 +21,7 @@ protected:
     WriterSolution *theWriter_;
     Solver* theSolver_;
     Id2Str* theNodeName_;
-    ProduceAndChooseSolver::RankingStrategy theStrategy_;
+    Selector* selectorStrategy_;
     std::string solverName_;
     int numToProduce_;
     bool printToScreen_;
@@ -30,14 +30,14 @@ protected:
     double gamma_;
 public:
     Configurator(Solver* solver, WriterSolution* writer, Id2Str* nodeName,
-                 ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
+                 Selector* strategy, std::string solverName, int numToProduce,
                  bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma);
 
     virtual ~Configurator();
-    WriterSolution* getTheWrtiter() const;
+    WriterSolution*getTheWriter() const;
     Solver* getTheSolver() const;
     Id2Str* getTheNodeName() const;
-    ProduceAndChooseSolver::RankingStrategy getTheStrategy() const;
+    Selector* getTheStrategy() const;
     std::string getSolverName() const;
     int getNumToProduce() const;
     bool getPrintToScreen() const;

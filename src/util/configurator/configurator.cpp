@@ -2,12 +2,12 @@
 
 Configurator::Configurator(
         Solver* solver, WriterSolution* writer, Id2Str* nodeName,
-        ProduceAndChooseSolver::RankingStrategy strategy, std::string solverName, int numToProduce,
+        Selector* strategy, std::string solverName, int numToProduce,
         bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma) {
     this->theSolver_ = solver;
     this->theWriter_ = writer;
     this->theNodeName_ = nodeName;
-    this->theStrategy_ = strategy;
+    this->selectorStrategy_ = strategy;
     this->solverName_ = solverName;
     this->numToProduce_ = numToProduce;
     this->printToScreen_ = printToScreen;
@@ -16,7 +16,7 @@ Configurator::Configurator(
     this->gamma_ = gamma;
 }
 
-WriterSolution* Configurator::getTheWrtiter() const {
+WriterSolution* Configurator::getTheWriter() const {
     return this->theWriter_;
 }
 
@@ -26,10 +26,6 @@ Solver* Configurator::getTheSolver() const {
 
 Id2Str* Configurator::getTheNodeName() const {
     return this->theNodeName_;
-}
-
-ProduceAndChooseSolver::RankingStrategy Configurator::getTheStrategy() const {
-    return this->theStrategy_;
 }
 
 String Configurator::getSolverName() const {
@@ -60,4 +56,8 @@ Configurator::~Configurator() {
     delete this->theSolver_;
     delete this->theWriter_;
     delete this->theNodeName_;
+}
+
+Selector *Configurator::getTheStrategy() const {
+    return this->selectorStrategy_;
 }

@@ -12,7 +12,7 @@
 
 class ExhaustiveSOBOSolver: public SnowflakesOneByOneSolver {
 public:
-	ExhaustiveSOBOSolver(ProblemInstance* problem):SnowflakesOneByOneSolver(problem){
+	ExhaustiveSOBOSolver(ProblemInstance* problem, Selector* selector) : SnowflakesOneByOneSolver(problem, selector){
 		SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = true;
 
 	}

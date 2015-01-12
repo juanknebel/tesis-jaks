@@ -15,7 +15,7 @@ protected:
 	static Double DEFAULT_NUMCANDIDATES_MULTIPLIER;
 	Double numCandidatesMultiplier_;
 public:
-	MultiplicativeEffortProduceAndChooseSolver(ProblemInstance* problem) : ProduceAndChooseSolver (problem) {
+	MultiplicativeEffortProduceAndChooseSolver(ProblemInstance* problem, Selector* selector) : ProduceAndChooseSolver (problem, selector) {
 		this->numCandidatesMultiplier_ = this->DEFAULT_NUMCANDIDATES_MULTIPLIER;
 	}
 	~MultiplicativeEffortProduceAndChooseSolver() {};

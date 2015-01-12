@@ -18,7 +18,7 @@ private:
 	Double chooseMu();
 
 public:
-	RandomBOBOSolver(ProblemInstance* problem) : RandomSOBOSolver(problem) {
+	RandomBOBOSolver(ProblemInstance* problem, Selector* selector) : RandomSOBOSolver(problem, selector) {
 		this->mu_ = chooseMu();
 	}
 	~RandomBOBOSolver() {};

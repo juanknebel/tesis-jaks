@@ -12,7 +12,7 @@
 
 class ExhaustiveGreedySumSimSOBOSolver : public ExhaustiveSOBOSolver {
 public:
-	ExhaustiveGreedySumSimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
+	ExhaustiveGreedySumSimSOBOSolver(ProblemInstance* problem, Selector* selector) : ExhaustiveSOBOSolver(problem, selector) {
 
 	}
 	~ExhaustiveGreedySumSimSOBOSolver() {};

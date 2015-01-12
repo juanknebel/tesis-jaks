@@ -12,6 +12,7 @@
 #include "../problem/problemInstance.h"
 #include "../problem/snowFlake.h"
 #include "../util/system/exception.h"
+#include "selector/selector.h"
 
 typedef std::vector<SnowFlake> SnowFlakeVector;
 
@@ -21,6 +22,7 @@ protected:
 	int pivot_;
 	int specificItem_;
     Double interSimilarityWeight_;
+	Selector* theSelectorStrategy_;
 
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
 	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node, int excludeNode);
@@ -71,9 +73,10 @@ private:
     };
 
 public:
-	Solver(ProblemInstance* problem) {
+	Solver(ProblemInstance* problem, Selector* selector) {
 		this->problem_ = problem;
 		this->pivot_ = 0;
+		this->theSelectorStrategy_ = selector;
 	}
 	virtual ~Solver() {}
 

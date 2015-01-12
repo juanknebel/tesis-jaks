@@ -12,7 +12,7 @@
 
 class SequentialScanSolver: public Solver {
 public:
-	SequentialScanSolver(ProblemInstance* problem):Solver(problem){
+	SequentialScanSolver(ProblemInstance* problem, Selector* selector) : Solver(problem, selector){
 
 	}
 	~SequentialScanSolver() {};

@@ -1,4 +1,5 @@
 #include "factoryConfigurator.h"
+#include "../../solver/selector/factorySelector.h"
 
 FactoryConfigurator::FactoryConfigurator() {
 
@@ -8,14 +9,14 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
     /*
      * Dato que indica si los datos seran obtenidos desde una base de datos o desde un archivo
      */
-    bool useDataFromDb = ((configFile["use_data_from_db"] == "1") ? true : false);
+    bool useDataFromDb = configFile["use_data_from_db"] == "1";
     /*
      * Datos comunes a cualquier configurador
      */
     int numberOfSnowFlakes = atoi(configFile["num_flakes"].c_str());
     double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
-    bool printToScreen = ((configFile["print_to_screen"] == "1") ? true : false);
-    bool writeToFile = ((configFile["write_file"] == "1") ? true : false);
+    bool printToScreen = configFile["print_to_screen"] == "1";
+    bool writeToFile = configFile["write_file"] == "1";
     std::string directoryOfWork = configFile["directory_work"];
 
     /*
@@ -48,16 +49,16 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
         /*
          * Instanciacion del solver y la estrategia
          */
-        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
         std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-        ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+        Selector *theStrategySelector = FactorySelector::getSelector(configFile, theProblem);
+        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem, theStrategySelector);
 
         /*
          * Instanciacion del configurador
          */
         theConfigurator = new ConfiguratorToDataBase(theDao, theSolver, theWriter, theNodeName,
-                                                     theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,
-                                                     writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
+                                                    theStrategySelector, theSolverName, numberOfSnowFlakes, printToScreen,
+                                                    writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
     }
     else {
         /*
@@ -70,12 +71,12 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
         /*
          * Instanciacion del solver y la estrategia
          */
-        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
         std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-        ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+        Selector *theStrategySelector = FactorySelector::getSelector(configFile, theProblem);
+        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem, theStrategySelector);
 
         theConfigurator = new Configurator(theSolver, theWriter, theNodeName,
-                        theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,
+                        theStrategySelector, theSolverName, numberOfSnowFlakes, printToScreen,
                         writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
     }
     return theConfigurator;

@@ -35,6 +35,13 @@ src/problem/problemInstanceFromFiles.cpp
 src/problem/snowFlake.cpp
 src/queue/priorityQueue.cpp
 src/matrix/matrixConcrete.cpp
+src/solver/selector/factorySelector.cpp
+src/solver/selector/intraSelector.cpp
+src/solver/selector/interIntraSelector.cpp
+src/solver/selector/interIntraTuplesSelector.cpp
+src/solver/selector/intraInterProportionalSelector.cpp
+src/solver/selector/densestSubGraphSelector.cpp
+src/solver/selector/selector.cpp
 src/solver/factorySolver.cpp
 src/solver/localSearchSolver.cpp
 src/solver/restrictedHACWithSpecificItemSolver.cpp
@@ -52,14 +59,13 @@ src/solver/snowflakesOneByOneSolver.cpp
 src/solver/solver.cpp
 src/cluster/clustering.cpp
 src/cluster/metisWrapper.cpp
-src/test/testingClusterAndPickSolver.cpp
-src/test/testingClustering.cpp
-src/test/testingMatrix.cpp
-src/test/testingMetisWrapper.cpp
-src/test/testingProblemInstance.cpp
-src/test/testingProblemInstanceFromFiles.cpp
-src/test/testSuites.cpp
+#src/test/testingClusterAndPickSolver.cpp
+#src/test/testingClustering.cpp
+#src/test/testingMatrix.cpp
+#src/test/testingMetisWrapper.cpp
+#src/test/testingProblemInstance.cpp
+#src/test/testingProblemInstanceFromFiles.cpp
+#src/test/testSuites.cpp
 )
-#link_directories("/usr/lib/mysql/")
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks mysqlcppconn)

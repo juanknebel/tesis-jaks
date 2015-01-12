@@ -14,7 +14,7 @@ class SnowflakesOneByOneSolver: public MultiplicativeEffortProduceAndChooseSolve
 public:
 	static bool SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS;
 
-	SnowflakesOneByOneSolver(ProblemInstance* problem) : MultiplicativeEffortProduceAndChooseSolver (problem) {
+	SnowflakesOneByOneSolver(ProblemInstance* problem, Selector* selector) : MultiplicativeEffortProduceAndChooseSolver (problem, selector) {
 	}
 	~SnowflakesOneByOneSolver() {};
 
