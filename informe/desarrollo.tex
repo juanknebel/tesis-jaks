@@ -4,102 +4,129 @@ En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se 
 bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \section{Generación de bundles}
-El problema de la generación de bundles es NP-hard (agregar ref) por lo que se utilizaron heurísticas para aproximarse a una solución
+El problema de la generación de bundles es NP-hard (agregar ref, explicar problema de clusterizacion) 
+por lo que se utilizaron heurísticas para aproximarse a una solución
 \subsection{Bundles One-By-One}
 La herurística \texttt{BOBO-x} en cada paso se elige un item, denominado pivote, se genera un bundle a partir del pivote. 
 El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los itmes son pivotes.\\
 \subsection{Hierarchical clustering}
-Para la heurística Hierarchical clustering \texttt{HAC} se define la función de distancia. 
-El algoritmo comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y 
-en cada paso se unen los dos clusters mas cercanos y que respeten las restricciones.\\
-Se realizaron dos variantes con esta solución, cada una con funciones de distancia diferentes. 
-Como primera implementación, que llamamos \texttt{SingleHAC}, utilizamos la función $d1(u,v) 
-= 1 - s(u, v)$. Ésta función no tiene en cuenta el $\gamma$ para obtener soluciones de bundles más 
-diversos o bundles más cohesivos.\\
-En cambio para la segunda implementación, \texttt{EfficientHAC} redefinimos la distancia como la 
-función $d2(u,v) = 1 - fn\ obj(u,v)$ que tiene en cuenta el $\gamma$ para buscar una mejor 
-solución.\\
-En la figura ilustramos cuál es la diferencia, al momento de elegir el próximo cluster que debe ser 
-fusionado, utilizando las implementaciones \texttt{SingleHAC} y \texttt{EfficientHAC}.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.3\textwidth]{img/cluster1.png}
-  \caption{Selección de bundles usando \texttt{SingleHAC}}
-  \label{res:img-usingSingleHAC}
-\end{figure}
+La heurística Hierarchical clustering \texttt{HAC} 
+se define la función de distancia entre clusters comienza con tantos clusters como cantidad de elementos, cada uno está 
+conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. 
+Para ello se define la función de distancia para los items $u$ y $v$ como:\\
+\begin{equation}
+d_{1}(u,v) = 1 - s(u, v)
+\end{equation}
+
+Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles,
+En la figura 1 se observa que el algoritmo selecciona los items más cercanos. En las búsquedas que se realizan en composite ...
+se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado. 
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.3\textwidth]{img/cluster2.png}
-  \caption{Selección de bundles usando \texttt{EfficientHAC}}
+  \caption{Selección de bundles usando $d_{1}$}
   \label{res:img-usingEfficientHAC}
 \end{figure}
 
+En caso de que el $\gamma$ sea pequeño, la 
+clusterizacion esperada para la misma instncia es la que se visualiza en la imágen 2, clusters no tan cohesivos pero más variados.
+Por lo que se define una función de distancia que considera el $\gamma$.\\
+\begin{equation}
+d2(u,v) = 1 - FO(\{u\} \cup \{v\})
+\end{equation}
+Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.3\textwidth]{img/cluster1.png}
+  \caption{Selección de bundles usando $d_{2}$}
+  \label{res:img-usingSingleHAC}
+\end{figure}
+
+Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una 
+complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que 
+la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de 
+\cite{informationRetrival}
+
+
 \section{Selección de bundles}
-Se utilizaron tres estrategias de selección de bundles para generar las soluciones finales.
-\subsection{Selección golosa}
-Para la selección de los bundles se utilizó un algoritmo goloso que comienza seleccionando el 
-cluster con mayor valor intra y en cada iteración se elige el cluster que maximiza la función 
-objetivo.\\
-Durante las primeras pruebas notamos que todas las soluciones contenían varios bundles en común 
-teniendo en cuenta que se utilizaron distintos valores gammas. Supusimos que esto se debía a que en 
-el momento de hacer la selección en todos los casos, sin importar el gamma, se seleccionaba el mismo 
-bundle (que es el de mayor intra). Al siguiente paso al seleccionar el bundle que maximiza la 
-función objetivo, ocurre que el valor intra del bundle es mucho más significativo que el inter. Por 
-lo tanto, lo que ocurre es que en los primeros pasos se seleccionan los mismos bundles para todos 
-los gammas sin tener en cuenta que cuando se optó por un gamma cercano a cero se pedía que la 
-solución sea más diversificada.\\
-\subsection{Selección de a pares}
-Para mejorar el proceso de selección se decidió modificar el algoritmo para que en vez de realizar 
-la selección de a un bundle, se generan pares de bundles y el algoritmo goloso selecciona el que 
-maximiza la función objetivo.
+Al finalizar la producción de bundles, se deben seleecionar los $k$ bundles para la solución.
+El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en 
+encontrar en el grafo G el k-subgrafo de mayor peso de nodos y aristas.
+
+Se implementó el algoritmo que propone ``Composite ...''\cite{compositeRetrival} que transforma el 
+grafo G 
+en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la función:\\
+
+\begin{equation}
+\omega_{1}(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
+\end{equation}
+
+(aca va el algoritmo)\\
+
+En la función $\omega_{1}(u,v)$ el valor de la función $\psi(u,v)$  es considerablemente menor al de
+$\omega(u) + \omega(v)$, (en el intra se suma los ejes de todos los nodos, el inter es el máximo entre los items)
+implica que $\gamma$ no cumple con el objetivo de balancear entre una solución cohesiva y una variada.
+Para esto se funciones $\omega$ alternativas.\\
+
+Con $\omega_{2}(u,v,w,y)$ la búsqueda se realiza con la combinación de cuatro nodos, por lo que el orden de complejidad
+aumenta a ...
+
+\begin{equation}
+\begin{split}
+\omega_{2}(u,v,w,y) &= \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v) + \omega(w) + \omega(y)) \\
+&+ (1 - \gamma)(\psi(u,v) + \psi(u,w) + \psi(u,y)  + \psi(v,w) + \psi(v,y) + \psi(w,y))
+\end{split}
+\end{equation}
+
+La función $\omega_{3}(u, k)$ recibe $u$ el conjunto de clusters seleccionados hasta el momento 
+y $k$ que es la cantidad de cluesters para la solución. Con $k$ y el tamaño de $u$ se calcula el 
+coeficiente con el propósito en que en cada paso se pondere el inter y el intra. Para eso se multiplica
+con coeficientes cada parte de la función. Con esto se mantiene la relación de inter e intra durante la selección de bundles
+
+\begin{equation}
+\begin{split}
+\omega_{3}(u,k) &= \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) \\
+&+ \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))
+\end{split}
+\end{equation}
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada} \label{lin:marcacionLinea}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
-\ENDIF
+\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
+\ENSURE $selected:Vector<SnowFlake>$.
+\STATE $selected:Vector<SnowFlake> \leftarrow []$
+\STATE $originalSize:Integer \leftarrow produced.size$
+\WHILE {$selected.size < numRequested\ AND\ selected.size < originalSize$}
+\STATE $selectedTemp \leftarrow selected$
+\STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
+$\displaystyle\max_{i \neq j} (FO(selectedTemp.push(produced_{i} \cup produced_{j})))$
+\STATE $produced.erase(i)$
+\STATE $produced.erase(j)$
+\STATE $selected.push(candidateOne)$
+\STATE $selected.push(candidateTwo)$
 \ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
-\ENDIF
-\ENDFOR
-\RETURN devuelve otra cosa
+\RETURN $selected$
 \end{algorithmic}
 \caption{Selección de bundles de a pares}\label{alg:algSelTuple}
 \end{algorithm}
-%El algoritmo~\ref{alg:algSelTuple} es bastante raro, hago referencia a la~\ref{lin:marcacionLinea}
 \subsection{Selección proporcional}
 Además como tercera opción de selección se implementó un algoritmo proporcional que en cada paso se 
 ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
-\textquotedblleft adivinar \textquotedblright el valor de las próximas iteraciones y de esta manera 
+\textquotedblleft adivinar\textquotedblright  el valor de las próximas iteraciones y de esta manera 
 dar más importancia en los primeras iteraciones al valor del inter.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
-\ENDIF
+\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
+\ENSURE $selected:Vector<SnowFlake>$
+\STATE $w(u) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))$
+\STATE $available \leftarrow produced$
+\STATE $selected \leftarrow []$
+\WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
+\STATE $candidate \leftarrow max_{i}$
 \ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
-\ENDIF
-\ENDFOR
-\RETURN devuelve otra cosa
+\RETURN $selected$
 \end{algorithmic}
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
@@ -118,7 +145,7 @@ calculo el valor intra también se tuvo en cuenta la similitud de todos los elem
 específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
 vector especifico se le dio mayor peso.
 
-\section{Heurística Golosa}
+\section{Heurística golosa para la obtención de una solución}
 En todas los algoritmos previos se centraron en, primero construir buenos bundles maximizando solo 
 el valor propio de cada bundle, o sea, el valor inter bundle. Una vez generado los suficientes 
 \textquotedblleft buenos\textquotedblright  para luego seleccionar dependiendo de la 
@@ -133,23 +160,32 @@ agregarlo y cual es el valor de la función en ese caso, quedándonos siempre co
 posible.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE Aca va la entrada del algoritmo.
-\ENSURE Aca va la salida del algoritmo.
-\WHILE {alguna conodicion}
-\STATE Descripcion con palabras.
-\IF{alguna conodicion copada}
-\RETURN devuelve algo
-\ELSE
-\STATE alguna asignacion o algo
+\REQUIRE $numOfSnowFlakes:Integer$
+\ENSURE $selected:Vector<SnowFlake>$
+\STATE $selected_{i}:Vector<SnowFlake> \leftarrow \emptyset_{0\leq i<numOfSnowFlakes}$
+\STATE $isComplete:Bool \leftarrow False$
+\STATE $elements:Set<Element> \leftarrow ElementsOfTheProblem$
+\WHILE {$isComplete == False$}
+\STATE $bestScore:Double \leftarrow -\infty$
+\STATE $bestElement:Element \leftarrow \varnothing$
+\STATE $bestBundle:SnowFlake \leftarrow \varnothing$
+\FOR {$elem:Element \in elements$}
+\FOR {$bundle:SnowFlake \in selected$}
+\IF {$isValidBundle(bundle \cup \{elem\}) == True$}
+\STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
+\IF {$score > bestScore$}
+\STATE $bestScore \leftarrow score$
+\STATE $bestBundle \leftarrow bundle$
+\STATE $bestElement \leftarrow elem$
 \ENDIF
-\ENDWHILE
-\FOR{alguna otra condicion}
-\IF{alguna conodicion}
-\STATE hace algo
-\RETURN devuelve algo
 \ENDIF
 \ENDFOR
-\RETURN devuelve otra cosa
+\ENDFOR
+\STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
+\STATE $elements.erase(elem)$
+\STATE $isComplete \leftarrow bestElement == \varnothing$
+\ENDWHILE
+\RETURN $selected$
 \end{algorithmic}
 \caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
 \end{algorithm}

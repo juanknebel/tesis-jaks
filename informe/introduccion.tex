@@ -1,33 +1,62 @@
-\section{Descripción}
+\section{Motivación}
 {\begin{small}%
 \begin{flushright}%
-\it
+\it An algorithm must be seen to be believed.\\Donald Knuth.
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
+La motivación para explorar otro tipo de búsqueda es encontrar resultados que provean al 
+usuario una experiencia más satisfactoria y una visión más amplia de sus búsquedas que los 
+resultados lineales no entregan.\\
+Para generar estas soluciones utilizamos \textbf{Composite Retrieval} que necesita de tres 
+ejes fundamentales que son: \textit{similitud}, \textit{complementariedad} y \textit{costo}. 
+Cada uno de estos elementos debe poder ser calculado para todos los elementos del dominio en el que 
+se realicen las búsquedas. Por ejemplo, si nos encontramos en el dominio de atracciones turísticas 
+de una ciudad, la similitud podría ser la distancia entre ellos, la complementariedad que tipo de 
+atracción (parque, museo, monumento, etc) y el costo sería el valor de cada visita. Para el dominio 
+de discos de música, la similitud el género musical, la complementariedad el país de origen y el 
+costo el valor del disco.\\
 En una búsqueda tradicional los resultados obtenidos son lineales al criterio seleccionado y no 
-otorgan respuestas que relacionen el elemento buscado con otros del mismo tipo o elementos 
-que realmente se relacionan pero no son del mismo dominio. Lo que ocasiona tener que realizar 
-repetidas búsquedas usando diferentes criterios para obtener los resultados esperados.\\
-Lo que se propone con este tipo de búsquedas es otorgar un conjunto de bundles. Cada bundle 
-esta formado por elementos que se relacionan a través de una función de similitud y que sea el único 
-para algún atributo definido.\\
-Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
-and Complementary Bundles\textquotedblright} se decidió implementar búsquedas de soluciones para la 
-base de datos \textit{\textquotedblleft A Data-Driven Journey through Software 
-Engineering Research\textquotedblright} \label{int:baseDeDatos}
+otorgan respuestas que relacionen el criterio buscado con otros elementos del mismo tipo o 
+con elementos que probablemente están relacionados pero no son del mismo tipo. Lo que ocasiona 
+tener que realizar repetidas búsquedas usando diferentes criterios para obtener los resultados 
+esperados.\\
+Lo que se propone con este tipo de búsquedas es otorgar un conjunto de \textbf{bundles}. Cada 
+bundle esta formado por elementos relacionados entre sí a través de una función de similitud y que 
+será único para algún atributo definido.
+\section{Descripción}
+Los \textbf{bundles} obtenidos de la búsqueda deben cumplir con las siguientes propiedades:
+\begin{itemize}
+  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de diferente propiedad tal 
+que .
+  \item \textbf{Compatibilidad}: todos los elementos internos deben ser similares en relación a 
+algún atributo definido previamente.
+  \item \textbf{Validez}: el costo total de los elementos no debe superar el presupuesto 
+especificado.
+  \item \textbf{Máximo}: debe ser el bundle más grande posible.
+\end{itemize}
+Una propiedad que debe cumplir la solución completa es:
+\begin{itemize}
+  \item \textbf{Diversificada}: Cada bundle debe ser \textquotedblleft diferente\textquotedblright  
+de otro (más adelante se verá que se puede variar este parámetro) para de esta manera poder 
+proporcionar una mayor exposición de los elementos que se encuentran en el dominio. Y además evitar 
+de esa manera bundles iguales en la solución.
+\end{itemize}
+Como se mostró en la sección dos de \textit{\textquotedblleft Composite Retrieval of Diverse and 
+Complementary Bundles\textquotedblright}\cite{compositeRetrival}, el problema puede ser reducido a 
+uno más conocido \textbf{MAXIMUM EDGE SUBGRAPH} con lo cuál nos encontramos en un caso en el cuál 
+encontrar una solución exacta se encuentra dentro de los problemas \textbf{NP-hard}.\\
+Por tal motivo las técnicas usadas para generar soluciones a nuestras búsquedas serán heurísticas 
+aproximadas.
 \section{Primeros pasos}
-{\begin{small}%
-\begin{flushright}%
-\it
-\end{flushright}%
-\end{small}%
-\vspace{.5cm}}
-Se utilizó la base de datos de \textit{\textquotedblleft A Data-Driven Journey through Software 
-Engineering Research\textquotedblright} con el objetivo de obtener conjunto de bundles 
-complementarios. La base de datos contiene información sobre cerca de $7777$ papers con $9865$ 
-autores, además cuenta con un perfil para cada paper, llamado \texttt{topicProfile} que ofrece una 
-clasificación en porcentajes de que tema se refiere cada paper. Los temas son:
+Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
+and Complementary Bundles\textquotedblright}\cite{compositeRetrival} se decidió implementar 
+búsquedas de soluciones para la base de datos \textit{\textquotedblleft A Data-Driven Journey 
+through Software Engineering Research\textquotedblright}\cite{dataDrive} utilizando su base de 
+datos de papers con el objetivo de obtener conjunto de bundles complementarios.\\
+La base de datos contiene información sobre cerca de $7777$ papers con $9865$ autores, además cuenta 
+con un perfil para cada paper, llamado \texttt{topicProfile} que ofrece una clasificación en 
+porcentajes de que tema se refiere cada paper. Los temas son:
 \begin{multicols}{4}
   \begin{itemize}
   \item Adaptive Systems
@@ -73,9 +102,13 @@ clasificación en porcentajes de que tema se refiere cada paper. Los temas son:
 \end{multicols}
 La generación de soluciones de bundles se realizó, como propone el paper \textit{\textquotedblleft 
 Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}, maximizando la función 
-objetivo: $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
+objetivo: 
+\begin{equation}\label{eq:fnObj}
+\displaystyle FO = \sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
 +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
-\in S_{j}} s(u,v))$$ Dónde la función \textit{s} representa la similitud entre dos items y 
+\in S_{j}} s(u,v))
+\end{equation} 
+Dónde la función \textit{s} representa la similitud entre dos items y 
 $\gamma$ ($0 < \gamma < 1$) es un parámetro para ponderar entre la calidad de un bundle (intra) y 
 la separación entre ellos (inter).\\
 A partir de información provista por la base de datos y con la definición de funciones de 
