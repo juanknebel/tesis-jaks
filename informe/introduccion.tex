@@ -27,8 +27,8 @@ será único para algún atributo definido.
 \section{Descripción}
 Los \textbf{bundles} obtenidos de la búsqueda deben cumplir con las siguientes propiedades:
 \begin{itemize}
-  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de diferente propiedad tal 
-que .
+  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de complementarios entre si 
+de acuerdo a algún atributo definido previamente.
   \item \textbf{Compatibilidad}: todos los elementos internos deben ser similares en relación a 
 algún atributo definido previamente.
   \item \textbf{Validez}: el costo total de los elementos no debe superar el presupuesto 
@@ -48,6 +48,42 @@ uno más conocido \textbf{MAXIMUM EDGE SUBGRAPH} con lo cuál nos encontramos en
 encontrar una solución exacta se encuentra dentro de los problemas \textbf{NP-hard}.\\
 Por tal motivo las técnicas usadas para generar soluciones a nuestras búsquedas serán heurísticas 
 aproximadas.
+\section{Comparación de búsquedas}
+Supongamos que se quiere buscar bandas musicales pertenecientes a un genero definido por el 
+usuario.\\
+Supongamos que el genero de búsqueda es \textit{rock clásico} uno podría obtener los siguientes 
+resultados:
+\begin{itemize}
+  \item Led Zeppelin.
+  \item The Who.
+  \item Deep Purple.
+  \item Cream.
+  \item The Beatles.
+  \item Queen.
+  \item Rolling Stone.
+  \item etc.
+\end{itemize}
+Pero tienen en común que todas son bandas de origen británico con lo cuál si se quiere explorar 
+bandas de diferentes países se tendría que refinar la búsqueda o realizar repetidamente otras. En 
+cambio si como atributo de complementariedad se agrega el país de origen se podría obtener algo del 
+estilo:
+\begin{itemize}
+  \item Bundle 1:
+  \begin{itemize}
+    \item Led Zeppelin (Inglaterra).
+    \item The Doors (Estados Unidos).
+    \item Charly García (Argentina).
+  \end{itemize}
+  \item Bundle 2:
+  \begin{itemize}
+    \item The Who (Inglaterra).
+    \item Kiss (Estados Unidos).
+    \item Luis Alberto Spinetta (Argentina).
+  \end{itemize}
+  \item etc.
+\end{itemize}
+De esta manera se puede entregar una visión más amplia de la búsqueda y al usuario evitarle refinar 
+la misma.
 \section{Primeros pasos}
 Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
 and Complementary Bundles\textquotedblright}\cite{compositeRetrival} se decidió implementar 
