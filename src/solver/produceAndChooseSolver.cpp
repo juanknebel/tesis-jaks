@@ -27,7 +27,7 @@ SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionByRankingStrategy(SnowFlakeVector* produced, int numRequested ) {
 	SnowFlakeVector* ret;
-    ret = this->selectorStrategy_->getTopSolution(produced, numRequested);
+    ret = this->theSelectorStrategy_->getTopSolution(produced, numRequested);
 	produced->clear();
 	delete produced;
 	return ret;

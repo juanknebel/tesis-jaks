@@ -14,7 +14,6 @@
 class ProduceAndChooseSolver : public Solver {
 public:
 	ProduceAndChooseSolver(ProblemInstance* problem, Selector* selector) : Solver(problem, selector) {
-        this->selectorStrategy_ = ProduceAndChooseSolver::getDefault();
 		this->interSimilarityWeight_ = 0.0;
 	}
     ~ProduceAndChooseSolver() {}
@@ -26,7 +25,6 @@ public:
 	virtual int numToProduce(int numRequested) = 0;
 
 protected:
-    Selector* selectorStrategy_;
 	Double interSimilarityWeight_;
     static Selector* getDefault();
 	virtual SnowFlakeVector* produceManySnowflakes(int numSnowflakes) = 0;
