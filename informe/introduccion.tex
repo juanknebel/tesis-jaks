@@ -8,14 +8,15 @@
 La motivación para explorar otro tipo de búsqueda es encontrar resultados que provean al 
 usuario una experiencia más satisfactoria y una visión más amplia de sus búsquedas que los 
 resultados lineales no entregan.\\
-Para generar estas soluciones utilizamos \textbf{Composite Retrieval} que necesita de tres 
-ejes fundamentales que son: \textit{similitud}, \textit{complementariedad} y \textit{costo}. 
+Para generar estas soluciones se utilizó \textbf{Composite Retrieval} que requiere de la definición de: 
+\begin{itemize}
+  \item \textbf{Similitud}: Una función que dado dos items devuelve la similitud entre estos.
+  \item \textbf{Complementariedad}: Alguna propiedad del item.
+  \item \textbf{Costo}: El costo del item. 
+\end{itemize}
 Cada uno de estos elementos debe poder ser calculado para todos los elementos del dominio en el que 
-se realicen las búsquedas. Por ejemplo, si nos encontramos en el dominio de atracciones turísticas 
-de una ciudad, la similitud podría ser la distancia entre ellos, la complementariedad que tipo de 
-atracción (parque, museo, monumento, etc) y el costo sería el valor de cada visita. Para el dominio 
-de discos de música, la similitud el género musical, la complementariedad el país de origen y el 
-costo el valor del disco.\\
+se realicen las búsquedas. Por ejemplo, en la búsqueda de discos de música, la similitud puede estar 
+dada por el género musical, la complementariedad porl el país de origen y el costo el valor del disco.\\
 En una búsqueda tradicional los resultados obtenidos son lineales al criterio seleccionado y no 
 otorgan respuestas que relacionen el criterio buscado con otros elementos del mismo tipo o 
 con elementos que probablemente están relacionados pero no son del mismo tipo. Lo que ocasiona 
@@ -27,8 +28,8 @@ será único para algún atributo definido.
 \section{Descripción}
 Los \textbf{bundles} obtenidos de la búsqueda deben cumplir con las siguientes propiedades:
 \begin{itemize}
-  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de diferente propiedad tal 
-que .
+  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de complementarios entre si 
+de acuerdo a algún atributo definido previamente.
   \item \textbf{Compatibilidad}: todos los elementos internos deben ser similares en relación a 
 algún atributo definido previamente.
   \item \textbf{Validez}: el costo total de los elementos no debe superar el presupuesto 
@@ -48,6 +49,42 @@ uno más conocido \textbf{MAXIMUM EDGE SUBGRAPH} con lo cuál nos encontramos en
 encontrar una solución exacta se encuentra dentro de los problemas \textbf{NP-hard}.\\
 Por tal motivo las técnicas usadas para generar soluciones a nuestras búsquedas serán heurísticas 
 aproximadas.
+\section{Comparación de búsquedas}
+Supongamos que se quiere buscar bandas musicales pertenecientes a un genero definido por el 
+usuario.\\
+Supongamos que el genero de búsqueda es \textit{rock clásico} uno podría obtener los siguientes 
+resultados:
+\begin{itemize}
+  \item Led Zeppelin.
+  \item The Who.
+  \item Deep Purple.
+  \item Cream.
+  \item The Beatles.
+  \item Queen.
+  \item Rolling Stone.
+  \item etc.
+\end{itemize}
+Pero tienen en común que todas son bandas de origen británico con lo cuál si se quiere explorar 
+bandas de diferentes países se tendría que refinar la búsqueda o realizar repetidamente otras. En 
+cambio si como atributo de complementariedad se agrega el país de origen se podría obtener algo del 
+estilo:
+\begin{itemize}
+  \item Bundle 1:
+  \begin{itemize}
+    \item Led Zeppelin (Inglaterra).
+    \item The Doors (Estados Unidos).
+    \item Charly García (Argentina).
+  \end{itemize}
+  \item Bundle 2:
+  \begin{itemize}
+    \item The Who (Inglaterra).
+    \item Kiss (Estados Unidos).
+    \item Luis Alberto Spinetta (Argentina).
+  \end{itemize}
+  \item etc.
+\end{itemize}
+De esta manera se puede entregar una visión más amplia de la búsqueda y al usuario evitarle refinar 
+la misma.
 \section{Primeros pasos}
 Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
 and Complementary Bundles\textquotedblright}\cite{compositeRetrival} se decidió implementar 
