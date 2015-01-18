@@ -8,27 +8,30 @@
 #ifndef PAIRSTOJACCARDSIMILARITY_H_
 #define PAIRSTOJACCARDSIMILARITY_H_
 
-#include "../redefinitions.h"
+#include <string>
+#include <set>
+#include <map>
+#include <fstream>
 
 class PairsToJaccardSimilarity {
 public:
-	static void execute(String fileParams);
-	static void execute(String fileNameInput, String fileNameOutput, bool intersection, int keyField);
+    static void execute(std::string fileParams);
+    static void execute(std::string fileNameInput, std::string fileNameOutput, bool intersection, int keyField);
 private:
-	static String DEFAULT_FIELD_SEPARATOR;
-	String fileNameInput_;
-	String fileNameOutput_;
+    static std::string DEFAULT_FIELD_SEPARATOR;
+    std::string fileNameInput_;
+    std::string fileNameOutput_;
 	bool intersection_;
 	int keyField_;
 	int valueField_;
 
 	PairsToJaccardSimilarity();
-	PairsToJaccardSimilarity(String fileNameInput, String fileNameOutput, bool intersection, int keyField);
+    PairsToJaccardSimilarity(std::string fileNameInput, std::string fileNameOutput, bool intersection, int keyField);
 	~PairsToJaccardSimilarity();
 
-	void init(String fileNameInput, String fileNameOutput, bool intersection, int keyField);
-	Double computeIntersection(StringSet& set1, StringSet& set2);
-	Double computeJaccard(StringSet& set1, StringSet& set2);
+    void init(std::string fileNameInput, std::string fileNameOutput, bool intersection, int keyField);
+    double computeIntersection(std::set<std::string>& set1, std::set<std::string>& set2);
+    double computeJaccard(std::set<std::string>& set1, std::set<std::string>& set2);
 };
 
 

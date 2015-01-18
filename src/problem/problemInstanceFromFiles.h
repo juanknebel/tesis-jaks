@@ -12,16 +12,16 @@
 
 class ProblemInstanceFromFiles : public ProblemInstance {
 public:
-	ProblemInstanceFromFiles(String fileCosts, String fileCompat, String fileCover, Double budget);
+    ProblemInstanceFromFiles(std::string fileCosts, std::string fileCompat, std::string fileCover, double budget);
 	ProblemInstanceFromFiles();
 	~ProblemInstanceFromFiles();
 
 private:
-	void init(String fileCosts, String fileCompat, String fileCover);
-	void loadIdMapping(String fileName);
-	void loadInt2Double(String fileName);
-	void loadAndSymmetrizeMatrix(int nElements, String fileName);
-	void loadInt2IntSet(String fileName);
+    void init(std::string fileCosts, std::string fileCompat, std::string fileCover);
+    void loadIdMapping(std::string fileName);
+    void loadInt2Double(std::string fileName);
+    void loadAndSymmetrizeMatrix(int nElements, std::string fileName);
+    void loadInt2IntSet(std::string fileName);
 };
 
 

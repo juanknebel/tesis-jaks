@@ -8,21 +8,21 @@
 #ifndef ID2STR_H_
 #define ID2STR_H_
 
-#include "../redefinitions.h"
+#include <fstream>
 #include "identificationGeneretor.h"
 
 class Id2Str {
 private:
-	MapStringString *node2name_;
+    std::map<std::string, std::string> *node2name_;
 	Dao* dao_;
 
 public:
 	Id2Str();
-	Id2Str(String fileName);
+    Id2Str(std::string fileName);
     Id2Str(IdentificationGeneretor* theIdentificator);
 	~Id2Str();
 
-	String getNodebyName(String node) const;
+    std::string getNodebyName(std::string node) const;
 };
 
 

@@ -5,11 +5,11 @@
 
 class IdentificationGeneretorAuthor : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAuthor(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+    IdentificationGeneretorAuthor(Dao* dao, std::string separator) : IdentificationGeneretor(dao, separator) {
         this->query_ = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
     }
 
-    void fillTheMapping(MapStringString *node2name);
+    void fillTheMapping(std::map<std::string, std::string> *node2name);
 
     ~IdentificationGeneretorAuthor();
 };

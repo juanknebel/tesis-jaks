@@ -20,20 +20,20 @@ ProblemInstance::ProblemInstance() {
 	this->specificItem_ = -1;
 }
 
-ProblemInstance::ProblemInstance(Double budget) {
+ProblemInstance::ProblemInstance(double budget) {
 	this->budget_ = budget;
-	this->nodeCost_ = new MapIntDouble;
-	this->nodeCover_ = new MapIntIntSet;
+    this->nodeCost_ = new std::map<int, double>;
+	this->nodeCover_ = new std::map<int, std::set<int>*>;
 	this->nodeCompat_ = 0;
-	this->node2id_ = new MapStringInt;
-	this->id2node_ = new MapIntString;
-	this->ids_ = new IntSet();
+    this->node2id_ = new std::map<std::string, int>;
+    this->id2node_ = new std::map<int, std::string>;
+	this->ids_ = new std::set<int>();
 	this->specificItem_ = -1;
 }
 
 ProblemInstance::~ProblemInstance() {
 	delete this->nodeCost_;
-	for (MapIntIntSet::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
+	for (std::map<int, std::set<int>*>::iterator it = this->nodeCover_->begin(); it != this->nodeCover_->end(); ++it) {
 		it->second->clear();
 	}
 	this->nodeCover_->clear();
@@ -43,7 +43,7 @@ ProblemInstance::~ProblemInstance() {
 	delete this->ids_;
 }
 
-IntSet& ProblemInstance::getIds() {
+std::set<int>& ProblemInstance::getIds() {
 	return *(this->ids_);
 }
 
@@ -51,19 +51,19 @@ int ProblemInstance::numNodes() {
 	return this->nodeCost_->size();
 }
 
-Double ProblemInstance::getCost(int id) {
+double ProblemInstance::getCost(int id) {
 	return this->nodeCost_->at(id);
 }
 
-Double ProblemInstance::getbudget() {
+double ProblemInstance::getbudget() {
 	return this->budget_;
 }
 
-const IntSet* ProblemInstance::getCover(int id) {
+const std::set<int>* ProblemInstance::getCover(int id) {
 	return this->nodeCover_->at(id);
 }
 
-Double ProblemInstance::getCompat(int id1, int id2) {
+double ProblemInstance::getCompat(int id1, int id2) {
 	assert (id1 < this->nodeCompat_->getRows());
 	assert (id2 < this->nodeCompat_->getCols());
 	if (id1 == id2) {
@@ -72,8 +72,8 @@ Double ProblemInstance::getCompat(int id1, int id2) {
 	return this->nodeCompat_->get(id1, id2);
 }
 
-Double ProblemInstance::getCompatWithSpecificProfile(int id1, int id2) {
-    Double compatWithId1 = 0.0, compatWithId2 = 0.0;
+double ProblemInstance::getCompatWithSpecificProfile(int id1, int id2) {
+    double compatWithId1 = 0.0, compatWithId2 = 0.0;
     if (this->nodeSpecificCompat_->count(id1) > 0) {
         compatWithId1 = this->nodeSpecificCompat_->at(id1);
     }
@@ -83,30 +83,30 @@ Double ProblemInstance::getCompatWithSpecificProfile(int id1, int id2) {
     return this->getCompat(id1,id2) + compatWithId1 + compatWithId2;
 }
 
-SparseDoubleMatrix2D* ProblemInstance::getCompat() {
+MatrixWrapper* ProblemInstance::getCompat() {
 	return this->nodeCompat_;
 }
 
 void ProblemInstance::normalizeNodeCompat() {
-	Double maxValue = this->nodeCompat_->getMaxValue();
+	double maxValue = this->nodeCompat_->getMaxValue();
 	this->nodeCompat_->scalarMultiply(1.0/maxValue);
 }
 
-String ProblemInstance::getNode(int id) {
+std::string ProblemInstance::getNode(int id) {
 	return this->id2node_->at(id);
 }
 
-int ProblemInstance::getId(String node) {
+int ProblemInstance::getId(std::string node) {
 	return this->node2id_->at(node);
 }
 
-Double ProblemInstance::maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet) {
-	Double maxCompatibility = 0.0;
-	for (IntSet::iterator it1 = aSet.begin(); it1 != aSet.end(); ++it1) {
-		for (IntSet::iterator it2 = otherSet.begin(); it2 != otherSet.end(); ++it2){
+double ProblemInstance::maxPairwiseCompatibility(const std::set<int>& aSet, const std::set<int>& otherSet) {
+	double maxCompatibility = 0.0;
+	for (std::set<int>::iterator it1 = aSet.begin(); it1 != aSet.end(); ++it1) {
+		for (std::set<int>::iterator it2 = otherSet.begin(); it2 != otherSet.end(); ++it2){
 			int n1 = (int) *it1;
 			int n2 = (int) *it2;
-			Double compatValue = this->getCompat(n1, n2);
+			double compatValue = this->getCompat(n1, n2);
 			if (compatValue > maxCompatibility) {
 				maxCompatibility = compatValue;
 			}
@@ -115,13 +115,13 @@ Double ProblemInstance::maxPairwiseCompatibility(const IntSet& aSet, const IntSe
 	return maxCompatibility;
 }
 
-Double ProblemInstance::maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet) {
-    Double maxCompatibility = 0.0;
-    for (IntSet::iterator it1 = aSet.begin(); it1 != aSet.end(); ++it1) {
-        for (IntSet::iterator it2 = otherSet.begin(); it2 != otherSet.end(); ++it2){
+double ProblemInstance::maxPairwiseCompatibilityWithSpecificProfile(const std::set<int>& aSet, const std::set<int>& otherSet) {
+    double maxCompatibility = 0.0;
+    for (std::set<int>::iterator it1 = aSet.begin(); it1 != aSet.end(); ++it1) {
+        for (std::set<int>::iterator it2 = otherSet.begin(); it2 != otherSet.end(); ++it2){
             int n1 = (int) *it1;
             int n2 = (int) *it2;
-            Double compatValue = this->getCompatWithSpecificProfile(n1, n2);
+            double compatValue = this->getCompatWithSpecificProfile(n1, n2);
             if (compatValue > maxCompatibility) {
                 maxCompatibility = compatValue;
             }
@@ -130,14 +130,14 @@ Double ProblemInstance::maxPairwiseCompatibilityWithSpecificProfile(const IntSet
     return maxCompatibility;
 }
 
-/*Double ProblemInstance::maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow) {
+/*double ProblemInstance::maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow) {
 	return this->maxPairwiseCompatibility(aSnow.ids(), otherSnow.ids());
 }*/
 
-void ProblemInstance::createIdNodeMappings(StrVector nodes) {
+void ProblemInstance::createIdNodeMappings(std::vector<std::string> nodes) {
 	int nextId = 0;
-	for (StrVector::iterator it = nodes.begin(); it != nodes.end(); ++it) {
-		String nodeId(*it);
+	for (std::vector<std::string>::iterator it = nodes.begin(); it != nodes.end(); ++it) {
+        std::string nodeId(*it);
 		(*(*this).node2id_)[nodeId]=nextId;
 		(*(*this).id2node_)[nextId]=nodeId;
 		++nextId;

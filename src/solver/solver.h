@@ -8,7 +8,6 @@
 #ifndef SOLVER_H_
 #define SOLVER_H_
 
-#include "../util/redefinitions.h"
 #include "../problem/problemInstance.h"
 #include "../problem/snowFlake.h"
 #include "../util/system/exception.h"
@@ -21,25 +20,25 @@ protected:
 	ProblemInstance* problem_;
 	int pivot_;
 	int specificItem_;
-    Double interSimilarityWeight_;
+    double interSimilarityWeight_;
 	Selector* theSelectorStrategy_;
 
-	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node);
-	bool checkBudgetAndCoverageConstraint(const IntSet& currentSnowflake, int node, int excludeNode);
-	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
-	bool checkBudgetAndCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
-	bool checkBudgetConstraint(const IntSet& currentSnowflake, int newNode);
-	bool checkBudgetConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
-	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode);
-	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode, int excludeNode);
-	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
-	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
-	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
-    SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
-	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
-    SnowFlake* pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
-    SnowFlake* pickFlakeSpecificProfile(int pivot, const IntSet& clusterMembers);
-    SnowFlake* pickFlakeSpecificProfile(int specificItem, int pivot, const IntSet& clusterMembers);
+	bool checkBudgetAndCoverageConstraint(const std::set<int>& currentSnowflake, int node);
+	bool checkBudgetAndCoverageConstraint(const std::set<int>& currentSnowflake, int node, int excludeNode);
+	bool checkBudgetAndCoverageConstraint(const std::set<int>& snowflake1, const std::set<int>& snowflake2);
+	bool checkBudgetAndCoverageConstraint(const std::set<int>& snowflake1, const std::set<int>& snowflake2, int excludeNode);
+	bool checkBudgetConstraint(const std::set<int>& currentSnowflake, int newNode);
+	bool checkBudgetConstraint(const std::set<int>& snowflake1, const std::set<int>& snowflake2);
+	bool checkCoverageConstraint(const std::set<int>& currentSnowflake, int newNode);
+	bool checkCoverageConstraint(const std::set<int>& currentSnowflake, int newNode, int excludeNode);
+	bool checkCoverageConstraint(const std::set<int>& snowflake1, const std::set<int>& snowflake2);
+	bool checkCoverageConstraint(const std::set<int>& snowflake1, const std::set<int>& snowflake2, int excludeNode);
+    SnowFlake* pickFlakeGivenPermutation(int pivot, std::vector<int>& clusterMembersPermuted);
+    SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, std::vector<int>& clusterMembersPermuted);
+	SnowFlake* pickFlake(int pivot, const std::set<int>& clusterMembers);
+    SnowFlake* pickFlake(int specificItem, int pivot, const std::set<int>& clusterMembers);
+    SnowFlake* pickFlakeSpecificProfile(int pivot, const std::set<int>& clusterMembers);
+    SnowFlake* pickFlakeSpecificProfile(int specificItem, int pivot, const std::set<int>& clusterMembers);
 	
 private:
 	struct compatCompare {

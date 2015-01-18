@@ -8,10 +8,10 @@
 #include "exhaustiveSOBOSolver.h"
 #include <limits>
 
-int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots){
+int ExhaustiveSOBOSolver::getPivot(std::set<int>& pivotsUsed, std::set<int>& possiblePivots){
 	int minPivot = std::numeric_limits<int>::max();
 
-	for (IntSet::iterator possiblePivot = possiblePivots.begin(); possiblePivot != possiblePivots.end(); ++possiblePivot) {
+	for (std::set<int>::iterator possiblePivot = possiblePivots.begin(); possiblePivot != possiblePivots.end(); ++possiblePivot) {
 		if (pivotsUsed.find(*possiblePivot)==pivotsUsed.end()) {
 			if (*possiblePivot < minPivot) {
 				minPivot = *possiblePivot;

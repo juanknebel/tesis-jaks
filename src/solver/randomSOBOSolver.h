@@ -16,7 +16,7 @@ public:
 	}
 	~RandomSOBOSolver() {};
 
-	int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots);
+	int getPivot(std::set<int>& pivotsUsed, std::set<int>& possiblePivots);
 protected:
 	int randomNode();
 };

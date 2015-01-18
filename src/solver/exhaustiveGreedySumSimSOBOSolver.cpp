@@ -7,26 +7,26 @@
 
 #include "exhaustiveGreedySumSimSOBOSolver.h"
 
-SnowFlake* ExhaustiveGreedySumSimSOBOSolver::pickFlake(int pivot, const IntSet& clusterMembers) {
-	Uint n = clusterMembers.size();
-	IntSet membersSortedSelected;
-	IntVector membersUnsorted (clusterMembers.begin(), clusterMembers.end());
-	IntVector membersSorted(n, -1);
+SnowFlake* ExhaustiveGreedySumSimSOBOSolver::pickFlake(int pivot, const std::set<int>& clusterMembers) {
+	unsigned int n = clusterMembers.size();
+	std::set<int> membersSortedSelected;
+	std::vector<int> membersUnsorted (clusterMembers.begin(), clusterMembers.end());
+	std::vector<int> membersSorted(n, -1);
 	int mostSimilarElement, elem, elem2;
-	Double mostSimilarElementSumSimilarity, sumSimilarity;
+	double mostSimilarElementSumSimilarity, sumSimilarity;
 
-	for(Uint i = 0; i < n; ++i) {
+	for(unsigned int i = 0; i < n; ++i) {
 		mostSimilarElement = -1;
 		mostSimilarElementSumSimilarity = -1.00;
 		// Choose which element has a larger sum of similarities to the partial bundle
-		for (Uint j = 0; j < n; ++j) {
+		for (unsigned int j = 0; j < n; ++j) {
 			elem = membersUnsorted[j];
 			if (membersSortedSelected.count(elem) ==  0) {
 				// Add distance to pivot
 				sumSimilarity = this->problem_->getCompat(pivot, elem);
 				// First check if it is closest to the pivot
 				// Add distance to elements already in the bundle
-				for( Uint k=0; k<i; k++ ) {
+				for( unsigned int k=0; k<i; k++ ) {
 					int elem2 = membersSorted[k];
 					sumSimilarity += this->problem_->getCompat(elem2, elem);
 				}

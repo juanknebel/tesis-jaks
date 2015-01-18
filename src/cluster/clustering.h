@@ -9,14 +9,15 @@
 #define CLUSTERING_H_
 
 #include "../matrix/matrixWrapper.h"
+#include <vector>
 
 class Clustering {
 public:
 	Clustering();
 	~Clustering();
 
-	static IntVector* cluster(const MatrixWrapper& graph, int numClusters);
-	static IntVector* symmetrizeAndCluster(MatrixWrapper& graph, int numClusters);
+	static std::vector<int>* cluster(const MatrixWrapper& graph, int numClusters);
+	static std::vector<int>* symmetrizeAndCluster(MatrixWrapper& graph, int numClusters);
 };
 
 #endif /* CLUSTERING_H_ */

@@ -18,8 +18,8 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
 		std::stringstream fileName;
         fileName << configurator.getDirectoryOfWork() << "Solver-";
         fileName << configurator.getSolverName();
-        Double gamma = configurator.getGamma();
-        Double interSimilarityWeight = 1.00 - gamma;
+        double gamma = configurator.getGamma();
+        double interSimilarityWeight = 1.00 - gamma;
 
         fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
@@ -32,7 +32,7 @@ void execute(ConfigurationJaks& configFile) {
     Configurator* theConfigurator = FactoryConfigurator::getTheConfigurator(configFile);
     Solver* theSolver = theConfigurator->getTheSolver();
 
-	SnowFlakeVector* solution = 0;
+    SnowFlakeVector* solution = nullptr;
 	try {
         solution = theSolver->solve(theConfigurator->getNumToProduce());
 	}

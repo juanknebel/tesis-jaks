@@ -5,11 +5,11 @@
 
 class IdentificationGeneretorAffiliation : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAffiliation(Dao *dao, String separator) : IdentificationGeneretor(dao, separator) {
+    IdentificationGeneretorAffiliation(Dao *dao, std::string separator) : IdentificationGeneretor(dao, separator) {
         this->query_ = "SELECT affiliationId, title, location FROM AFFILIATIONS";
     }
 
-    void fillTheMapping(MapStringString *node2name);
+    void fillTheMapping(std::map<std::string, std::string> *node2name);
 
     ~IdentificationGeneretorAffiliation();
 };

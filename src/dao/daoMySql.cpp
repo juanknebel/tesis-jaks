@@ -20,7 +20,7 @@
 
 #include "daoMySql.h"
 
-bool DaoMySql::executeConsultativeQuery(String query) {
+bool DaoMySql::executeConsultativeQuery(std::string query) {
     if (this->res_) {
         delete this->res_;
         this->res_ = NULL;
@@ -43,7 +43,7 @@ bool DaoMySql::executeConsultativeQuery(String query) {
 	return result;
 }
 
-bool DaoMySql::executeModifiableQuery(String query) {
+bool DaoMySql::executeModifiableQuery(std::string query) {
     if (this->res_) {
         delete this->res_;
         this->res_ = NULL;
@@ -74,7 +74,7 @@ void DaoMySql::manageException(sql::SQLException &e) {
 DaoMySql::DaoMySql() : Dao() {
 }
 
-DaoMySql::DaoMySql(String database, String user, String password, String server) : Dao(database, user, password, server) {
+DaoMySql::DaoMySql(std::string database, std::string user, std::string password, std::string server) : Dao(database, user, password, server) {
 }
 
 DaoMySql::DaoMySql(const DaoMySql& dao) : Dao(dao.database_, dao.user_, dao.password_, dao.server_) {
@@ -117,11 +117,11 @@ bool DaoMySql::disconnect() {
 	return result;
 }
 
-bool DaoMySql::executeCustomConsultativeQuery(String query) {
+bool DaoMySql::executeCustomConsultativeQuery(std::string query) {
 	return this->executeConsultativeQuery(query);
 }
 
-bool DaoMySql::executeCustomModifiableQuery(String query) {
+bool DaoMySql::executeCustomModifiableQuery(std::string query) {
 	return this->executeModifiableQuery(query);
 }
 
@@ -129,10 +129,10 @@ bool DaoMySql::fetch() {
 	return this->res_->next();
 }
 
-String DaoMySql::getField(int index) {
+std::string DaoMySql::getField(int index) {
 	return this->res_->getString(index);
 }
 
-String DaoMySql::getField(String fieldName) {
+std::string DaoMySql::getField(std::string fieldName) {
 	return this->res_->getString(fieldName);
 }

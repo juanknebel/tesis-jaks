@@ -7,28 +7,28 @@ SnowFlakeVector * InterIntraTuplesSelector::getTopSolution(SnowFlakeVector *prod
     }
     SnowFlake::sortByDecresingSumCompat(*produced);
     SnowFlakeVector available(*produced);
-    Uint sizeOfBundles = produced->size();
+    unsigned int sizeOfBundles = produced->size();
     bool *canUseSnowFlake = new bool[sizeOfBundles];
-    for (Uint i = 0; i < sizeOfBundles; ++i) {
+    for (unsigned int i = 0; i < sizeOfBundles; ++i) {
         canUseSnowFlake[i] = true;
     }
 
     SnowFlakeVector *selected = new SnowFlakeVector();
-    Double currentSumIntra = 0.0;
-    Double currentSumOneMinusInter = 0.0;
+    double currentSumIntra = 0.0;
+    double currentSumOneMinusInter = 0.0;
     while (selected->size() < numRequested && selected->size() < produced->size()) {
-        Double maxScore = -1.0;
+        double maxScore = -1.0;
         int bestCandidateId = -1;
         int bestCandidateIdTwo = -1;
         if (available.size() == 0) {
             throw Exception(__FILE__, __LINE__, "There are no available condidates");
         }
-        for (Uint candidateId = 0; candidateId < sizeOfBundles; ++candidateId) {
-            for (Uint candidateIdTwo = candidateId + 1; candidateIdTwo < sizeOfBundles; ++candidateIdTwo) {
+        for (unsigned int candidateId = 0; candidateId < sizeOfBundles; ++candidateId) {
+            for (unsigned int candidateIdTwo = candidateId + 1; candidateIdTwo < sizeOfBundles; ++candidateIdTwo) {
                 if (canUseSnowFlake[candidateId] && canUseSnowFlake[candidateIdTwo]) {
                     SnowFlake candidate = available[candidateId];
                     SnowFlake candidateTwo = available[candidateIdTwo];
-                    Double score = scoreSetIntraInter(selected, candidate, candidateTwo, currentSumIntra, currentSumOneMinusInter);
+                    double score = scoreSetIntraInter(selected, candidate, candidateTwo, currentSumIntra, currentSumOneMinusInter);
                     if (score > maxScore) {
                         bestCandidateId = candidateId;
                         bestCandidateIdTwo = candidateIdTwo;
@@ -47,12 +47,12 @@ SnowFlakeVector * InterIntraTuplesSelector::getTopSolution(SnowFlakeVector *prod
         SnowFlake bestCandidate = available[bestCandidateId];
         SnowFlake bestCandidateTwo = available[bestCandidateIdTwo];
         currentSumIntra += bestCandidate.getSumIntraCompat() + bestCandidateTwo.getSumIntraCompat();
-        Double currentSumInter = currentSumOneMinusInter, currentSumInterTwo = currentSumOneMinusInter;
+        double currentSumInter = currentSumOneMinusInter, currentSumInterTwo = currentSumOneMinusInter;
         for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
             currentSumInter += 1.0 - theProblem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
             currentSumInterTwo += 1.0 - theProblem_->maxPairwiseCompatibility((*it).ids(), bestCandidateTwo.ids());
         }
-        Double sumInterCandidates = 1.0 - theProblem_->maxPairwiseCompatibility(bestCandidate.ids(), bestCandidateTwo.ids());
+        double sumInterCandidates = 1.0 - theProblem_->maxPairwiseCompatibility(bestCandidate.ids(), bestCandidateTwo.ids());
         currentSumOneMinusInter = currentSumInter + currentSumInterTwo + sumInterCandidates;
         //Marco como usado los candidatos usados
         canUseSnowFlake[bestCandidateId] = false;

@@ -19,7 +19,7 @@ public:
 
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 protected:
-	bool tryMerge(MapIntIntSet& clustering);
+	bool tryMerge(std::map<int, std::set<int>*>& clustering);
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

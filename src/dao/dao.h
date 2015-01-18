@@ -20,40 +20,41 @@
 
 #ifndef DAO_H
 #define DAO_H
-#include "../util/redefinitions.h"
+#include <string>
+#include "../util/system/Logger.h"
 
 class Dao {
 protected:
-	String database_;
-	String password_;
-	String user_;
-	String server_;
+    std::string database_;
+    std::string password_;
+    std::string user_;
+    std::string server_;
 	bool isConnected_;
-	String error_;
+    std::string error_;
 	int fields_;
-	void init(String database, String user, String password, String server);
+    void init(std::string database, std::string user, std::string password, std::string server);
 public:
 	Dao() {
 		this->init("", "", "", "");
 	};
-	Dao(String database, String user, String password, String server) {
+    Dao(std::string database, std::string user, std::string password, std::string server) {
 		this->init(database, user, password, server);
 	};
-	virtual ~Dao() {};
+    virtual ~Dao() {}
 	
 	bool isConnected() const;
-	String showConnection() const;
-	String getError() const;
+    std::string showConnection() const;
+    std::string getError() const;
 	int getNumberOfFields() const;
 	
 	virtual bool connect() = 0;
 	virtual bool disconnect() = 0;
 	
-	virtual bool executeCustomConsultativeQuery(String query) = 0;
-	virtual bool executeCustomModifiableQuery(String query) = 0;
+    virtual bool executeCustomConsultativeQuery(std::string query) = 0;
+    virtual bool executeCustomModifiableQuery(std::string query) = 0;
 	virtual bool fetch() = 0;
-	virtual String getField(int index) = 0;
-	virtual String getField(String fieldName) = 0;
+    virtual std::string getField(int index) = 0;
+    virtual std::string getField(std::string fieldName) = 0;
 };
 
 #endif // DAO_H

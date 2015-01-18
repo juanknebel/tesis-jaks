@@ -2,7 +2,6 @@
 #define SELECTOR_H
 
 #include "../../problem/snowFlake.h"
-#include "../../util/redefinitions.h"
 #include "../../util/system/exception.h"
 
 typedef std::vector<SnowFlake> SnowFlakeVector;
@@ -11,17 +10,17 @@ class Selector {
 protected:
     std::string selectorName;
     ProblemInstance* theProblem_;
-    Double interSimilarityWeight_;
+    double interSimilarityWeight_;
 
-    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
+    double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, double selectedSumIntra, double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter, Double alpha, Double beta);
+    double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter, double alpha, double beta);
 public:
-    Selector(Double interSimilarityWeight, ProblemInstance* theProblem);
+    Selector(double interSimilarityWeight, ProblemInstance* theProblem);
     virtual SnowFlakeVector* getTopSolution(SnowFlakeVector* produced, int numRequested) = 0;
     virtual ~Selector();
 };

@@ -21,18 +21,16 @@
 #include "vectornorm.h"
 #include "../../dao/daoMySql.h"
 #include "../system/stringUtilities.h"
-#include <cstdlib>
-#include <iostream>
 
 #define db_database "tesis"
 #define db_user "tesis"
 #define db_password "tesis"
 #define db_server "localhost"
 
-std::map<String, int> *distributionOrder;
+std::map<std::string, int> *distributionOrder;
 std:: map<int, int> *mappedId;
 
-void createMappedId(Dao* dao, String tableName, String fieldId) {
+void createMappedId(Dao* dao, std::string tableName, std::string fieldId) {
     std::stringstream query;
     mappedId = new std::map<int, int>;
     query << "SELECT Item, " + fieldId + " FROM " + tableName;
@@ -52,7 +50,7 @@ int createDistributionKeyMap(Dao *dao) {
             "select distinct distribution_KEY from TopicProfile_distribution order by distribution_KEY asc");
     int order = 0;
     if (hasresult) {
-        distributionOrder = new std::map<String, int>;
+        distributionOrder = new std::map<std::string, int>;
         while (dao->fetch()) {
             (*distributionOrder)[dao->getField(1)] = order;
             ++order;
@@ -98,7 +96,7 @@ float angleBetweenVectors(std::vector<float> *vector1, std::vector<float> *vecto
 	return dotProduct / (norm1 * norm2);
 }
 
-int indexOf(String key) {
+int indexOf(std::string key) {
 	return (*distributionOrder)[key];
 }
 
@@ -111,7 +109,7 @@ void deleteTheMapping() {
     delete mappedId;
 }
 
-void insertSimilarity(String tableName, String fieldId, String tableNameSimilarity, String query) {
+void insertSimilarity(std::string tableName, std::string fieldId, std::string tableNameSimilarity, std::string query) {
     Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
     bool connect = dao->connect();
     if (!connect) {
@@ -159,7 +157,7 @@ void insertSimilarity(String tableName, String fieldId, String tableNameSimilari
     deleteTheMapping();
 }
 
-void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, String fieldId, String tableNameSimilarity, String query){
+void calculateSpecificSimilarity(std::vector<float> *vector1,std::string tableName, std::string fieldId, std::string tableNameSimilarity, std::string query){
     Dao *dao = new DaoMySql(db_database, db_user, db_password, db_server);
     bool connect = dao->connect();
     if (!connect) {
@@ -201,20 +199,20 @@ void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, S
 
 void insertSimilarity() {
     /*
-    String tableNameArticles = "ARTICLE_ITEM";
-    String fieldIdArticles = "ArticleId";
-    String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
-    String tableNameSimilarityArticles = "SIMILARITY";
+    std::string tableNameArticles = "ARTICLE_ITEM";
+    std::string fieldIdArticles = "ArticleId";
+    std::string queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
+    std::string tableNameSimilarityArticles = "SIMILARITY";
 
-    String tableNameAuthors = "AUTHOR_ITEM";
-    String fieldIdAuthors = "AuthorId";
-    String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
-    String tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
+    std::string tableNameAuthors = "AUTHOR_ITEM";
+    std::string fieldIdAuthors = "AuthorId";
+    std::string queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
+    std::string tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
     */
-    String tableNameAffiliations = "AFFILIATION_ITEM";
-    String fieldIdAffiliations = "affiliationId";
-    String queryAffiliations = "SELECT AFFILIATION_affiliationId, distributionAffiliation, distribution_KEY FROM tesis.TopicProfileAffiliations ORDER BY AFFILIATION_affiliationId";
-    String tableNameSimilarityAffiliations = "SIMILARITY_AFFILIATIONS";
+    std::string tableNameAffiliations = "AFFILIATION_ITEM";
+    std::string fieldIdAffiliations = "affiliationId";
+    std::string queryAffiliations = "SELECT AFFILIATION_affiliationId, distributionAffiliation, distribution_KEY FROM tesis.TopicProfileAffiliations ORDER BY AFFILIATION_affiliationId";
+    std::string tableNameSimilarityAffiliations = "SIMILARITY_AFFILIATIONS";
 
     //insertSimilarity(tableNameArticles, fieldIdArticles, queryArticles, tableNameSimilarityArticles);
     //insertSimilarity(tableNameAuthors, fieldIdAuthors, queryAuthors, tableNameSimilarityAuthors);
@@ -222,10 +220,10 @@ void insertSimilarity() {
 }
 
 void insertSimilarity(std::vector<float> *vector1) {
-    String tableNameArticles = "ARTICLE_ITEM";
-    String fieldIdArticles = "ArticleId";
-    String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
-    String tableNameSimilarityArticles = "SIMILARITY_AUX";
+    std::string tableNameArticles = "ARTICLE_ITEM";
+    std::string fieldIdArticles = "ArticleId";
+    std::string queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
+    std::string tableNameSimilarityArticles = "SIMILARITY_AUX";
 
     calculateSpecificSimilarity(vector1,tableNameArticles, fieldIdArticles, tableNameSimilarityArticles, queryArticles);
 }

@@ -5,7 +5,7 @@
 
 class IdentificationGeneretorArticle : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorArticle(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+    IdentificationGeneretorArticle(Dao* dao, std::string separator) : IdentificationGeneretor(dao, separator) {
         this->query_ = "SELECT \
                 a.ArticleId as ArticleId \
                 ,a.title as Title \
@@ -16,7 +16,7 @@ public:
                 d.authors_AuthorId=c.AuthorId";
     }
 
-    void fillTheMapping(MapStringString *node2name);
+    void fillTheMapping(std::map<std::string, std::string> *node2name);
 
     ~IdentificationGeneretorArticle();
 };

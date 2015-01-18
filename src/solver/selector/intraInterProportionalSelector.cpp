@@ -8,26 +8,26 @@ SnowFlakeVector * IntraInterProportionalSelector::getTopSolution(SnowFlakeVector
     SnowFlake::sortByDecresingSumCompat(*produced);
     SnowFlakeVector available(*produced);
     SnowFlakeVector *selected = new SnowFlakeVector();
-    Double currentSumIntra = 0.0;
-    Double currentSumOneMinusInter = 0.0;
+    double currentSumIntra = 0.0;
+    double currentSumOneMinusInter = 0.0;
     while (selected->size() < numRequested && selected->size() < produced->size()) {
-        Double maxScore = -1.0;
+        double maxScore = -1.0;
         int bestCandidateId = -1;
         if (available.size() == 0) {
             throw Exception(__FILE__, __LINE__, "There are no available condidates");
         }
         int theSize = selected->size() + 1;
-        for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
-            Double alpha = (Double) numRequested / theSize;
-            Double beta = 0.0;
+        for (unsigned int candidateId = 0; candidateId < available.size(); ++candidateId) {
+            double alpha = (double) numRequested / theSize;
+            double beta = 0.0;
             if (theSize == 1) {
                 beta = 1.0;
             }
             else {
-                beta = alpha * (Double) ((numRequested - 1) / (theSize - 1));
+                beta = alpha * (double) ((numRequested - 1) / (theSize - 1));
             }
             SnowFlake candidate = available[candidateId];
-            Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter, alpha, beta);
+            double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter, alpha, beta);
             if (score > maxScore) {
                 bestCandidateId = candidateId;
                 maxScore = score;

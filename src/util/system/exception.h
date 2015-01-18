@@ -22,14 +22,14 @@
 #define EXCEPTION_H
 
 #include <stdexcept>
+#include <string>
 #include "stringUtilities.h"
-using namespace std;
 
-class Exception : public runtime_error {
+class Exception : public std::runtime_error {
 public:
-    Exception ( const string& msg ) : runtime_error(msg) {}
-    Exception (const char* fileName, int lineNumber, const string& msg ) :
-        runtime_error("[" + String(fileName) + "] @ " + convertToString(lineNumber) + ": " + msg) {}
+    Exception ( const std::string& msg ) : std::runtime_error(msg) {}
+    Exception (const char* fileName, int lineNumber, const std::string& msg ) :
+        std::runtime_error("[" + std::string(fileName) + "] @ " + convertToString(lineNumber) + ": " + msg) {}
 };
 
 #endif // EXCEPTION_H

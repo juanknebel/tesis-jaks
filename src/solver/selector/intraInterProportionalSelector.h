@@ -6,7 +6,7 @@
 
 class IntraInterProportionalSelector : public Selector {
 public:
-    IntraInterProportionalSelector(Double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
+    IntraInterProportionalSelector(double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
     SnowFlakeVector *getTopSolution(SnowFlakeVector *produced, int numRequested);
     ~IntraInterProportionalSelector();
 };

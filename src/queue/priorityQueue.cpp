@@ -7,9 +7,9 @@ PriorityQueue::PriorityQueue() {
     this->nextKey = 0;
 }
 
-int PriorityQueue::push(TupleIntDouble element) {
+int PriorityQueue::push(std::tuple<int, double> element) {
     int key = this->nextKey;
-    this->theQueue_->push(KeyTupleIntDouble(key, element));
+    this->theQueue_->push(std::tuple<int,std::tuple<int, double>>(key, element));
     (*this->blackListElements_)[key] = false;
     this->nextKey++;
 
@@ -17,12 +17,12 @@ int PriorityQueue::push(TupleIntDouble element) {
 
 }
 
-TupleIntDouble PriorityQueue::top() {
+std::tuple<int, double> PriorityQueue::top() {
     if (this->theQueue_->empty()) {
         throw Exception(__FILE__, __LINE__, "Can not get the top element of an empty stack");
     }
     else {
-        KeyTupleIntDouble element = this->theQueue_->top();
+        std::tuple<int,std::tuple<int, double>> element = this->theQueue_->top();
         while (this->blackListElements_->find(std::get<0>(element)) != this->blackListElements_->end()
                 && (*this->blackListElements_)[std::get<0>(element)] == true) {
             this->theQueue_->pop();
@@ -33,7 +33,7 @@ TupleIntDouble PriorityQueue::top() {
 }
 
 void PriorityQueue::pop() {
-    KeyTupleIntDouble element = this->theQueue_->top();
+    std::tuple<int,std::tuple<int, double>> element = this->theQueue_->top();
     this->theQueue_->pop();
     (*this->blackListElements_)[std::get<0>(element)] = true;
 }

@@ -14,12 +14,12 @@ Clustering::Clustering() {
 Clustering::~Clustering() {
 }
 
-IntVector* Clustering::cluster(const MatrixWrapper& graph, int numClusters) {
+std::vector<int>* Clustering::cluster(const MatrixWrapper& graph, int numClusters) {
 	MetisWrapper metisWrapper;
 	return (metisWrapper.cluster(graph, numClusters));
 }
 
-IntVector* Clustering::symmetrizeAndCluster(MatrixWrapper& graph, int numClusters) {
+std::vector<int>* Clustering::symmetrizeAndCluster(MatrixWrapper& graph, int numClusters) {
 	MetisWrapper metisWrapper;
 	graph.ensureSymmetric();
 	return (metisWrapper.cluster(graph, numClusters));

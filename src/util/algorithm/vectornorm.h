@@ -23,7 +23,10 @@
 
 #include <string>
 #include <cmath>
-#include "../redefinitions.h"
+#include <vector>
+#include <sstream>
+//#include <cstdlib>
+//#include <iostream>
 
 void insertSimilarity();
 void insertSimilarity(std::vector<float> *vector1);

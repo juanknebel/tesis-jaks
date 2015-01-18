@@ -13,10 +13,10 @@ RestrictedHACSolver::~RestrictedHACSolver() {
 }
 
 SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
-    MapIntIntSet *clustering = new MapIntIntSet();
+    std::map<int, std::set<int>*> *clustering = new std::map<int, std::set<int>*>();
     int totalElements = this->problem_->numNodes();
     matrix<int> *theMatrixC = new matrix<int> (totalElements, totalElements);
-    BoolVector *theIVector = new BoolVector;
+    std::vector<bool> *theIVector = new std::vector<bool>;
     VectorPrtyQueueTupleIntDouble *theVectorPriorityQueue = new VectorPrtyQueueTupleIntDouble;
 
     /*
@@ -26,7 +26,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         /*
          * Inicializo el clustering
          */
-        IntSet *temp = new IntSet();
+        std::set<int> *temp = new std::set<int>();
         temp->insert(i);
         (*clustering)[i] = temp;
 
@@ -44,10 +44,10 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
              * entre el elemento i y j. La similitud de un elemento consigo mismo no la guardo
              */
             if (i != j) {
-                IntSet *temp2 = new IntSet();
+                std::set<int> *temp2 = new std::set<int>();
                 temp2->insert(j);
                 double similarity = sim(temp, temp2);
-                int key = thePriorityQueue->push(TupleIntDouble(j, similarity));
+                int key = thePriorityQueue->push(std::tuple<int, double>(j, similarity));
                 theMatrixC->insert_element(i, j, key);
                 delete temp2;
             }
@@ -61,7 +61,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
     DEBUG(DBG_DEBUG, "Incio bucle clusterizacion: " << totalElements);
     for (int k = 0; k < totalElements - 1; ++k) {
         DEBUG(DBG_DEBUG,"iteracion k: " << k);
-        Double maxSimilarity = -1.0;
+        double maxSimilarity = -1.0;
         int k1Index = -1, k2Index = -1;
         /*
          * Busco la maxima similitud en todas las colas de prioridad
@@ -70,7 +70,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         for (int j = 0; j < totalElements; ++j) {
             if (theIVector->at(j) == true) {
                 PriorityQueue* queuep = theVectorPriorityQueue->at(j);
-                TupleIntDouble tempTuple = queuep->top();
+                std::tuple<int, double> tempTuple = queuep->top();
                 if (std::get<1>(tempTuple) > maxSimilarity) {
                     maxSimilarity = std::get<1>(tempTuple);
                     k1Index = j;
@@ -94,14 +94,14 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
          *  Agrego al cluster correspondiente del k1, los elementos del cluester del k2
          */
         DEBUG(DBG_DEBUG,"Agrego al cluster");
-        IntSet *theK1Cluster;
+        std::set<int> *theK1Cluster;
         try {
             theK1Cluster = clustering->at(k1Index);
         }
         catch (const std::out_of_range& oor) {
             throw Exception(__FILE__, __LINE__, oor.what());
         }
-        IntSet *theK2Cluster;
+        std::set<int> *theK2Cluster;
         try {
             theK2Cluster = clustering->at(k2Index);
         }
@@ -124,8 +124,8 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k1Index));
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k2Index));
                 double similarity = sim(theK1Cluster, clustering->at(i));
-                TupleIntDouble tupleAtIK1 = TupleIntDouble(k1Index, similarity);
-                TupleIntDouble tupleAtK1I = TupleIntDouble(i, similarity);
+                std::tuple<int, double> tupleAtIK1 = std::tuple<int, double>(k1Index, similarity);
+                std::tuple<int, double> tupleAtK1I = std::tuple<int, double>(i, similarity);
                 int key1 = (*theVectorPriorityQueue)[i]->push(tupleAtIK1);
                 int key2= (*theVectorPriorityQueue)[k1Index]->push(tupleAtK1I);
                 theMatrixC->insert_element(i, k1Index, key1);
@@ -138,7 +138,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
 
     SnowFlakeVector* solution = new SnowFlakeVector;
     DEBUG(DBG_DEBUG,"inicio bucle crear solucion");
-    for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
+    for (std::map<int, std::set<int>*>::iterator it = clustering->begin(); it != clustering->end(); ++it) {
         SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
         solution->push_back(*aFlake);
     }
@@ -160,18 +160,18 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         throw Exception(__FILE__, __LINE__, "IllegalArgumentException Too few nodes");
     }
     // Put each item in its own cluster
-    MapIntIntSet *clustering = new MapIntIntSet();
+    std::map<int, std::set<int>*> *clustering = new std::map<int, std::set<int>*>();
     int totalElements = this->problem_->numNodes();
 
-    matrix<TupleDoubleBool> *theMatrixC = new matrix<TupleDoubleBool> (totalElements, totalElements);
-    IntVector *theIVector = new IntVector;
-    TupleIntDoubleVector *nbm = new TupleIntDoubleVector;
-    Double tempMaxSimilarity, similarity;
+    matrix<std::tuple<double, bool>> *theMatrixC = new matrix<std::tuple<double, bool>> (totalElements, totalElements);
+    std::vector<int> *theIVector = new std::vector<int>;
+    std::vector<std::tuple<int, double>> *nbm = new std::vector<std::tuple<int, double>>;
+    double tempMaxSimilarity, similarity;
     int tempMaxIndex;
     //Inicializo el cluster, la matriz con las similitudes, vector de indices y nbm
     for (int i = 0; i < totalElements; ++i) {
         //init del clustering
-        IntSet *temp = new IntSet();
+        std::set<int> *temp = new std::set<int>();
         temp->insert(i);
         (*clustering)[i] = temp;
         //init de matriz y vectores
@@ -180,9 +180,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         for (int j = 0; j < totalElements; ++j) {
             //similarity = this->problem_->getCompatWithSpecificProfile(i, j);//ESTA LINEA HAY QUE CAMBIAR
             similarity = this->problem_->getCompat(i, j);
-            IntSet aSetWithElementI = IntSet();
+            std::set<int> aSetWithElementI = std::set<int>();
             aSetWithElementI.insert(i);
-            IntSet aSetWithElementJ = IntSet();
+            std::set<int> aSetWithElementJ = std::set<int>();
             aSetWithElementJ.insert(j);
             bool canMergeIandJ = this->checkBudgetAndCoverageConstraint(aSetWithElementI, aSetWithElementJ);
 
@@ -191,10 +191,10 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
                 tempMaxSimilarity = similarity;
             }
 
-            theMatrixC->insert_element(i, j, TupleDoubleBool(similarity, canMergeIandJ));
+            theMatrixC->insert_element(i, j, std::tuple<double, bool>(similarity, canMergeIandJ));
         }
         theIVector->push_back(i);
-        TupleIntDouble theMaxValue (tempMaxIndex, tempMaxSimilarity);
+        std::tuple<int, double> theMaxValue (tempMaxIndex, tempMaxSimilarity);
         nbm->push_back(theMaxValue);
     }
 
@@ -207,7 +207,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         //Busco en el nbm el elemento que contenga la mayor similitud para algun otro elemento
         //DEBUG(DBG_DEBUG,"Busco en el nbm el elemento que contenga la mayor similitud para algun otro elemento");
         for (int k = 0; k < totalElements; ++k) {
-            TupleIntDouble aTupleToCompare = nbm->at(k);
+            std::tuple<int, double> aTupleToCompare = nbm->at(k);
             if (std::get<1>(aTupleToCompare) > tempMaxSimilarity && k == theIVector->at(k)) {
                 anElementi1 = k;
                 tempMaxSimilarity = std::get<1>(aTupleToCompare);
@@ -231,16 +231,16 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         }
         otherElementi2 = theIVector->at(theIndex);
 
-        TupleDoubleBool theRelationI1andI2 = (*theMatrixC)(anElementi1, otherElementi2);
+        std::tuple<double, bool> theRelationI1andI2 = (*theMatrixC)(anElementi1, otherElementi2);
         if (!std::get<1>(theRelationI1andI2)) {
             tempMaxSimilarity = -1.00;
-            (*nbm)[anElementi1] = TupleIntDouble (-1, -1.00);
+            (*nbm)[anElementi1] = std::tuple<int, double> (-1, -1.00);
             for (int i = 0; i < totalElements; ++i) {
-                Double tempSimilarity = std::get<0>((*theMatrixC)(anElementi1, i));
+                double tempSimilarity = std::get<0>((*theMatrixC)(anElementi1, i));
                 bool canMergeI1WithI = std::get<1>((*theMatrixC)(anElementi1, i));
                 if (tempSimilarity > tempMaxSimilarity && i != anElementi1 && theIVector->at(i) == i && canMergeI1WithI) {
                     tempMaxSimilarity = tempSimilarity;
-                    (*nbm)[anElementi1] = TupleIntDouble (i, tempMaxSimilarity);
+                    (*nbm)[anElementi1] = std::tuple<int, double> (i, tempMaxSimilarity);
                 }
             }
             continue;
@@ -249,7 +249,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         //copio elementos al cluster correspondiente
         //DEBUG(DBG_DEBUG,"copio elementos al cluster correspondiente");
         //DEBUG(DBG_DEBUG,"i1 "<<anElementi1);
-        IntSet *besti1;
+        std::set<int> *besti1;
         try {
             besti1 = clustering->at(anElementi1);
         }
@@ -257,7 +257,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
             throw Exception(__FILE__, __LINE__, oor.what());
         }
         //DEBUG(DBG_DEBUG,"i2 "<<otherElementi2);
-        IntSet *besti2;
+        std::set<int> *besti2;
         try {
             besti2 = clustering->at(otherElementi2);
         }
@@ -272,15 +272,15 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         //DEBUG(DBG_DEBUG,"actualizacion del vector de indices y de la matriz de similitud");
         for (int i = 0; i < totalElements; ++i) {
             if (theIVector->at(i) == i && i != anElementi1 && i != otherElementi2) {
-                Double similarityI1 = std::get<0>((*theMatrixC)(anElementi1, i));
+                double similarityI1 = std::get<0>((*theMatrixC)(anElementi1, i));
 
-                Double similarityI2 = std::get<0>((*theMatrixC)(otherElementi2, i));
+                double similarityI2 = std::get<0>((*theMatrixC)(otherElementi2, i));
 
-                Double maxSimilarity = (similarityI1 > similarityI2) ? similarityI1 : similarityI2;
+                double maxSimilarity = (similarityI1 > similarityI2) ? similarityI1 : similarityI2;
                 bool canMergeI1WithI2 = checkBudgetAndCoverageConstraint(*(clustering->at(anElementi1)), *(clustering->at(theIVector->at(i))));
 
-                theMatrixC->insert_element(anElementi1, i, TupleDoubleBool(maxSimilarity, canMergeI1WithI2));
-                theMatrixC->insert_element(i, anElementi1, TupleDoubleBool(maxSimilarity, canMergeI1WithI2));
+                theMatrixC->insert_element(anElementi1, i, std::tuple<double, bool>(maxSimilarity, canMergeI1WithI2));
+                theMatrixC->insert_element(i, anElementi1, std::tuple<double, bool>(maxSimilarity, canMergeI1WithI2));
             }
             if (theIVector->at(i) == otherElementi2) {
                 (*theIVector)[i] = anElementi1;
@@ -289,20 +289,20 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         //actualizo nbm
         //DEBUG(DBG_DEBUG,"actualizo nbm");
         tempMaxSimilarity = -1.00;
-        (*nbm)[anElementi1] = TupleIntDouble (-1, -1.00);
+        (*nbm)[anElementi1] = std::tuple<int, double> (-1, -1.00);
         for (int i = 0; i < totalElements; ++i) {
-            Double tempSimilarity = std::get<0>((*theMatrixC)(anElementi1, i));
+            double tempSimilarity = std::get<0>((*theMatrixC)(anElementi1, i));
             bool canMergeI1WithI = std::get<1>((*theMatrixC)(anElementi1, i));
             if (tempSimilarity > tempMaxSimilarity && i != anElementi1 && theIVector->at(i) == i && canMergeI1WithI) {
                 tempMaxSimilarity = tempSimilarity;
-                (*nbm)[anElementi1] = TupleIntDouble (i, tempMaxSimilarity);
+                (*nbm)[anElementi1] = std::tuple<int, double> (i, tempMaxSimilarity);
             }
         }
         ++j;
     }
 
     SnowFlakeVector* solution = new SnowFlakeVector;
-    for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
+    for (std::map<int, std::set<int>*>::iterator it = clustering->begin(); it != clustering->end(); ++it) {
         SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
         solution->push_back(*aFlake);
     }
@@ -315,31 +315,31 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     return solution;
 }
 
-double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
+double RestrictedHACSolver::sim(std::set<int>* snowflake1, std::set<int>* snowflake2) {
     bool check = this->checkBudgetAndCoverageConstraint(*snowflake1, *snowflake2);
     if (check) {
-        Double intra = 0.0;
-        for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
-            for (IntSet::iterator it2 = snowflake1->begin(); it2 != snowflake1->end(); ++it2) {
+        double intra = 0.0;
+        for (std::set<int>::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
+            for (std::set<int>::iterator it2 = snowflake1->begin(); it2 != snowflake1->end(); ++it2) {
                 if (*it<*it2) {
                     intra += this->problem_->getCompat(*it, *it2);
                 }
             }
         }
-        for (IntSet::iterator it = snowflake2->begin(); it != snowflake2->end(); ++it) {
-            for (IntSet::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
+        for (std::set<int>::iterator it = snowflake2->begin(); it != snowflake2->end(); ++it) {
+            for (std::set<int>::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
                 if (*it<*it2) {
                     intra += this->problem_->getCompat(*it, *it2);
                 }
             }
         }
-        for (IntSet::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
-            for (IntSet::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
+        for (std::set<int>::iterator it = snowflake1->begin(); it != snowflake1->end(); ++it) {
+            for (std::set<int>::iterator it2 = snowflake2->begin(); it2 != snowflake2->end(); ++it2) {
                 intra += this->problem_->getCompat(*it, *it2);
             }
         }
 
-        Double gamma = 1.0 - this->interSimilarityWeight_;
+        double gamma = 1.0 - this->interSimilarityWeight_;
         double inter = this->problem_->maxPairwiseCompatibility(*snowflake1, *snowflake2);
         return (gamma * intra) + ((1.0 - gamma) * inter);
     }

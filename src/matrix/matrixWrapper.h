@@ -9,12 +9,11 @@
 #define MATRIXWRAPPER_H_
 
 #include <cmath>
-#include "../util/redefinitions.h"
 
 class MatrixWrapper {
 protected:
-	Double maxValue_;
-	Double minValue_;
+    double maxValue_;
+    double minValue_;
 	int rows_;
 	int cols_;
 
@@ -29,15 +28,15 @@ public:
 
 	virtual int getRows() const = 0;
 	virtual int getCols() const = 0;
-	virtual Double get(int row, int col) const = 0;
-	virtual Double getMaxValue() const = 0;
-	virtual Double getMinValue() const = 0;
-	virtual void set(int row, int col, Double value) = 0;
-	virtual void scalarMultiply(Double scalar) = 0;
+    virtual double get(int row, int col) const = 0;
+    virtual double getMaxValue() const = 0;
+    virtual double getMinValue() const = 0;
+    virtual void set(int row, int col, double value) = 0;
+    virtual void scalarMultiply(double scalar) = 0;
 	virtual void showMe() = 0;
 	virtual int countNonZeros() const = 0;
 	virtual void ensureSymmetric() = 0;
-	virtual Double operator()(int row, int col) = 0;
+    virtual double operator()(int row, int col) = 0;
 };
 
 

@@ -6,7 +6,7 @@
 
 class InterIntraTuplesSelector : public Selector {
 public:
-    InterIntraTuplesSelector(Double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
+    InterIntraTuplesSelector(double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
     SnowFlakeVector *getTopSolution(SnowFlakeVector *produced, int numRequested);
     ~InterIntraTuplesSelector();
 };

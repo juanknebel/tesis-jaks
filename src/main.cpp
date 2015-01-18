@@ -25,6 +25,7 @@
 //#include "test/testSuites.h"
 #include "util/algorithm/vectornorm.h"
 #include "util/system/stringUtilities.h"
+#include "util/system/Logger.h"
 
 const std::string useMode = "tesis-jaks -f <configuration_file_name> [-l]\t(to use a configuration file)\ntesis-jaks -t [-l]\t\t\t\t(for use with the internal test)\ntesis-jaks -s [-l]\t\t\t\t(to calculate the similarity)\ntesis-jaks -h\t\t\t\t\t(to see this help)\nThe Argument -l initialize the logger.\nArguments in [] are optional.";
 std::string errorMsg = "Bad Arguments. Use -h to see how to use.";

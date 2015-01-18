@@ -6,9 +6,9 @@
 class WriterSolutionAuthors : public WriterSolution
 {
 public:
-    WriterSolutionAuthors(String separator) : WriterSolution(separator) {}
+    WriterSolutionAuthors(std::string separator) : WriterSolution(separator) {}
 
-    void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
+    void writeSolution(const std::vector<SnowFlake>& solution, std::string fileName, const Id2Str* node2name, double interSimilarityWeight);
 
     ~WriterSolutionAuthors();
 };

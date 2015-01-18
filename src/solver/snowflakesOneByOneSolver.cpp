@@ -22,9 +22,9 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakes(int numSnowflak
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSnowflakes){
 	SnowFlakeVector* candidates = new SnowFlakeVector();
 
-	IntSet pivotsUsed;
-	IntSet possiblePivots = IntSet(this->problem_->getIds());
-	IntSet allIds = IntSet(this->problem_->getIds());
+	std::set<int> pivotsUsed;
+	std::set<int> possiblePivots = std::set<int>(this->problem_->getIds());
+	std::set<int> allIds = std::set<int>(this->problem_->getIds());
 
 	int maxTrials = numSnowflakes * 1000;
 
@@ -47,7 +47,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSn
 			candidates->push_back(snowflake);
 			if (!SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS) {
 				// Remove all snowflake members from the possible pivots
-				for (IntSet::iterator id = snowflake.ids().begin(); id != snowflake.ids().end(); ++id) {
+				for (std::set<int>::iterator id = snowflake.ids().begin(); id != snowflake.ids().end(); ++id) {
 					possiblePivots.erase(*id);
 				}
 			}
@@ -62,9 +62,9 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSn
 SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem(int numSnowflakes){
 	SnowFlakeVector* candidates = new SnowFlakeVector();
 
-	IntSet pivotsUsed;
-	IntSet possiblePivots = IntSet(this->problem_->getIds());
-	IntSet allIds = IntSet(this->problem_->getIds());
+	std::set<int> pivotsUsed;
+	std::set<int> possiblePivots = std::set<int>(this->problem_->getIds());
+	std::set<int> allIds = std::set<int>(this->problem_->getIds());
 
 	possiblePivots.erase(this->problem_->getSpecificItem());
 	allIds.erase(this->problem_->getSpecificItem());
@@ -89,7 +89,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 			candidates->push_back(snowflake);
 			if (!SnowflakesOneByOneSolver::SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS) {
 				// Remove all snowflake members from the possible pivots
-				for (IntSet::iterator id = snowflake.ids().begin(); id != snowflake.ids().end(); ++id) {
+				for (std::set<int>::iterator id = snowflake.ids().begin(); id != snowflake.ids().end(); ++id) {
 					possiblePivots.erase(*id);
 				}
 			}

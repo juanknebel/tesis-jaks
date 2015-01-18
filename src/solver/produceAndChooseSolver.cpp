@@ -14,7 +14,7 @@ Selector* ProduceAndChooseSolver::getSelector() {
     return this->theSelectorStrategy_;
 }
 
-void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeight) {
+void ProduceAndChooseSolver::setInterSimilarityWeight(double interSimilarityWeight) {
 		this->interSimilarityWeight_ = interSimilarityWeight;
 }
 

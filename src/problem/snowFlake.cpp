@@ -11,11 +11,11 @@
 #include <algorithm>
 #include <stdexcept>
 
-Double SnowFlake::getMinCompat() {
-	Double minCompat = FLT_MAX;
-	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
-			Double compat = this->problem_->getCompat(*it, *it2);
+double SnowFlake::getMinCompat() {
+	double minCompat = FLT_MAX;
+	for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+		for (std::set<int>::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
+			double compat = this->problem_->getCompat(*it, *it2);
 			if (compat > 0.0 && compat < minCompat) {
 				minCompat = compat;
 			}
@@ -30,21 +30,21 @@ SnowFlake::SnowFlake() {
     this->identificator_ = 0;
 }
 
-SnowFlake::SnowFlake(const IntSet& elements, ProblemInstance* problem) {
+SnowFlake::SnowFlake(const std::set<int>& elements, ProblemInstance* problem) {
 	this->problem_ = problem;
-	this->elements_ = new IntSet(elements);
+	this->elements_ = new std::set<int>(elements);
     this->identificator_ = 0;
 }
 
 SnowFlake::SnowFlake(const SnowFlake& snowflake){
 	this->problem_ = snowflake.problem_;
-	this->elements_ = new IntSet(*(snowflake.elements_));
+	this->elements_ = new std::set<int>(*(snowflake.elements_));
     this->identificator_ = snowflake.getIdentificator();
 }
 
 SnowFlake& SnowFlake::operator=(const SnowFlake& snowflake) {
 	this->problem_ = snowflake.problem_;
-	this->elements_ = new IntSet(*(snowflake.elements_));
+	this->elements_ = new std::set<int>(*(snowflake.elements_));
     this->identificator_ = snowflake.getIdentificator();
 	return *this;
 }
@@ -59,29 +59,29 @@ bool SnowFlake::operator<(const SnowFlake& snowflake) const {
 	return snowflake.getSumIntraCompat() < this->getSumIntraCompat();
 }
 
-Double SnowFlake::getCost() {
-	Double sumCosts = 0.00;
-	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+double SnowFlake::getCost() {
+	double sumCosts = 0.00;
+	for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
 		sumCosts += this->problem_->getCost(*it);
 	}
 	return sumCosts;
 }
 
 int SnowFlake::getCoverSize() {
-	IntSet covered;
-	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		const IntSet *aSetToInsert = this->problem_->getCover(*it);
+	std::set<int> covered;
+	for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+		const std::set<int> *aSetToInsert = this->problem_->getCover(*it);
 		covered.insert(aSetToInsert->begin(), aSetToInsert->end());
 	}
 
 	return covered.size();
 }
 
-String SnowFlake::toString(const Id2Str* node2name) {
-	String result = "";
-	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		Double cost;
-		String node;
+std::string SnowFlake::toString(const Id2Str* node2name) {
+    std::string result = "";
+	for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+		double cost;
+        std::string node;
 		cost = this->problem_->getCost(*it);
 		node = this->problem_->getNode(*it);
 		result.append(" * " + node + (node2name == NULL ? "" : " " + node2name->getNodebyName(node)));
@@ -96,10 +96,10 @@ String SnowFlake::toString(const Id2Str* node2name) {
 	return result;
 }
 
-Double SnowFlake::getSumIntraCompat() const {
-	Double sum = 0.0;
-	for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-		for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
+double SnowFlake::getSumIntraCompat() const {
+	double sum = 0.0;
+	for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+		for (std::set<int>::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
 			if (*it<*it2) {
 				sum += this->problem_->getCompat(*it, *it2);
 			}
@@ -108,10 +108,10 @@ Double SnowFlake::getSumIntraCompat() const {
 	return sum;
 }
 
-Double SnowFlake::getSumIntraCompatWithSpecificProfile() const {
-    Double sum = 0.0;
-    for (IntSet::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
-        for (IntSet::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
+double SnowFlake::getSumIntraCompatWithSpecificProfile() const {
+    double sum = 0.0;
+    for (std::set<int>::iterator it = this->elements_->begin(); it != this->elements_->end(); ++it) {
+        for (std::set<int>::iterator it2 = this->elements_->begin(); it2 != this->elements_->end(); ++it2) {
             if (*it<*it2) {
                 sum += this->problem_->getCompatWithSpecificProfile(*it, *it2);
             }
@@ -125,17 +125,17 @@ void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVecto
 	std::sort(snowFlakesVector.begin(), snowFlakesVector.end());
 }
 
-IntSet& SnowFlake::ids() const {
+std::set<int>& SnowFlake::ids() const {
 	return *(this->elements_);
 }
 
-String SnowFlake::getProblemNode(int aNode) const {
+std::string SnowFlake::getProblemNode(int aNode) const {
     return this->problem_->getNode(aNode);
 }
 
-Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
-	Double sumIntraCompat = 0.00;
-	Double sumOneMinusInter = 0.00;
+double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, double interSimilarityWeight) {
+	double sumIntraCompat = 0.00;
+	double sumOneMinusInter = 0.00;
 	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
 		sumIntraCompat += it->getSumIntraCompat();
 	}
@@ -147,14 +147,14 @@ Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Doubl
 	return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
 }
 
-Uint SnowFlake::getIdentificator() const {
+unsigned int SnowFlake::getIdentificator() const {
     return this->identificator_;
 }
 
-void SnowFlake::setIdentificator(Uint theIdentificator) {
+void SnowFlake::setIdentificator(unsigned int theIdentificator) {
     this->identificator_ = theIdentificator;
 }
 
-Double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake) {
+double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake) {
     return aSnowFlake.problem_->maxPairwiseCompatibility(aSnowFlake.ids(), otherSnowFlake.ids());
 }

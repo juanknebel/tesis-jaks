@@ -27,35 +27,35 @@
 
 class ProblemInstanceFromDataBase :  public ProblemInstance {
 private:
-	String tableCosts_;
-	String tableCompat_;
-	String tableCover_;
-	String tableConvertElementItem_;
-	String costField_;
-	String compatField_;
-	String coverField_;
-	String primaryField_;
-	String primaryDescription_;
-	String item_;
-	String itemCompat1_;
-	String itemCompat2_;
+    std::string tableCosts_;
+    std::string tableCompat_;
+    std::string tableCover_;
+    std::string tableConvertElementItem_;
+    std::string costField_;
+    std::string compatField_;
+    std::string coverField_;
+    std::string primaryField_;
+    std::string primaryDescription_;
+    std::string item_;
+    std::string itemCompat1_;
+    std::string itemCompat2_;
 	Dao *dao_;
 	
-	void init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2);
+    void init(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2);
 	int getPrimaryId(int id);
 public:
 	ProblemInstanceFromDataBase();
-	ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2, Double budget);
+    ProblemInstanceFromDataBase(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2, double budget);
 	~ProblemInstanceFromDataBase();
 	
-	IntSet& getIds();
+	std::set<int>& getIds();
 	int numNodes();
-	Double getCost(int id);
-	const IntSet* getCover(int id);
-	Double getCompat(int id1, int id2);
-	SparseDoubleMatrix2D* getCompat();
+    double getCost(int id);
+	const std::set<int>* getCover(int id);
+    double getCompat(int id1, int id2);
+    MatrixWrapper* getCompat();
 	void normalizeNodeCompat();
-	String getNode(int id);
+    std::string getNode(int id);
 };
 
 #endif // PROBLEMINSTANCEFROMDATABASE_H

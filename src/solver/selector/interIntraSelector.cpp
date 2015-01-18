@@ -8,18 +8,18 @@ SnowFlakeVector * InterIntraSelector::getTopSolution(SnowFlakeVector *produced, 
     SnowFlake::sortByDecresingSumCompat(*produced);
     SnowFlakeVector available(*produced);
     SnowFlakeVector *selected = new SnowFlakeVector();
-    Double currentSumIntra = 0.0;
-    Double currentSumOneMinusInter = 0.0;
+    double currentSumIntra = 0.0;
+    double currentSumOneMinusInter = 0.0;
     while (selected->size() < numRequested && selected->size() < produced->size()) {
-        Double maxScore = -1.0;
+        double maxScore = -1.0;
         int bestCandidateId = -1;
         if (available.size() == 0) {
             throw Exception(__FILE__, __LINE__, "There are no available condidates");
         }
-        for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
+        for (unsigned int candidateId = 0; candidateId < available.size(); ++candidateId) {
             SnowFlake candidate = available[candidateId];
-            //Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
-            Double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            //double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             if (score > maxScore) {
                 bestCandidateId = candidateId;
                 maxScore = score;

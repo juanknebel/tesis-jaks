@@ -18,7 +18,7 @@ class ExhaustiveGreedyAnySimSOBOSolver : public ExhaustiveSOBOSolver {
 	~ExhaustiveGreedyAnySimSOBOSolver() {};
 
 	protected:
-	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
+	SnowFlake* pickFlake(int pivot, const std::set<int>& clusterMembers);
 };
 
 

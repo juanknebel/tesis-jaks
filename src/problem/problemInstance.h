@@ -9,10 +9,8 @@
 #define PROBLEMINSTANCE_H_
 
 #include "../matrix/matrixConcrete.h"
-#include "../util/redefinitions.h"
-
-typedef MatrixWrapper SparseDoubleMatrix2D;
-typedef MatrixConcrete SparseDoubleMatrix2DImplementation;
+#include <set>
+#include <fstream>
 
 class ProblemInstance {
 private:
@@ -22,52 +20,52 @@ protected:
 	/**
 	 * The budget available.
 	 */
-	Double budget_;
+    double budget_;
 	/**
 	 * Cost of adding a node to the solution.
 	 */
-	MapIntDouble *nodeCost_;
+    std::map<int, double> *nodeCost_;
 	/**
 	 * Attribute to be covered.
 	 */
-	MapIntIntSet *nodeCover_;
+    std::map<int, std::set<int>*> *nodeCover_;
 	/**
 	 * Compatibility between two nodes.
 	 */	
-	SparseDoubleMatrix2D *nodeCompat_;
+    MatrixWrapper *nodeCompat_;
     /**
      * Compatibility with specific profile
      */
-    MapIntDouble *nodeSpecificCompat_;
+    std::map<int, double> *nodeSpecificCompat_;
 	/**
 	 * Identifiers of nodes.
 	 */
-	MapStringInt *node2id_;
-	MapIntString *id2node_;
+    std::map<std::string, int> *node2id_;
+    std::map<int, std::string> *id2node_;
 	/**
 	 * Se mantiene un puntero al conjunto de claves de nodeCost para no tener que calcularlo cada vez que se necesita
 	 */
-	IntSet *ids_;
+    std::set<int> *ids_;
 public:
 	ProblemInstance();
-	ProblemInstance(Double budget);
+    ProblemInstance(double budget);
 	virtual ~ProblemInstance();
 
-	virtual IntSet& getIds();
+    virtual std::set<int>& getIds();
 	virtual int numNodes();
-	virtual Double getCost(int id);
-	Double getbudget();
-	virtual const IntSet* getCover(int id);
-	virtual Double getCompat(int id1, int id2);
-    virtual Double getCompatWithSpecificProfile(int id1, int id2);
-	virtual SparseDoubleMatrix2D* getCompat();
+    virtual double getCost(int id);
+    double getbudget();
+    virtual const std::set<int>* getCover(int id);
+    virtual double getCompat(int id1, int id2);
+    virtual double getCompatWithSpecificProfile(int id1, int id2);
+    virtual MatrixWrapper* getCompat();
 	virtual void normalizeNodeCompat();
-	virtual String getNode(int id);
-	int getId(String);
-	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
-    Double maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet);
-	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
-	void createIdNodeMappings(StrVector nodes);
+    virtual std::string getNode(int id);
+    int getId(std::string);
+    double maxPairwiseCompatibility(const std::set<int>& aSet, const std::set<int>& otherSet);
+    double maxPairwiseCompatibilityWithSpecificProfile(const std::set<int>& aSet, const std::set<int>& otherSet);
+    //double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
+    void createIdNodeMappings(std::vector<std::string> nodes);
 
 	void setSpecificItem(int specificItem);
 	int getSpecificItem();

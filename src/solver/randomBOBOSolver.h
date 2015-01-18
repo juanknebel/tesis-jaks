@@ -13,9 +13,9 @@
 class RandomBOBOSolver : public RandomSOBOSolver {
 private:
 	static int INITIAL_TRIALS_FOR_MU;
-	Double mu_;
+	double mu_;
 
-	Double chooseMu();
+	double chooseMu();
 
 public:
 	RandomBOBOSolver(ProblemInstance* problem, Selector* selector) : RandomSOBOSolver(problem, selector) {

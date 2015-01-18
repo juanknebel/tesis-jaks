@@ -1,13 +1,13 @@
 #include "writerSolution.h"
 #include "../system/stringUtilities.h"
 
-WriterSolution::WriterSolution(String separator) {
+WriterSolution::WriterSolution(std::string separator) {
     this->separator_ = separator;
     this->endOfLIne_ = "\n";
 }
 
-String WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2Str *node2name) {
-    String result = this->endOfLIne_;
+std::string WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2Str *node2name) {
+    std::string result = this->endOfLIne_;
     int avgCost = 0;
     int avgCover = 0;
     int avgSize = 0;
@@ -30,13 +30,13 @@ String WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2S
     return result;
 }
 
-void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, String fileName) {
-    String separator = "\t";
-    String endOfLIne = "\n";
-    String fileNameIntra = fileName + "-nodes.csv";
-    FileOutput fileIntra(fileNameIntra.c_str());
+void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, std::string fileName) {
+    std::string separator = "\t";
+    std::string endOfLIne = "\n";
+    std::string fileNameIntra = fileName + "-nodes.csv";
+    std::ofstream fileIntra(fileNameIntra.c_str());
     fileIntra << "id" << separator << "Label" << separator << "Intra" << endOfLIne;
-    Uint id = 1;
+    unsigned int id = 1;
 
     for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
         it->setIdentificator(id);
@@ -45,8 +45,8 @@ void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution,
     }
     fileIntra.close();
 
-    String fileNameInter = fileName + "-edges.csv";
-    FileOutput fileInter(fileNameInter.c_str());
+    std::string fileNameInter = fileName + "-edges.csv";
+    std::ofstream fileInter(fileNameInter.c_str());
     fileInter << "Source" << separator << "Target" << separator << "Type" << separator << "id" << separator << "Weight" << endOfLIne;
     id = 1;
 
@@ -64,13 +64,13 @@ WriterSolution::~WriterSolution() {
 
 }
 
-void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName) {
-     FileOutput file(fileName.c_str());
-     Uint id = 1;
+void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, std::string fileName) {
+     std::ofstream file(fileName.c_str());
+     unsigned int id = 1;
      for (std::vector<SnowFlake>::iterator it = snowFlakeAll.begin(); it != snowFlakeAll.end(); ++it) {
 
-         IntSet idSet = it->ids();
-         for (IntSet::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
+         std::set<int> idSet = it->ids();
+         for (std::set<int>::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
              file << id << "," << (*itSF) << "\n";
          }
          ++id;

@@ -28,7 +28,7 @@ Id2Str* Configurator::getTheNodeName() const {
     return this->theNodeName_;
 }
 
-String Configurator::getSolverName() const {
+std::string Configurator::getSolverName() const {
     return this->solverName_;
 }
 

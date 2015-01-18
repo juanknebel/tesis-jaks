@@ -13,13 +13,13 @@ Id2Str::Id2Str() {
 	this->dao_ = 0;
 }
 
-Id2Str::Id2Str(String fileName) {
-	this->node2name_ = new MapStringString;
-	FileInput file;
+Id2Str::Id2Str(std::string fileName) {
+	this->node2name_ = new std::map<std::string, std::string>;
+    std::ifstream file;
 	file.open(fileName.c_str());
-	String line;
+    std::string line;
 	while(getline(file, line, '\n')) {
-		StrVector tokens;
+		std::vector<std::string> tokens;
 		stringToVectorSplit(line, "\t", tokens);
 		(*(this->node2name_))[tokens[0]] = tokens[1]; 
 	}
@@ -27,7 +27,7 @@ Id2Str::Id2Str(String fileName) {
 }
 
 Id2Str::Id2Str(IdentificationGeneretor* theIdentificator) {
-    this->node2name_ = new MapStringString;
+    this->node2name_ = new std::map<std::string, std::string>;
     theIdentificator->fillTheMapping(this->node2name_);
 }
 
@@ -35,6 +35,6 @@ Id2Str::~Id2Str() {
 	delete this->node2name_;
 }
 
-String Id2Str::getNodebyName(String node) const {
+std::string Id2Str::getNodebyName(std::string node) const {
 	return (*(this->node2name_))[node];
 }

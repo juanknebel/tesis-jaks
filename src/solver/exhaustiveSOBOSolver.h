@@ -18,7 +18,7 @@ public:
 	}
 	~ExhaustiveSOBOSolver() {};
 
-	int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots);
+	int getPivot(std::set<int>& pivotsUsed, std::set<int>& possiblePivots);
 
 	int numToProduce(int requestedSnowflakes);
 };

@@ -1,18 +1,17 @@
 #ifndef IDENTIFICATIONGENERETOR_H
 #define IDENTIFICATIONGENERETOR_H
 
-#include "../redefinitions.h"
 #include "../../dao/daoMySql.h"
 
 class IdentificationGeneretor {
 protected:
     Dao *dao_;
-    String query_;
-    String separator_;
+    std::string query_;
+    std::string separator_;
 public:
-    IdentificationGeneretor(Dao* dao, String separator);
-    String getQuery() const;
-    virtual void fillTheMapping(MapStringString *node2name) = 0;
+    IdentificationGeneretor(Dao* dao, std::string separator);
+    std::string getQuery() const;
+    virtual void fillTheMapping(std::map<std::string, std::string> *node2name) = 0;
     virtual ~IdentificationGeneretor();
 };
 
