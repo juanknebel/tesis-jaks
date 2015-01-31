@@ -18,8 +18,7 @@ SnowFlakeVector * InterIntraSelector::getTopSolution(SnowFlakeVector *produced, 
         }
         for (unsigned int candidateId = 0; candidateId < available.size(); ++candidateId) {
             SnowFlake candidate = available[candidateId];
-            //double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
-            double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
+            double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             if (score > maxScore) {
                 bestCandidateId = candidateId;
                 maxScore = score;
