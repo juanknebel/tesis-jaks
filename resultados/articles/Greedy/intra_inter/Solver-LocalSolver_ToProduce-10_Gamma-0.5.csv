@@ -1,0 +1,52 @@
+Bundle	ArticleId	Paper	Venue	Author
+Bundle 1	2509	Performance Properties of Vertically Partitioned Object-Oriented Systems.	IEEE Trans. Software Eng.	James C. Browne, Stephen P. Hufnagel	
+Bundle 1	2639	Generating Testing and Analysis Tools with Aria.	ACM Trans. Softw. Eng. Methodol.	David S. Rosenblum, Premkumar T. Devanbu, Alexander L. Wolf	
+Bundle 1	5254	Using assertions to help end-user programmers create dependable web macros.	SIGSOFT FSE	Gregg Rothermel, Sebastian G. Elbaum, Lorin Hochstein, Christopher Scaffidi, Kathryn T. Stolee, Andhy Koesnandar	
+Bundle 1	6769	Declarative Specification of Software Architectures.	ASE	John Penix, Klaus Havelund, Perry Alexander	
+Bundle 1	9943	Application of Clustering to Estimate Missing Data and Improve Data Integrity.	ICSE	Richard C. T. Lee, C. T. Mong, James R. Slagle	
+Bundle 2	2786	Integrating automated test generation into the WYSIWYT spreadsheet testing methodology.	ACM Trans. Softw. Eng. Methodol.	Gregg Rothermel, Marc Fisher II, Margaret M. Burnett, Curtis R. Cook, Mingming Cao, Darren Brown	
+Bundle 2	3207	On the automatic evolution of an OS kernel using temporal logic and AOP.	ASE	Julia L. Lawall, Gilles Muller, Anne-Françoise Le Meur, Rickard A. Åberg, Mario Südholt	
+Bundle 2	5370	Doloto: code splitting for network-bound web 2.0 applications.	SIGSOFT FSE	V. Benjamin Livshits, Emre Kiciman	
+Bundle 2	10213	Experiments in Software Reliability: Life-Critical Applications.	IEEE Trans. Software Eng.	Janet R. Dunham	
+Bundle 2	9736	An Extensible File System for Hydra.	ICSE	Guy T. Almes, George G. Robertson	
+Bundle 3	678	FSM-Based Incremental Conformance Testing Methods.	IEEE Trans. Software Eng.	Gregor von Bochmann, Khaled El-Fakih, Nina Yevtushenko	
+Bundle 3	2641	Automatic high-quality reengineering of database programs by abstraction, transformation and reimplementation.	ACM Trans. Softw. Eng. Methodol.	Yishai A. Feldman, Yossi Cohen	
+Bundle 3	5432	Classifying properties: an alternative to the safety-liveness classification.	SIGSOFT FSE	Lori A. Clarke, Gleb Naumovich	
+Bundle 3	6675	Augmenting Abstract Syntax Trees for Program Understanding.	ASE	Christopher A. Welty	
+Bundle 3	10143	A Program Complexity Metric Based on Data Flow Information in Control Graphs.	ICSE	Kuo-Chung Tai	
+Bundle 4	2744	The Pan Language-Based Editing System.	ACM Trans. Softw. Eng. Methodol.	Susan L. Graham, Robert A. Ballance, Michael L. Van de Vanter	
+Bundle 4	5236	A Unified Version Model for Configuration Management.	SIGSOFT FSE	Andreas Zeller	
+Bundle 4	6465	Trie Hashing With Controlled Load.	IEEE Trans. Software Eng.	Nick Roussopoulos, Gérald Lévy, Wang Hong, Witold Litwin	
+Bundle 4	6756	Semantic Links and Co-Evolution in Object-Oriented Software Development.	ASE	Ragnhild Van Der Straeten	
+Bundle 4	10244	CASE & Reengineering: From Archeology to Software Perestroika.	ICSE	Elliot J. Chikofsky	
+Bundle 5	572	Bounding Cache-Related Preemption Delay for Real-Time Systems.	IEEE Trans. Software Eng.	Sang Lyul Min, Seongsoo Hong, Chang Yun Park, Chong-Sang Kim	
+Bundle 5	2852	Detection of Linear Errors via Domain Testing.	ACM Trans. Softw. Eng. Methodol.	Steven J. Zeil, Lee J. White, Faten H. Afifi	
+Bundle 5	3512	Design Rule Hierarchies and Parallelism in Software Development Tasks.	ASE	Yuanfang Cai, Sunny Wong, Georgi Simeonov, Giuseppe Valetto, Kanwarpreet Sethi	
+Bundle 5	5416	Investigation Data Quality Problems in the PSP.	SIGSOFT FSE	Philip M. Johnson, Anne M. Disney	
+Bundle 5	9754	Software Requirements Negotiation: Some Lessons Learned.	ICSE	Barry W. Boehm, Alexander Egyed	
+Bundle 6	2849	Programming pervasive and mobile computing applications: The TOTA approach.	ACM Trans. Softw. Eng. Methodol.	Franco Zambonelli, Marco Mamei	
+Bundle 6	5407	System architecture: the context for scenario-based model synthesis.	SIGSOFT FSE	Jeff Kramer, Sebastián Uchitel, Jeff Magee, Robert Chatley	
+Bundle 6	6581	NAVCo: Negotiation-based Adaptive View Coordination.	ASE	Prasanta K. Bose, Mark G. Matthews	
+Bundle 6	10210	Privilege Transfer and Revocation in a Port-Based System.	IEEE Trans. Software Eng.	Krithi Ramamritham, David W. Stemple, Stephen Vinter, David A. Briggs	
+Bundle 6	9480	Software Architecture Based on Communicating Residential Environments.	ICSE	Erik Sandewall, Claes Strömberg, Henrik Sörensen	
+Bundle 7	1	Dynamic Scheduling of Hard Real-Time Tasks and Real-Time Threads.	IEEE Trans. Software Eng.	Karsten Schwan	
+Bundle 7	2854	Temporal abstract classes and virtual temporal specifications for real-time systems.	ACM Trans. Softw. Eng. Methodol.	Alexander P. Pons	
+Bundle 7	5225	Integrating Status and Event Phenomena in Formal Specifications of Interactive Systems.	SIGSOFT FSE	Gregory D. Abowd, Alan J. Dix	
+Bundle 7	6731	Group Support for Distributed Collaborative Concurrent Software Modeling.	ASE	Naoufel Boulila	
+Bundle 7	9254	A Formal Adaptation Method for Process Descriptions.	ICSE	Katsuro Inoue, Koji Torii, Tohru Kikuno, Takeshi Ogihara	
+Bundle 8		
+Bundle 8	2686	Tools and experiments supporting a testing-based theory of component composition.	ACM Trans. Softw. Eng. Methodol.	Dick Hamlet	
+Bundle 8	5491	Efficient online monitoring of web-service SLAs.	SIGSOFT FSE	James Skene, Franco Raimondi, Wolfgang Emmerich	
+Bundle 8	6626	Formal Construction of the Mathematically Analyzed Separation Kernel.	ASE	P. White, A. Goldberg, W. Martin, F. S. Taylor	
+Bundle 8	10236	An Introduction to the Programmer's Workbench.	ICSE	John R. Mashey, Ted A. Dolotta	
+Bundle 9	1413	Engineering Dynamic Real-Time Distributed Systems: Architecture, System Description Language, and Middleware.	IEEE Trans. Software Eng.	Binoy Ravindran	
+Bundle 9	2825	An empirical study of industrial requirements engineering process assessment and improvement.	ACM Trans. Softw. Eng. Methodol.	Ian Sommerville, Jane Ransom	
+Bundle 9	3444	Validating Automotive Control Software Using Instrumentation-Based Verification.	ASE	Rance Cleaveland, Arnab Ray, Chris Martin, Charles P. Shelton, Iris Morschhaeuser, Christopher Ackermann	
+Bundle 9	5332	Formalization and Application of a Unifying Model for Name Management.	SIGSOFT FSE	Jack C. Wileden, Alan Kaplan	
+Bundle 9	10269	6th ICSE Workshop on Component-Based Software Engineering: Automated Reasoning and Prediction.	ICSE	Ivica Crnkovic, Kurt C. Wallnau, Heinz W. Schmidt, Judith A. Stafford	
+Bundle 10	2511	Modeling of Software Partition for Distributed Real-Time Applications.	IEEE Trans. Software Eng.	James P. Huang	
+Bundle 10	2651	An empirical investigation of software reuse benefits in a large telecom product.	ACM Trans. Softw. Eng. Methodol.	Reidar Conradi, Parastoo Mohagheghi	
+Bundle 10	3114	Designing and implementing a family of intrusion detection systems.	ASE	Richard A. Kemmerer	
+Bundle 10	5498	Searching for points-to analysis.	SIGSOFT FSE	Glenn Bruns, Satish Chandra	
+Bundle 10	9257	A System to Improve incorrect Programs.	ICSE	Harald Wertz	
+Objetive function	41.8677

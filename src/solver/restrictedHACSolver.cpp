@@ -12,7 +12,7 @@
 RestrictedHACSolver::~RestrictedHACSolver() {
 }
 
-SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
+SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     MapIntIntSet *clustering = new MapIntIntSet();
     int totalElements = this->problem_->numNodes();
     matrix<int> *theMatrixC = new matrix<int> (totalElements, totalElements);
@@ -155,7 +155,7 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
     return solution;
 }
 
-SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
+SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
     if (this->problem_->numNodes() < numToProduce) {
         throw Exception(__FILE__, __LINE__, "IllegalArgumentException Too few nodes");
     }
