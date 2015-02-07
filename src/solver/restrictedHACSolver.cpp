@@ -12,13 +12,8 @@
 RestrictedHACSolver::~RestrictedHACSolver() {
 }
 
-<<<<<<< HEAD
-SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int numToProduce) {
-    std::map<int, std::set<int>*> *clustering = new std::map<int, std::set<int>*>();
-=======
 SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
-    MapIntIntSet *clustering = new MapIntIntSet();
->>>>>>> master
+    std::map<int, std::set<int>*> *clustering = new std::map<int, std::set<int>*>();
     int totalElements = this->problem_->numNodes();
     matrix<int> *theMatrixC = new matrix<int> (totalElements, totalElements);
     std::vector<bool> *theIVector = new std::vector<bool>;
