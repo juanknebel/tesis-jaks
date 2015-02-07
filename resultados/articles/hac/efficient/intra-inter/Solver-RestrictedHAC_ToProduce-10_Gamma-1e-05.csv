@@ -1,0 +1,48 @@
+Bundle	ArticleId	Paper	Venue	Author
+Bundle 1	597	GUI Interaction Testing: Incorporating Event Context.	IEEE Trans. Software Eng.	Myra B. Cohen, Atif M. Memon, Xun Yuan	
+Bundle 1	2608	Test conditions for fault classes in Boolean specifications.	ACM Trans. Softw. Eng. Methodol.	Jonathan P. Bowen, Kalpesh Kapoor	
+Bundle 1	3029	Test suite reduction and prioritization with call trees.	ASE	Mary Lou Soffa, Gregory M. Kapfhammer, Joshua Geiger, Adam M. Smith	
+Bundle 1	3551	Experimental program analysis: a new paradigm for program analysis.	ICSE	Joseph R. Ruthruff	
+Bundle 1	5276	Automated identification of parameter mismatches in web applications.	SIGSOFT FSE	Alessandro Orso, William G. J. Halfond	
+Bundle 2	26	Comments on Program Slicing.	IEEE Trans. Software Eng.	Hareton K. N. Leung, Hassan K. Reghbati	
+Bundle 2	2740	Software reuse for scientific computing through program generation.	ACM Trans. Softw. Eng. Methodol.	Martin Erwig, Zhe Fu	
+Bundle 2	3097	Automatic Generation of Content Management Systems from EER-Based Specifications.	ASE	Sebastiano Vigna	
+Bundle 2	3798	Enhancing Software Testing by Judicious Use of Code Coverage Information.	ICSE	Roland Weber, Stefan Berner, Rudolf K. Keller	
+Bundle 2	5213	Automatically locating framework extension examples.	SIGSOFT FSE	Harold Ossher, Barthélémy Dagenais	
+Bundle 3	36	Learning Communicating Automata from MSCs.	IEEE Trans. Software Eng.	Benedikt Bollig, Martin Leucker, Carsten Kern, Joost-Pieter Katoen	
+Bundle 3	2594	HOTTest: A model-based test design technique for enhanced testing of domain-specific applications.	ACM Trans. Softw. Eng. Methodol.	Carol Smidts, Avik Sinha	
+Bundle 3	2877	A lightweight approach for program analysis and debugging.	ICSE	M. G. Rakesh	
+Bundle 3	2912	DESERT: a decentralized monitoring tool generator.	ASE	Paola Inverardi, Leonardo Mostarda	
+Bundle 3	5489	PENELOPE: weaving threads to expose atomicity violations.	SIGSOFT FSE	Francesco Sorrentino 0002, Azadeh Farzan, P. Madhusudan	
+Bundle 4	43	Exception Handlers in Functional Programming Languages.	IEEE Trans. Software Eng.	R. Govindarajan	
+Bundle 4	2592	A Visual Model for Ada Tasking.	ACM Trans. Softw. Eng. Methodol.	Laura K. Dillon	
+Bundle 4	2919	Security Specification and Verification.	ASE	Pascal Fenkam	
+Bundle 4	3690	Fuzzy logic based interactive recovery of software design.	ICSE	Jörg Niere	
+Bundle 4	5262	Detecting increases in feature coupling using regression tests.	SIGSOFT FSE	Martin P. Robillard, Olivier Giroux	
+Bundle 5	57	Interface Grammars for Modular Software Model Checking.	IEEE Trans. Software Eng.	Tevfik Bultan, Graham Hughes	
+Bundle 5	2781	Amoeba: A methodology for modeling and evolving cross-organizational business processes.	ACM Trans. Softw. Eng. Methodol.	Nirmit Desai, Amit K. Chopra, Munindar P. Singh	
+Bundle 5	2931	Japanese Workshop on Leveraging Web2.0 Technologies in Software Development Environments (WebSDE).	ASE	Makoto Matsushita, Katsuhisa Maruyama, Shinichiro Yamamoto	
+Bundle 5	3669	Architectures and Technologies for Enterprise Application Integration.	ICSE	Ian Gorton, Anna Liu	
+Bundle 5	5212	Local analysis of atomicity sphere for B2B collaboration.	SIGSOFT FSE	Chang Xu, Chunyang Ye, W. K. Chan, S. C. Cheung	
+Bundle 6	63	On the Optimal Total Processing Time Using Checkpoints.	IEEE Trans. Software Eng.	Zohel Khalil, Boyan Dimitrov, Nikolay Kolev, Peter Petrov	
+Bundle 6	2731	Equivalence analysis and its application in improving the efficiency of program slicing.	ACM Trans. Softw. Eng. Methodol.	Mary Jean Harrold, Donglin Liang	
+Bundle 6	3116	Synthesizing client load models for performance engineering via web crawling.	ASE	John C. Grundy, John G. Hosking, Yuhong Cai	
+Bundle 6	3801	Spontaneous software: a Web-based, object computing paradigm.	ICSE	Glêdson Elias da Silveira	
+Bundle 6	5302	Containment units: a hierarchically composable architecture for adaptive systems.	SIGSOFT FSE	Leon J. Osterweil, Barbara Staudt Lerner, Alexander E. Wise, Jamieson M. Cobleigh	
+Bundle 7	1396	Automatic Extraction of Heap Reference Properties in Object-Oriented Programs.	IEEE Trans. Software Eng.	Martin C. Rinard, Brian Demsky	
+Bundle 7	2894	Automated Comprehension Tasks in Software Exploration.	ASE	Harald Gall, Sandro Boccuzzo	
+Bundle 7	3909	Exploring Dataflow Testing of Arrays.	ICSE	Richard G. Hamlet, Bruce Gifford, Borislav Nikolik	
+Bundle 7	5355	Marple: a demand-driven path-sensitive buffer overflow detector.	SIGSOFT FSE	Mary Lou Soffa, Wei Le	
+Bundle 8	563	Guest Editorial: Introduction to the Special Section - Managing Inconsistency in Software Development.	IEEE Trans. Software Eng.	Carlo Ghezzi, Bashar Nuseibeh	
+Bundle 8	3237	Human-Friendly Line Routing for Hierarchical Diagrams.	ASE	Nancy Merlo-Schett, Silvio Meier, Tobias Reinhard, Christian Seybold, Martin Glinz	
+Bundle 8	3685	PARTS: A Temporal Logic-Based Real-Time Software Specification and Verification Method.	ICSE	Kyo Chul Kang, Kwang-Il Ko	
+Bundle 8	5332	Formalization and Application of a Unifying Model for Name Management.	SIGSOFT FSE	Jack C. Wileden, Alan Kaplan	
+Bundle 9	67	Experience Using Web-Based Shotgun Measures for Large-System Characterization and Improvement.	IEEE Trans. Software Eng.	Clay Spinuzzi, Zongming Fei, Alvin W. Roesler, Samuel G. McLellan, Savita Chandran	
+Bundle 9	3001	An Approach to Rapid Prototyping of Large Multi-Agent Systems.	ASE	Wamberto Weber Vasconcelos, Marc Esteva, Carles Sierra	
+Bundle 9	3682	Assessing undergraduate experience of continuous integration and test-driven development.	ICSE	Jon Bowyer, Janet Hughes	
+Bundle 9	5234	Test Case Generation by Means of Learning Techniques.	SIGSOFT FSE	Francesco Bergadano	
+Bundle 10	27	Methodology for Business System Development.	IEEE Trans. Software Eng.	Raghubir N. Mathur	
+Bundle 10	2599	Reifying Variants in Configuration Management.	ACM Trans. Softw. Eng. Methodol.	Jean-Marc Jézéquel	
+Bundle 10	3153	Specification and Synthesis of Hybrid Automata for Physics-Based Animation.	ASE	Thomas Ellman	
+Bundle 10	3620	Why use the model driven architecture to design and build distributed applications?	ICSE	Jon Siegel	
+Objetive function	45.0004

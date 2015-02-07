@@ -44,42 +44,42 @@ de la intra es menor y al rojo mayor.
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac01.png}
   \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC}
-  \label{res:img-gamma01-hac}
+  \label{res:img-papers-gamma01-hac}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac09.png}
   \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC}
-  \label{res:img-gamma09-hac}
+  \label{res:img-papers-gamma09-hac}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac01.png}
   \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC}
-  \label{res:img-gamma01-effhac}
+  \label{res:img-papers-gamma01-effhac}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac09.png}
   \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC}
-  \label{res:img-gamma09-effhac}
+  \label{res:img-papers-gamma09-effhac}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy01.png}
   \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
-  \label{res:img-gamma01-greedy}
+  \label{res:img-papers-gamma01-greedy}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy09.png}
   \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
-  \label{res:img-gamma09-greedy}
+  \label{res:img-papers-gamma09-greedy}
 \end{figure}
 
 \section{Autores}
@@ -87,25 +87,72 @@ Se genraron soluciones con las siguientes características:\\
 \Solucion
 {}
 {simple y proporcional}
-{\texttt{HAC} y \texttt{BOBO-x}, con  $x \in$ $(10, 160)$ y \texttt{BOBO-ex}}
+{\texttt{SingleHAC}, \texttt{EfficientHAC} y \texttt{Greedy}}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
-{10 y 20}
-{5 y 10}
+{10}
+{5}
 
-Para todas las soluciones obtenidas con la generación \texttt{HAC} y utilizando cualquiera de los 
-dos algoritmos de selección de selección, todas las soluciones formaron los mismos bundles a 
-pesar de que el $\gamma$ sea distinto.\\ 
-Se realizaron otras búsquedas de soluciones, excluyendo a cinco de los autores que están presentes 
-en todas las soluciones. En las nuevas soluciones obtenidas se repite nuevamente el comportamiento 
-que para todos los $\gamma$, con las soluciones idénticas y valores de la función objetivo coinciden 
-con los de las soluciones obtenidas sin excluir autores.\\
-Con el algoritmo \texttt{HAC} todas las soluciones fueron idénticas para todos los $\gamma$. Esto 
-se debe a que existen $40000$ relaciones de similitud con valor uno. Con la heurística Produce and 
-Choose, al momento de producir no se tiene en cuenta el $\gamma$ por lo tanto para todos los 
-$\gamma$ en la etapa de producción se producen los mismos bundles.\\
-Por otro lado todas las soluciones generadas por el algoritmo \texttt{HAC} prácticamente no 
-comparten bundles similares con las demás soluciones, ni siquiera autores similares en toda la 
-solución.
+En los siguientes gráficos se visualiza los resultados obtenidos para $\gamma$ 0.1 y 0.9. Cada 
+nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
+gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
+de la intra es menor y al rojo mayor.
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC, selección simple}
+  \label{res:img-authors-gamma01-hac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC, selección simple}
+  \label{res:img-authors-gamma09-hac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC, selección simple}
+  \label{res:img-authors-gamma01-effhac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC, selección simple}
+  \label{res:img-authors-gamma09-effhac}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy01.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
+  \label{res:img-authors-gamma01-greedy}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy09.png}
+  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
+  \label{res:img-authors-gamma09-greedy}
+\end{figure}
+
+Tanto para las soluciones generadas por \texttt{SingleHAC} como por \texttt{EfficientHAC} y con 
+cualquier estrategia de selección, todas las soluciones formaron los mismos bundles a pesar de la 
+variación del parámetro $\gamma$. Esto se puede ver en los gráficos ya que todos los bundles 
+tienen el mayor valor posible para la similitud intra y ningún bundle tiene relación con el 
+resto.\\
+En parte se debe a que existen $40000$ relaciones de similitud con valor uno. Con la 
+heurística Produce and Choose, al momento de producir no se tiene en cuenta el $\gamma$ por lo tanto 
+para todos los $\gamma$ en la etapa de producción se producen los mismos bundles.\\
+Se realizaron otras búsquedas de soluciones, excluyendo a cinco de los autores que se encuentran 
+presentes en todas las soluciones. Pero aún de esta manera en los nuevos resultados obtenidos se 
+repite el mismo comportamiento que antes.
+%Por otro lado todas las soluciones generadas por el algoritmo \texttt{HAC} prácticamente no 
+%comparten bundles similares con las demás soluciones, ni siquiera autores similares en toda la 
+%solución.
 
 \section{Búsqueda con perfil específico}
 En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
