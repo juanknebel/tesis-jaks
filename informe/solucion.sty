@@ -1,12 +1,12 @@
 \ProvidesPackage{solucion}[2014/05/26 v0.1 Para describir escenarios]
 
-\definecolor{Light}{gray}{.92}
-\definecolor{Dark}{gray}{.10}
+\definecolor{Ligth}{rgb}{0.7, 0.75, 0.71}
+\definecolor{Dark}{gray}{0.10}
 
 \newcommand\headeresc[1]{
-\colorbox{Light}{
+\colorbox{gray}{
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} p{\textwidth}}
-  \textcolor{Dark}{Descripción: #1}
+  \textcolor{black}{Descripción: #1}
   \end{tabular*}
   }
 }
@@ -19,7 +19,7 @@
     \item \textbf{Algoritmo de selección:} #2
     \item \textbf{Algoritmo de generación:} #3
     \item \textbf{$\gamma$:} #4
-    \item \textbf{Cantidad de bunldes:} #5
+    \item \textbf{Cantidad de bundles:} #5
     \item \textbf{Cantidad de items por bundles:} #6
   \end{itemize}
 }

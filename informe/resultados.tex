@@ -149,7 +149,9 @@ heurística Produce and Choose, al momento de producir no se tiene en cuenta el 
 para todos los $\gamma$ en la etapa de producción se producen los mismos bundles.\\
 Se realizaron otras búsquedas de soluciones, excluyendo a cinco de los autores que se encuentran 
 presentes en todas las soluciones. Pero aún de esta manera en los nuevos resultados obtenidos se 
-repite el mismo comportamiento que antes.
+repite el mismo comportamiento que antes.\\
+Además como veremos en \ref{conc:compDifAlgo} los resultados para las ejecuciones con los 
+algoritmos jerárquicos se encuentran en los óptimos.
 %Por otro lado todas las soluciones generadas por el algoritmo \texttt{HAC} prácticamente no 
 %comparten bundles similares con las demás soluciones, ni siquiera autores similares en toda la 
 %solución.
@@ -163,14 +165,14 @@ bundles relevantes con el perfil elegido. \\
 A continuación mostramos la temáticas obtenidas para una búsqueda con un perfil específico de 
 ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
 del algoritmo jerárquico con $\gamma$ = 0.1 y $\gamma$ = 0.9.
-\begin{figure}
+\begin{figure}[H]
   \centering
     \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm01.png}
   \caption{$\gamma$ = 0.1}
   \label{res:img-gamma01-especifico}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \centering
     \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm09.png}
   \caption{$\gamma$ = 0.9}
