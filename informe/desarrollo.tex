@@ -4,15 +4,17 @@ En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se 
 bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \section{Generación de bundles}
-Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente similares pertenescan al mismo cluster
-y en cluster distintos los dicimiles. Cuanto mayor es la similitud en el cluester (intra) y mayor la diferencia entre los cluster (inter) 
-es mejor la clusterización.
-Definir como se consituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a continuación existen tres (o más) formas de clusterizar
-que son validas. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
+Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente 
+similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la 
+similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la 
+clusterización.\\
+Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a 
+continuación existen tres (o más) formas de clusterizar que son validas. Entonces la mejor 
+definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.3\textwidth]{img/howToCluster.png}
+    \includegraphics[width=0.8\textwidth]{img/howToCluster.png}
   \caption{Agregar descripcion}
   \label{res:img-howToCluster}
 \end{figure}
@@ -22,16 +24,19 @@ Ya que lo esperado es obtener cluster que utilicen el máximo del presupuesto.\\
 
 El problema de la clusterización es NP-hard (agregar ref, explicar problema de clusterizacion),
 por lo que se utilizaron dos técnicas ya conocidas para aproximarse a una solución.\\
-La principal diferencia entre las estrategias de clusterización es entre la jerarquica y de partición.
+La principal diferencia entre las estrategias de clusterización es entre la jerárquica y de 
+partición.\\
 La primer técnica produce un árbol de particiones, la raíz es un cluster que contiene todos los items
-y las hojas son clusters con un único item. Cada nivel intermedio, puede ser visto, como la combinación
-entre entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un nivel de las particiones de los items de una vez.\\ 
-Se implmentaron las dos técnicas para la clusterización la jerarquica con el algoritmo
+y las hojas son clusters con un único ítem. Cada nivel intermedio, puede ser visto, como la 
+combinación entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un 
+nivel de las particiones de los items de una vez.\\ 
+Se implementaron las dos técnicas para la clusterización la jerárquica con el algoritmo
 Hierarchical clustering y la de partición con Bundles One-By-One.\\
 
 \subsection{Bundles One-By-One}
 La herurística \texttt{BOBO-x} en cada paso se elige un item, denominado pivote, se genera un bundle a partir del pivote. 
-El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los itmes son pivotes.\\
+El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los 
+items son pivotes.\\
 \subsection{Hierarchical clustering}
 La heurística Hierarchical clustering \texttt{HAC} 
 se define la función de distancia entre clusters comienza con tantos clusters como cantidad de elementos, cada uno está 
@@ -42,8 +47,9 @@ d_{1}(u,v) = 1 - s(u, v)
 \end{equation}
 
 Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles,
-En la figura 1 se observa que el algoritmo selecciona los items más cercanos. En las búsquedas que se realizan en composite ...
-se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado. 
+En la figura 1 se observa que el algoritmo selecciona los items más cercanos. En las búsquedas que 
+se realizan en ``Composite ...''\cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica 
+que tipo de resultado es el esperado. 
 
 \begin{figure}[H]
   \centering
@@ -53,8 +59,9 @@ se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
 \end{figure}
 
 En caso de que el $\gamma$ sea pequeño, la 
-clusterizacion esperada para la misma instncia es la que se visualiza en la imágen 2, clusters no tan cohesivos pero más variados.
-Por lo que se define una función de distancia que considera el $\gamma$.\\
+clusterización esperada para la misma instancia es la que se visualiza en la imágen 2, clusters no 
+tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el 
+$\gamma$.\\
 \begin{equation}
 d2(u,v) = 1 - FO(\{u\} \cup \{v\})
 \end{equation}
@@ -74,13 +81,13 @@ la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capí
 
 
 \section{Selección de bundles}
-Al finalizar la producción de bundles, se deben seleecionar los $k$ bundles para la solución.
+Al finalizar la producción de bundles, se deben seleccionar los $k$ bundles para la solución.
 El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en 
 encontrar en el grafo G el k-subgrafo de mayor peso de nodos y aristas.
 
 Se implementó el algoritmo que propone ``Composite ...''\cite{compositeRetrival} que transforma el 
-grafo G 
-en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la función:\\
+grafo G en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la 
+función:\\
 
 \begin{equation}
 \omega_{1}(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
@@ -104,7 +111,7 @@ aumenta a ...
 \end{equation}
 
 La función $\omega_{3}(u, k)$ recibe $u$ el conjunto de clusters seleccionados hasta el momento 
-y $k$ que es la cantidad de cluesters para la solución. Con $k$ y el tamaño de $u$ se calcula el 
+y $k$ que es la cantidad de clusters para la solución. Con $k$ y el tamaño de $u$ se calcula el 
 coeficiente con el propósito en que en cada paso se pondere el inter y el intra. Para eso se multiplica
 con coeficientes cada parte de la función. Con esto se mantiene la relación de inter e intra durante la selección de bundles
 
