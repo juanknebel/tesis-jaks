@@ -5,7 +5,6 @@
 SnowFlakeVector * DensestSubgraphSelector::getTopSolution(SnowFlakeVector *produced, int numRequested) {
     int numProduced = produced->size();
     double gamma = 1.0 - this->interSimilarityWeight_;
-    DEBUG(DBG_DEBUG,"Valor del gamma: "<<gamma);
     MatrixWrapper* w;
     w= new MatrixConcrete(numProduced, numProduced);
 

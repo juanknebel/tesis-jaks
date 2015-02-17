@@ -33,7 +33,6 @@ SnowFlakeVector * IntraInterProportionalSelector::getTopSolution(SnowFlakeVector
                 maxScore = score;
             }
         }
-        DEBUG(DBG_DEBUG, "En la iteracion: " << theSize - 1 << " - El maximo fue: " << maxScore);
 
         if (bestCandidateId == -1) {
             throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))

@@ -10,7 +10,7 @@
 #include "metisWrapper.h"
 #include "../util/system/stringUtilities.h"
 #include "../util/system/systemUtilities.h"
-#include "../util/system/Logger.h"
+#include <fstream>
 
 int MetisWrapper::PRECISION_DOUBLE_TO_INTEGER = 1000;
 std::string MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis
@@ -59,7 +59,6 @@ std::vector<int>* MetisWrapper::cluster(const MatrixWrapper& graph, int numClust
     std::string nclusters = convertToString(numClusters);
 	char* command [3]= {&MetisWrapper::METIS_COMMAND[0], &MetisWrapper::TEMP_METIS_FILENAME[0], &nclusters[0]};
     std::string output = MetisWrapper::run(3, command);
-	DEBUG(DBG_DEBUG, output);
 	std::ifstream resultFile((MetisWrapper::TEMP_METIS_FILENAME + ".part." + convertToString(numClusters)).c_str());
 	/*
 	 * if (resultFile no existe)

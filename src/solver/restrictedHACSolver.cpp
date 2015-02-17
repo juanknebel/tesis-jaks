@@ -6,7 +6,6 @@
  */
 
 #include "restrictedHACSolver.h"
-#include "../util/system/Logger.h"
 #include "../util/writer/writerSolution.h"
 
 RestrictedHACSolver::~RestrictedHACSolver() {
@@ -58,15 +57,12 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     /*
      * Empizo con la clusterizacion
      */
-    DEBUG(DBG_DEBUG, "Incio bucle clusterizacion: " << totalElements);
     for (int k = 0; k < totalElements - 1; ++k) {
-        DEBUG(DBG_DEBUG,"iteracion k: " << k);
         double maxSimilarity = -1.0;
         int k1Index = -1, k2Index = -1;
         /*
          * Busco la maxima similitud en todas las colas de prioridad
          */
-        DEBUG(DBG_DEBUG,"inicio bucle buscar maxima: " << totalElements);
         for (int j = 0; j < totalElements; ++j) {
             if (theIVector->at(j) == true) {
                 PriorityQueue* queuep = theVectorPriorityQueue->at(j);
@@ -78,13 +74,11 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
                 }
             }
         }
-        DEBUG(DBG_DEBUG,"fin bucle buscar maxima");
         if (k2Index < 0) break;
         /*
          * Actualizo la posicion del vector k2 porque ya lo uni a un cluster
          * Y genero una nueva pila en la posicion k1 porque ahora tengo un nuevo cluster
          */
-        DEBUG(DBG_DEBUG,"Actualizo la posicion del vector");
         (*theIVector)[k2Index] = false;
         PriorityQueue *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
         delete thePriorityQueueAtK1;
@@ -93,7 +87,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         /*
          *  Agrego al cluster correspondiente del k1, los elementos del cluester del k2
          */
-        DEBUG(DBG_DEBUG,"Agrego al cluster");
         std::set<int> *theK1Cluster;
         try {
             theK1Cluster = clustering->at(k1Index);
@@ -115,8 +108,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         /*
          * Actualizo la matriz y vectores
          */
-        DEBUG(DBG_DEBUG,"Actualizo la matriz y vectores");
-        DEBUG(DBG_DEBUG,"inicio bucle actualizacion: " << totalElements);
         for (int i = 0; i < totalElements; ++i) {
             if ((*theIVector)[i] == true && i != k1Index) {
                 ;
@@ -133,20 +124,16 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
 
             }
         }
-        DEBUG(DBG_DEBUG,"fin bucle actualizacion");
     }
 
     SnowFlakeVector* solution = new SnowFlakeVector;
-    DEBUG(DBG_DEBUG,"inicio bucle crear solucion");
     for (std::map<int, std::set<int>*>::iterator it = clustering->begin(); it != clustering->end(); ++it) {
         SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
         solution->push_back(*aFlake);
     }
     //WriterSolution::writeSnowFlakeIds(*solution, "/home/zero/tmp/clusters.txt");
     //WriterSolution::writeInterAndIntraValues(*solution, "/home/zero/tmp/articles/intraintercompleto.txt");
-    DEBUG(DBG_DEBUG,"fin bucle crear solucion");
 
-    DEBUG(DBG_DEBUG,"eliminar objetos");
     delete theMatrixC;
     delete theIVector;
     delete theVectorPriorityQueue;
@@ -201,11 +188,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
     //Empiezo a intentar clusterizar
     int j = 0;
     while (j < totalElements - 1 && clustering->size() > numToProduce) {
-        //DEBUG(DBG_DEBUG,"tamanio del cluster " << clustering->size());
         tempMaxSimilarity = -1.00;
         int anElementi1, otherElementi2;
         //Busco en el nbm el elemento que contenga la mayor similitud para algun otro elemento
-        //DEBUG(DBG_DEBUG,"Busco en el nbm el elemento que contenga la mayor similitud para algun otro elemento");
         for (int k = 0; k < totalElements; ++k) {
             std::tuple<int, double> aTupleToCompare = nbm->at(k);
             if (std::get<1>(aTupleToCompare) > tempMaxSimilarity && k == theIVector->at(k)) {
@@ -247,8 +232,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         }
 
         //copio elementos al cluster correspondiente
-        //DEBUG(DBG_DEBUG,"copio elementos al cluster correspondiente");
-        //DEBUG(DBG_DEBUG,"i1 "<<anElementi1);
         std::set<int> *besti1;
         try {
             besti1 = clustering->at(anElementi1);
@@ -256,7 +239,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         catch (const std::out_of_range& oor) {
             throw Exception(__FILE__, __LINE__, oor.what());
         }
-        //DEBUG(DBG_DEBUG,"i2 "<<otherElementi2);
         std::set<int> *besti2;
         try {
             besti2 = clustering->at(otherElementi2);
@@ -269,7 +251,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         clustering->erase(otherElementi2);
 
         //actualizacion del vector de indices y de la matriz de similitud
-        //DEBUG(DBG_DEBUG,"actualizacion del vector de indices y de la matriz de similitud");
         for (int i = 0; i < totalElements; ++i) {
             if (theIVector->at(i) == i && i != anElementi1 && i != otherElementi2) {
                 double similarityI1 = std::get<0>((*theMatrixC)(anElementi1, i));
@@ -287,7 +268,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
             }
         }
         //actualizo nbm
-        //DEBUG(DBG_DEBUG,"actualizo nbm");
         tempMaxSimilarity = -1.00;
         (*nbm)[anElementi1] = std::tuple<int, double> (-1, -1.00);
         for (int i = 0; i < totalElements; ++i) {

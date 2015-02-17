@@ -21,7 +21,6 @@ src/util/identificator/id2Str.cpp
 src/util/algorithm/vectornorm.cpp
 src/util/algorithm/pairsToJaccardSimilarity.cpp
 src/util/system/exception.cpp
-src/util/system/Logger.cpp
 src/util/system/stringUtilities.cpp
 src/util/system/systemUtilities.cpp
 src/dao/daoMySql.cpp

@@ -6,7 +6,6 @@
  */
 
 #include "solver.h"
-#include "../util/system/Logger.h"
 #include <algorithm>
 #include <iostream>
 

@@ -49,6 +49,5 @@ double Selector::scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candid
         sumOneMinusInter += 1.0 - this->theProblem_->maxPairwiseCompatibility(it->ids(), candidate.ids());
     }
     double gamma = 1.0 - this->interSimilarityWeight_;
-    DEBUG(DBG_DEBUG, "Intra real: " << (gamma * sumIntra) << " - Inter real: " << ((1.0 - gamma) * sumOneMinusInter) << " - Intra: " << (alpha * (gamma * sumIntra)) << " - Inter: " << (beta * ((1.0 - gamma) * sumOneMinusInter)));
     return (alpha * (gamma * sumIntra)) + (beta * ((1.0 - gamma) * sumOneMinusInter));
 }

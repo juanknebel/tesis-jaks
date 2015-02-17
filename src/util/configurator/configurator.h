@@ -9,7 +9,6 @@
 #include "../writer/writerSolutionArticles.h"
 #include "../../solver/solver.h"
 #include "../../solver/produceAndChooseSolver.h"
-#include "../system/Logger.h"
 #include "../identificator/id2Str.h"
 #include "../system/exception.h"
 #include "../../problem/problemInstanceFromDataBase.h"

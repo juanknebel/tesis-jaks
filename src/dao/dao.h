@@ -21,7 +21,6 @@
 #ifndef DAO_H
 #define DAO_H
 #include <string>
-#include "../util/system/Logger.h"
 
 class Dao {
 protected:

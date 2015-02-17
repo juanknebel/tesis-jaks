@@ -7,8 +7,6 @@
 
 #include "clusterAndPickSolver.h"
 #include "../cluster/clustering.h"
-#include "../util/system/Logger.h"
-
 
 ClusterAndPickSolver::~ClusterAndPickSolver() {
 }
@@ -18,7 +16,7 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 	std::vector<int>* clustering;
 	clustering = Clustering::symmetrizeAndCluster(*this->problem_->getCompat(), numSnowflakes);
 	if (clustering->size()!= this->problem_->numNodes()) {
-		DEBUG(DBG_ERROR, "Error: Wrong length of returned clustering\n")
+        //TODO: hacer log
 	}
 
 	std::set<int> clusterIds = std::set<int>();

@@ -20,7 +20,6 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(double interSimilarityWeig
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
-    DEBUG(DBG_DEBUG, "Cantidad de cluser "<<produced->size())
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }

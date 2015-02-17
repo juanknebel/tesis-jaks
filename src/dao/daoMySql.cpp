@@ -23,11 +23,10 @@
 bool DaoMySql::executeConsultativeQuery(std::string query) {
     if (this->res_) {
         delete this->res_;
-        this->res_ = NULL;
+        this->res_ = nullptr;
     }
 
     this->lastQueryExecute_ = query;
-    //DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
 	bool result = true;
 	try {
 		this->stmt_ = this->con_->createStatement();
@@ -46,11 +45,10 @@ bool DaoMySql::executeConsultativeQuery(std::string query) {
 bool DaoMySql::executeModifiableQuery(std::string query) {
     if (this->res_) {
         delete this->res_;
-        this->res_ = NULL;
+        this->res_ = nullptr;
     }
 
 	this->lastQueryExecute_ = query;
-	DEBUG(DBG_DEBUG,"Se ejecuto la query: " << this->lastQueryExecute_);
 	bool result = true;
 	try {
 		this->stmt_ = this->con_->createStatement();
@@ -85,11 +83,11 @@ DaoMySql::~DaoMySql() {
 }
 
 bool DaoMySql::connect() {
-	this->res_ = NULL;
-	this->stmt_ = NULL;
-	this->pstmt_ = NULL;
-	this->con_ = NULL;
-	this->res_meta_ = NULL;
+    this->res_ = nullptr;
+    this->stmt_ = nullptr;
+    this->pstmt_ = nullptr;
+    this->con_ = nullptr;
+    this->res_meta_ = nullptr;
 	try {
 		this->driver_ = get_driver_instance();
 		this->con_ = driver_->connect(this->server_, this->user_, this->password_);
