@@ -15,7 +15,6 @@
 #include <fstream>
 #include <iostream>
 #include <tuple>
-#include "system/Logger.h"
 
 typedef double Double;
 typedef unsigned int Uint;

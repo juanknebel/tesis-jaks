@@ -6,7 +6,6 @@
  */
 
 #include "restrictedHACSolver.h"
-#include "../util/system/Logger.h"
 #include "../util/writer/writerSolution.h"
 
 RestrictedHACSolver::~RestrictedHACSolver() {

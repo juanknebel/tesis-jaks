@@ -23,6 +23,7 @@
 #include "../system/stringUtilities.h"
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 
 #define db_database "tesis"
 #define db_user "tesis"
