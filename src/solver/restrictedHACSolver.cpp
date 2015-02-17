@@ -58,15 +58,12 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
     /*
      * Empizo con la clusterizacion
      */
-    DEBUG(DBG_DEBUG, "Incio bucle clusterizacion: " << totalElements);
     for (int k = 0; k < totalElements - 1; ++k) {
-        DEBUG(DBG_DEBUG,"iteracion k: " << k);
         Double maxSimilarity = -1.0;
         int k1Index = -1, k2Index = -1;
         /*
          * Busco la maxima similitud en todas las colas de prioridad
          */
-        DEBUG(DBG_DEBUG,"inicio bucle buscar maxima: " << totalElements);
         for (int j = 0; j < totalElements; ++j) {
             if (theIVector->at(j) == true) {
                 PriorityQueue* queuep = theVectorPriorityQueue->at(j);
@@ -78,13 +75,11 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
                 }
             }
         }
-        DEBUG(DBG_DEBUG,"fin bucle buscar maxima");
         if (k2Index < 0) break;
         /*
          * Actualizo la posicion del vector k2 porque ya lo uni a un cluster
          * Y genero una nueva pila en la posicion k1 porque ahora tengo un nuevo cluster
          */
-        DEBUG(DBG_DEBUG,"Actualizo la posicion del vector");
         (*theIVector)[k2Index] = false;
         PriorityQueue *thePriorityQueueAtK1 = theVectorPriorityQueue->at(k1Index);
         delete thePriorityQueueAtK1;
@@ -93,7 +88,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         /*
          *  Agrego al cluster correspondiente del k1, los elementos del cluester del k2
          */
-        DEBUG(DBG_DEBUG,"Agrego al cluster");
         IntSet *theK1Cluster;
         try {
             theK1Cluster = clustering->at(k1Index);
@@ -115,8 +109,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
         /*
          * Actualizo la matriz y vectores
          */
-        DEBUG(DBG_DEBUG,"Actualizo la matriz y vectores");
-        DEBUG(DBG_DEBUG,"inicio bucle actualizacion: " << totalElements);
         for (int i = 0; i < totalElements; ++i) {
             if ((*theIVector)[i] == true && i != k1Index) {
                 ;
@@ -133,20 +125,16 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
 
             }
         }
-        DEBUG(DBG_DEBUG,"fin bucle actualizacion");
     }
 
     SnowFlakeVector* solution = new SnowFlakeVector;
-    DEBUG(DBG_DEBUG,"inicio bucle crear solucion");
     for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
         SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
         solution->push_back(*aFlake);
     }
     //WriterSolution::writeSnowFlakeIds(*solution, "/home/zero/tmp/clusters.txt");
     //WriterSolution::writeInterAndIntraValues(*solution, "/home/zero/tmp/articles/intraintercompleto.txt");
-    DEBUG(DBG_DEBUG,"fin bucle crear solucion");
 
-    DEBUG(DBG_DEBUG,"eliminar objetos");
     delete theMatrixC;
     delete theIVector;
     delete theVectorPriorityQueue;

@@ -51,12 +51,8 @@ void usingTestFiles(char *configFileName) {
     }
 }
 
-void initializeLogger(std::string filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel) {
-    DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
-}
-
 void initializeDefaultLogger(char *log) {
-    if (log == NULL) {
+    if (log == nullptr) {
         return;
     }
     else {
@@ -67,7 +63,6 @@ void initializeDefaultLogger(char *log) {
 
             if (log[1] == 'l') {
                 std::cout<<"Starting the logger ..."<<std::endl;
-                initializeLogger("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
             }
             else {
                 std::cerr<<errorMsg<<std::endl;

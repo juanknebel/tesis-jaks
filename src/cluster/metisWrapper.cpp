@@ -59,7 +59,6 @@ IntVector* MetisWrapper::cluster(const MatrixWrapper& graph, int numClusters) {
 	String nclusters = convertToString(numClusters);
 	char* command [3]= {&MetisWrapper::METIS_COMMAND[0], &MetisWrapper::TEMP_METIS_FILENAME[0], &nclusters[0]};
 	String output = MetisWrapper::run(3, command);
-	DEBUG(DBG_DEBUG, output);
 	FileInput resultFile((MetisWrapper::TEMP_METIS_FILENAME + ".part." + convertToString(numClusters)).c_str());
 	/*
 	 * if (resultFile no existe)

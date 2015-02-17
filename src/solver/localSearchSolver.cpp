@@ -1,7 +1,6 @@
 #include "localSearchSolver.h"
 
 SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
-    DEBUG(DBG_DEBUG, "numflakes "<<numSnowFlakes);
     IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
@@ -25,7 +24,6 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
     int kk = 0;
 
     while(isNotComplete) {
-        DEBUG(DBG_DEBUG, "iteracion "<<kk++)
         Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
         bestFnObjective = objective;
         bestWorstFnObjetive = -1.0;

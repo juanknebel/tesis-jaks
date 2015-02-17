@@ -18,7 +18,7 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 	IntVector* clustering;
 	clustering = Clustering::symmetrizeAndCluster(*this->problem_->getCompat(), numSnowflakes);
 	if (clustering->size()!= this->problem_->numNodes()) {
-		DEBUG(DBG_ERROR, "Error: Wrong length of returned clustering\n")
+        //TODO: hacer log
 	}
 
 	IntSet clusterIds = IntSet();

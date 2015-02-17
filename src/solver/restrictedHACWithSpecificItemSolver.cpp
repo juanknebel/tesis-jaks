@@ -36,7 +36,7 @@ SnowFlakeVector* RestrictedHACSWithSpecificItemSolver::produceManySnowflakes(int
 	}
 
 	if( merged == false ) {
-		DEBUG(DBG_DEBUG,"Could not merge more, stopped at "<<clustering.size());
+        //TODO: hacer log
 	}
 
 

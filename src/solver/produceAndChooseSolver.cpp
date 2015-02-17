@@ -29,7 +29,6 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
-    DEBUG(DBG_DEBUG, "Cantidad de cluser "<<produced->size())
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -227,7 +226,6 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntraInterProportional
                 maxScore = score;
             }
         }
-        DEBUG(DBG_DEBUG, "En la iteracion: " << theSize - 1 << " - El maximo fue: " << maxScore);
 
         if (bestCandidateId == -1) {
             throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
@@ -290,14 +288,12 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
         sumOneMinusInter += 1.0 - this->problem_->maxPairwiseCompatibility(it->ids(), candidate.ids());
     }
     Double gamma = 1.0 - this->interSimilarityWeight_;
-    DEBUG(DBG_DEBUG, "Intra real: " << (gamma * sumIntra) << " - Inter real: " << ((1.0 - gamma) * sumOneMinusInter) << " - Intra: " << (alpha * (gamma * sumIntra)) << " - Inter: " << (beta * ((1.0 - gamma) * sumOneMinusInter)));
     return (alpha * (gamma * sumIntra)) + (beta * ((1.0 - gamma) * sumOneMinusInter));
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
 	int numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
-	DEBUG(DBG_DEBUG,"Valor del gamma: "<<gamma);
 	MatrixWrapper* w;
 	w= new MatrixConcrete(numProduced, numProduced);
 
