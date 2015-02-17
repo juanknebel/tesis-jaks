@@ -1,5 +1,5 @@
 \section{Resultados de las ejecuciones de los algoritmos de búsqueda}
-A continuación se mustra el valor de la función objetivo para cada uno de los distintos 
+A continuación se muestra el valor de la función objetivo para cada uno de los distintos 
 algoritmos ejecutados y el tiempo de ejecución final.
 \subsection{Papers}
 \Solucion
@@ -15,7 +15,7 @@ A continuación se muestran los valores de la función objetivo obtenidos:\\
   \resizebox{\textwidth}{!} {
     \begin{tabular}{|lc|cccc|}
     \hline
-    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
+    ~  & ~ & \multicolumn{2}{|c}{Valor función objetivo} & \multicolumn{2}{c|}{Duración de la 
 ejecución (mm:ss)} \\
     Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
          & Selección proporcional \\ 
@@ -47,12 +47,11 @@ ejecución (mm:ss)} \\
 \end{table}
 Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la 
 diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ 
-se acerca a $1$. Suponemos que esto se debe a la estrategía \texttt{produce and choose}. El 
-objetivo 
-de la primer etapa es producir bundles con máximo valor de similitud. En el caso de que se requiera 
-una solución con mayor separación entre bundles, al haber producido menos cantidad de bundles 
-existen menos posibilidades para generar una solución más dispersa. Un mismo análisis se podría 
-hacer si comparamos \texttt{BOBO-10} y \texttt{HAC}.\\
+se acerca a $1$. Suponemos que esto se debe a la estrategia \texttt{produce and choose}. El 
+objetivo de la primer etapa es producir bundles con máximo valor de similitud. En el caso de que se 
+requiera una solución con mayor separación entre bundles, al haber producido menos cantidad de 
+bundles existen menos posibilidades para generar una solución más dispersa. Un mismo análisis se 
+podría hacer si comparamos \texttt{BOBO-10} y \texttt{HAC}.\\
 \colorbox{red}{ANALIZAR \texttt{BOBO-160} y \texttt{HAC}}\\
 Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección 
 de a pares obtuvimos que para \texttt{BOBO-160} y \texttt{HAC} los tiempos aumentaron a $40$ 
@@ -72,7 +71,7 @@ aumento fue muy pequeño en comparación al incremento de tiempo.
   \resizebox{\textwidth}{!} {
     \begin{tabular}{|lc|cccc|}
     \hline
-    ~  & ~ & \multicolumn{2}{|c}{Valor función objectivo} & \multicolumn{2}{c|}{Duración de la 
+    ~  & ~ & \multicolumn{2}{|c}{Valor función objetivo} & \multicolumn{2}{c|}{Duración de la 
 ejecución (mm:ss)} \\
     Algoritmo & gamma & Selección simple & Selección proporcional & Selección simple          
          & Selección proporcional \\ 
