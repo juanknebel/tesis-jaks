@@ -88,7 +88,8 @@ float differenceBetweenVectors(std::vector<float> *vector1, std::vector<float> *
 	for (unsigned i = 0; i < size; ++i) {
 		(*differenceVector)[i] = vector1->at(i) - vector2->at(i);
 	}
-	float norm = normOf(differenceVector);
+    float norm = normOf(differenceVector);
+    return norm;
 }
 
 float angleBetweenVectors(std::vector<float> *vector1, std::vector<float> *vector2) {
