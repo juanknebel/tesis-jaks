@@ -35,7 +35,7 @@ src/problem/snowFlake.cpp
 src/queue/priorityQueue.cpp
 src/matrix/matrixConcrete.cpp
 src/solver/factorySolver.cpp
-src/solver/localSearchSolver.cpp
+src/solver/greedySolver.cpp
 src/solver/restrictedHACWithSpecificItemSolver.cpp
 src/solver/clusterAndPickSolver.cpp
 src/solver/exhaustiveGreedyAnySimSOBOSolver.cpp

@@ -1,6 +1,6 @@
-#include "localSearchSolver.h"
+#include "greedySolver.h"
 
-SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
+SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
     IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
@@ -77,6 +77,6 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
     return solution;
 }
 
-int LocalSearchSolver::numToProduce(int numRequested) {
+int GreedySolver::numToProduce(int numRequested) {
     return numRequested;
 }

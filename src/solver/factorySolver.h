@@ -10,7 +10,7 @@
 #include "exhaustiveGreedySumSimSOBOSolver.h"
 #include "sequentialScanSolver.h"
 #include "restrictedHACWithSpecificItemSolver.h"
-#include "localSearchSolver.h"
+#include "greedySolver.h"
 #include "../util/configurator/configurationJaks.h"
 
 

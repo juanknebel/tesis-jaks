@@ -66,11 +66,11 @@ Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstan
             }
             break;
         case LocalSolver:
-        theSolver = new LocalSearchSolver(theProblem);
-        if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
-            dynamic_cast<LocalSearchSolver *> (theSolver)->setRankingStrategy(theStrategy);
-            dynamic_cast<LocalSearchSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
-        }
+            theSolver = new GreedySolver(theProblem);
+            if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
+                dynamic_cast<GreedySolver *> (theSolver)->setRankingStrategy(theStrategy);
+                dynamic_cast<GreedySolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+            }
             break;
         default:
             throw Exception(__FILE__, __LINE__, "Algoritmo de busqueda inexistente");
