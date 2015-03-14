@@ -42,7 +42,7 @@ src/solver/selector/intraInterProportionalSelector.cpp
 src/solver/selector/densestSubGraphSelector.cpp
 src/solver/selector/selector.cpp
 src/solver/factorySolver.cpp
-src/solver/localSearchSolver.cpp
+src/solver/greedySolver.cpp
 src/solver/restrictedHACWithSpecificItemSolver.cpp
 src/solver/clusterAndPickSolver.cpp
 src/solver/exhaustiveGreedyAnySimSOBOSolver.cpp

@@ -34,12 +34,14 @@ Se implementaron las dos técnicas para la clusterización la jerárquica con el
 Hierarchical clustering y la de partición con Bundles One-By-One.\\
 
 \subsection{Bundles One-By-One}
-La herurística \texttt{BOBO-x} en cada paso se elige un item, denominado pivote, se genera un bundle a partir del pivote. 
-El parámetro $x$ define la cantidad de bundles a generar. El caso de que $x$ sea 'Ex' todos los 
+El método \texttt{BOBO-x} esta inspirado en k-nn. Consiste en cada paso seleccionar, de manera azarosa, un item del conjunto de pivotes (en el inicio este conjunto contiente todos los items),
+con el que se genera un bundle valido a al rededor de este. En el caso de que el intra del bundle sea bueno se agrga al conjunto de candidatos de bundle.
+La iteración finaliza cuando se generan la cantidad de candidatos definidos en el parámetro $x$ o cuando el conjunto de bundles es vacío. El caso de que $x$ sea 'Ex' todos los 
 items son pivotes.\\
+Para generar el bundle a partir del pivote, se realiza de manera golosa de eligiendo en cada iteración el item que
+máximiza el intra y que cumple con las resticciones.\\
 \subsection{Hierarchical clustering}
-La heurística Hierarchical clustering \texttt{HAC} 
-se define la función de distancia entre clusters comienza con tantos clusters como cantidad de elementos, cada uno está 
+La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está 
 conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. 
 Para ello se define la función de distancia para los items $u$ y $v$ como:\\
 \begin{equation}

@@ -3,11 +3,11 @@
 
 #include "produceAndChooseSolver.h"
 
-class LocalSearchSolver : public ProduceAndChooseSolver {
+class GreedySolver : public ProduceAndChooseSolver {
 public:
-    LocalSearchSolver(ProblemInstance* problem, Selector* selector) : ProduceAndChooseSolver(problem, selector) {
+    GreedySolver(ProblemInstance* problem) : ProduceAndChooseSolver(problem) {
     }
-    ~LocalSearchSolver() {}
+    ~GreedySolver() {}
     SnowFlakeVector* produceManySnowflakes(int numSnowflakes);
     int numToProduce(int numRequested);
 };

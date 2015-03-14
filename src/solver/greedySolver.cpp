@@ -1,7 +1,9 @@
-#include "localSearchSolver.h"
+#include "greedySolver.h"
 
 SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
     std::set<int> emptyIdSet;
+    SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
+    IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
     for (int i = 0; i < numSnowFlakes; ++i) {
@@ -25,6 +27,7 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
 
     while(isNotComplete) {
         double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+        Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
         bestFnObjective = objective;
         bestWorstFnObjetive = -1.0;
         for(std::set<int>::iterator it = theIds.begin(); it != theIds.end(); ++it) {
@@ -77,6 +80,6 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
     return solution;
 }
 
-int LocalSearchSolver::numToProduce(int numRequested) {
+int GreedySolver::numToProduce(int numRequested) {
     return numRequested;
 }

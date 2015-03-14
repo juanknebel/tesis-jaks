@@ -53,7 +53,7 @@ void usingTestFiles(char *configFileName) {
 }
 
 void initializeDefaultLogger(char *log) {
-    if (log == NULL) {
+    if (log == nullptr) {
         return;
     }
     else {
