@@ -47,11 +47,8 @@ Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstan
             dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             break;
         case LocalSolver:
-            theSolver = new GreedySolver(theProblem);
-            if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
-                dynamic_cast<GreedySolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<GreedySolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
-            }
+            theSolver = new GreedySolver(theProblem, theStrategySelector);
+            dynamic_cast<GreedySolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
             break;
         default:
             throw Exception(__FILE__, __LINE__, "Algoritmo de busqueda inexistente");

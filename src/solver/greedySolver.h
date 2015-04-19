@@ -5,7 +5,7 @@
 
 class GreedySolver : public ProduceAndChooseSolver {
 public:
-    GreedySolver(ProblemInstance* problem) : ProduceAndChooseSolver(problem) {
+    GreedySolver(ProblemInstance* problem, Selector* selector) : ProduceAndChooseSolver(problem, selector) {
     }
     ~GreedySolver() {}
     SnowFlakeVector* produceManySnowflakes(int numSnowflakes);

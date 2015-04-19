@@ -1,9 +1,7 @@
 #include "greedySolver.h"
 
-SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
+SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
     std::set<int> emptyIdSet;
-    SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
-    IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
     for (int i = 0; i < numSnowFlakes; ++i) {
@@ -13,11 +11,11 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
 
     int idBestBundle = -1;
     int theBestId = -1;
-    double bestFnObjective = -1.0;
+    double bestFnObjective;
 
     int idBestWorstBundle = -1;
     int theBestWorstId = -1;
-    double bestWorstFnObjetive = -1.0;
+    double bestWorstFnObjective;
 
 
     bool hasBetterFlake = false;
@@ -27,9 +25,8 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
 
     while(isNotComplete) {
         double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
-        Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
         bestFnObjective = objective;
-        bestWorstFnObjetive = -1.0;
+        bestWorstFnObjective = -1.0;
         for(std::set<int>::iterator it = theIds.begin(); it != theIds.end(); ++it) {
             for (int i = 0; i < numSnowFlakes; ++i) {
                 SnowFlake theSnowAtiPosition = (*solution)[i];
@@ -46,8 +43,8 @@ SnowFlakeVector* LocalSearchSolver::produceManySnowflakes(int numSnowFlakes) {
                         theBestId = *it;
                     }
                     else {
-                        if (newFnObjective >= bestWorstFnObjetive) {
-                            bestWorstFnObjetive = newFnObjective;
+                        if (newFnObjective >= bestWorstFnObjective) {
+                            bestWorstFnObjective = newFnObjective;
                             idBestWorstBundle = i;
                             hasBetterWorstFlake = true;
                             theBestWorstId = *it;
