@@ -4,15 +4,17 @@
 #include "../../problem/snowFlake.h"
 #include <memory>
 
-typedef std::vector<SnowFlake*> SnowFlakeVector;
+using SnowFlakeVector = std::vector<SnowFlake*>;
 
 class LocalSearch {
 private:
-    std::shared_ptr<ProblemInstance> theProblem_;
-    SnowFlakeVector solution_;
+    struct UsedElements {
+        SnowFlake snowFlake;
+    };
+
 public:
-    LocalSearch(SnowFlakeVector solution, std::shared_ptr<ProblemInstance> theProblem);
-    SnowFlakeVector execute(int maxIter);
+    LocalSearch() {}
+    SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem);
 };
 
 #endif // LOCALSEARCH_H

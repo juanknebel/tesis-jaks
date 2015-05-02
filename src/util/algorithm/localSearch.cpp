@@ -1,11 +1,7 @@
 #include "localSearch.h"
 
-LocalSearch::LocalSearch(SnowFlakeVector solution, std::shared_ptr<ProblemInstance> theProblem) {
-    this->solution_ = solution;
-    this->theProblem_ = theProblem;
-}
-
-SnowFlakeVector LocalSearch::execute(int maxIter) {
+SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem) {
+    SnowFlakeVector finalSolution;
     /*
      * Tomo un bundle:
      * tomo un elemento y lo intento cambiar por algun otro de los demas bundles
@@ -15,19 +11,28 @@ SnowFlakeVector LocalSearch::execute(int maxIter) {
     */
 
     int id = 1;
-    for (auto item : this->solution_) {
-        item->setIdentificator(id);
+    for (auto snowFlake : solution) {
+        snowFlake->setIdentificator(id);
         ++id;
+    }
+
+    std::set<int> usedIds;
+    for (auto snowFlake : solution) {
+        for (auto elem : snowFlake->ids()) {
+            usedIds.insert(elem);
+        }
     }
 
     maxIter = 10;
     int iter = 0;
     while (iter < maxIter) {
-         for (auto item : this->solution_) {
+         for (auto snowFlake : solution) {
+            for (auto elem : snowFlake->ids()) {
 
+            }
          }
         ++iter;
     }
 
-    return this->solution_;
+    return finalSolution;
 }
