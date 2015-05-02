@@ -5,11 +5,12 @@ FactoryConfigurator::FactoryConfigurator() {
 
 }
 
-Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configFile) {
+std::unique_ptr<Configurator> FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configFile) {
     /*
      * Dato que indica si los datos seran obtenidos desde una base de datos o desde un archivo
      */
     bool useDataFromDb = configFile["use_data_from_db"] == "1";
+
     /*
      * Datos comunes a cualquier configurador
      */
@@ -20,11 +21,16 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
     std::string directoryOfWork = configFile["directory_work"];
 
     /*
+     * Instanciacion del helper
+     */
+    SnowFlakeHelper aSnowFlakeHelper;
+
+    /*
      * Instanciacion del writter
      */
-    WriterSolution* theWriter = FactoryWriter::getTheWriter(configFile);
+    std::unique_ptr<WriterSolution> theWriter = std::move(FactoryWriter::getTheWriter(configFile, aSnowFlakeHelper));
 
-    Configurator* theConfigurator = 0;
+    Configurator* theConfigurator = nullptr;
 
     if (useDataFromDb) {
         /*
@@ -38,46 +44,72 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
         Dao* theDao = new DaoMySql(database, user, password, server);
         theDao->connect();
 
-        /*
-         * Instancio el problema y los identificadores de los elementos
-         */
-        ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile, theDao);
-        IdentificationGeneretor *theIdentificator =
-                FactoryIdentificationGenerator::getTheIdentificator(theDao, configFile);
-        Id2Str* theNodeName = new Id2Str(theIdentificator);
+        std::unique_ptr<Dao> daoConnection {theDao};
 
         /*
-         * Instanciacion del solver y la estrategia
+         * Instancio el problema
          */
+        std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblemInstance(configFile, theDao));
+
+        /*
+         * Instanciacion la estrategia
+         */
+        std::unique_ptr<Selector> theStrategySelector = std::move(FactorySelector::getSelector(configFile, theProblem.get()));
+
+        /*
+         * Instanciacion del solver y el nombre
+         */
+        std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(configFile, theProblem.get(), theStrategySelector.get()));
         std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-        Selector *theStrategySelector = FactorySelector::getSelector(configFile, theProblem);
-        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem, theStrategySelector);
+
+        /*
+         * Instancio los identificadores de los elementos
+         */
+        std::unique_ptr<IdentificationGeneretor> theIdentificator =
+        std::move(FactoryIdentificationGenerator::getTheIdentificator(theDao, configFile));
+        std::unique_ptr<Id2Str> theNodeName {new Id2Str(theIdentificator.get())};
 
         /*
          * Instanciacion del configurador
          */
-        theConfigurator = new ConfiguratorToDataBase(theDao, theSolver, theWriter, theNodeName,
-                                                    theStrategySelector, theSolverName, numberOfSnowFlakes, printToScreen,
-                                                    writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
+        theConfigurator = new ConfiguratorToDataBase(std::move(daoConnection), std::move(theProblem),
+                                                     std::move(theStrategySelector), std::move(theSolver),
+                                                     std::move(theWriter), std::move(theNodeName),
+                                                     theSolverName, numberOfSnowFlakes, printToScreen,
+                                                     writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
     }
     else {
         /*
          * Instancio el problema y los identificadores de los elementos
          */
-        ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile);
-        std::string nodeName = configFile["file_node_name"];
-        Id2Str* theNodeName = new Id2Str(directoryOfWork + nodeName);
+        std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblemInstance(configFile));
 
         /*
-         * Instanciacion del solver y la estrategia
+         * Instanciacion la estrategia
          */
-        std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-        Selector *theStrategySelector = FactorySelector::getSelector(configFile, theProblem);
-        Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem, theStrategySelector);
+        std::unique_ptr<Selector> theStrategySelector = std::move(FactorySelector::getSelector(configFile, theProblem.get()));
 
-        theConfigurator = new Configurator(theSolver, theWriter, theNodeName,
-                        theStrategySelector, theSolverName, numberOfSnowFlakes, printToScreen,
-                        writeToFile, directoryOfWork, 1.00 - interSimilarityWeight);
+        /*
+         * Instanciacion del solver y el nombre
+         */
+        std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(configFile, theProblem.get(), theStrategySelector.get()));
+        std::string theSolverName = FactorySolver::getTheSolverName(configFile);
+
+        /*
+         * Instancio los identificadores de los elementos
+         */
+        std::string nodeName = configFile["file_node_name"];
+        std::unique_ptr<Id2Str> theNodeName {new Id2Str(directoryOfWork + nodeName)};
+
+
+        /*
+         * Instanciacion del configurador
+         */
+        theConfigurator = new Configurator(std::move(theProblem), std::move(theStrategySelector),
+                                           std::move(theSolver), std::move(theWriter),
+                                           std::move(theNodeName), theSolverName, numberOfSnowFlakes,
+                                           printToScreen, writeToFile, directoryOfWork,
+                                           1.00 - interSimilarityWeight);
     }
-    return theConfigurator;
-}
+    return std::unique_ptr<Configurator> {theConfigurator};
+};

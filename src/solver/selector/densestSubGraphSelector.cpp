@@ -1,19 +1,23 @@
 #include <float.h>
 #include "densestSubGraphSelector.h"
-#include "../solver.h"
 
-SnowFlakeVector * DensestSubgraphSelector::getTopSolution(SnowFlakeVector *produced, int numRequested) {
-    int numProduced = produced->size();
+SnowFlakeVector DensestSubgraphSelector::getTopSolution(SnowFlakeVector &produced, ProblemInstance &theProblem,
+                                                        SnowFlakeHelper helper, double interSimilarityWeight,
+                                                        int numRequested) {
+
+    this->interSimilarityWeight_ = interSimilarityWeight;
+    int numProduced = produced.size();
     double gamma = 1.0 - this->interSimilarityWeight_;
     MatrixWrapper* w;
     w= new MatrixConcrete(numProduced, numProduced);
 
     for (int ui = 0; ui < numProduced; ++ui) {
-        SnowFlake& u = (*produced)[ui];
+        SnowFlake& u = produced[ui];
         for (int vi = 0; vi < numProduced; ++vi) {
-            SnowFlake& v = (*produced)[vi];
-            double val = ((gamma / (2.0 * ((double) numRequested - 1.0))) * (u.getSumIntraCompat() + v.getSumIntraCompat()))
-                    + (1.0 - gamma) * (1.0 - theProblem_->maxPairwiseCompatibility(u.ids(), v.ids()));
+            SnowFlake& v = produced[vi];
+            double val = ((gamma / (2.0 * ((double) numRequested - 1.0))) *
+                    (helper.getSumIntraCompat(u, theProblem) + helper.getSumIntraCompat(v, theProblem)))
+                    + (1.0 - gamma) * (1.0 - theProblem.maxPairwiseCompatibility(u.ids(), v.ids()));
             w->set(ui,vi,val);
         }
     }
@@ -44,12 +48,10 @@ SnowFlakeVector * DensestSubgraphSelector::getTopSolution(SnowFlakeVector *produ
         }
         selected.erase(minElement);
     }
-    SnowFlakeVector* solution = new SnowFlakeVector();
-    for (std::set<int>::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
-        solution->push_back(produced->at(*ui));
+    SnowFlakeVector solution;
+    for (auto elem: selected) {
+        solution.push_back(produced.at(elem));
     }
+    delete w;
     return solution;
-}
-
-DensestSubgraphSelector::~DensestSubgraphSelector() {
 }

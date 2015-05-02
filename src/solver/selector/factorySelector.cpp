@@ -3,7 +3,7 @@
 FactorySelector::FactorySelector() {
 }
 
-Selector* FactorySelector::getSelector(ConfigurationJaks& configFile, ProblemInstance* theProblem) {
+std::unique_ptr<Selector> FactorySelector::getSelector(ConfigurationJaks& configFile, ProblemInstance* theProblem) {
     int strategyId = atoi(configFile["ranking_strategy"].c_str());
     double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
     Selector* selector = 0;
@@ -24,5 +24,5 @@ Selector* FactorySelector::getSelector(ConfigurationJaks& configFile, ProblemIns
             selector = new IntraInterProportionalSelector(interSimilarityWeight, theProblem);
             break;
     }
-    return selector;
+    return std::unique_ptr<Selector> {selector};
 }

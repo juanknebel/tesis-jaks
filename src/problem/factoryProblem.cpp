@@ -3,7 +3,7 @@
 FactoryProblem::FactoryProblem() {
 }
 
-ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks& configFile) {
+std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblemInstance(ConfigurationJaks& configFile) {
     std::string directoryOfWork = configFile["directory_work"];
     std::string fileOfCosts = configFile["file_costs"];
     std::string fileOfCompatibility = configFile["file_compat"];
@@ -20,10 +20,10 @@ ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks& config
     if (withSpecificItem) {
         theProblem->setSpecificItem(specificItem);
     }
-    return theProblem;
+    return std::unique_ptr<ProblemInstance> {theProblem};
 }
 
-ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao) {
+std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao) {
     std::string tableOfCosts = configFile["table_costs"];
     std::string tableOfCompatibility = configFile["table_compat"];
     std::string tableOfCover = configFile["table_cover"];
@@ -42,5 +42,5 @@ ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks &config
                 dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds,
                 fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary,
                 fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
-    return theProblem;
+    return std::unique_ptr<ProblemInstance> {theProblem};
 }

@@ -48,7 +48,6 @@ std::string convertToString(int aNumber) {
 }
 
 std::string convertToString(double aNumber) {
-    std::string s;
 	std::stringstream out;
 	out << aNumber;
 	return out.str();

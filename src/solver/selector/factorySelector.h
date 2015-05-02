@@ -7,6 +7,7 @@
 #include "interIntraTuplesSelector.h"
 #include "intraInterProportionalSelector.h"
 #include "densestSubGraphSelector.h"
+#include <memory>
 
 class FactorySelector {
 private:
@@ -35,7 +36,7 @@ private:
     };
     FactorySelector();
 public :
-    static Selector* getSelector(ConfigurationJaks& configFile, ProblemInstance* theProblem);
+    static std::unique_ptr<Selector> getSelector(ConfigurationJaks& configFile, ProblemInstance* theProblem);
 };
 
 #endif // FACTORYSELECTOR_H

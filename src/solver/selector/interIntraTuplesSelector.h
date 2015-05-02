@@ -6,9 +6,10 @@
 
 class InterIntraTuplesSelector : public Selector {
 public:
-    InterIntraTuplesSelector(double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
-    SnowFlakeVector *getTopSolution(SnowFlakeVector *produced, int numRequested);
-    ~InterIntraTuplesSelector();
+    InterIntraTuplesSelector() : Selector() {}
+    SnowFlakeVector getTopSolution(SnowFlakeVector &produced, ProblemInstance &theProblem,
+                                   SnowFlakeHelper helper, double interSimilarityWeight, int numRequested);
+    ~InterIntraTuplesSelector() {}
 };
 
 #endif // INTERINTRATUPLESSELECTOR_H

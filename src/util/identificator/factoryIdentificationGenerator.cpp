@@ -3,15 +3,17 @@
 FactoryIdentificationGenerator::FactoryIdentificationGenerator() {
 }
 
-IdentificationGeneretor* FactoryIdentificationGenerator::getTheIdentificator(Dao* dao, ConfigurationJaks& configFile) {
+std::unique_ptr<IdentificationGeneretor> FactoryIdentificationGenerator::getTheIdentificator(Dao* dao, ConfigurationJaks& configFile) {
+    IdentificationGeneretor *theIdentification = nullptr;
     if (configFile["element"] == "ARTICLE") {
-        return new IdentificationGeneretorArticle(dao, "\t");
+        theIdentification = new IdentificationGeneretorArticle(dao, "\t");
     }
     if (configFile["element"] == "AUTHOR") {
-        return new IdentificationGeneretorAuthor(dao, "\t");
+        theIdentification = new IdentificationGeneretorAuthor(dao, "\t");
     }
 
     if (configFile["element"] == "AFFILIATION") {
-        return new IdentificationGeneretorAffiliation(dao, "\t");
+        theIdentification = new IdentificationGeneretorAffiliation(dao, "\t");
     }
+    return std::unique_ptr<IdentificationGeneretor> {theIdentification};
 }

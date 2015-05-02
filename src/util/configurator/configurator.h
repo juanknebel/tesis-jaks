@@ -13,14 +13,16 @@
 #include "../system/exception.h"
 #include "../../problem/problemInstanceFromDataBase.h"
 #include "../../problem/problemInstanceFromFiles.h"
+#include <memory>
 
 
 class Configurator {
 protected:
-    WriterSolution *theWriter_;
-    Solver* theSolver_;
-    Id2Str* theNodeName_;
-    Selector* selectorStrategy_;
+    std::unique_ptr<ProblemInstance> theProblem_;
+    std::unique_ptr<Selector> selectorStrategy_;
+    std::unique_ptr<Solver> theSolver_;
+    std::unique_ptr<WriterSolution> theWriter_;
+    std::unique_ptr<Id2Str> theNodeName_;
     std::string solverName_;
     int numToProduce_;
     bool printToScreen_;
@@ -28,15 +30,20 @@ protected:
     std::string directoryOfWork_;
     double gamma_;
 public:
-    Configurator(Solver* solver, WriterSolution* writer, Id2Str* nodeName,
-                 Selector* strategy, std::string solverName, int numToProduce,
+    Configurator(std::unique_ptr<ProblemInstance> theProblem,
+                 std::unique_ptr<Selector> selectorStrategy,
+                 std::unique_ptr<Solver> theSolver,
+                 std::unique_ptr<WriterSolution> theWriter,
+                 std::unique_ptr<Id2Str> theNodeName,
+                 std::string solverName, int numToProduce,
                  bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma);
 
-    virtual ~Configurator();
-    WriterSolution*getTheWriter() const;
-    Solver* getTheSolver() const;
-    Id2Str* getTheNodeName() const;
+    virtual ~Configurator() {};
+    ProblemInstance* getTheProblemInstance() const;
     Selector* getTheStrategy() const;
+    Solver* getTheSolver() const;
+    WriterSolution* getTheWriter() const;
+    Id2Str* getTheNodeName() const;
     std::string getSolverName() const;
     int getNumToProduce() const;
     bool getPrintToScreen() const;

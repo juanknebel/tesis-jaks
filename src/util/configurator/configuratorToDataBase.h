@@ -5,18 +5,22 @@
 
 class ConfiguratorToDataBase : public Configurator {
 private:
-    Dao* theDao_;
+    std::unique_ptr<Dao> theDao_;
 public:
-    ConfiguratorToDataBase(Dao* dao, Solver* solver, WriterSolution* writer,
-                           Id2Str* nodeName, Selector* strategy, std::string solverName,
-                           int numToProduce, bool printToScreen, bool writeToFile, std::string directoryOfWork,
-                           double gamma) :
-        Configurator(solver, writer, nodeName, strategy, solverName, numToProduce, printToScreen,
-                     writeToFile, directoryOfWork, gamma) {
-        this->theDao_ = dao;
+    ConfiguratorToDataBase(std::unique_ptr<Dao> dao, std::unique_ptr<ProblemInstance> theProblem,
+                           std::unique_ptr<Selector> selectorStrategy,
+                           std::unique_ptr<Solver> theSolver,
+                           std::unique_ptr<WriterSolution> theWriter,
+                           std::unique_ptr<Id2Str> theNodeName,
+                           std::string solverName, int numToProduce,
+                           bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma) :
+        Configurator(std::move(theProblem), std::move(selectorStrategy), std::move(theSolver),
+                     std::move(theWriter), std::move(theNodeName), solverName,
+                     numToProduce, printToScreen, writeToFile, directoryOfWork, gamma) {
+        this->theDao_ = std::move(dao);
     }
     Dao* getDao();
-    ~ConfiguratorToDataBase();
+    ~ConfiguratorToDataBase() {}
 };
 
 #endif // CONFIGURATORTODATABASE_H

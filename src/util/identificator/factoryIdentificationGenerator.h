@@ -6,12 +6,13 @@
 #include "identificationGeneretorAuthor.h"
 #include "../configurator/configurationJaks.h"
 #include "../../dao/dao.h"
+#include <memory>
 
 class FactoryIdentificationGenerator {
 private:
     FactoryIdentificationGenerator();
 public:
-    static IdentificationGeneretor* getTheIdentificator(Dao* dao, ConfigurationJaks& configFile);
+    static std::unique_ptr<IdentificationGeneretor> getTheIdentificator(Dao* dao, ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYIDENTIFICATIONGENERATOR_H

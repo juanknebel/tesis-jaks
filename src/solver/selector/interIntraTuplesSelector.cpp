@@ -1,22 +1,25 @@
 #include "interIntraTuplesSelector.h"
-#include "../solver.h"
 
-SnowFlakeVector * InterIntraTuplesSelector::getTopSolution(SnowFlakeVector *produced, int numRequested) {
+
+SnowFlakeVector InterIntraTuplesSelector::getTopSolution(SnowFlakeVector &produced, ProblemInstance &theProblem,
+                                                         SnowFlakeHelper helper, double interSimilarityWeight,
+                                                         int numRequested) {
+    this->interSimilarityWeight_ = interSimilarityWeight;
     if(this->interSimilarityWeight_ < 0.00) {
         throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
     }
-    SnowFlake::sortByDecresingSumCompat(*produced);
-    SnowFlakeVector available(*produced);
-    unsigned int sizeOfBundles = produced->size();
+    SnowFlake::sortByDecresingSumCompat(produced, theProblem);
+    SnowFlakeVector available(produced);
+    int sizeOfBundles = produced.size();
     bool *canUseSnowFlake = new bool[sizeOfBundles];
     for (unsigned int i = 0; i < sizeOfBundles; ++i) {
         canUseSnowFlake[i] = true;
     }
 
-    SnowFlakeVector *selected = new SnowFlakeVector();
+    SnowFlakeVector selected;
     double currentSumIntra = 0.0;
     double currentSumOneMinusInter = 0.0;
-    while (selected->size() < numRequested && selected->size() < produced->size()) {
+    while (selected.size() < numRequested && selected.size() < produced.size()) {
         double maxScore = -1.0;
         int bestCandidateId = -1;
         int bestCandidateIdTwo = -1;
@@ -28,7 +31,8 @@ SnowFlakeVector * InterIntraTuplesSelector::getTopSolution(SnowFlakeVector *prod
                 if (canUseSnowFlake[candidateId] && canUseSnowFlake[candidateIdTwo]) {
                     SnowFlake candidate = available[candidateId];
                     SnowFlake candidateTwo = available[candidateIdTwo];
-                    double score = scoreSetIntraInter(selected, candidate, candidateTwo, currentSumIntra, currentSumOneMinusInter);
+                    double score = scoreSetIntraInter(selected, candidate, candidateTwo, helper, theProblem,
+                                                      currentSumIntra, currentSumOneMinusInter);
                     if (score > maxScore) {
                         bestCandidateId = candidateId;
                         bestCandidateIdTwo = candidateIdTwo;
@@ -46,23 +50,21 @@ SnowFlakeVector * InterIntraTuplesSelector::getTopSolution(SnowFlakeVector *prod
         //Calcula las nuevas puntuaciones
         SnowFlake bestCandidate = available[bestCandidateId];
         SnowFlake bestCandidateTwo = available[bestCandidateIdTwo];
-        currentSumIntra += bestCandidate.getSumIntraCompat() + bestCandidateTwo.getSumIntraCompat();
+        currentSumIntra += helper.getSumIntraCompat(bestCandidate, theProblem) +
+                helper.getSumIntraCompat(bestCandidateTwo, theProblem);
         double currentSumInter = currentSumOneMinusInter, currentSumInterTwo = currentSumOneMinusInter;
-        for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
-            currentSumInter += 1.0 - theProblem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
-            currentSumInterTwo += 1.0 - theProblem_->maxPairwiseCompatibility((*it).ids(), bestCandidateTwo.ids());
+        for (auto elem : selected) {
+            currentSumInter += 1.0 - theProblem.maxPairwiseCompatibility(elem.ids(), bestCandidate.ids());
+            currentSumInterTwo += 1.0 - theProblem.maxPairwiseCompatibility(elem.ids(), bestCandidateTwo.ids());
         }
-        double sumInterCandidates = 1.0 - theProblem_->maxPairwiseCompatibility(bestCandidate.ids(), bestCandidateTwo.ids());
+        double sumInterCandidates = 1.0 - theProblem.maxPairwiseCompatibility(bestCandidate.ids(), bestCandidateTwo.ids());
         currentSumOneMinusInter = currentSumInter + currentSumInterTwo + sumInterCandidates;
         //Marco como usado los candidatos usados
         canUseSnowFlake[bestCandidateId] = false;
         canUseSnowFlake[bestCandidateIdTwo] = false;
         //Agrego el elemento a la solucion
-        selected->push_back(bestCandidate);
-        selected->push_back(bestCandidateTwo);
+        selected.push_back(bestCandidate);
+        selected.push_back(bestCandidateTwo);
     }
     return selected;
-}
-
-InterIntraTuplesSelector::~InterIntraTuplesSelector() {
 }

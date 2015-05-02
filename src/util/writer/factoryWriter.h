@@ -5,12 +5,14 @@
 #include "writerSolutionArticles.h"
 #include "writerSolutionAuthors.h"
 #include "../configurator/configurationJaks.h"
+#include <memory>
 
 class FactoryWriter {
 private:
     FactoryWriter();
 public:
-    static WriterSolution* getTheWriter(ConfigurationJaks& configFile);
+    static std::unique_ptr<WriterSolution> getTheWriter(ConfigurationJaks& configFile,
+                                                        SnowFlakeHelper aSnowFlakeHelper);
 };
 
 #endif // FACTORYWRITER_H

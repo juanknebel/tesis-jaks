@@ -1,13 +1,17 @@
 #include "configurator.h"
 
-Configurator::Configurator(
-        Solver* solver, WriterSolution* writer, Id2Str* nodeName,
-        Selector* strategy, std::string solverName, int numToProduce,
-        bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma) {
-    this->theSolver_ = solver;
-    this->theWriter_ = writer;
-    this->theNodeName_ = nodeName;
-    this->selectorStrategy_ = strategy;
+Configurator::Configurator(std::unique_ptr<ProblemInstance> theProblem,
+                           std::unique_ptr<Selector> selectorStrategy,
+                           std::unique_ptr<Solver> theSolver,
+                           std::unique_ptr<WriterSolution> theWriter,
+                           std::unique_ptr<Id2Str> theNodeName,
+                           std::string solverName, int numToProduce,
+                           bool printToScreen, bool writeToFile, std::string directoryOfWork, double gamma) {
+    this->theProblem_ = std::move(theProblem);
+    this->theSolver_ = std::move(theSolver);
+    this->theWriter_ = std::move(theWriter);
+    this->theNodeName_ = std::move(theNodeName);
+    this->selectorStrategy_ = std::move(selectorStrategy);
     this->solverName_ = solverName;
     this->numToProduce_ = numToProduce;
     this->printToScreen_ = printToScreen;
@@ -17,15 +21,15 @@ Configurator::Configurator(
 }
 
 WriterSolution* Configurator::getTheWriter() const {
-    return this->theWriter_;
+    return this->theWriter_.get();
 }
 
 Solver* Configurator::getTheSolver() const {
-    return this->theSolver_;
+    return this->theSolver_.get();
 }
 
 Id2Str* Configurator::getTheNodeName() const {
-    return this->theNodeName_;
+    return this->theNodeName_.get();
 }
 
 std::string Configurator::getSolverName() const {
@@ -52,12 +56,10 @@ double Configurator::getGamma() const {
     return this->gamma_;
 }
 
-Configurator::~Configurator() {
-    delete this->theSolver_;
-    delete this->theWriter_;
-    delete this->theNodeName_;
+Selector *Configurator::getTheStrategy() const {
+    return this->selectorStrategy_.get();
 }
 
-Selector *Configurator::getTheStrategy() const {
-    return this->selectorStrategy_;
+ProblemInstance *Configurator::getTheProblemInstance() const {
+    return theProblem_.get();
 }

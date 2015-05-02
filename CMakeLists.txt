@@ -67,5 +67,5 @@ src/cluster/metisWrapper.cpp
 #src/test/testingProblemInstanceFromFiles.cpp
 #src/test/testSuites.cpp
 )
-add_executable(tesis-jaks ${tesis-jaks_source_files})
+add_executable(tesis-jaks ${tesis-jaks_source_files} src/util/algorithm/localSearch.cpp src/util/algorithm/localSearch.h src/problem/snowFlakeHelper.cpp src/problem/snowFlakeHelper.h)
 target_link_libraries(tesis-jaks mysqlcppconn)

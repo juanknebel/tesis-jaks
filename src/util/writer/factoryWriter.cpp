@@ -3,15 +3,18 @@
 FactoryWriter::FactoryWriter() {
 }
 
-WriterSolution* FactoryWriter::getTheWriter(ConfigurationJaks& configFile) {
+std::unique_ptr<WriterSolution> FactoryWriter::getTheWriter(ConfigurationJaks& configFile,
+                                                            SnowFlakeHelper aSnowFlakeHelper) {
+    WriterSolution* theWritter = nullptr;
     if (configFile["element"] == "ARTICLE") {
-        return new WriterSolutionArticles("\t");
+        theWritter = new WriterSolutionArticles("\t", aSnowFlakeHelper);
     }
     if (configFile["element"] == "AUTHOR") {
-        return new WriterSolutionAuthors("\t");
+        theWritter = new WriterSolutionAuthors("\t", aSnowFlakeHelper);
     }
 
     if (configFile["element"] == "AFFILIATION") {
-        return new WriterSolutionAffiliations("\t");
+        theWritter = new WriterSolutionAffiliations("\t", aSnowFlakeHelper);
     }
+    return std::unique_ptr<WriterSolution> {theWritter};
 }

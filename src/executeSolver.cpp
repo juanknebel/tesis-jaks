@@ -2,13 +2,12 @@
 #include <iostream>
 #include "executeSolver.h"
 #include "util/configurator/factoryConfigurator.h"
-#include "util/writer/writerSolution.h"
 
 using namespace std;
 
 void showSolution(SnowFlakeVector& solution, Configurator& configurator) {
     if(configurator.getPrintToScreen()) {
-        std::cout<< configurator.getTheWriter()->showInScreen(solution, configurator.getTheNodeName())<<std::endl;
+        std::cout<< configurator.getTheWriter()->showInScreen(solution, configurator.getTheNodeName(), *configurator.getTheProblemInstance()) <<std::endl;
 	}
 }
 
@@ -23,16 +22,18 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
 
         fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
 		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
-        theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
-        WriterSolution::writeInterAndIntraValues(solution, fileName.str());
+        theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight,
+                                 *configurator.getTheProblemInstance());
+        theWriter->writeInterAndIntraValues(solution, fileName.str(),
+                                            *configurator.getTheProblemInstance());
 	}
 }
 
 void execute(ConfigurationJaks& configFile) {
-    Configurator* theConfigurator = FactoryConfigurator::getTheConfigurator(configFile);
-    Solver* theSolver = theConfigurator->getTheSolver();
+    std::unique_ptr<Configurator> theConfigurator = std::move(FactoryConfigurator::getTheConfigurator(configFile));
+    Solver* theSolver = theConfigurator.get()->getTheSolver();
 
-    SnowFlakeVector* solution = nullptr;
+    SnowFlakeVector solution;
 	try {
         solution = theSolver->solve(theConfigurator->getNumToProduce());
 	}
@@ -44,8 +45,7 @@ void execute(ConfigurationJaks& configFile) {
 		std::cerr<<"Unexpected error"<<std::endl;
 		exit(0);
 	}
-    showSolution(*solution, *theConfigurator);
-    writeSolution(*solution, *theConfigurator);
+    showSolution(*solution, *theConfigurator.get());
+    writeSolution(*solution, *theConfigurator.get());
 	delete solution;
-    delete theConfigurator;
 }

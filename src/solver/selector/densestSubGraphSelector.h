@@ -6,9 +6,10 @@
 
 class DensestSubgraphSelector : public Selector {
 public:
-    DensestSubgraphSelector(double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
-    SnowFlakeVector *getTopSolution(SnowFlakeVector *produced, int numRequested);
-    ~DensestSubgraphSelector();
+    DensestSubgraphSelector() : Selector() {}
+    SnowFlakeVector getTopSolution(SnowFlakeVector &produced, ProblemInstance &theProblem,
+                                   SnowFlakeHelper helper, double interSimilarityWeight, int numRequested);
+    ~DensestSubgraphSelector() {}
 };
 
 #endif // DENSESTSUBGRAPHSELECTOR_H

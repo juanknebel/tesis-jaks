@@ -5,9 +5,10 @@
 
 class IntraSelector : public Selector {
 public:
-    IntraSelector(double interSimilarityWeight, ProblemInstance* theProblem) : Selector(interSimilarityWeight, theProblem) {}
-    SnowFlakeVector* getTopSolution(SnowFlakeVector* produced, int numRequested);
-    ~IntraSelector();
+    IntraSelector() : Selector() {}
+    SnowFlakeVector getTopSolution(SnowFlakeVector &produced, ProblemInstance &theProblem,
+                                   SnowFlakeHelper helper, double interSimilarityWeight, int numRequested);
+    ~IntraSelector() {}
 };
 
 #endif // INTRASELECTOR_H

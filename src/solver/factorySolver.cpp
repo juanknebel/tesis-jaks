@@ -3,7 +3,7 @@
 FactorySolver::FactorySolver() {
 }
 
-Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem, Selector *theStrategySelector) {
+std::unique_ptr<Solver> FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem, Selector *theStrategySelector) {
     int solverId = atoi(configFile["solver"].c_str());
     double multiplier = atof(configFile["to_produce"].c_str());
     double interSimilarityWeight = atof(configFile["inter_similarity_weight"].c_str());
@@ -52,40 +52,42 @@ Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstan
             break;
         default:
             throw Exception(__FILE__, __LINE__, "Algoritmo de busqueda inexistente");
-            break;
     }
-    return theSolver;
-}
+    return std::unique_ptr<Solver> {theSolver};
+};
 
 std::string FactorySolver::getTheSolverName(ConfigurationJaks& configFile) {
     int solverId = atoi(configFile["solver"].c_str());
     switch(solverId) {
-        case ClusterAndPick:
+        case FactorySolver::ClusterAndPick:
             return "ClusterAndPick";
             break;
-        case SeqScan:
+        case FactorySolver::SeqScan:
             return "SeqScan";
             break;
-        case RestrictedHAC:
+        case FactorySolver::RestrictedHAC:
             return "RestrictedHAC";
             break;
-        case RestrictedHACSpecific:
+        case FactorySolver::RestrictedHACSpecific:
             return "RestrictedHACSpecific";
             break;
-        case RandomBOBO:
+        case FactorySolver::RandomBOBO:
             return "RandomBOBO";
             break;
-        case RandomSOBO:
+        case FactorySolver::RandomSOBO:
             return "RandomSOBO";
             break;
-        case ExAnySimSOBO:
+        case FactorySolver::ExAnySimSOBO:
             return "ExAnySimSOBO";
             break;
-        case ExSumSimSOBO:
+        case FactorySolver::ExSumSimSOBO:
             return "ExSumSimSOBO";
             break;
-        case LocalSolver:
+        case FactorySolver::LocalSolver:
             return "LocalSolver";
+            break;
+        default:
+            return "NN";
             break;
     }
 }

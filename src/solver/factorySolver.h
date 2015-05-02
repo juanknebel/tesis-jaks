@@ -12,6 +12,7 @@
 #include "restrictedHACWithSpecificItemSolver.h"
 #include "greedySolver.h"
 #include "../util/configurator/configurationJaks.h"
+#include <memory>
 
 
 
@@ -26,7 +27,7 @@ public:
     };
 
     static std::string getTheSolverName(ConfigurationJaks& configFile);
-    static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem, Selector *theStrategySelector);
+    static std::unique_ptr<Solver> getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem, Selector *theStrategySelector);
 };
 
 #endif // FACTORYSOLVER_H

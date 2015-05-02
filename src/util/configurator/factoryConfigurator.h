@@ -8,12 +8,13 @@
 #include "../../problem/factoryProblem.h"
 #include "../writer/factoryWriter.h"
 #include "../identificator/factoryIdentificationGenerator.h"
+#include <memory>
 
 class FactoryConfigurator {
 private:    
     FactoryConfigurator();
 public:
-    static Configurator* getTheConfigurator(ConfigurationJaks& configFile);
+    static std::unique_ptr<Configurator> getTheConfigurator(ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYCONFIGURATOR_H
