@@ -9,7 +9,9 @@ using SnowFlakeVector = std::vector<SnowFlake*>;
 class LocalSearch {
 private:
     struct UsedElements {
-        SnowFlake snowFlake;
+        int snowFlakeId;
+        int countBetter;
+        int countTabu;
     };
 
 public:

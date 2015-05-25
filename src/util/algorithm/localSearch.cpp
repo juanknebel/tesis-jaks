@@ -1,7 +1,6 @@
 #include "localSearch.h"
 
 SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem) {
-    SnowFlakeVector finalSolution;
     /*
      * Tomo un bundle:
      * tomo un elemento y lo intento cambiar por algun otro de los demas bundles
@@ -9,21 +8,24 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
      * si no mejora intento con otro elemento
      * esto lo repito tantas veces como el parametro de maximas iteraciones
     */
-
+    SnowFlakeVector finalSolution;
     int id = 1;
-    for (auto snowFlake : solution) {
-        snowFlake->setIdentificator(id);
-        ++id;
-    }
+    int maxBetter = 5;
+    int tabuCount = 5;
+
+    std::vector<LocalSearch::UsedElements> vectorOfUsedFlakes;
 
     std::set<int> usedIds;
     for (auto snowFlake : solution) {
+        snowFlake->setIdentificator(id);
+        ++id;
+        vectorOfUsedFlakes.push_back(LocalSearch::UsedElements {int(snowFlake->getIdentificator()),maxBetter, tabuCount});
         for (auto elem : snowFlake->ids()) {
             usedIds.insert(elem);
         }
     }
 
-    maxIter = 10;
+    maxIter = 100;
     int iter = 0;
     while (iter < maxIter) {
          for (auto snowFlake : solution) {
