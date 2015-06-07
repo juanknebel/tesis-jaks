@@ -5,156 +5,69 @@
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-La motivación para explorar otro tipo de búsqueda es encontrar resultados que provean al 
-usuario una experiencia más satisfactoria y una visión más amplia de sus búsquedas que los 
-resultados lineales no entregan.\\
-Para generar estas soluciones se utilizó \textbf{Composite Retrieval} que requiere de la definición de: 
+Este trabajo esta basado en el artículo \textit{\textquotedblleft Composite Retrieval of Diverse 
+and Complementary Bundles\textquotedblright}\cite{compositeRetrival} en el que se propone 
+que el resultado de las búsuqeda se devuelva en grupos de items, con la finalidad de que uno de estos grupos satisafaga
+las expectativas del usuario. Cada uno de los grupos esta formado por elementos similares que difieren en algún atributo sin excederse del presupuesto.
+El objetivo de las soluciones es generar grupos con items complementarios lo más cohesivos posibles y que los grupos entre si sean distintos.
+De este modo al usuario se le ofrecen una gran variedad de items ordenados de forma lógica para facilitar la selección.\\
+
+En una búsqueda típica los resultados obtenidos son lineales al criterio seleccionado y no otorgan respuestas que relacionen 
+el criterio buscado con otros elementos que se relacionan. Si se buscan discos de música un resultado posible es:\\
 \begin{itemize}
-  \item \textbf{Similitud}: Una función que dado dos items devuelve la similitud entre estos.
-  \item \textbf{Complementariedad}: Alguna propiedad del ítem.
-  \item \textbf{Costo}: El costo del ítem. 
+  \item Disco1 - Led Zeppelin.
+  \item Disco2 - Led Zeppelin.
+  \item Disco1 - The Who.
+  \item Disco1 - Deep Purple.
+  \item Disco1 - Cream.
+  \item Disco1 - The Beatles.
+  \item Disco1 - Queen.
+  \item Disco1 - Rolling Stone.
 \end{itemize}
-Cada uno de estos elementos debe poder ser calculado para todos los elementos del dominio en el que 
-se realicen las búsquedas. Por ejemplo, en la búsqueda de discos de música, la similitud puede estar 
-dada por el género musical, la complementariedad por el país de origen y el costo el valor del 
-disco.\\
-En una búsqueda tradicional los resultados obtenidos son lineales al criterio seleccionado y no 
-otorgan respuestas que relacionen el criterio buscado con otros elementos del mismo tipo o 
-con elementos que probablemente están relacionados pero no son del mismo tipo. Lo que ocasiona 
-tener que realizar repetidas búsquedas usando diferentes criterios para obtener los resultados 
-esperados.\\
-Lo que se propone con este tipo de búsquedas es otorgar un conjunto de \textbf{bundles}. Cada 
-bundle esta formado por elementos relacionados entre sí a través de una función de similitud y que 
-será único para algún atributo definido.
-\section{Descripción}
-Los \textbf{bundles} obtenidos de la búsqueda deben cumplir con las siguientes propiedades:
-\begin{itemize}
-  \item \textbf{Cubrimiento}: debe maximizar la cantidad de elementos de complementarios entre si 
-de acuerdo a algún atributo definido previamente.
-  \item \textbf{Compatibilidad}: todos los elementos internos deben ser similares en relación a 
-algún atributo definido previamente.
-  \item \textbf{Validez}: el costo total de los elementos no debe superar el presupuesto 
-especificado.
-  \item \textbf{Máximo}: debe ser el bundle más grande posible.
-\end{itemize}
-Una propiedad que debe cumplir la solución completa es:
-\begin{itemize}
-  \item \textbf{Diversificada}: Cada bundle debe ser \textquotedblleft diferente\textquotedblright  
-de otro (más adelante se verá que se puede variar este parámetro) para de esta manera poder 
-proporcionar una mayor exposición de los elementos que se encuentran en el dominio. Y además evitar 
-de esa manera bundles iguales en la solución.
-\end{itemize}
-Como se mostró en la sección dos de \textit{\textquotedblleft Composite Retrieval of Diverse and 
-Complementary Bundles\textquotedblright}\cite{compositeRetrival}, el problema puede ser reducido a 
-uno más conocido \textbf{MAXIMUM EDGE SUBGRAPH} con lo cuál nos encontramos en un caso en el cuál 
-encontrar una solución exacta se encuentra dentro de los problemas \textbf{NP-hard}.\\
-Por tal motivo las técnicas usadas para generar soluciones a nuestras búsquedas serán heurísticas 
-aproximadas.
-\section{Comparación de búsquedas}
-Supongamos que se quiere buscar bandas musicales pertenecientes a un genero definido por el 
-usuario.\\
-Supongamos que el genero de búsqueda es \textit{rock clásico} uno podría obtener los siguientes 
-resultados:
-\begin{itemize}
-  \item Led Zeppelin.
-  \item The Who.
-  \item Deep Purple.
-  \item Cream.
-  \item The Beatles.
-  \item Queen.
-  \item Rolling Stone.
-  \item etc.
-\end{itemize}
-Pero tienen en común que todas son bandas de origen británico con lo cuál si se quiere explorar 
-bandas de diferentes países se tendría que refinar la búsqueda o realizar repetidamente otras. En 
-cambio si como atributo de complementariedad se agrega el país de origen se podría obtener algo del 
-estilo:
+
+Si se cuenta con un presupuesto para comprar discos, con este resultado lineal, el usuario debe realizar reiteradas búsquedas para 
+encontrar los discos que que le interesen.\\
+
+El resultado que se propone en ``Composite Retrieval of Diverse and Complementary Bundles'' esta diseñado para aquellas consultas 
+que requieren obtener un conjunto de elementos que se relacionan como respuesta. Las técnicas tradicionales de 
+clusterización la agrupación se hace por la similitud entre items. En el ejemplo de los discos con una clusterización tradicional,
+donde la similitud sea el genero músical, seguramente se generen tantos clusters como géneros de discos existan y en cada cluster estén todos 
+los discos de ese género. Con este resultado se deberá explorar todo el cluster para elegir los discos; donde la información es redundate 
+porque algunos discos son tan parecidos que no se comprarían juntos.\\
+
+En ``Composite Retrieval of Diverse and Complementary Bundles'' la clusterización se ajuste al presupuesto y los itmes sean complementarios, 
+para que el usuario seleccionando un bundle (es el nombre que se le da al agrupamiento de items) cubra su necesidad. Con los discos 
+se establece la complementariedad de algún atributo, como puede ser el origen de la banda, cada bundle es una opción de discos que el usuario 
+puede comprar porque cumplen con el presupuesto, son del mismo género de música y hay variedad entre ellos. Una solución posible es:
 \begin{itemize}
   \item Bundle 1:
   \begin{itemize}
-    \item Led Zeppelin (Inglaterra).
-    \item The Doors (Estados Unidos).
-    \item Charly García (Argentina).
+    \item Disco1 - Led Zeppelin (Inglaterra).
+    \item Disco1 - The Doors (Estados Unidos).
+    \item Disco1 - Charly García (Argentina).
   \end{itemize}
   \item Bundle 2:
   \begin{itemize}
-    \item The Who (Inglaterra).
-    \item Kiss (Estados Unidos).
-    \item Luis Alberto Spinetta (Argentina).
+    \item Disco1 - The Who (Inglaterra).
+    \item Disco1 - Kiss (Estados Unidos).
+    \item Disco1 - Luis Alberto Spinetta (Argentina).
   \end{itemize}
-  \item etc.
 \end{itemize}
-De esta manera se puede entregar una visión más amplia de la búsqueda y al usuario evitarle refinar 
-la misma.
-\section{Primeros pasos}
-Con los resultados obtenidos del paper \textit{\textquotedblleft Composite Retrieval of Diverse 
-and Complementary Bundles\textquotedblright}\cite{compositeRetrival} se decidió implementar 
-búsquedas de soluciones para la base de datos \textit{\textquotedblleft A Data-Driven Journey 
-through Software Engineering Research\textquotedblright}\cite{dataDrive} utilizando su base de 
-datos de papers con el objetivo de obtener conjunto de bundles complementarios.\\
-La base de datos contiene información sobre cerca de $7777$ papers con $9865$ autores, además cuenta 
-con un perfil para cada paper, llamado \texttt{topicProfile} que ofrece una clasificación en 
-porcentajes de que tema se refiere cada paper. Los temas son:
-\begin{multicols}{4}
-  \begin{itemize}
-  \item Adaptive Systems
-  \item Algorithm
-  \item Architectures
-  \item Artificial Intelligence
-  \item Autonomic Systems
-  \item Concurrency
-  \item Database
-  \item Distributed Systems
-  \item Education
-  \item Embedded
-  \item Empirical Software Engineering
-  \item Evolution
-  \item Formal Methods
-  \item Hardware
-  \item Human Computer Interaction
-  \item Information Systms
-  \item Knowledge Engineering
-  \item Languages
-  \item Maintenance
-  \item Methodologies
-  \item Metrics
-  \item Models
-  \item Operating Systems
-  \item Performance
-  \item Process
-  \item Product Linesutilizar
-  \item Program Analysis
-  \item Program Comprehension
-  \item Real Time Systems
-  \item Reliability
-  \item Requirements
-  \item Reverse Engineering
-  \item Security
-  \item Services
-  \item Software Quality
-  \item Synthesis
-  \item Testing
-  \item Visualization
-  \end{itemize}
-  \label{int:tblTopicos}
-\end{multicols}
-La generación de soluciones de bundles se realizó, como propone el paper \textit{\textquotedblleft 
-Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}, maximizando la función 
-objetivo: 
-\begin{equation}\label{eq:fnObj}
-\displaystyle FO = \sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ 
-+\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v 
-\in S_{j}} s(u,v))
-\end{equation} 
-Dónde la función \textit{s} representa la similitud entre dos items y 
-$\gamma$ ($0 < \gamma < 1$) es un parámetro para ponderar entre la calidad de un bundle (intra) y 
-la separación entre ellos (inter).\\
-A partir de información provista por la base de datos y con la definición de funciones de 
-similitud, que se verán más adelante, para autores, papers e instituciones se generaron soluciones de 
-conjuntos de bundles para los siguientes criterios:
+
+Lo que se propone es otorgar un conjunto de \textbf{bundles} que cumplen con las siguientes propiedades:
 \begin{itemize}
- \item Papers similares de distintos lugares.
- \item Autores similares de distintos universidades.
- \item Búsqueda de papers a partir de perfil específico.
- \item Instituciones similares de diferentes regiones
+  \item \textbf{Cubrimiento}: Maximizar la cantidad de elementos en el bundle.
+  \item \textbf{Compatibilidad}: Los elementos del bundle deben ser similares.
+  \item \textbf{Validez}: El costo total de los elementos del bundle no debe superar el presupuesto.
+  \item \textbf{Diversificada}: Los bundles entre si deben ser diversos.
 \end{itemize}
+
+\section{Instanciación}
+Este trabajo consiste en implementar el diseño de resultados de ``Composite Retrieval of Diverse and Complementary Bundles'' 
+para la base de datos de los papers de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}.
+La decisión de utilizar esta base de datos es por la completitud de la información y que el tamaño de la cantidad de elementos
+que contiene requiere de una optimización de los algoritmos propuestos.\\
+
+La base de datos contiene cerca de $7800$ papers con información de quienes son sus autores y dónde fueron presentados. 
+Cada paper tiene un \texttt{topicProfile} que es una clasificación en porcentajes de cada tópico. De los $9800$ autores se conoce de que universidad 
+es y de cada universidad a que región pertenece.

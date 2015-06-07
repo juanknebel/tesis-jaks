@@ -1,3 +1,48 @@
+\section{Modelo}
+Dado el conjunto de items I la función de similitud s: IxI->R[0;1]. El problema se representa como un grafo 
+con peso en las aristas donde los vertices son los items y el peso de las aristas es la similitud entres estos. 
+\section{Problema}
+El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema
+de clusterización en el cual la calidad de los cluster esta dado por la cohesión de los items que lo componen y la
+separación entre cluster con menos similitud.
+Las diferencias con los problemas tipicos de clusterización son (1) que la cantidad de items en un bundle esta limitada por 
+el presupuesto y (2) que el bundle no puede existir más de un item con el mismo atributo de complementaridad.
+de encontar el subgrafo con k nodos 
+\section{Función de similitud}
+La similitud entre los papers esta dado por la comparación del perfil de cada uno. El perfil del paper se obtiene del topic profile, para hacer
+la comparación se represento el topic profile cómo un vector de $N$ dimensiones, donde $N$ es la cantidad de tópicos, normalizados
+ya que cada compenente representa un porcentaje del tema al que pertenece.\\
+Dados estos vectores calcular la similitud entre los papers es la distancia angular entre ellos. Los vectores que formen un ángulo cercano a $0$\textdegree 
+representan una similitud alta entre los perfiles, mientras que un ángulo cercano a $90$\textdegree dos perfiles ortogonales o diferentes.\\
+\subsection{Cálculo de ángulos}
+Lo siguiente demostración es en $\Re^{2}$ por ser visualmente más fácil de exponer, es fácilemente extensible a $\Re^{n}$.\\
+La función del ángulo entre los vectores $V, U$ es:\\
+$$\cos(\hat{\theta}) = \dfrac{\overrightarrow{V}.\overrightarrow{U}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}$$
+
+En este gráfico se visualiza el comportamiento de la función $\cos$\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/coseno.png}
+\caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
+\label{bus:img-coseno}
+\end{figure}
+El dominio de la función de similitud son los vectores normalizados con todas sus componentes mayores o iguales a 0.\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{img/planoCartesiano.png}
+\caption{Plano cartesiano. En rojo al cuadrante al que pertenecen los vectores}
+\label{bus:img-planoCartesiano}
+\end{figure}
+Del dominio de la función se obtiene que los ángulos que se forman se encuentran limitados entre $0$\textdegree y $90$\textdegree, 
+o lo que es lo mismo $0$ y $\frac{\pi}{2}$. 
+De lo anterior se obtien que:
+$$0\leq \cos(\hat{\theta}) \leq 1$$
+En el intervalo $[0, 1]$ la función $\cos$ es decreciente. Por lo que se definie la función de similitud como el $\cos$ del ángulo que forman de dos vectores. 
+De esta manera los vectores tengan un ángulo cercano a $0$\textdegree son más similares. 
+
+\section{Resolución}
+Encontrar una solución al problema planteado es reducible 
+
 El algoritmo que se utilizó para obtener las soluciones es \texttt{Produce-and-Choose}, cuenta con 
 dos fases.
 En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se seleccionan los 
