@@ -13,29 +13,28 @@ El objetivo de las soluciones es generar grupos con items complementarios lo má
 De este modo al usuario se le ofrecen una gran variedad de items ordenados de forma lógica para facilitar la selección.\\
 
 En una búsqueda típica los resultados obtenidos son lineales al criterio seleccionado y no otorgan respuestas que relacionen 
-el criterio buscado con otros elementos que se relacionan. Si se buscan discos de música un resultado posible es:\\
+el criterio buscado con otros elementos que se relacionan. Un posible resultado en un búsqueda de discos de música podría ser:\\
 \begin{itemize}
   \item Disco1 - Led Zeppelin.
   \item Disco2 - Led Zeppelin.
-  \item Disco1 - The Who.
-  \item Disco1 - Deep Purple.
-  \item Disco1 - Cream.
-  \item Disco1 - The Beatles.
-  \item Disco1 - Queen.
-  \item Disco1 - Rolling Stone.
+  \item Disco3 - The Who.
+  \item Disco4 - Deep Purple.
+  \item Disco5 - Cream.
+  \item Disco6 - The Beatles.
+  \item Disco7 - Queen.
+  \item Disco8 - Rolling Stone.
 \end{itemize}
 
-Si se cuenta con un presupuesto para comprar discos, con este resultado lineal, el usuario debe realizar reiteradas búsquedas para 
-encontrar los discos que que le interesen.\\
+Si el usuario está interesado en comprar discos, cuenta con un presupuesto limitado y le interesa la diversidad de los artistas a adquirir, con este resultado lineal, el usuario debería realizar reiteradas búsquedas para encontrar los discos de los artistas que que le interesen.\\
 
 El resultado que se propone en ``Composite Retrieval of Diverse and Complementary Bundles'' esta diseñado para aquellas consultas 
-que requieren obtener un conjunto de elementos que se relacionan como respuesta. Las técnicas tradicionales de 
+que requieren obtener un conjunto de elementos que se relacionan como respuesta. En las técnicas tradicionales de 
 clusterización la agrupación se hace por la similitud entre items. En el ejemplo de los discos con una clusterización tradicional,
 donde la similitud sea el genero músical, seguramente se generen tantos clusters como géneros de discos existan y en cada cluster estén todos 
 los discos de ese género. Con este resultado se deberá explorar todo el cluster para elegir los discos; donde la información es redundate 
 porque algunos discos son tan parecidos que no se comprarían juntos.\\
 
-En ``Composite Retrieval of Diverse and Complementary Bundles'' la clusterización se ajuste al presupuesto y los itmes sean complementarios, 
+En ``Composite Retrieval of Diverse and Complementary Bundles'' la clusterización se ajuste al presupuesto y a que los itmes sean complementarios, 
 para que el usuario seleccionando un bundle (es el nombre que se le da al agrupamiento de items) cubra su necesidad. Con los discos 
 se establece la complementariedad de algún atributo, como puede ser el origen de la banda, cada bundle es una opción de discos que el usuario 
 puede comprar porque cumplen con el presupuesto, son del mismo género de música y hay variedad entre ellos. Una solución posible es:
@@ -43,14 +42,14 @@ puede comprar porque cumplen con el presupuesto, son del mismo género de músic
   \item Bundle 1:
   \begin{itemize}
     \item Disco1 - Led Zeppelin (Inglaterra).
-    \item Disco1 - The Doors (Estados Unidos).
-    \item Disco1 - Charly García (Argentina).
+    \item Disco2 - The Doors (Estados Unidos).
+    \item Disco3 - Charly García (Argentina).
   \end{itemize}
   \item Bundle 2:
   \begin{itemize}
     \item Disco1 - The Who (Inglaterra).
-    \item Disco1 - Kiss (Estados Unidos).
-    \item Disco1 - Luis Alberto Spinetta (Argentina).
+    \item Disco2 - Kiss (Estados Unidos).
+    \item Disco3 - Luis Alberto Spinetta (Argentina).
   \end{itemize}
 \end{itemize}
 

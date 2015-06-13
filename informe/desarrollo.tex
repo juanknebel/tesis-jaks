@@ -1,19 +1,18 @@
 \section{Modelo}
-Dado el conjunto de items I la función de similitud s: IxI->R[0;1]. El problema se representa como un grafo 
-con peso en las aristas donde los vertices son los items y el peso de las aristas es la similitud entres estos. 
+Dado el conjunto de items I y la función de similitud \textbf{S}: IxI$\rightarrow$R[0;1]. El problema lo podemos representar como un grafo 
+con peso en las aristas, en el cuál los vertices son los items y el peso de las aristas es la similitud entres estos.
 \section{Problema}
 El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema
 de clusterización en el cual la calidad de los cluster esta dado por la cohesión de los items que lo componen y la
 separación entre cluster con menos similitud.
-Las diferencias con los problemas tipicos de clusterización son (1) que la cantidad de items en un bundle esta limitada por 
-el presupuesto y (2) que el bundle no puede existir más de un item con el mismo atributo de complementaridad.
-de encontar el subgrafo con k nodos 
+Las diferencias con los problemas tipicos de clusterización son:
+\begin{enumerate}
+ \item La cantidad de items en un bundle esta limitada por el presupuesto.
+ \item En el bundle no puede existir más de un item con el mismo atributo de complementaridad.
+\end{enumerate}
 \section{Función de similitud}
-La similitud entre los papers esta dado por la comparación del perfil de cada uno. El perfil del paper se obtiene del topic profile, para hacer
-la comparación se represento el topic profile cómo un vector de $N$ dimensiones, donde $N$ es la cantidad de tópicos, normalizados
-ya que cada compenente representa un porcentaje del tema al que pertenece.\\
-Dados estos vectores calcular la similitud entre los papers es la distancia angular entre ellos. Los vectores que formen un ángulo cercano a $0$\textdegree 
-representan una similitud alta entre los perfiles, mientras que un ángulo cercano a $90$\textdegree dos perfiles ortogonales o diferentes.\\
+La similitud \textbf{S} del conjunto de los items I, \textbf{S}: IxI$\rightarrow$R[0;1], entre los papers esta dado por la comparación del perfil de cada uno. El perfil del paper se obtiene del topic profile, para hacer la comparación se represento el topic profile cómo un vector de $N$ dimensiones, donde $N$ es la cantidad de tópicos, normalizados ya que cada compenente representa un porcentaje del tema al que pertenece.\\
+Dados estos vectores calcular la similitud entre los papers es la distancia angular entre ellos. Los vectores que formen un ángulo cercano a $0$\textdegree representan una similitud alta entre los perfiles, mientras que un ángulo cercano a $90$\textdegree dos perfiles ortogonales o diferentes.\\
 \subsection{Cálculo de ángulos}
 Lo siguiente demostración es en $\Re^{2}$ por ser visualmente más fácil de exponer, es fácilemente extensible a $\Re^{n}$.\\
 La función del ángulo entre los vectores $V, U$ es:\\
@@ -75,7 +74,7 @@ La primer técnica produce un árbol de particiones, la raíz es un cluster que 
 y las hojas son clusters con un único ítem. Cada nivel intermedio, puede ser visto, como la 
 combinación entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un 
 nivel de las particiones de los items de una vez.\\ 
-Se implementaron las dos técnicas para la clusterización la jerárquica con el algoritmo
+Se implementaron las dos técnicas para la clusterización jerárquica con el algoritmo
 Hierarchical clustering y la de partición con Bundles One-By-One.\\
 
 \subsection{Bundles One-By-One}
