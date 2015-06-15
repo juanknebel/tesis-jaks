@@ -1,6 +1,6 @@
 #include "localSearch.h"
 
-SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem) {
+SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight) {
     /*
      * Tomo un bundle:
      * tomo un elemento y lo intento cambiar por algun otro de los demas bundles
@@ -9,7 +9,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
      * esto lo repito tantas veces como el parametro de maximas iteraciones
     */
     SnowFlakeVector finalSolution;
-    int id = 1;
+    int id = 0;
     int maxBetter = 5;
     int tabuCount = 5;
 
@@ -28,13 +28,19 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
     maxIter = 100;
     int iter = 0;
     while (iter < maxIter) {
-         for (auto snowFlake : solution) {
-            for (auto elem : snowFlake->ids()) {
-
-            }
-         }
+        double objetiveFunction = SnowFlake::objetiveFunction(solution, interSimilarityWeight);
+        int bundleWithWorstInter = this->findWorstInterBundle(solution);
+        SnowFlake* originalBundle = solution.at(bundleWithWorstInter);
+        int centroidElement = this->findCentroid(originalBundle);
+        int farAwayElement = this->findFarAwayElement(centroidElement, originalBundle);
+        std::vector<int> nearestElements = this->nearestElements(centroidElement, originalBundle, theProblem.getIds(), usedIds);
+        for (auto elem : nearestElements) {
+            SnowFlake* theNewBundle = this->createNewBunlde(originalBundle, elem);
+            solution[bundleWithWorstInter] = theNewBundle;
+        }
         ++iter;
     }
 
     return finalSolution;
 }
+
