@@ -25,9 +25,9 @@ public:
     int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem);
 
     std::vector<int> nearestElements(int centroid, SnowFlake worstFlake, IntSet &allElements,
-                                     std::set &usedElements, ProblemInstance &theProblem);
+                                     std::set<int> &usedElements, ProblemInstance &theProblem);
 
-    SnowFlake createNewBunlde(SnowFlake worstFlake, int anElement);
+    SnowFlake createNewBunlde(SnowFlake worstFlake, int anElement, ProblemInstance &theProblem);
 
     bool checkCoverageConstraint(SnowFlake worstFlake, int centroid, const int newElement, ProblemInstance &theProblem);
 };

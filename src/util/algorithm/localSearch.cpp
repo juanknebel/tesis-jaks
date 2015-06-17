@@ -93,7 +93,7 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
 }
 
 std::vector<int> LocalSearch::nearestElements(int centroid, SnowFlake worstFlake, IntSet &allElements,
-                                              std::set &usedElements, ProblemInstance &theProblem) {
+                                              std::set<int> &usedElements, ProblemInstance &theProblem) {
     std::vector<int> nearElements;
     double edgeSimilarity = std::numeric_limits<double>::min();
     double edgeSimilarityTwo = std::numeric_limits<double>::min();
@@ -117,8 +117,9 @@ std::vector<int> LocalSearch::nearestElements(int centroid, SnowFlake worstFlake
     return nearElements;
 }
 
-SnowFlake LocalSearch::createNewBunlde(SnowFlake worstFlake, int anElement) {
+SnowFlake LocalSearch::createNewBunlde(SnowFlake worstFlake, int anElement, ProblemInstance &theProblem) {
     SnowFlake newSnowFlake;
+
     return newSnowFlake;
 }
 
