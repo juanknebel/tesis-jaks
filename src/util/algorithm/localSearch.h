@@ -5,31 +5,32 @@
 #include <memory>
 
 using SnowFlakeVector = std::vector<SnowFlake>;
+using TabuElements = std::map<int, int>;
+using TabuBundles = std::map<int, int>;
 
 class LocalSearch {
 private:
-    struct UsedElements {
-        int snowFlakeId;
-        int countBetter;
-        int countTabu;
-    };
-
-public:
-    LocalSearch() {}
-    SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
-
-    int findWorstIntraBundle(SnowFlakeVector &vector);
+    int findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabuBundles);
 
     int findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem);
 
     int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem);
 
-    std::vector<int> nearestElements(int centroid, SnowFlake worstFlake, IntSet &allElements,
-                                     std::set<int> &usedElements, ProblemInstance &theProblem);
+    std::vector<int> nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
+                                                  IntSet &allElements, std::set<int> &usedElements,
+                                                  ProblemInstance &theProblem, TabuElements &tabuElements);
 
-    SnowFlake createNewBunlde(SnowFlake worstFlake, int anElement, ProblemInstance &theProblem);
+    SnowFlake createNewBunlde(SnowFlake worstFlake, int excludeElement, int newElement,
+                              ProblemInstance &theProblem);
 
-    bool checkCoverageConstraint(SnowFlake worstFlake, int centroid, const int newElement, ProblemInstance &theProblem);
+    bool checkCoverageConstraint(SnowFlake worstFlake, int elementToReplace, int newElement,
+                                 ProblemInstance &theProblem);
+
+public:
+    LocalSearch() {}
+    SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
+
+    void updateTabuElements(TabuElements &tabuSet);
 };
 
 #endif // LOCALSEARCH_H
