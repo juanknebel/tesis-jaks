@@ -258,3 +258,7 @@ SnowFlake* Solver::pickFlake(int specificItem, int pivot, const IntSet& clusterM
 	std::sort(membersSorted.begin(), membersSorted.end(), compatCompareTwoItems(*(this->problem_), this->specificItem_, this->pivot_));
 	return pickFlakeGivenPermutation(specificItem, pivot, membersSorted);
 }
+
+ProblemInstance *Solver::getTheProblem() {
+	return this->problem_;
+}

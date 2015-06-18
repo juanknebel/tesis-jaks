@@ -2,6 +2,7 @@
 #include <iostream>
 #include "executeSolver.h"
 #include "util/configurator/factoryConfigurator.h"
+#include "util/algorithm/localSearch.h"
 #include "util/writer/writerSolution.h"
 
 using namespace std;
@@ -31,10 +32,13 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
 void execute(ConfigurationJaks& configFile) {
     Configurator* theConfigurator = FactoryConfigurator::getTheConfigurator(configFile);
     Solver* theSolver = theConfigurator->getTheSolver();
-
+    Double gamma = theConfigurator->getGamma();
+    Double interSimilarityWeight = 1.00 - gamma;
 	SnowFlakeVector* solution = 0;
 	try {
         solution = theSolver->solve(theConfigurator->getNumToProduce());
+        LocalSearch localSearch;
+        SnowFlakeVector newSolution = localSearch.execute(20,*solution, *(theSolver->getTheProblem()), interSimilarityWeight);
 	}
 	catch (Exception& e) {
 		std::cerr<<e.what()<<std::endl;

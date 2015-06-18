@@ -84,6 +84,8 @@ public:
 	* @return a set of snowflakes
 	*/
 	virtual SnowFlakeVector* solve(int numSnowFlakes) = 0;
+
+	ProblemInstance* getTheProblem();
 };
 
 #endif /* SOLVER_H_ */
