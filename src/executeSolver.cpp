@@ -35,21 +35,24 @@ void execute(ConfigurationJaks& configFile) {
     Double gamma = theConfigurator->getGamma();
     Double interSimilarityWeight = 1.00 - gamma;
 	SnowFlakeVector* solution = 0;
+    SnowFlakeVector newSolution;
 	try {
         solution = theSolver->solve(theConfigurator->getNumToProduce());
         LocalSearch localSearch;
-        SnowFlakeVector newSolution = localSearch.execute(20,*solution, *(theSolver->getTheProblem()), interSimilarityWeight);
+        newSolution = localSearch.execute(20,*solution, *(theSolver->getTheProblem()), interSimilarityWeight);
 	}
 	catch (Exception& e) {
 		std::cerr<<e.what()<<std::endl;
 		exit(0);
 	}
-	catch ( ... ) {
+	/*catch ( ... ) {
 		std::cerr<<"Unexpected error"<<std::endl;
 		exit(0);
-	}
-    showSolution(*solution, *theConfigurator);
-    writeSolution(*solution, *theConfigurator);
+	}*/
+    showSolution(newSolution, *theConfigurator);
+    writeSolution(newSolution, *theConfigurator);
+    std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, interSimilarityWeight)<<std::endl;
+    std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, interSimilarityWeight)<<std::endl;
 	delete solution;
     delete theConfigurator;
 }
