@@ -1,9 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(tesis-jaks_exe)
+ADD_DEFINITIONS(-DBoost_USE_STATIC_LIBS=ON)
+ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
+find_package( Boost 1.54.0 REQUIRED thread system log log_setup )
+find_package( Threads )
+include_directories(${Boost_INCLUDE_DIRS})
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
 set(tesis-jaks_source_files
+#src/util/logger/simpleLogger.cpp
+src/util/logger/logger.cpp
 src/util/configurator/configuratorToDataBase.cpp
 src/util/configurator/configurator.cpp
 src/util/configurator/factoryConfigurator.cpp
@@ -61,6 +68,5 @@ src/test/testingProblemInstance.cpp
 src/test/testingProblemInstanceFromFiles.cpp
 src/test/testSuites.cpp
 )
-#link_directories("/usr/lib/mysql/")
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks mysqlcppconn)

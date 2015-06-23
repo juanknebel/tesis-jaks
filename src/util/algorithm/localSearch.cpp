@@ -1,5 +1,6 @@
 #include "localSearch.h"
 #include "../system/exception.h"
+#include "../logger/logger.h"
 
 SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight) {
     /*
@@ -11,8 +12,8 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
     */
     SnowFlakeVector finalSolution(solution.begin(), solution.end());
     int id = 0;
-    int maxBetter = 5;
-    int tabuCount = 5;
+    int tabuBundleCount = 10;
+    int tabuElementCount = 5;
 
     TabuElements setOfTabuElements;
     TabuBundles  setOfTabuBundles;
@@ -21,6 +22,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
     for (auto snowFlake : finalSolution) {
         snowFlake.setIdentificator(id);
         ++id;
+        setOfTabuBundles.push_back(0);
         for (auto elem : snowFlake.ids()) {
             usedIds.insert(elem);
         }
@@ -51,7 +53,8 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
             // Si no mejora la funcion objetivo vuelvo atras el cambio
             if (newObjetiveFunction <= objetiveFunction) {
                 finalSolution[bundleWithWorstInter] = originalBundle;
-                setOfTabuElements[aNearestElem] = tabuCount;
+                DEBUG(DBG_DEBUG, "\n{\n\ttabu_elemet: {\n\t\titeracion: "<<iter<<",\n\t\tbundle: "<<bundleWithWorstInter<<",\n\t\tid_elemento "<<aNearestElem<<"\n\t}\n}");
+                setOfTabuElements[aNearestElem] = tabuElementCount;
             }
             // Si mejora la funcion objetivo
             else {
@@ -59,13 +62,15 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
                 selectedElement = aNearestElem;
             }
         }
-        if (betterSolution) {
+        if (betterSolution == true) {
             usedIds.erase(farAwayElement);
             usedIds.insert(selectedElement);
-            setOfTabuElements[farAwayElement] = tabuCount;
+            DEBUG(DBG_DEBUG, "\n{\n\ttabu_elements: {\n\t\titeracion: "<<iter<<",\n\t\tbundle: "<<bundleWithWorstInter<<",\n\t\tid_elemento "<<farAwayElement<<"\n\t}\n}");
+            setOfTabuElements[farAwayElement] = tabuElementCount;
         }
         else {
-            setOfTabuBundles[originalBundle.getIdentificator()] = tabuCount;
+            setOfTabuBundles[bundleWithWorstInter] = tabuBundleCount;
+            DEBUG(DBG_DEBUG, "\n{\n\ttabu_bundle: {\n\t\titeracion: "<<iter<<",\n\t\tbundle: "<<bundleWithWorstInter<<"\n\t}\n}");
         }
         ++iter;
     }
@@ -76,7 +81,8 @@ int LocalSearch::findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabu
     double intraSimilarity = std::numeric_limits<double>::max();
     int worstBundle = -1;
     for (auto snowFlake : vector) {
-        if (tabuBundles.find(snowFlake.getIdentificator()) == tabuBundles.end()) {
+        if (tabuBundles[snowFlake.getIdentificator()] == 0) {
+            DEBUG(DBG_DEBUG, "\n{\n\tconsult_bundle: {\n\t\tbundle: "<<snowFlake.getIdentificator()<<"\n\t}\n}");
             double intraCompat = snowFlake.getSumIntraCompat();
             if (intraCompat < intraSimilarity) {
                 worstBundle = snowFlake.getIdentificator();
@@ -134,9 +140,7 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
     double edgeSimilarity = std::numeric_limits<double>::min();
     double edgeSimilarityTwo = std::numeric_limits<double>::min();
     for (auto element : allElements) {
-        bool isNotUsed = usedElements.count(element) == 0;
-        bool isNotTabu = tabuElements.count(element) == 0;
-        if (isNotUsed && isNotTabu) {
+        if ((usedElements.count(element) == 0) && (tabuElements.count(element) == 0)) {
             bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
             if (canReplace) {
                 double similarity = theProblem.getCompat(centroid, element);
@@ -207,5 +211,13 @@ void LocalSearch::updateTabuElements(TabuElements &tabuSet) {
     }
     for (auto elementToDelete : tabuElementsToDelete) {
         tabuSet.erase(elementToDelete);
+    }
+}
+
+void LocalSearch::updateTabuElements(TabuBundles &tabuSet) {
+    for (auto& tabuElement : tabuSet) {
+        if (tabuElement > 0) {
+            tabuElement--;
+        }
     }
 }
