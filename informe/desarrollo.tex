@@ -1,5 +1,5 @@
 \section{Modelo}
-Dado el conjunto de items I y la función de similitud \textbf{S}: IxI$\rightarrow$R[0;1]. El problema lo podemos representar como un grafo 
+Dado el conjunto de items I y la función de similitud \textbf{S}: IxI$\rightarrow$R[0;1]. El problema se puede representar como un grafo 
 con peso en las aristas, en el cuál los vertices son los items y el peso de las aristas es la similitud entres estos.
 \section{Problema}
 El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema
@@ -11,33 +11,32 @@ Las diferencias con los problemas tipicos de clusterización son:
  \item En el bundle no puede existir más de un item con el mismo atributo de complementaridad.
 \end{enumerate}
 \section{Función de similitud}
-La similitud \textbf{S} del conjunto de los items I, \textbf{S}: IxI$\rightarrow$R[0;1], entre los papers esta dado por la comparación del perfil de cada uno. El perfil del paper se obtiene del topic profile, para hacer la comparación se represento el topic profile cómo un vector de $N$ dimensiones, donde $N$ es la cantidad de tópicos, normalizados ya que cada compenente representa un porcentaje del tema al que pertenece.\\
-Dados estos vectores calcular la similitud entre los papers es la distancia angular entre ellos. Los vectores que formen un ángulo cercano a $0$\textdegree representan una similitud alta entre los perfiles, mientras que un ángulo cercano a $90$\textdegree dos perfiles ortogonales o diferentes.\\
-\subsection{Cálculo de ángulos}
-Lo siguiente demostración es en $\Re^{2}$ por ser visualmente más fácil de exponer, es fácilemente extensible a $\Re^{n}$.\\
-La función del ángulo entre los vectores $V, U$ es:\\
-$$\cos(\hat{\theta}) = \dfrac{\overrightarrow{V}.\overrightarrow{U}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}$$
+La función de similitud \textbf{S} para el conjunto de los items I \textbf{S}: IxI$\rightarrow$R[0;1],
+se definió a partir de la comparación del perfil de los papers. El perfil del paper se obtiene del topic profile, 
+para hacer la comparación se representó el topic profile cómo el vector $V = [v_1,v_2,...,v_n]$  de dimensión $N$, donde $N$ es la cantidad de tópicos,
+cumple con las siguientes propiedades:
+\begin{enumerate}
+ \item $v_i \leqslant 1$
+ \item $\sum{v_i} = 1$
+\end{enumerate}
 
-En este gráfico se visualiza el comportamiento de la función $\cos$\\
+La similitud entre los papers se calcula a partir de la distancia angular de estos vectores.\\
+
+En el espacio euclediano el ángulo entre los vectores $U = [u_1,u_2,...,u_n], V = [v_1,v_2,...,v_n]$ se obtiene por la definición del producto escalar:\\
+\begin{equation} \label{eq:angulovectorial}
+\cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
+\end{equation}
+
+Por las propiedades de los vectores del problema $0 \leqslant \cos(\theta) \leqslant 1$, con lo cual $0 \leqslant \theta \leqslant \frac{\pi}{2}$.
+El ángulo de los vectores con los mismos componentes es cero, y mientras los componentes se van diferenciando el ángulo va creciendo hasta 
+ser ortogonales. Por lo tanto la función de similitud se calcula a partir de~\ref{eq:angulovectorial}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{img/coseno.png}
 \caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
 \label{bus:img-coseno}
 \end{figure}
-El dominio de la función de similitud son los vectores normalizados con todas sus componentes mayores o iguales a 0.\\
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\textwidth]{img/planoCartesiano.png}
-\caption{Plano cartesiano. En rojo al cuadrante al que pertenecen los vectores}
-\label{bus:img-planoCartesiano}
-\end{figure}
-Del dominio de la función se obtiene que los ángulos que se forman se encuentran limitados entre $0$\textdegree y $90$\textdegree, 
-o lo que es lo mismo $0$ y $\frac{\pi}{2}$. 
-De lo anterior se obtien que:
-$$0\leq \cos(\hat{\theta}) \leq 1$$
-En el intervalo $[0, 1]$ la función $\cos$ es decreciente. Por lo que se definie la función de similitud como el $\cos$ del ángulo que forman de dos vectores. 
-De esta manera los vectores tengan un ángulo cercano a $0$\textdegree son más similares. 
+
 
 \section{Resolución}
 Encontrar una solución al problema planteado es reducible 
