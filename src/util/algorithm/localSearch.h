@@ -5,7 +5,7 @@
 #include <memory>
 
 using SnowFlakeVector = std::vector<SnowFlake>;
-using TabuElements = std::map<int, int>;
+using TabuElements = std::vector<int>;
 using TabuBundles = std::vector<int>;
 
 class LocalSearch {
@@ -31,7 +31,6 @@ public:
     SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
 
     void updateTabuElements(TabuElements &tabuSet);
-    void updateTabuElements(TabuBundles &tabuSet);
 };
 
 #endif // LOCALSEARCH_H

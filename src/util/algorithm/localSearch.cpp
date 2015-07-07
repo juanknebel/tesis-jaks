@@ -19,13 +19,17 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
     TabuBundles  setOfTabuBundles;
 
     std::set<int> usedIds;
-    for (auto snowFlake : finalSolution) {
+    for (auto& snowFlake : finalSolution) {
         snowFlake.setIdentificator(id);
         ++id;
         setOfTabuBundles.push_back(0);
         for (auto elem : snowFlake.ids()) {
             usedIds.insert(elem);
         }
+    }
+
+    for (auto element : theProblem.getIds()) {
+        setOfTabuElements.push_back(0);
     }
 
     maxIter = 1000;
@@ -40,6 +44,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         }
         SnowFlake originalBundle = finalSolution.at(bundleWithWorstInter);
         int centroidElement = this->findCentroid(originalBundle, theProblem);
+        if (centroidElement == -1) {
+            continue;
+        }
         int farAwayElement = this->findFarAwayElement(centroidElement, originalBundle, theProblem);
         std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, originalBundle,
                                                                  theProblem.getIds(), usedIds, theProblem,
@@ -96,7 +103,7 @@ int LocalSearch::findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabu
 int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem) {
     int centroid = -1;
     std::set<int> theIds = worstFlake.ids();
-    double maxSumEdges = std::numeric_limits<double>::min();
+    double maxSumEdges = -1;
     for (auto element : theIds) {
         double sumEdges = 0.0;
         for (auto otherElement : theIds) {
@@ -104,13 +111,14 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
                 sumEdges += theProblem.getCompat(element, otherElement);
             }
         }
+        DEBUG(DBG_DEBUG, "\n{\n\tconsult_centroid: {\n\t\tbundle: "<<worstFlake.getIdentificator()<<",\n\t\tmax_local: "<<sumEdges<<",\n\t\tmax_global "<<maxSumEdges<<"\n\t}\n}");
         if (sumEdges > maxSumEdges) {
             centroid = element;
             maxSumEdges = sumEdges;
         }
     }
     if (centroid == -1) {
-        throw Exception(__FILE__, __LINE__,"no existe un centroide");
+        //throw Exception(__FILE__, __LINE__,"no existe un centroide");
     }
     return centroid;
 }
@@ -140,7 +148,7 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
     double edgeSimilarity = std::numeric_limits<double>::min();
     double edgeSimilarityTwo = std::numeric_limits<double>::min();
     for (auto element : allElements) {
-        if ((usedElements.count(element) == 0) && (tabuElements.count(element) == 0)) {
+        if ((usedElements.count(element) == 0) && (tabuElements.at(element) == 0)) {
             bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
             if (canReplace) {
                 double similarity = theProblem.getCompat(centroid, element);
@@ -197,21 +205,6 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
         coverageCovered.insert(*cover);
     }
     return ret;
-}
-
-void LocalSearch::updateTabuElements(TabuElements &tabuSet) {
-    std::set<int> tabuElementsToDelete;
-    for (auto& tabuElement : tabuSet) {
-        if (tabuElement.second > 0) {
-            tabuElement.second--;
-        }
-        else {
-            tabuElementsToDelete.insert(tabuElement.first);
-        }
-    }
-    for (auto elementToDelete : tabuElementsToDelete) {
-        tabuSet.erase(elementToDelete);
-    }
 }
 
 void LocalSearch::updateTabuElements(TabuBundles &tabuSet) {
