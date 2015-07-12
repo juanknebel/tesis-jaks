@@ -13,7 +13,7 @@ Las diferencias con los problemas tipicos de clusterización son:
 \section{Función de similitud}
 La función de similitud \textbf{S} para el conjunto de los items I \textbf{S}: IxI$\rightarrow$R[0;1],
 se definió a partir de la comparación del perfil de los papers. El perfil del paper se obtiene del topic profile, 
-para hacer la comparación se representó el topic profile cómo el vector $V = [v_1,v_2,...,v_n]$  de dimensión $N$, donde $N$ es la cantidad de tópicos,
+para hacer la comparación se representó el topic profile cómo el vector $V = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos,
 cumple con las siguientes propiedades:
 \begin{enumerate}
  \item $v_i \leqslant 1$
@@ -220,19 +220,14 @@ calculo el valor intra también se tuvo en cuenta la similitud de todos los elem
 específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
 vector especifico se le dio mayor peso.
 
-\section{Heurística golosa para la obtención de una solución}
-En todas los algoritmos previos se centraron en, primero construir buenos bundles maximizando solo 
-el valor propio de cada bundle, o sea, el valor inter bundle. Una vez generado los suficientes 
-\textquotedblleft buenos\textquotedblright  para luego seleccionar dependiendo de la 
-estrategia elegida la solución final, ahora si, maximizando la función objetivo propuesta 
-originalmente.\\
-Para este heurística golosa propusimos ir construyendo los bundles finales teniendo en cuenta en 
-cada paso la función objetivo, esto es, en cada paso cuando se intenta agregar un nuevo elemento a 
-un bundle se calcula su valor total de la función y se evalúa en que bundle conviene agregarlo. 
-Esto se repite para todos los items, haciendo que cuando tengo que agregar un nuevo ítem a la 
-solución ya calculé para todos los items que no se encuentran en la solución en que bundle conviene 
-agregarlo y cual es el valor de la función en ese caso, quedándonos siempre con el mejor valor 
-posible.
+\section{Algoritmo goloso}
+En los algoritmos previos se centraron en construir bundles máximizando el intra y una vez generado 
+una cantidad suficiente seleccionar un conjunto de estos para la solución.
+En el algoritmo goloso propuesto, se generan unicamente los bundles que pertenecen a la solución.
+Agregando iterativamente el item al bundle que máximiza la función objetivo.\\
+El algoritmo comienza con los bundles de la solución vacíos. En cada paso selecciona, de los items que no son parte
+de la solución, aquel que máximiza la función objetivo agregandolo a alguno de los bundles sin violar las restricciones
+del problema.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $numOfSnowFlakes:Integer$
@@ -241,26 +236,44 @@ posible.
 \STATE $isComplete:Bool \leftarrow False$
 \STATE $elements:Set<Element> \leftarrow ElementsOfTheProblem$
 \WHILE {$isComplete == False$}
-\STATE $bestScore:Double \leftarrow -\infty$
-\STATE $bestElement:Element \leftarrow \varnothing$
-\STATE $bestBundle:SnowFlake \leftarrow \varnothing$
-\FOR {$elem:Element \in elements$}
-\FOR {$bundle:SnowFlake \in selected$}
-\IF {$isValidBundle(bundle \cup \{elem\}) == True$}
-\STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
-\IF {$score > bestScore$}
-\STATE $bestScore \leftarrow score$
-\STATE $bestBundle \leftarrow bundle$
-\STATE $bestElement \leftarrow elem$
-\ENDIF
-\ENDIF
-\ENDFOR
-\ENDFOR
-\STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
-\STATE $elements.erase(elem)$
-\STATE $isComplete \leftarrow bestElement == \varnothing$
+  \STATE $bestScore:Double \leftarrow -\infty$
+  \STATE $bestElement:Element \leftarrow \varnothing$
+  \STATE $bestBundle:SnowFlake \leftarrow \varnothing$
+  \FOR {$elem:Element \in elements$}
+    \FOR {$bundle:SnowFlake \in selected$}
+      \IF {$isValidBundle(bundle \cup \{elem\}) == True$}
+        \STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
+        \IF {$score > bestScore$}
+          \STATE $bestScore \leftarrow score$
+          \STATE $bestBundle \leftarrow bundle$
+          \STATE $bestElement \leftarrow elem$
+        \ENDIF
+      \ENDIF
+    \ENDFOR
+  \ENDFOR
+  \STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
+  \STATE $elements.erase(elem)$
+  \STATE $isComplete \leftarrow bestElement == \varnothing$
 \ENDWHILE
 \RETURN $selected$
 \end{algorithmic}
 \caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
 \end{algorithm}
+
+\section{Búsqueda tabú}
+De los resultados obtenidos luego de las ejecuciones, se propusó realizar una búsqueda local para mejorar la solución. 
+Las búsquedas locales consiste en moverse de solución en solución, aplicando cambios en la solución candidata hasta encontrar una
+mejor solución o satisfacer un criterio de parada.
+Tabú search es una metaheurística, de la familia de las búsquedas locales, dónde se pasa de la solución x a x' 
+realizando modificaciones mínimas. Una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada.
+Se instanciaron dos implementaciones, para la búsqueda de soluciones que mejoren el intra(1) y el inter(2).\\
+\subsection{Búsqueda intra}
+La implementación de la búsqueda local para mejorar la parte intra de la función objetivo tiene como intención que los bundles 
+generados sean más cohesivos. Se entiende que un bundle es más cohesivos sí la relación de similitud entre los items es mayor, 
+entonces se búsca mejorar aquellos bundles que contienen items que no son lo suficientemente cohesivos.\\
+El movimiento de la solución s a la s' es en el bundle de la solución con menor valor intra. Se determinó que el item menos coehesivo
+en un bundle es el que se encuentra más alejado del centroide, el centroide es aquel item que esta más cerca de todos. Entonces el paso 
+de la búsqueda tabú es reemplazar este item con el item, del conjunto de los disponibles, más cercano al centroide. El item reemplazado y 
+el bundle se marcan como tabú, para que en el próximo paso ese bundle no sea el que se modifique y el item para que no sea el seleccionado para
+incluirse a la solución.
+
