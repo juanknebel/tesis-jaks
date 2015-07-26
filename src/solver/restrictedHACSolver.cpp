@@ -165,6 +165,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         tempMaxSimilarity = -1.00;
         tempMaxIndex = -1;
         for (int j = 0; j < totalElements; ++j) {
+            if(i == j){
+                continue;
+            }
             //similarity = this->problem_->getCompatWithSpecificProfile(i, j);//ESTA LINEA HAY QUE CAMBIAR
             similarity = this->problem_->getCompat(i, j);
             IntSet aSetWithElementI = IntSet();

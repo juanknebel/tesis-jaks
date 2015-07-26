@@ -8,8 +8,7 @@
 #include "snowFlake.h"
 #include "../util/system/stringUtilities.h"
 #include <float.h>
-#include <algorithm>
-#include <stdexcept>
+#include "../util/logger/logger.h"
 
 Double SnowFlake::getMinCompat() {
 	Double minCompat = FLT_MAX;
@@ -141,6 +140,9 @@ Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Doubl
 	}
 	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
 		for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
+            double temp = 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
+            int id1 = it->getIdentificator();
+            int id2 = it2->getIdentificator();
 			sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
 		}
 	}

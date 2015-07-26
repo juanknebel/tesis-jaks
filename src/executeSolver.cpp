@@ -17,7 +17,7 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
     if(configurator.getWriteToFile()) {
         WriterSolution* theWriter = configurator.getTheWrtiter();
 		std::stringstream fileName;
-        fileName << configurator.getDirectoryOfWork() << "Solver-";
+        fileName << configurator.getDirectoryOfWork() << "SolverWithLocal-";
         fileName << configurator.getSolverName();
         Double gamma = configurator.getGamma();
         Double interSimilarityWeight = 1.00 - gamma;
@@ -27,6 +27,22 @@ void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
         theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
         WriterSolution::writeInterAndIntraValues(solution, fileName.str());
 	}
+}
+
+void writeSolutionOld(SnowFlakeVector& solution, Configurator& configurator) {
+    if(configurator.getWriteToFile()) {
+        WriterSolution* theWriter = configurator.getTheWrtiter();
+        std::stringstream fileName;
+        fileName << configurator.getDirectoryOfWork() << "Solver-";
+        fileName << configurator.getSolverName();
+        Double gamma = configurator.getGamma();
+        Double interSimilarityWeight = 1.00 - gamma;
+
+        fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
+        std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
+        theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
+        WriterSolution::writeInterAndIntraValues(solution, fileName.str());
+    }
 }
 
 void execute(ConfigurationJaks& configFile) {
@@ -51,6 +67,12 @@ void execute(ConfigurationJaks& configFile) {
 	}*/
     showSolution(newSolution, *theConfigurator);
     writeSolution(newSolution, *theConfigurator);
+    writeSolutionOld(*solution, *theConfigurator);
+    int i=0;
+    for (auto& bundle : *solution) {
+        bundle.setIdentificator(i);
+        i++;
+    }
     std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, interSimilarityWeight)<<std::endl;
     std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, interSimilarityWeight)<<std::endl;
 	delete solution;

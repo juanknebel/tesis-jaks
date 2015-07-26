@@ -29,6 +29,8 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
+    SnowFlake::sortByDecresingSumCompat(*produced);
+    this->completeBundlesWithLessBudget(produced);
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -90,7 +92,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
     if(this->interSimilarityWeight_ < 0.00) {
         throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
     }
-    SnowFlake::sortByDecresingSumCompat(*produced);
+    //SnowFlake::sortByDecresingSumCompat(*produced);
     SnowFlakeVector available(*produced);
     SnowFlakeVector *selected = new SnowFlakeVector();
     Double currentSumIntra = 0.0;
@@ -338,4 +340,31 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 		solution->push_back(produced->at(*ui));
 	}
 	return solution;
+}
+
+void ProduceAndChooseSolver::completeBundlesWithLessBudget(SnowFlakeVector *produced) {
+    SnowFlakeVector bundlesWithNoCost;
+    std::vector<int> elementsToDelete;
+    int size = produced->size();
+    for (int i = 0; i < size; ++i) {
+        if (produced->at(i).getCost() < this->problem_->getbudget()/2) {
+            elementsToDelete.push_back(i);
+            bundlesWithNoCost.push_back(produced->at(i));
+        }
+    }
+    for (auto index : elementsToDelete) {
+        produced->erase(produced->begin() + index);
+    }
+
+    /*int id = 0;
+    for (auto& bundle : bundlesWithNoCost) {
+        bundle.setIdentificator(id);
+        id++;
+    }
+
+    bool canMerge = true;
+    while(canMerge == true) {
+        int bundleWithWorstInter = this->findWorstIntraBundle(bundlesWithNoCost);
+        SnowFlake worstBundle = bundlesWithNoCost.at();
+    }*/
 }

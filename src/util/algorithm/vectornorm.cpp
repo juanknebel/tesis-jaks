@@ -25,9 +25,9 @@
 #include <iostream>
 #include <sstream>
 
-#define db_database "tesis"
-#define db_user "tesis"
-#define db_password "tesis"
+#define db_database "tesis_topic_mas_uno"
+#define db_user "root"
+#define db_password "passw0rd"
 #define db_server "localhost"
 
 std::map<String, int> *distributionOrder;
@@ -202,25 +202,23 @@ void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, S
 }
 
 void insertSimilarity() {
-    /*
     String tableNameArticles = "ARTICLE_ITEM";
     String fieldIdArticles = "ArticleId";
     String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
     String tableNameSimilarityArticles = "SIMILARITY";
+    insertSimilarity(tableNameArticles, fieldIdArticles, tableNameSimilarityArticles, queryArticles);
 
-    String tableNameAuthors = "AUTHOR_ITEM";
+    /*String tableNameAuthors = "AUTHOR_ITEM";
     String fieldIdAuthors = "AuthorId";
     String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
     String tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
-    */
-    String tableNameAffiliations = "AFFILIATION_ITEM";
+    insertSimilarity(tableNameAuthors, fieldIdAuthors, tableNameSimilarityAuthors, queryAuthors);*/
+
+    /*String tableNameAffiliations = "AFFILIATION_ITEM";
     String fieldIdAffiliations = "affiliationId";
     String queryAffiliations = "SELECT AFFILIATION_affiliationId, distributionAffiliation, distribution_KEY FROM tesis.TopicProfileAffiliations ORDER BY AFFILIATION_affiliationId";
     String tableNameSimilarityAffiliations = "SIMILARITY_AFFILIATIONS";
-
-    //insertSimilarity(tableNameArticles, fieldIdArticles, queryArticles, tableNameSimilarityArticles);
-    //insertSimilarity(tableNameAuthors, fieldIdAuthors, queryAuthors, tableNameSimilarityAuthors);
-    insertSimilarity(tableNameAffiliations, fieldIdAffiliations, tableNameSimilarityAffiliations, queryAffiliations);
+    insertSimilarity(tableNameAffiliations, fieldIdAffiliations, tableNameSimilarityAffiliations, queryAffiliations);*/
 }
 
 void insertSimilarity(std::vector<float> *vector1) {
