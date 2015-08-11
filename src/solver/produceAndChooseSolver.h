@@ -108,6 +108,8 @@ protected:
 	virtual SnowFlakeVector* produceManySnowflakes(int numSnowflakes) = 0;
 private:
 	void completeBundlesWithLessBudget(SnowFlakeVector* produced);
+
+	int findWorstIntraBundle(SnowFlakeVector vector);
 };
 
 

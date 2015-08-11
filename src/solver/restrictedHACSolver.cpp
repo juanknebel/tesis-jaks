@@ -110,7 +110,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
          */
         for (int i = 0; i < totalElements; ++i) {
             if ((*theIVector)[i] == true && i != k1Index) {
-                ;
                 (*theMatrixC)(i, k2Index);
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k1Index));
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k2Index));

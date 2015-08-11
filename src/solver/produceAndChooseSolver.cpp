@@ -7,6 +7,7 @@
 
 #include "produceAndChooseSolver.h"
 #include "../util/system/stringUtilities.h"
+#include "../util/logger/logger.h"
 #include <float.h>
 
 void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy) {
@@ -30,7 +31,7 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
     SnowFlake::sortByDecresingSumCompat(*produced);
-    this->completeBundlesWithLessBudget(produced);
+    //this->completeBundlesWithLessBudget(produced);
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -344,27 +345,99 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 
 void ProduceAndChooseSolver::completeBundlesWithLessBudget(SnowFlakeVector *produced) {
     SnowFlakeVector bundlesWithNoCost;
-    std::vector<int> elementsToDelete;
-    int size = produced->size();
-    for (int i = 0; i < size; ++i) {
-        if (produced->at(i).getCost() < this->problem_->getbudget()/2) {
-            elementsToDelete.push_back(i);
+    std::set<int> elementsToDelete;
+    auto size = produced->size();
+
+    DEBUG(DBG_DEBUG,"Cantidad total de bundles: "<<produced->size());
+    int count = 0;
+    for (auto i = 0; i < size; ++i) {
+        if(produced->at(i).getCost() == 2 || produced->at(i).getCost() == 3) {
+            ++count;
+            elementsToDelete.insert(i);
             bundlesWithNoCost.push_back(produced->at(i));
         }
     }
-    for (auto index : elementsToDelete) {
-        produced->erase(produced->begin() + index);
+
+    SnowFlakeVector newProduced;
+    for (auto j = 0; j < size; ++j) {
+        if (elementsToDelete.count(j) == 0) {
+            newProduced.push_back(produced->at(j));
+        }
     }
 
-    /*int id = 0;
+    DEBUG(DBG_DEBUG,"Cantidad total de bundles sacando los de 2 y 3: "<<newProduced.size());
+
+    auto id = 0;
     for (auto& bundle : bundlesWithNoCost) {
         bundle.setIdentificator(id);
         id++;
     }
+    DEBUG(DBG_DEBUG, "Cantidad de bundles borrados: "<<count);
+    DEBUG(DBG_DEBUG, "Cantidad de bundles sin costo: "<<bundlesWithNoCost.size());
 
     bool canMerge = true;
-    while(canMerge == true) {
-        int bundleWithWorstInter = this->findWorstIntraBundle(bundlesWithNoCost);
-        SnowFlake worstBundle = bundlesWithNoCost.at();
-    }*/
+    DEBUG(DBG_DEBUG, "entro al ciclo");
+    auto countMerge = bundlesWithNoCost.size();
+    while (canMerge) {
+        for (auto bundleOne : bundlesWithNoCost) {
+            --count;
+            canMerge = false;
+            //int bundleWithWorstInter = this->findWorstIntraBundle(bundlesWithNoCost);
+            //DEBUG(DBG_DEBUG,"bundle numero: "<< bundleOne.getIdentificator());
+            //SnowFlake worstBundle = bundlesWithNoCost.at(bundleWithWorstInter);
+            for (auto bundle : bundlesWithNoCost) {
+                int bundleMerge = bundle.getIdentificator();
+                //DEBUG(DBG_DEBUG,"bundle numero2: "<< bundleMerge);
+                if (bundleMerge != bundleOne.getIdentificator()) {
+                    DEBUG(DBG_DEBUG, "INIT");
+                    DEBUG(DBG_DEBUG, "Bundle uno: " << bundleOne.getIdentificator());
+                    for (auto elElem1 : bundleOne.ids()) {
+                        DEBUG(DBG_DEBUG, elElem1);
+                    }
+                    for (auto element : bundle.ids()) {
+                        IntSet idsNewSet;
+                        idsNewSet.insert(element);
+                        bool canMergeTwoBundles = this->checkBudgetAndCoverageConstraint(bundleOne.ids(), idsNewSet);
+                        DEBUG(DBG_DEBUG, "Bundle dos: " << bundle.getIdentificator());
+                        DEBUG(DBG_DEBUG, element);
+                        DEBUG(DBG_DEBUG, "FIN");
+                        if (canMergeTwoBundles) {
+                            DEBUG(DBG_DEBUG, "HIZO MERGE, con ele elemento: " << element);
+                            IntSet newIds = bundleOne.ids();
+                            newIds.insert(element);
+                            SnowFlake newWorstBundle(newIds, this->problem_);
+
+                            IntSet oldIds = bundle.ids();
+                            oldIds.erase(element);
+                            SnowFlake newBundleWithNoElement(oldIds, this->problem_);
+
+                            bundlesWithNoCost[bundleOne.getIdentificator()] = newWorstBundle;
+                            bundlesWithNoCost[bundleMerge] = newBundleWithNoElement;
+                            canMerge = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (auto bundle : bundlesWithNoCost) {
+        if (!bundle.ids().size() < 1) {
+            produced->push_back(bundle);
+        }
+    }
+    DEBUG(DBG_DEBUG, "Cantidad de bundles despues del merge: "<<produced->size());
+}
+
+int ProduceAndChooseSolver::findWorstIntraBundle(SnowFlakeVector vector) {
+    double intraSimilarity = std::numeric_limits<double>::max();
+    int worstBundle = -1;
+    for (auto snowFlake : vector) {
+        double intraCompat = snowFlake.getSumIntraCompat();
+        if (intraCompat < intraSimilarity) {
+            worstBundle = snowFlake.getIdentificator();
+            intraSimilarity = intraCompat;
+        }
+    }
+    return worstBundle;
 }
