@@ -48,19 +48,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
     SnowFlakeVector bestSolution(temporarySolution.begin(), temporarySolution.end());
     double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
 
-    for (auto& bundle : temporarySolution) {
-        bundle = completeBundle(bundle, usedIds, theProblem, interSimilarityWeight);
-    }ProblemInstance &
-
-    DEBUG(DBG_DEBUG,"Solution completada");
-    for (auto bundle : temporarySolution) {
-        DEBUG(DBG_DEBUG,"Bundle: " << bundle.getIdentificator());
-        for (auto element : bundle.ids()) {
-            DEBUG(DBG_DEBUG,"Elemento: " << element);
-        }
-    }
-    DEBUG(DBG_DEBUG,"Fin Solution completada");
-
     while (iteration < maxIter) {
         ++iteration;
         //DEBUG(DBG_DEBUG, "Inicio Iteracion: "<<iteration<<"\n");
@@ -73,17 +60,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         }
         SnowFlake originalBundle = temporarySolution.at(bundleWithWorstInter);
 
-        //originalBundle = completeBundle(originalBundle, usedIds, theProblem);
-
         int centroidElement = this->findCentroid(originalBundle, theProblem);
-        if (centroidElement == -1) {
-            continue;
-        }
+
         int farAwayElement = this->findFarAwayElement(centroidElement, originalBundle, theProblem);
-        if (farAwayElement == -1) {
-            //setOfTabuBundles[bundleWithWorstInter] = maxIter;
-            continue;
-        }
 
         std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, originalBundle,
                                                                  theProblem.getIds(), usedIds, theProblem,
@@ -129,17 +108,21 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
                 bestSolution = temporarySolution;
                 theBestObjectiveSolution = tempObjectiveFunction;
             }
-            usedIds.erase(farAwayElement);
+            if (farAwayElement != -1) {
+                usedIds.erase(farAwayElement);
+                setOfTabuElements[farAwayElement] = tabuElementCount;
+            }
             usedIds.insert(betterElement);
-            setOfTabuElements[farAwayElement] = tabuElementCount;
         }
         else {
             if (betterWorstSolution) {
                 SnowFlake theBundle = this->createNewBunlde(originalBundle, farAwayElement, betterWorstElement, theProblem);
                 temporarySolution[bundleWithWorstInter] = theBundle;
-                usedIds.erase(farAwayElement);
+                if (farAwayElement != -1) {
+                    usedIds.erase(farAwayElement);
+                    setOfTabuElements[farAwayElement] = tabuElementCount;
+                }
                 usedIds.insert(betterWorstElement);
-                setOfTabuElements[farAwayElement] = tabuElementCount;
             }
             else {
                 setOfTabuBundles[bundleWithWorstInter] = tabuBundleCount;
@@ -148,6 +131,15 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         }
         //DEBUG(DBG_DEBUG, "Fin Iteracion: "<<iteration<<"\n");
     }
+
+    DEBUG(DBG_DEBUG,"Solution completada");
+    for (auto bundle : temporarySolution) {
+        DEBUG(DBG_DEBUG,"Bundle: " << bundle.getIdentificator());
+        for (auto element : bundle.ids()) {
+            DEBUG(DBG_DEBUG,"Elemento: " << element);
+        }
+    }
+    DEBUG(DBG_DEBUG,"Fin Solution completada");
 
     return bestSolution;
 }
@@ -194,24 +186,21 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 
 int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem) {
     int farAwayBundle = -1;
-    double minSimilarity = std::numeric_limits<double>::max();
-    //DEBUG(DBG_DEBUG, "Centroide: "<<centroid<<"\n");
-    //DEBUG(DBG_DEBUG, "--------------\nMaximo"<<minSimilarity<<"\n--------------\n");
-    for (auto element : worstFlake.ids()) {
-        if (element != centroid) {
-            double similarity = theProblem.getCompat(centroid, element);
-            //DEBUG(DBG_DEBUG, "Elemento: "<<element<<"\n");
-            //DEBUG(DBG_DEBUG, "Compatibilidad entre centroide y elemento: "<<centroid<<", "<<element<<"="<<similarity<<"\n");
-            if (similarity < minSimilarity) {
-                farAwayBundle = element;
-                minSimilarity = similarity;
+    if (worstFlake.ids().size() == 5) {
+        double minSimilarity = std::numeric_limits<double>::max();
+        //DEBUG(DBG_DEBUG, "Centroide: "<<centroid<<"\n");
+        //DEBUG(DBG_DEBUG, "--------------\nMaximo"<<minSimilarity<<"\n--------------\n");
+        for (auto element : worstFlake.ids()) {
+            if (element != centroid) {
+                double similarity = theProblem.getCompat(centroid, element);
+                //DEBUG(DBG_DEBUG, "Elemento: "<<element<<"\n");
+                //DEBUG(DBG_DEBUG, "Compatibilidad entre centroide y elemento: "<<centroid<<", "<<element<<"="<<similarity<<"\n");
+                if (similarity < minSimilarity) {
+                    farAwayBundle = element;
+                    minSimilarity = similarity;
+                }
             }
         }
-    }
-    if (farAwayBundle == -1) {
-        std::stringstream error;
-        error<<"No existe elemento mas lejano. Bundle num: "<<worstFlake.getIdentificator()<<". Centroide: "<<centroid;
-        throw Exception(__FILE__, __LINE__,error.str());
     }
     return farAwayBundle;
 }
@@ -287,25 +276,5 @@ void LocalSearch::updateTabuElements(TabuBundles &tabuSet) {
         if (tabuElement > 0) {
             tabuElement--;
         }
-    }
-}
-
-SnowFlake LocalSearch::completeBundle(SnowFlake snowFlake, std::set<int> &usedIds, ProblemInstance &theProblem,
-                                      double interSimilarityWeigth) {
-    if (snowFlake.getCost() > theProblem.getbudget() / 2.0) {
-        return snowFlake;
-    }
-    else {
-        SnowFlake newBundle = snowFlake;
-        //double objectiveFunction = SnowFlake::objetiveFunction(newBundle, interSimilarityWeigth);
-        for (auto element : theProblem.getIds()) {
-            if (usedIds.count(element) == 0) {
-                if (checkCoverageConstraint(newBundle, -1, element, theProblem)) {
-                    newBundle = createNewBunlde(newBundle, -1, element, theProblem);
-                    usedIds.insert(element);
-                }
-            }
-        }
-        return newBundle;
     }
 }

@@ -31,7 +31,6 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
     SnowFlake::sortByDecresingSumCompat(*produced);
-    //this->completeBundlesWithLessBudget(produced);
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -80,7 +79,7 @@ ProduceAndChooseSolver::RankingStrategy ProduceAndChooseSolver::getDefault() {
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested) {
 	SnowFlake::sortByDecresingSumCompat(*produced);
-	int minValue = ((numRequested < produced->size()) ? numRequested : produced->size());
+	auto minValue = ((numRequested < produced->size()) ? numRequested : produced->size());
 	SnowFlakeVector* selected = new SnowFlakeVector();
 	for (int i = 0; i < minValue; ++i) {
 		SnowFlake selectedSnowFlake(produced->at(i));
@@ -94,18 +93,18 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
     }
     //SnowFlake::sortByDecresingSumCompat(*produced);
-    SnowFlakeVector available(*produced);
+    SnowFlakeVector remainingFlakes(*produced);
     SnowFlakeVector *selected = new SnowFlakeVector();
     Double currentSumIntra = 0.0;
     Double currentSumOneMinusInter = 0.0;
     while (selected->size() < numRequested && selected->size() < produced->size()) {
         Double maxScore = -1.0;
         int bestCandidateId = -1;
-        if (available.size() == 0) {
-            throw Exception(__FILE__, __LINE__, "There are no available condidates");
+        if (remainingFlakes.size() == 0) {
+            throw Exception(__FILE__, __LINE__, "There are no remainingFlakes condidates");
         }
-        for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
-            SnowFlake candidate = available[candidateId];
+        for (Uint candidateId = 0; candidateId < remainingFlakes.size(); ++candidateId) {
+            SnowFlake candidate = remainingFlakes[candidateId];
             Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             //Double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             if (score > maxScore) {
@@ -115,22 +114,23 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         }
 
         if (bestCandidateId == -1) {
-            throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
+            throw Exception(__FILE__, __LINE__, "There is no best candidate (remainingFlakes.size()==" + convertToString(static_cast<int> (remainingFlakes.size()))
                     + ", maxScore==" + convertToString(maxScore) + ")");
         }
 
         //Calcula las nuevas puntuaciones
-        SnowFlake bestCandidate = available[bestCandidateId];
+        SnowFlake bestCandidate = remainingFlakes[bestCandidateId];
         currentSumIntra += bestCandidate.getSumIntraCompat();
         for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
             currentSumOneMinusInter += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
         }
 
         //Borro el candidato que ya use
-        available.erase(available.begin() + bestCandidateId);
+        remainingFlakes.erase(remainingFlakes.begin() + bestCandidateId);
         //Agrego el elemento a la solucion
         selected->push_back(bestCandidate);
     }
+    tabuSearchBundles(*selected, remainingFlakes);
     return selected;
 }
 
@@ -295,7 +295,7 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
-	int numProduced = produced->size();
+	auto numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
 	MatrixWrapper* w;
 	w= new MatrixConcrete(numProduced, numProduced);
@@ -316,7 +316,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 	}
 
 	while(selected.size() > numRequested){
-		Double minWeightedDegree = FLT_MAX;
+		Double minWeightedDegree = std::numeric_limits<double>::max();
 		int minElement = -1;
 		for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
 			Double weightedDegree = 0.0;
@@ -343,101 +343,11 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 	return solution;
 }
 
-void ProduceAndChooseSolver::completeBundlesWithLessBudget(SnowFlakeVector *produced) {
-    SnowFlakeVector bundlesWithNoCost;
-    std::set<int> elementsToDelete;
-    auto size = produced->size();
+void ProduceAndChooseSolver::tabuSearchBundles(SnowFlakeVector &selectedFlakes, SnowFlakeVector &remainingFlakes) {
+    int iteration = 1;
+    int maxIteration = 1000;
+    while (iteration < maxIteration) {
+        ++iteration;
 
-    DEBUG(DBG_DEBUG,"Cantidad total de bundles: "<<produced->size());
-    int count = 0;
-    for (auto i = 0; i < size; ++i) {
-        if(produced->at(i).getCost() == 2 || produced->at(i).getCost() == 3) {
-            ++count;
-            elementsToDelete.insert(i);
-            bundlesWithNoCost.push_back(produced->at(i));
-        }
     }
-
-    SnowFlakeVector newProduced;
-    for (auto j = 0; j < size; ++j) {
-        if (elementsToDelete.count(j) == 0) {
-            newProduced.push_back(produced->at(j));
-        }
-    }
-
-    DEBUG(DBG_DEBUG,"Cantidad total de bundles sacando los de 2 y 3: "<<newProduced.size());
-
-    auto id = 0;
-    for (auto& bundle : bundlesWithNoCost) {
-        bundle.setIdentificator(id);
-        id++;
-    }
-    DEBUG(DBG_DEBUG, "Cantidad de bundles borrados: "<<count);
-    DEBUG(DBG_DEBUG, "Cantidad de bundles sin costo: "<<bundlesWithNoCost.size());
-
-    bool canMerge = true;
-    DEBUG(DBG_DEBUG, "entro al ciclo");
-    auto countMerge = bundlesWithNoCost.size();
-    while (canMerge) {
-        for (auto bundleOne : bundlesWithNoCost) {
-            --count;
-            canMerge = false;
-            //int bundleWithWorstInter = this->findWorstIntraBundle(bundlesWithNoCost);
-            //DEBUG(DBG_DEBUG,"bundle numero: "<< bundleOne.getIdentificator());
-            //SnowFlake worstBundle = bundlesWithNoCost.at(bundleWithWorstInter);
-            for (auto bundle : bundlesWithNoCost) {
-                int bundleMerge = bundle.getIdentificator();
-                //DEBUG(DBG_DEBUG,"bundle numero2: "<< bundleMerge);
-                if (bundleMerge != bundleOne.getIdentificator()) {
-                    DEBUG(DBG_DEBUG, "INIT");
-                    DEBUG(DBG_DEBUG, "Bundle uno: " << bundleOne.getIdentificator());
-                    for (auto elElem1 : bundleOne.ids()) {
-                        DEBUG(DBG_DEBUG, elElem1);
-                    }
-                    for (auto element : bundle.ids()) {
-                        IntSet idsNewSet;
-                        idsNewSet.insert(element);
-                        bool canMergeTwoBundles = this->checkBudgetAndCoverageConstraint(bundleOne.ids(), idsNewSet);
-                        DEBUG(DBG_DEBUG, "Bundle dos: " << bundle.getIdentificator());
-                        DEBUG(DBG_DEBUG, element);
-                        DEBUG(DBG_DEBUG, "FIN");
-                        if (canMergeTwoBundles) {
-                            DEBUG(DBG_DEBUG, "HIZO MERGE, con ele elemento: " << element);
-                            IntSet newIds = bundleOne.ids();
-                            newIds.insert(element);
-                            SnowFlake newWorstBundle(newIds, this->problem_);
-
-                            IntSet oldIds = bundle.ids();
-                            oldIds.erase(element);
-                            SnowFlake newBundleWithNoElement(oldIds, this->problem_);
-
-                            bundlesWithNoCost[bundleOne.getIdentificator()] = newWorstBundle;
-                            bundlesWithNoCost[bundleMerge] = newBundleWithNoElement;
-                            canMerge = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    for (auto bundle : bundlesWithNoCost) {
-        if (!bundle.ids().size() < 1) {
-            produced->push_back(bundle);
-        }
-    }
-    DEBUG(DBG_DEBUG, "Cantidad de bundles despues del merge: "<<produced->size());
-}
-
-int ProduceAndChooseSolver::findWorstIntraBundle(SnowFlakeVector vector) {
-    double intraSimilarity = std::numeric_limits<double>::max();
-    int worstBundle = -1;
-    for (auto snowFlake : vector) {
-        double intraCompat = snowFlake.getSumIntraCompat();
-        if (intraCompat < intraSimilarity) {
-            worstBundle = snowFlake.getIdentificator();
-            intraSimilarity = intraCompat;
-        }
-    }
-    return worstBundle;
 }

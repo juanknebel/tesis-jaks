@@ -106,10 +106,8 @@ protected:
 	* @return a set of snowflakes, possibly larger than the number of requested elements
 	*/
 	virtual SnowFlakeVector* produceManySnowflakes(int numSnowflakes) = 0;
-private:
-	void completeBundlesWithLessBudget(SnowFlakeVector* produced);
 
-	int findWorstIntraBundle(SnowFlakeVector vector);
+	void tabuSearchBundles(SnowFlakeVector &selectedFlakes, SnowFlakeVector &remainingFlakes);
 };
 
 

@@ -31,9 +31,6 @@ public:
     SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
 
     void updateTabuElements(TabuElements &tabuSet);
-
-    SnowFlake completeBundle(SnowFlake snowFlake, std::set<int> &usedIds, ProblemInstance &theProblem,
-                                          double interSimilarityWeigth);
 };
 
 #endif // LOCALSEARCH_H
