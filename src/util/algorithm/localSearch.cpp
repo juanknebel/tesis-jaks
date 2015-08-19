@@ -271,7 +271,7 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
     return ret;
 }
 
-void LocalSearch::updateTabuElements(TabuBundles &tabuSet) {
+void LocalSearch::updateTabuElements(std::vector<int> &tabuSet) {
     for (auto& tabuElement : tabuSet) {
         if (tabuElement > 0) {
             tabuElement--;

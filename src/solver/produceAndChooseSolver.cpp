@@ -9,6 +9,7 @@
 #include "../util/system/stringUtilities.h"
 #include "../util/logger/logger.h"
 #include <float.h>
+#include "../util/algorithm/localSearchBundles.h"
 
 void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy) {
 	this->rankingStrategy_ = strategy;
@@ -130,7 +131,10 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         //Agrego el elemento a la solucion
         selected->push_back(bestCandidate);
     }
-    tabuSearchBundles(*selected, remainingFlakes);
+    LocalSearchBundles localSearchBundles;
+    SnowFlakeVector theFlakes = localSearchBundles.execute(100,*selected, remainingFlakes, *this->problem_, this->interSimilarityWeight_);
+    selected->clear();
+    *selected = theFlakes;
     return selected;
 }
 
@@ -341,13 +345,4 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 		solution->push_back(produced->at(*ui));
 	}
 	return solution;
-}
-
-void ProduceAndChooseSolver::tabuSearchBundles(SnowFlakeVector &selectedFlakes, SnowFlakeVector &remainingFlakes) {
-    int iteration = 1;
-    int maxIteration = 1000;
-    while (iteration < maxIteration) {
-        ++iteration;
-
-    }
 }

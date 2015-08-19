@@ -106,8 +106,6 @@ protected:
 	* @return a set of snowflakes, possibly larger than the number of requested elements
 	*/
 	virtual SnowFlakeVector* produceManySnowflakes(int numSnowflakes) = 0;
-
-	void tabuSearchBundles(SnowFlakeVector &selectedFlakes, SnowFlakeVector &remainingFlakes);
 };
 
 

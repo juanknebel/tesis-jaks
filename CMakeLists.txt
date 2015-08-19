@@ -68,5 +68,5 @@ src/test/testingProblemInstance.cpp
 src/test/testingProblemInstanceFromFiles.cpp
 src/test/testSuites.cpp
 )
-add_executable(tesis-jaks ${tesis-jaks_source_files})
+add_executable(tesis-jaks ${tesis-jaks_source_files} src/util/algorithm/localSearchBundles.cpp src/util/algorithm/localSearchBundles.h)
 target_link_libraries(tesis-jaks mysqlcppconn)

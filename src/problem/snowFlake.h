@@ -16,7 +16,7 @@ private:
 	/**
 	 * The elements this snowflake is composed of.
 	 */
-	IntSet *elements_;
+	IntSet elements_;
 	/**
 	 * The problem instance for which this snowflake was generated.
 	 */
