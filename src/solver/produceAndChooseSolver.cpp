@@ -132,7 +132,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         selected->push_back(bestCandidate);
     }
     LocalSearchBundles localSearchBundles;
-    SnowFlakeVector theFlakes = localSearchBundles.execute(100,*selected, remainingFlakes, *this->problem_, this->interSimilarityWeight_);
+    SnowFlakeVector theFlakes = localSearchBundles.execute(1000,*selected, remainingFlakes, *this->problem_, this->interSimilarityWeight_);
     selected->clear();
     *selected = theFlakes;
     return selected;

@@ -66,8 +66,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
 
         double objectiveFunction = SnowFlake::objetiveFunction(temporarySolution, interSimilarityWeight);
         int betterElement;
-        int betterWorstElement;
         bool betterSolution = false;
+
+        int betterWorstElement;
         bool betterWorstSolution = false;
         double bestWorstObjectiveFunction = std::numeric_limits<double>::min();
 
