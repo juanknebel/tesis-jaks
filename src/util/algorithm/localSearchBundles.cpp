@@ -18,17 +18,27 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
     int id = 0;
     for (auto& snowFlake : temporarySolution) {
         snowFlake.setIdentificator(id);
+        DEBUG(DBG_DEBUG, "BundleId: "<<id);
         ++id;
         setOfTabuBundles.push_back(0);
         countTabuBundles.push_back(0);
+        for (auto element : snowFlake.ids()) {
+            DEBUG(DBG_DEBUG, "Elemento: "<<element);
+        }
     }
 
     for (auto& remainingFlake : remainingFlakes) {
         remainingFlake.setIdentificator(id);
+        DEBUG(DBG_DEBUG, "BundleId: "<<id);
         ++id;
         setOfTabuBundles.push_back(0);
         countTabuBundles.push_back(0);
+        for (auto element : remainingFlake.ids()) {
+            DEBUG(DBG_DEBUG, "Elemento: "<<element);
+        }
     }
+
+    DEBUG(DBG_DEBUG, "Comienza iteracion");
 
     SnowFlakeVector bestSolution(temporarySolution.begin(), temporarySolution.end());
     double currentObjectiveFunction = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
@@ -40,15 +50,20 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         ++iteration;
         this->updateTabuElements(setOfTabuBundles);
         SnowFlake worstSnowFlake = this->getWorstBundle(iterationSolution, setOfTabuBundles, theProblem, interSimilarityWeight);
-        SnowFlake centroidSnowFlake = this->getCentroidBundle(iterationSolution, theProblem, interSimilarityWeight);
+        SnowFlake centroidSnowFlake = this->getCentroidBundle(worstSnowFlake, iterationSolution, theProblem,
+                                                              interSimilarityWeight);
         SnowFlakeVector betterFlakes = this->getBetterFlakes(centroidSnowFlake, setOfTabuBundles, remainingFlakes,
                                                              theProblem, interSimilarityWeight);
 
-        double betterObjectiveFunction = std::numeric_limits<double>::min();
+        DEBUG(DBG_DEBUG, "Peor bundle: "<<worstSnowFlake.getIdentificator());
+        DEBUG(DBG_DEBUG, "Centroide: "<<centroidSnowFlake.getIdentificator());
+
+        double betterObjectiveFunction = SnowFlake::objetiveFunction(iterationSolution, interSimilarityWeight);
         SnowFlake flakeToReplace;
         bool betterSolution = false;
 
         for (auto aFlake : betterFlakes) {
+            DEBUG(DBG_DEBUG, "Bundle a insertar: "<<aFlake.getIdentificator());
             SnowFlakeVector aNewSolution;
             aNewSolution.push_back(aFlake);
             for (auto aFlakeInSolution : iterationSolution) {
@@ -64,6 +79,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
             }
         }
         if (betterSolution) {
+            DEBUG(DBG_DEBUG, "mejora la solucion");
             temporarySolution.clear();
             temporarySolution.push_back(flakeToReplace);
             for (auto bundle : iterationSolution) {
@@ -83,9 +99,13 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
                                                  }),
                                   remainingFlakes.end());
             remainingFlakes.push_back(worstSnowFlake);
-            setOfTabuBundles[worstSnowFlake.getIdentificator()] = tabuBundleCount;
         }
-
+        else {
+            for (SnowFlake betterFlake : betterFlakes) {
+                setOfTabuBundles[betterFlake.getIdentificator()] = tabuBundleCount;
+            }
+        }
+        setOfTabuBundles[worstSnowFlake.getIdentificator()] = tabuBundleCount;
     }
     DEBUG(DBG_DEBUG, "sale del tabu");
     return bestSolution;
@@ -103,37 +123,40 @@ SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBund
                                              ProblemInstance &theProblem, Double intersimilarityWeight) {
     double worstValue = std::numeric_limits<double>::max();
     SnowFlake worstSnowFlake;
-
     for (auto bundle : solution) {
-        double value = (1 - intersimilarityWeight) * bundle.getSumIntraCompat();
-        for (auto otherBundle : solution) {
-            if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
-                value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+        if (setOfTabuBundles[bundle.getIdentificator()] == 0) {
+            double value = (1 - intersimilarityWeight) * bundle.getSumIntraCompat();
+            for (auto otherBundle : solution) {
+                if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
+                    value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+                }
             }
-        }
-        if (value < worstValue) {
-            worstValue = value;
-            worstSnowFlake = bundle;
+            if (value < worstValue) {
+                worstValue = value;
+                worstSnowFlake = bundle;
+            }
         }
     }
 
     return worstSnowFlake;
 }
 
-SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlakeVector &solution, ProblemInstance &theProblem,
-                                                Double interSimilarityWeight) {
+SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
+                                                ProblemInstance &theProblem, Double interSimilarityWeight) {
     SnowFlake centroid;
     double minPairwise = std::numeric_limits<double>::max();
     for (auto bundle : solution) {
-        double value = 0.0;
-        for (auto otherBundle : solution) {
-            if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
-                value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+        if (worstBundle.getIdentificator() != bundle.getIdentificator()) {
+            double value = 0.0;
+            for (auto otherBundle : solution) {
+                if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
+                    value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+                }
             }
-        }
-        if (value < minPairwise) {
-            minPairwise = value;
-            centroid = bundle;
+            if (value < minPairwise) {
+                minPairwise = value;
+                centroid = bundle;
+            }
         }
     }
     return centroid;
@@ -159,8 +182,8 @@ SnowFlakeVector LocalSearchBundles::getBetterFlakes(SnowFlake centroid, TabuBund
                 }
                 bestBundles.push_back(bundle);
             }
+            temporaryFlakes.pop_back();
         }
-        temporaryFlakes.pop_back();
     }
-    return std::vector<SnowFlake>();
+    return bestBundles;
 }

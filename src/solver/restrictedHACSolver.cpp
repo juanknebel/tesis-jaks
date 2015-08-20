@@ -292,8 +292,8 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
 
     SnowFlakeVector* solution = new SnowFlakeVector;
     for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
-        SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
-        solution->push_back(*aFlake);
+        SnowFlake aFlake(*it->second, this->problem_);
+        solution->push_back(aFlake);
     }
 
     delete theIVector;

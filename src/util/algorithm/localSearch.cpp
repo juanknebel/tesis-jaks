@@ -34,14 +34,10 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         setOfTabuElements.push_back(0);
     }
 
-    DEBUG(DBG_DEBUG,"Solution inicial");
     for (auto bundle : temporarySolution) {
-        DEBUG(DBG_DEBUG,"Bundle: " << bundle.getIdentificator());
         for (auto element : bundle.ids()) {
-            DEBUG(DBG_DEBUG,"Elemento: " << element);
         }
     }
-    DEBUG(DBG_DEBUG,"Fin Solution inicial");
 
     maxIter = 1000;
     int iteration = 0;
@@ -50,7 +46,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
 
     while (iteration < maxIter) {
         ++iteration;
-        //DEBUG(DBG_DEBUG, "Inicio Iteracion: "<<iteration<<"\n");
         this->updateTabuElements(setOfTabuElements);
         this->updateTabuElements(setOfTabuBundles);
 
@@ -129,17 +124,12 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
                 countTabuBundles[bundleWithWorstInter] = countTabuBundles[bundleWithWorstInter] + 1;
             }
         }
-        //DEBUG(DBG_DEBUG, "Fin Iteracion: "<<iteration<<"\n");
     }
 
-    DEBUG(DBG_DEBUG,"Solution completada");
     for (auto bundle : temporarySolution) {
-        DEBUG(DBG_DEBUG,"Bundle: " << bundle.getIdentificator());
         for (auto element : bundle.ids()) {
-            DEBUG(DBG_DEBUG,"Elemento: " << element);
         }
     }
-    DEBUG(DBG_DEBUG,"Fin Solution completada");
 
     return bestSolution;
 }
@@ -188,13 +178,9 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
     int farAwayBundle = -1;
     if (worstFlake.ids().size() == 5) {
         double minSimilarity = std::numeric_limits<double>::max();
-        //DEBUG(DBG_DEBUG, "Centroide: "<<centroid<<"\n");
-        //DEBUG(DBG_DEBUG, "--------------\nMaximo"<<minSimilarity<<"\n--------------\n");
         for (auto element : worstFlake.ids()) {
             if (element != centroid) {
                 double similarity = theProblem.getCompat(centroid, element);
-                //DEBUG(DBG_DEBUG, "Elemento: "<<element<<"\n");
-                //DEBUG(DBG_DEBUG, "Compatibilidad entre centroide y elemento: "<<centroid<<", "<<element<<"="<<similarity<<"\n");
                 if (similarity < minSimilarity) {
                     farAwayBundle = element;
                     minSimilarity = similarity;

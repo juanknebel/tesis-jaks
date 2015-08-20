@@ -17,7 +17,8 @@ private:
     SnowFlake getWorstBundle(SnowFlakeVector &solution, TabuBundles setOfTabuBundles, ProblemInstance &theProblem,
                              Double intersimilarityWeight);
 
-    SnowFlake getCentroidBundle(SnowFlakeVector &solution, ProblemInstance &theProblem, Double interSimilarityWeight);
+    SnowFlake getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
+                                                    ProblemInstance &theProblem, Double interSimilarityWeight);
 
     SnowFlakeVector getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles, SnowFlakeVector &remainingFlakes,
                                     ProblemInstance &theProblem, double interSimilarityWeight);
