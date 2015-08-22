@@ -261,20 +261,13 @@ del problema.
 \end{algorithm}
 
 \section{Búsqueda tabú}
-De los resultados obtenidos luego de las ejecuciones, se propusó realizar una búsqueda local para mejorar la solución. 
-Las búsquedas locales consiste en moverse de solución en solución, aplicando cambios en la solución candidata hasta encontrar una
-mejor solución o satisfacer un criterio de parada.
-Tabú search es una metaheurística, de la familia de las búsquedas locales, dónde se pasa de la solución x a x' 
-realizando modificaciones mínimas. Una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada por una determinada cantidad de iteraciones. De ésta manera al marcar una solución como visitada, nos estamos tal vez perdiendo alguna solución mejor en la próxima iteración pero nos permite salir de los posibles máximos locales.\\
-Se instanciaron dos implementaciones, para la búsqueda de soluciones que mejoren el intra(1) y el inter(2).\\
+Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos consisten en comenzar con una solución e iterativamente moverse a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de búsqueda. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice o minimice (según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un mínimo local y nunca pueda salir de él.\\
+\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina que no cumple con el criterio de búsqueda. De esta manera se permite al algorimo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada por una determinada cantidad de iteraciones para también de esta manera evitar caer en ciclos y mínimos o máximos locales.\\
+Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución (si la cantidad máxima de iteraciones no es excesiva) con lo cuál se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.\\
 \subsection{Búsqueda intra}
-La implementación de la búsqueda local para mejorar la parte intra de la función objetivo tiene como intención que los bundles 
-generados sean más cohesivos. Se entiende que un bundle es más cohesivos sí la relación de similitud entre los items es mayor, 
-entonces se búsca mejorar aquellos bundles que contienen items que no son lo suficientemente cohesivos.\\
-El movimiento de la solución s a la s' es en el bundle de la solución con menor valor intra. Se determinó que el item menos coehesivo
-en un bundle es el que se encuentra más alejado del centroide, el centroide es aquel item que esta más cerca de todos. Entonces el paso 
-de la búsqueda tabú es reemplazar este item con el item, del conjunto de los disponibles, más cercano al centroide. El item reemplazado y el bundle se marcan como tabú, para que en el próximo paso ese bundle no sea el que se modifique y el item para que no sea el seleccionado para incluirse a la solución.
-
+Antes de comenzar con las búsqueda tabú, definimos como item centroide de un bundle, al item más cercano a todos los demás del mismo bundle, de esta manera también definimos al ``peor item'' (o item menos coehesivo) a aquel que se encuentra más alejado del centroide.\\
+La implementación de la búsqueda tabú para mejorar la parte intra de la función objetivo tiene como intención que los bundles generados sean más cohesivos. Se entiende que un bundle es más cohesivos sí la relación de similitud entre los items es mayor, entonces se intenta mejorar aquellos bundles que contienen items que no son lo suficientemente cohesivos.\\
+El movimiento de la solución s a la s' es en el bundle de la solución con menor valor intra. Entonces el paso de la búsqueda tabú es reemplazar el ``peor item'' con otro item del conjunto de los disponibles más cercano al centroide. El item reemplazado y el bundle se marcan como tabú, para que en el próximo paso ese bundle no sea el que se modifique y el item para que no sea el seleccionado para incluirse a la solución.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $numOfSnowFlakes:Integer$

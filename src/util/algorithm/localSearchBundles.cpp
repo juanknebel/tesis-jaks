@@ -55,10 +55,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         SnowFlakeVector betterFlakes = this->getBetterFlakes(centroidSnowFlake, setOfTabuBundles, remainingFlakes,
                                                              theProblem, interSimilarityWeight);
 
-        DEBUG(DBG_DEBUG, "Peor bundle: "<<worstSnowFlake.getIdentificator());
-        DEBUG(DBG_DEBUG, "Centroide: "<<centroidSnowFlake.getIdentificator());
-
-        double betterObjectiveFunction = SnowFlake::objetiveFunction(iterationSolution, interSimilarityWeight);
+        double betterInterFunction = SnowFlake::objetiveFunction(iterationSolution, 1);
         SnowFlake bestBundle;
         bool betterSolution = false;
 
@@ -75,20 +72,20 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
                     aNewSolution.push_back(aFlakeInSolution);
                 }
             }
-            double newObjectiveFunction = SnowFlake::objetiveFunction(aNewSolution, interSimilarityWeight);
+            double newInterFunction = SnowFlake::objetiveFunction(aNewSolution, 1);
 
             //Si mejora la solucion
-            if (newObjectiveFunction > betterObjectiveFunction) {
+            if (newInterFunction > betterInterFunction) {
                 betterSolution = true;
                 bestBundle = aFlake;
-                betterObjectiveFunction = newObjectiveFunction;
+                betterInterFunction = newInterFunction;
             }
             else {
                 //Si no mejora la solucion
-                if (!betterSolution && newObjectiveFunction > bestWorstObjectiveFunction
+                if (!betterSolution && newInterFunction > bestWorstObjectiveFunction
                     && countTabuBundles[aFlake.getIdentificator()] > 2) {
                     betterWorstSolution = true;
-                    bestWorstObjectiveFunction = newObjectiveFunction;
+                    bestWorstObjectiveFunction = newInterFunction;
                     worstBundle = aFlake;
                 }
             }
@@ -102,10 +99,12 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
                     temporarySolution.push_back(bundle);
                 }
             }
-            if (betterObjectiveFunction > currentObjectiveFunction) {
+            double tempObjectiveFunction = SnowFlake::objetiveFunction(temporarySolution, interSimilarityWeight);
+            if (tempObjectiveFunction > currentObjectiveFunction) {
+                DEBUG(DBG_DEBUG, "Encuentra una mejor solucion");
                 bestSolution.clear();
                 bestSolution = temporarySolution;
-                currentObjectiveFunction = betterObjectiveFunction;
+                currentObjectiveFunction = tempObjectiveFunction;
             }
             remainingFlakes.erase(std::remove_if(remainingFlakes.begin(),
                                                  remainingFlakes.end(),
@@ -159,40 +158,44 @@ SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBund
     SnowFlake worstSnowFlake;
     for (auto bundle : solution) {
         if (setOfTabuBundles[bundle.getIdentificator()] == 0) {
-            double value = (1 - intersimilarityWeight) * bundle.getSumIntraCompat();
+            double value = 0.0;//(1 - intersimilarityWeight) * bundle.getSumIntraCompat();
             for (auto otherBundle : solution) {
                 if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
-                    value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+                    value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
                 }
             }
+            DEBUG(DBG_DEBUG, "Calculo inter: "<<bundle.getIdentificator()<<". Valor: "<<value);
             if (value < worstValue) {
                 worstValue = value;
                 worstSnowFlake = bundle;
             }
         }
     }
-
+    DEBUG(DBG_DEBUG, "Peor elegido: "<<worstSnowFlake.getIdentificator());
     return worstSnowFlake;
 }
 
 SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
                                                 ProblemInstance &theProblem, Double interSimilarityWeight) {
     SnowFlake centroid;
-    double minPairwise = std::numeric_limits<double>::max();
+    double minPairwise = std::numeric_limits<double>::min();
     for (auto bundle : solution) {
         if (worstBundle.getIdentificator() != bundle.getIdentificator()) {
             double value = 0.0;
             for (auto otherBundle : solution) {
-                if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
-                    value += theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids());
+                if (bundle.getIdentificator() != otherBundle.getIdentificator()
+                    && otherBundle.getIdentificator() != worstBundle.getIdentificator()) {
+                    value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
                 }
             }
-            if (value < minPairwise) {
+            DEBUG(DBG_DEBUG,"Calculo Centroide: "<<bundle.getIdentificator()<<". SumInter: "<<value);
+            if (value > minPairwise) {
                 minPairwise = value;
                 centroid = bundle;
             }
         }
     }
+    DEBUG(DBG_DEBUG,"Centroide elegido: "<<centroid.getIdentificator());
     return centroid;
 }
 
@@ -206,7 +209,7 @@ SnowFlakeVector LocalSearchBundles::getBetterFlakes(SnowFlake centroid, TabuBund
     for (auto bundle : remainingFlakes) {
         if (setOfTabuBundles[bundle.getIdentificator()] == 0) {
             temporaryFlakes.push_back(bundle);
-            double newFunction = SnowFlake::objetiveFunction(temporaryFlakes, interSimilarityWeight);
+            double newFunction = SnowFlake::objetiveFunction(temporaryFlakes, 1);
             if (newFunction > objectiveFunction) {
                 if (newFunction > objectiveFunctionTwo) {
                     objectiveFunctionTwo = newFunction;
