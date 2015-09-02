@@ -1,3 +1,4 @@
+
 \section{Modelo}
 Dado el conjunto de items I y la función de similitud \textbf{S}: IxI$\rightarrow$R[0;1]. El problema se puede representar como un grafo 
 con peso en las aristas, en el cuál los vertices son los items y el peso de las aristas es la similitud entres estos.
@@ -11,27 +12,24 @@ Las diferencias con los problemas tipicos de clusterización son:
  \item En el bundle no puede existir más de un item con el mismo atributo de complementaridad.
 \end{enumerate}
 \section{Función de similitud}
-La función de similitud \textbf{S} para el conjunto de los items I \textbf{S}: IxI$\rightarrow$R[0;1],
-se definió a partir de la comparación del perfil de los papers. El perfil del paper se obtiene del topic profile, 
-para hacer la comparación se representó el topic profile cómo el vector $V = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos,
-cumple con las siguientes propiedades:
+La similitud se emplea para comparar dos documentos y determinar que tan parecido sonentre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo en la base de datos, es el valor en el vector.\\
+El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen las siguientes propiedades:
 \begin{enumerate}
  \item $v_i \leqslant 1$
  \item $\sum{v_i} = 1$
 \end{enumerate}
 
-La similitud entre los papers se calcula a partir de la distancia angular de estos vectores.\\
+Dado los vectores de dos documentos, es posible calcular el coeficiente de similitud entre ellos con la función \textbf{S(V_i, V_j)} que refleja el grado de similitud en los tópicos correspondientes y en el peso del tópico. Existen varias medidas de similitud, En este trabajo se utilizó una de las más utilizadas que es la medida de similitud basada en el ángulo de los vectores.\\
+En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar que tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con identica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
+Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tienen la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un articulo profesional y un articulo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclediano.
 
-En el espacio euclediano el ángulo entre los vectores $U = [u_1,u_2,...,u_n], V = [v_1,v_2,...,v_n]$ se obtiene por la definición del producto escalar:\\
+Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
 \begin{equation} \label{eq:angulovectorial}
 \cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
 \end{equation}
 
-Por las propiedades de los vectores del problema $0 \leqslant \cos(\theta) \leqslant 1$, con lo cual $0 \leqslant \theta \leqslant \frac{\pi}{2}$.
-El ángulo de los vectores con los mismos componentes es cero, y mientras los componentes se van diferenciando el ángulo va creciendo hasta 
-ser ortogonales. Por lo tanto la función de similitud se calcula a partir de~\ref{eq:angulovectorial}
-\begin{figure}[H]
-\centering
+Como los componentes de todos los vectores son mayor o igual a cero se obtien que $0\leq\cos(\theta)\geq1$. Que corresponde con la función de similitud.
+
 \includegraphics[width=0.8\textwidth]{img/coseno.png}
 \caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
 \label{bus:img-coseno}
