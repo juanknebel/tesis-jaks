@@ -21,9 +21,8 @@
 #include "vectornorm.h"
 #include "../../dao/daoMySql.h"
 #include "../system/stringUtilities.h"
-#include <cstdlib>
-#include <iostream>
-#include <sstream>
+#include <cmath>
+
 
 #define db_database "tesis_topic_mas_uno"
 #define db_user "root"
@@ -32,6 +31,10 @@
 
 std::map<String, int> *distributionOrder;
 std:: map<int, int> *mappedId;
+
+float distanceBetweenVectors(std::vector<float> *pVector, std::vector<float> *second);
+
+float similarityBetweenVectors(float angle, float distance, float theA);
 
 void createMappedId(Dao* dao, String tableName, String fieldId) {
     std::stringstream query;
@@ -48,11 +51,11 @@ void createMappedId(Dao* dao, String tableName, String fieldId) {
 }
 
 int createDistributionKeyMap(Dao *dao) {
-    bool hasresult =
+    bool hasResult =
         dao->executeCustomConsultativeQuery(
             "select distinct distribution_KEY from TopicProfile_distribution order by distribution_KEY asc");
     int order = 0;
-    if (hasresult) {
+    if (hasResult) {
         distributionOrder = new std::map<String, int>;
         while (dao->fetch()) {
             (*distributionOrder)[dao->getField(1)] = order;
@@ -65,7 +68,7 @@ int createDistributionKeyMap(Dao *dao) {
 
 float dotProductOf(std::vector<float> *vector1, std::vector<float> *vector2) {
 	float product = 0.0;
-	int size = vector1->size();
+	auto size = vector1->size();
 	for (unsigned i = 0; i < size; i++) {
 		product += (*vector1)[i] * (*vector2)[i];
 	}
@@ -83,7 +86,7 @@ float normOf(std::vector<float> *vector) {
 }
 
 float differenceBetweenVectors(std::vector<float> *vector1, std::vector<float> *vector2) {
-	int size = vector1->size();
+	auto size = vector1->size();
 	std::vector<float> *differenceVector = new std::vector<float>(size, 0);
 	for (unsigned i = 0; i < size; ++i) {
 		(*differenceVector)[i] = vector1->at(i) - vector2->at(i);
@@ -98,6 +101,14 @@ float angleBetweenVectors(std::vector<float> *vector1, std::vector<float> *vecto
 	float dotProduct = dotProductOf(vector1, vector2);
 
 	return dotProduct / (norm1 * norm2);
+}
+
+float distanceBetweenVectors(std::vector<float> *vector1, std::vector<float> *vector2) {
+    return normOf(vector1) - normOf(vector2);
+}
+
+float similarityBetweenVectors(float angle, float distance, float theA) {
+    return static_cast<float> (pow(theA, distance) * angle);
 }
 
 int indexOf(String key) {
@@ -124,8 +135,8 @@ void insertSimilarity(String tableName, String fieldId, String tableNameSimilari
     int len = createDistributionKeyMap(dao);
     createMappedId(dao, tableName, fieldId);
     std::map<int, std::vector<float>* > topicProfile;
-    bool hasresult = dao->executeCustomConsultativeQuery(query);
-    if (hasresult) {
+    bool hasResult = dao->executeCustomConsultativeQuery(query);
+    if (hasResult) {
         int lastItemId = 0;
         while (dao->fetch()) {
             int itemId = convertToInt(dao->getField(1));
@@ -137,24 +148,31 @@ void insertSimilarity(String tableName, String fieldId, String tableNameSimilari
             (*topicProfile[itemId])[indexKey] = convertToDouble(dao->getField(2));
         }
     }
+    std::ofstream myFile;
+    myFile.open("insert_similarity.csv");
     for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
         for (std::map<int, std::vector<float>* >::iterator it2 = it; it2 != topicProfile.end(); ++it2) {
             if (it == it2) {
                 continue;
             }
+            float theA = 0.8;
             float angle = angleBetweenVectors(it->second, it2->second);
+            float distance = std::abs(distanceBetweenVectors(it->second, it2->second));
+            float similarity = similarityBetweenVectors(angle, distance, theA);
             if (angle > 0.0001) {
-                std::stringstream query;
                 int item = internalId(it->first);
                 int item2 = internalId(it2->first);
+                myFile << item << ";" << item2 << ";" << distance << ";" << angle << ";" << similarity << std::endl;
+                /*std::stringstream query;
                 query << "INSERT INTO " + tableNameSimilarity + " (Item, Item2, Similarity) VALUES (" << item << "," << item2 << "," << angle << ")";
                 if (!dao->executeCustomModifiableQuery(query.str())) {
                     std::cerr<<"No se pudo insertar el ángulo entre los vectores"<<std::endl;
                     std::cerr<<dao->getError()<<std::endl;
-                }
+                }*/
             }
         }
     }
+    myFile.close();
     for (std::map<int, std::vector<float>* >::iterator it = topicProfile.begin(); it != topicProfile.end(); ++it) {
         delete it->second;
     }
@@ -172,9 +190,9 @@ void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, S
     int len = createDistributionKeyMap(dao);
     createMappedId(dao, tableName, fieldId);
     std::map<int, std::vector<float>* > topicProfile;
-    bool hasresult = dao->executeCustomConsultativeQuery(query);
+    bool hasResult = dao->executeCustomConsultativeQuery(query);
 
-    if (hasresult) {
+    if (hasResult) {
         int lastItemId = 0;
         while (dao->fetch()) {
             int itemId = convertToInt(dao->getField(1));

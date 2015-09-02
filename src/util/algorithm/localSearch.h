@@ -26,11 +26,11 @@ private:
     bool checkCoverageConstraint(SnowFlake worstFlake, int elementToReplace, int newElement,
                                  ProblemInstance &theProblem);
 
+    void updateTabuElements(std::vector<int> &tabuSet);
+
 public:
     LocalSearch() {}
     SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
-
-    void updateTabuElements(TabuElements &tabuSet);
 };
 
 #endif // LOCALSEARCH_H

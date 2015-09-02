@@ -40,7 +40,7 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->getIds();
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
     std::stringstream query, query1;
-	query<<"select * from "<<this->tableCompat_;
+	query<<"select "<<this->itemCompat1_<<","<<this->itemCompat2_<<","<<this->compatField_<<" from "<<this->tableCompat_;
     if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
             this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
