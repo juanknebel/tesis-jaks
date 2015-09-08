@@ -302,8 +302,8 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 	auto numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
 	MatrixWrapper* w;
-	w= new MatrixConcrete(numProduced, numProduced);
-
+	w = new MatrixConcrete(numProduced, numProduced);
+	
 	for (int ui = 0; ui < numProduced; ++ui) {
 		SnowFlake& u = (*produced)[ui];
 		for (int vi = 0; vi < numProduced; ++vi) {
@@ -315,21 +315,21 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 	}
 
 	IntSet selected = IntSet();
+	MapIntDouble weights = MapIntDouble();
 	for (int ui = 0; ui < numProduced; ui++) {
-			selected.insert(ui);
+		double weight = 0.0;
+		for (int vi = 0; vi < numProduced; ++vi) {
+			weight += w->get(ui,vi);
+		}
+		weights[ui] = weight;
+		selected.insert(ui);
 	}
 
 	while(selected.size() > numRequested){
 		Double minWeightedDegree = std::numeric_limits<double>::max();
 		int minElement = -1;
 		for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
-			Double weightedDegree = 0.0;
-			for (IntSet::iterator vi = selected.begin(); vi != selected.end(); ++vi) {
-				weightedDegree += w->get(*ui,*vi);
-				if (weightedDegree > minWeightedDegree) {
-					break;
-				}
-			}
+			Double weightedDegree = weights[*ui];
 			if (weightedDegree < minWeightedDegree) {
 				minWeightedDegree = weightedDegree;
 				minElement = *ui;
@@ -339,6 +339,11 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 			throw Exception(__FILE__, __LINE__, "Tried to remove element " + convertToString(minElement) + " that does not belong to " + "selected");
 		}
 		selected.erase(minElement);
+
+		for (int ui = 0; ui < numProduced; ui++) {
+			weights[ui] -= w->get(ui,minElement);
+		}
+
 	}
 	SnowFlakeVector* solution = new SnowFlakeVector();
 	for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
