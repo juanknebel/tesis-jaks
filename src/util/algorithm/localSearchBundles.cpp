@@ -9,7 +9,6 @@
 SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &solution,
                                                    SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem,
                                                    Double interSimilarityWeight) {
-    DEBUG(DBG_DEBUG, "entro al tabu");
     TabuBundles setOfTabuBundles;
     TabuBundles countTabuBundles;
     int tabuBundleCount = 10;
@@ -18,34 +17,23 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
     int id = 0;
     for (auto& snowFlake : temporarySolution) {
         snowFlake.setIdentificator(id);
-        DEBUG(DBG_DEBUG, "BundleId: "<<id);
         ++id;
         setOfTabuBundles.push_back(0);
         countTabuBundles.push_back(0);
-        for (auto element : snowFlake.ids()) {
-            DEBUG(DBG_DEBUG, "Elemento: "<<element);
-        }
     }
 
     for (auto& remainingFlake : remainingFlakes) {
         remainingFlake.setIdentificator(id);
-        DEBUG(DBG_DEBUG, "BundleId: "<<id);
         ++id;
         setOfTabuBundles.push_back(0);
         countTabuBundles.push_back(0);
-        for (auto element : remainingFlake.ids()) {
-            DEBUG(DBG_DEBUG, "Elemento: "<<element);
-        }
     }
-
-    DEBUG(DBG_DEBUG, "Comienza iteracion");
 
     SnowFlakeVector bestSolution(temporarySolution.begin(), temporarySolution.end());
     double currentObjectiveFunction = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
 
     int iteration = 1;
     while (iteration < maxIteration) {
-        DEBUG(DBG_DEBUG, "iteracion: "<<iteration);
         SnowFlakeVector iterationSolution(temporarySolution.begin(), temporarySolution.end());
         ++iteration;
         this->updateTabuElements(setOfTabuBundles);
@@ -64,7 +52,6 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         double bestWorstObjectiveFunction = std::numeric_limits<double>::min();
 
         for (auto aFlake : betterFlakes) {
-            DEBUG(DBG_DEBUG, "Bundle a insertar: "<<aFlake.getIdentificator());
             SnowFlakeVector aNewSolution;
             aNewSolution.push_back(aFlake);
             for (auto aFlakeInSolution : iterationSolution) {
@@ -91,7 +78,6 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
             }
         }
         if (betterSolution) {
-            DEBUG(DBG_DEBUG, "mejora la solucion");
             temporarySolution.clear();
             temporarySolution.push_back(bestBundle);
             for (auto bundle : iterationSolution) {
@@ -101,7 +87,6 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
             }
             double tempObjectiveFunction = SnowFlake::objetiveFunction(temporarySolution, interSimilarityWeight);
             if (tempObjectiveFunction > currentObjectiveFunction) {
-                DEBUG(DBG_DEBUG, "Encuentra una mejor solucion");
                 bestSolution.clear();
                 bestSolution = temporarySolution;
                 currentObjectiveFunction = tempObjectiveFunction;
@@ -116,7 +101,6 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         }
         else {
             if (betterWorstSolution) {
-                DEBUG(DBG_DEBUG, "mejora la peor solucion");
                 temporarySolution.clear();
                 temporarySolution.push_back(worstBundle);
                 for (auto bundle : iterationSolution) {
@@ -140,7 +124,6 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         }
         setOfTabuBundles[worstSnowFlake.getIdentificator()] = tabuBundleCount;
     }
-    DEBUG(DBG_DEBUG, "sale del tabu");
     return bestSolution;
 }
 
@@ -164,14 +147,12 @@ SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBund
                     value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
                 }
             }
-            DEBUG(DBG_DEBUG, "Calculo inter: "<<bundle.getIdentificator()<<". Valor: "<<value);
             if (value < worstValue) {
                 worstValue = value;
                 worstSnowFlake = bundle;
             }
         }
     }
-    DEBUG(DBG_DEBUG, "Peor elegido: "<<worstSnowFlake.getIdentificator());
     return worstSnowFlake;
 }
 
@@ -188,14 +169,12 @@ SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlake
                     value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
                 }
             }
-            DEBUG(DBG_DEBUG,"Calculo Centroide: "<<bundle.getIdentificator()<<". SumInter: "<<value);
             if (value > minPairwise) {
                 minPairwise = value;
                 centroid = bundle;
             }
         }
     }
-    DEBUG(DBG_DEBUG,"Centroide elegido: "<<centroid.getIdentificator());
     return centroid;
 }
 
