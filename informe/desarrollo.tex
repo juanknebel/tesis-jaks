@@ -253,19 +253,20 @@ El movimiento de la solución s a la s' es en el bundle de la solución con meno
     \ENDIF
   \ENDFOR
   \IF {$betterSolution$}
-    \STATE $replace\ tempFunction\ with\ saved\ solution$
-    \STATE $newFunction: Double \leftarrow FO(tempFunction)$
+    \STATE $replace\ tempSolution\ with\ saved\ solution$
+    \STATE $newFunction: Double \leftarrow FO(tempSolution)$
     \IF {$newFunction > bestFunction$}
-      \STATE $bestSolution \leftarrow tempFunction$
+      \STATE $bestSolution \leftarrow tempSolution$
     \ENDIF
     \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
   \ELSE
     \IF {$bestWorstSolution$}
-      \STATE $replace\ tempFunction\ with\ saved\ solution$
+      \STATE $replace\ tempSolution\ with\ saved\ solution$
       \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
     \ENDIF
   \ENDIF
 \ENDWHILE
+\STATE $newSolution \leftarrow bestSolution$
 \RETURN $newSolution$
 \end{algorithmic}
 \caption{Algoritmo búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
@@ -276,7 +277,7 @@ Recordemos que las búsquedas originales son siempre de la misma forma, producir
 EL movimiento de la solución s a s' es intercambiar el ``peor bunde'' por aquel que maximice la suma de intercompatibilidades entre los bundles. En caso de no exisitir un bundle que logre esto, decidimos que si un elemento que ya había sido tenido en cuenta para intentar mejorar la función y es el que ``menos la empeora'', entonces realizamos el cambio igualmente para intentar salir del mínimo o máximo que nos encontramos. El bundle que se elimina queda marcado como tabú en cualquiera de las dos circunstancias.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $aSolution: Vector<SnowFlake>, gamma: Double$
+\REQUIRE $aSolution: Vector<SnowFlake>, remainingBundles: Vector<SnowFlake>, gamma: Double$
 \ENSURE $newSolution:Vector<SnowFlake>$
 \STATE $iteration:Integer \leftarrow 0$
 \STATE $tabuBundles: Set<SnowFlake>$
@@ -288,44 +289,38 @@ EL movimiento de la solución s a s' es intercambiar el ``peor bunde'' por aquel
   \STATE $iterationSolution: Vector<SnowFlake> \leftarrow tempFunction$
   \STATE $worstBundle: SnowFlake \leftarrow$\\
   $getWorstBundle(iterationSolution, tabuBundles)$
-  
-  \STATE $centroid: Element \leftarrow findCentroid(bundeWithWorstInter)$
-  \STATE $farAwayElement: Element \leftarrow$\\
-  $findFarAwayElement(centroid, bundeWithWorstInter)$
-  \STATE $bestElements: Set<SnowFlake> \leftarrow$\\
-  $nearestElements(centroid, farAwayElement, bundeWithWorstInter, tabuElements)$
-  \STATE $tempFunction: Double \leftarrow FO(tempSolution)$
-  \FOR {$near:Element \in bestElements$}
-    \STATE $newBunlde: SnowFlake \leftarrow bundeWithWorstInter.replace(farAwayElement, near)$
-    \STATE $otherSolution: Vector<SnowFlake> \leftarrow$\\
-    $tempSolution.replace(bundeWithWorstInter, newBunlde)$
-    \STATE $otherFunction: Double \leftarrow FO(otherSolution)$
-    \IF {$otherFunction > tempSolution$}
+  \STATE $centroidBundle: SnowFlake \leftarrow findCentroid(iterationSolution)$
+  \STATE $bestBundles: Set<SnowFlake> \leftarrow findBestBundles(centroidBundle, remainingBundles, tabuBundles)$
+  \STATE $interFunction: Doubel \leftarrow calculateInter(iterationSolution)$
+  \FOR {$aBundle \in bestBundles$}
+    \STATE $iterationSolution.replace(worstBundle, aBundle)$
+    \STATE $newInterFunction \leftarrow calculateInter(iterationSolution)$
+    \IF {$newInterFunction > interFunction$}
       \STATE $betterSolution: Bool \leftarrow True$
       \STATE $saveSolution$
     \ELSE
       \IF {$not betterSolution$\\
            $and\ otherFunction\ is\ better\ than\ others\ functions$\\
-           $and\ bundeWithWorstInter\ was\ tabu\ before$}
-	\STATE $bestWorstSolution: Bool \leftarrow True$
-	\STATE $saveSolution$
+           $and\ aBundle\ was\ tabu\ before$}
+        \STATE $bestWorstSolution: Bool \leftarrow True$
+        \STATE $saveSolution$
       \ENDIF
     \ENDIF
   \ENDFOR
   \IF {$betterSolution$}
-    \STATE $replace\ tempFunction\ with\ saved\ solution$
-    \STATE $newFunction: Double \leftarrow FO(tempFunction)$
+    \STATE $replace\ tempSolution\ with\ saved\ solution$
+    \STATE $newFunction: Double \leftarrow FO(tempSolution)$
     \IF {$newFunction > bestFunction$}
-      \STATE $bestSolution \leftarrow tempFunction$
+      \STATE $bestSolution \leftarrow tempSolution$
     \ENDIF
-    \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
   \ELSE
     \IF {$bestWorstSolution$}
       \STATE $replace\ tempFunction\ with\ saved\ solution$
-      \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
     \ENDIF
   \ENDIF
+  \STATE $tabuBundles \leftarrow tabuBundles \cup {worstBundle}$
 \ENDWHILE
+\STATE $newSolution \leftarrow bestSolution$
 \RETURN $newSolution$
 \end{algorithmic}
 \caption{Algoritmo búsqueda tabú sobre bundles}\label{alg:algBusTabuBundle}
