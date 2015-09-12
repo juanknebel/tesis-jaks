@@ -1,19 +1,15 @@
 
 \section{Modelo}
-Dado el conjunto de items I y la función de similitud \textbf{S}: IxI$\rightarrow$R[0;1]. El problema se puede representar como un grafo 
-con peso en las aristas, en el cuál los vertices son los items y el peso de las aristas es la similitud entres estos.
+Dado el conjunto de items $I$ y la función de similitud \textbf{S}: $I x I\rightarrow R[0;1]$. El problema se puede representar como un grafo con peso en las aristas, en el cuál los vértices son los items y el peso de las aristas es la similitud entres estos.
 \section{Problema}
-El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema
-de clusterización en el cual la calidad de los cluster esta dado por la cohesión de los items que lo componen y la
-separación entre cluster con menos similitud.
-Las diferencias con los problemas tipicos de clusterización son:
+El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema de clusterización en el cual la calidad de los cluster esta dado por la cohesión de los items que lo componen y la separación entre cluster con menos similitud. Las diferencias con los problemas tipicos de clusterización son:
 \begin{enumerate}
  \item La cantidad de items en un bundle esta limitada por el presupuesto.
  \item En el bundle no puede existir más de un item con el mismo atributo de complementaridad.
 \end{enumerate}
 \section{Función de similitud}
-La similitud se emplea para comparar dos documentos y determinar que tan parecido sonentre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo en la base de datos, es el valor en el vector.\\
-El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen las siguientes propiedades:
+La similitud se emplea para comparar dos documentos y determinar que tan parecido son entre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo de la base de datos \cite{dataDrive}, es el valor en el vector.\\
+El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen con las propiedades:
 \begin{enumerate}
  \item $v_i \leqslant 1$
  \item $\sum{v_i} = 1$
@@ -41,18 +37,11 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtien qu
 Encontrar una solución al problema planteado es reducible 
 
 El algoritmo que se utilizó para obtener las soluciones es \texttt{Produce-and-Choose}, cuenta con 
-dos fases.
-En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se seleccionan los 
-bundles que serán parte de la solución.\\
+dos fases. En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \section{Generación de bundles}
-Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente 
-similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la 
-similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la 
-clusterización.\\
-Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a 
-continuación existen tres (o más) formas de clusterizar que son validas. Entonces la mejor 
-definición depende del tipo de dato y del resultado esperado.
+Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
+Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a continuación existen tres (o más) formas de clusterizar que son validas. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
   \centering
@@ -121,75 +110,33 @@ Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
 Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una 
 complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que 
 la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de 
-\cite{informationRetrival}
+\cite{informationRetrival}.
 
 
 \section{Selección de bundles}
-Al finalizar la producción de bundles, se deben seleccionar los $k$ bundles para la solución.
-El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en 
-encontrar en el grafo G el k-subgrafo de mayor peso de nodos y aristas.
-
-Se implementó el algoritmo que propone ``Composite ...''\cite{compositeRetrival} que transforma el 
-grafo G en el grafo G', con los mismos nodos y aristas, redefiniendo el peso de las aristas con la 
-función:\\
+Al finalizar la producción de bundles, se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en encontrar en el grafo G el k-subgrafo de mayor peso de nodos y vértices. Dónde el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos.\\
+Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vértices con k nodos, consiste en dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
 
 \begin{equation}
-\omega_{1}(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
+\gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
+
+El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hayar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vertices por:
+ 
+\begin{equation}
+\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
+\end{equation}
+
+A esta nueva instancia del problema, se le aplica la heurística golosa en la que en cada iteración se remueve el nodo con menos peso en las aristas.\\
 
 (aca va el algoritmo)\\
 
-En la función $\omega_{1}(u,v)$ el valor de la función $\psi(u,v)$  es considerablemente menor al de
-$\omega(u) + \omega(v)$, (en el intra se suma los ejes de todos los nodos, el inter es el máximo entre los items)
-implica que $\gamma$ no cumple con el objetivo de balancear entre una solución cohesiva y una variada.
-Para esto se funciones $\omega$ alternativas.\\
-
-Con $\omega_{2}(u,v,w,y)$ la búsqueda se realiza con la combinación de cuatro nodos, por lo que el orden de complejidad
-aumenta a ...
+Otra heurística propuesta para la selección, también goloso, consiste en seleccionar en cada iteración un bundle para la solución. Sea $B$ el conjunto de bundles producidos, $S \subseteq B$ el conjunto de bundles seleccionados, en la iteración $i$ se agregá a la solución el bundle que cumple con:
 
 \begin{equation}
-\begin{split}
-\omega_{2}(u,v,w,y) &= \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v) + \omega(w) + \omega(y)) \\
-&+ (1 - \gamma)(\psi(u,v) + \psi(u,w) + \psi(u,y)  + \psi(v,w) + \psi(v,y) + \psi(w,y))
-\end{split}
+\max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
 \end{equation}
 
-La función $\omega_{3}(u, k)$ recibe $u$ el conjunto de clusters seleccionados hasta el momento 
-y $k$ que es la cantidad de clusters para la solución. Con $k$ y el tamaño de $u$ se calcula el 
-coeficiente con el propósito en que en cada paso se pondere el inter y el intra. Para eso se multiplica
-con coeficientes cada parte de la función. Con esto se mantiene la relación de inter e intra durante la selección de bundles
-
-\begin{equation}
-\begin{split}
-\omega_{3}(u,k) &= \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) \\
-&+ \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))
-\end{split}
-\end{equation}
-
-\begin{algorithm}[H]
-\begin{algorithmic}[1]
-\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
-\ENSURE $selected:Vector<SnowFlake>$.
-\STATE $selected:Vector<SnowFlake> \leftarrow []$
-\STATE $originalSize:Integer \leftarrow produced.size$
-\WHILE {$selected.size < numRequested\ AND\ selected.size < originalSize$}
-\STATE $selectedTemp \leftarrow selected$
-\STATE $(candidateOne, candidateTwo) \leftarrow (i, j)\ where$ \\ 
-$\displaystyle\max_{i \neq j} (FO(selectedTemp.push(produced_{i} \cup produced_{j})))$
-\STATE $produced.erase(i)$
-\STATE $produced.erase(j)$
-\STATE $selected.push(candidateOne)$
-\STATE $selected.push(candidateTwo)$
-\ENDWHILE
-\RETURN $selected$
-\end{algorithmic}
-\caption{Selección de bundles de a pares}\label{alg:algSelTuple}
-\end{algorithm}
-\subsection{Selección proporcional}
-Además como tercera opción de selección se implementó un algoritmo proporcional que en cada paso se 
-ponderan los resultados de la función que calcula el intra y el inter restante, intentando 
-\textquotedblleft adivinar\textquotedblright  el valor de las próximas iteraciones y de esta manera 
-dar más importancia en los primeras iteraciones al valor del inter.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
