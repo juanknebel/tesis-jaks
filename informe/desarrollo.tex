@@ -216,32 +216,57 @@ La implementación de la búsqueda tabú para mejorar la parte intra de la funci
 El movimiento de la solución s a la s' es en el bundle de la solución con menor valor intra. Entonces el paso de la búsqueda tabú es reemplazar el ``peor item'' con otro item del conjunto de los disponibles más cercano al centroide. El item reemplazado y el bundle se marcan como tabú, para que en el próximo paso ese bundle no sea el que se modifique y el item para que no sea el seleccionado para incluirse a la solución.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $numOfSnowFlakes:Integer$
-\ENSURE $selected:Vector<SnowFlake>$
-\STATE $selected_{i}:Vector<SnowFlake> \leftarrow \emptyset_{0\leq i<numOfSnowFlakes}$
-\STATE $isComplete:Bool \leftarrow False$
-\STATE $elements:Set<Element> \leftarrow ElementsOfTheProblem$
-\WHILE {$isComplete == False$}
-  \STATE $bestScore:Double \leftarrow -\infty$
-  \STATE $bestElement:Element \leftarrow \varnothing$
-  \STATE $bestBundle:SnowFlake \leftarrow \varnothing$
-  \FOR {$elem:Element \in elements$}
-    \FOR {$bundle:SnowFlake \in selected$}
-      \IF {$isValidBundle(bundle \cup \{elem\}) == True$}
-        \STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
-        \IF {$score > bestScore$}
-          \STATE $bestScore \leftarrow score$
-          \STATE $bestBundle \leftarrow bundle$
-          \STATE $bestElement \leftarrow elem$
-        \ENDIF
+\REQUIRE $aSolution: Vector<SnowFlake>, gamma: Double$
+\ENSURE $newSolution:Vector<SnowFlake>$
+\STATE $iteration:Integer \leftarrow 0$
+\STATE $tabuBundles: Set<SnowFlake>$
+\STATE $tabuElements: Set<Element>$
+\STATE $bestSolution: Vector<SnowFlake> \leftarrow aSolution$
+\STATE $bestFunction:Double \leftarrow FO(bestSolution)$
+\STATE $tempSolution \leftarrow bestSolution$
+\WHILE {$iteration < MAX\_ITER$}
+  \STATE $updateTabuCount(tabuBundles)$
+  \STATE $updateTabuCount(tabuElements$
+  \STATE $bundeWithWorstInter: SnowFlake \leftarrow$\\
+  $findWorstIntraBundle(tempSolution, tabuBundles)$
+  \STATE $centroid: Element \leftarrow findCentroid(bundeWithWorstInter)$
+  \STATE $farAwayElement: Element \leftarrow$\\
+  $findFarAwayElement(centroid, bundeWithWorstInter)$
+  \STATE $bestElements: Set<SnowFlake> \leftarrow$\\
+  $nearestElements(centroid, farAwayElement, bundeWithWorstInter, tabuElements)$
+  \STATE $tempFunction: Double \leftarrow FO(tempSolution)$
+  \FOR {$near:Element \in bestElements$}
+    \STATE $newBunlde: SnowFlake \leftarrow bundeWithWorstInter.replace(farAwayElement, near)$
+    \STATE $otherSolution: Vector<SnowFlake> \leftarrow$\\
+    $tempSolution.replace(bundeWithWorstInter, newBunlde)$
+    \STATE $otherFunction: Double \leftarrow FO(otherSolution)$
+    \IF {$otherFunction > tempSolution$}
+      \STATE $betterSolution: Bool \leftarrow True$
+      \STATE $saveSolution$
+    \ELSE
+      \IF {$not betterSolution$\\
+           $and\ otherFunction\ is\ better\ than\ others\ functions$\\
+           $and\ bundeWithWorstInter\ was\ tabu\ before$}
+	\STATE $bestWorstSolution: Bool \leftarrow True$
+	\STATE $saveSolution$
       \ENDIF
-    \ENDFOR
+    \ENDIF
   \ENDFOR
-  \STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
-  \STATE $elements.erase(elem)$
-  \STATE $isComplete \leftarrow bestElement == \varnothing$
+  \IF {$betterSolution$}
+    \STATE $replace\ tempFunction\ with\ saved\ solution$
+    \STATE $newFunction: Double \leftarrow FO(tempFunction)$
+    \IF {$newFunction > bestFunction$}
+      \STATE $bestSolution \leftarrow tempFunction$
+    \ENDIF
+    \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
+  \ELSE
+    \IF {$bestWorstSolution$}
+      \STATE $replace\ tempFunction\ with\ saved\ solution$
+      \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
+    \ENDIF
+  \ENDIF
 \ENDWHILE
-\RETURN $selected$
+\RETURN $newSolution$
 \end{algorithmic}
 \caption{Algoritmo búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
 \end{algorithm}
@@ -251,32 +276,57 @@ Recordemos que las búsquedas originales son siempre de la misma forma, producir
 EL movimiento de la solución s a s' es intercambiar el ``peor bunde'' por aquel que maximice la suma de intercompatibilidades entre los bundles. En caso de no exisitir un bundle que logre esto, decidimos que si un elemento que ya había sido tenido en cuenta para intentar mejorar la función y es el que ``menos la empeora'', entonces realizamos el cambio igualmente para intentar salir del mínimo o máximo que nos encontramos. El bundle que se elimina queda marcado como tabú en cualquiera de las dos circunstancias.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $numOfSnowFlakes:Integer$
-\ENSURE $selected:Vector<SnowFlake>$
-\STATE $selected_{i}:Vector<SnowFlake> \leftarrow \emptyset_{0\leq i<numOfSnowFlakes}$
-\STATE $isComplete:Bool \leftarrow False$
-\STATE $elements:Set<Element> \leftarrow ElementsOfTheProblem$
-\WHILE {$isComplete == False$}
-  \STATE $bestScore:Double \leftarrow -\infty$
-  \STATE $bestElement:Element \leftarrow \varnothing$
-  \STATE $bestBundle:SnowFlake \leftarrow \varnothing$
-  \FOR {$elem:Element \in elements$}
-    \FOR {$bundle:SnowFlake \in selected$}
-      \IF {$isValidBundle(bundle \cup \{elem\}) == True$}
-        \STATE $score:Double \leftarrow FO(selected.replace(bundle, bundle \cup \{elem\}))$
-        \IF {$score > bestScore$}
-          \STATE $bestScore \leftarrow score$
-          \STATE $bestBundle \leftarrow bundle$
-          \STATE $bestElement \leftarrow elem$
-        \ENDIF
+\REQUIRE $aSolution: Vector<SnowFlake>, gamma: Double$
+\ENSURE $newSolution:Vector<SnowFlake>$
+\STATE $iteration:Integer \leftarrow 0$
+\STATE $tabuBundles: Set<SnowFlake>$
+\STATE $bestSolution: Vector<SnowFlake> \leftarrow aSolution$
+\STATE $bestFunction:Double \leftarrow FO(bestSolution)$
+\STATE $tempSolution: Vector<SnowFlake> \leftarrow bestSolution$
+\WHILE {$iteration < MAX\_ITER$}
+  \STATE $updateTabuCount(tabuBundles)$
+  \STATE $iterationSolution: Vector<SnowFlake> \leftarrow tempFunction$
+  \STATE $worstBundle: SnowFlake \leftarrow$\\
+  $getWorstBundle(iterationSolution, tabuBundles)$
+  
+  \STATE $centroid: Element \leftarrow findCentroid(bundeWithWorstInter)$
+  \STATE $farAwayElement: Element \leftarrow$\\
+  $findFarAwayElement(centroid, bundeWithWorstInter)$
+  \STATE $bestElements: Set<SnowFlake> \leftarrow$\\
+  $nearestElements(centroid, farAwayElement, bundeWithWorstInter, tabuElements)$
+  \STATE $tempFunction: Double \leftarrow FO(tempSolution)$
+  \FOR {$near:Element \in bestElements$}
+    \STATE $newBunlde: SnowFlake \leftarrow bundeWithWorstInter.replace(farAwayElement, near)$
+    \STATE $otherSolution: Vector<SnowFlake> \leftarrow$\\
+    $tempSolution.replace(bundeWithWorstInter, newBunlde)$
+    \STATE $otherFunction: Double \leftarrow FO(otherSolution)$
+    \IF {$otherFunction > tempSolution$}
+      \STATE $betterSolution: Bool \leftarrow True$
+      \STATE $saveSolution$
+    \ELSE
+      \IF {$not betterSolution$\\
+           $and\ otherFunction\ is\ better\ than\ others\ functions$\\
+           $and\ bundeWithWorstInter\ was\ tabu\ before$}
+	\STATE $bestWorstSolution: Bool \leftarrow True$
+	\STATE $saveSolution$
       \ENDIF
-    \ENDFOR
+    \ENDIF
   \ENDFOR
-  \STATE $selected \leftarrow selected.replace(bundle, bundle \cup \{elem\})$
-  \STATE $elements.erase(elem)$
-  \STATE $isComplete \leftarrow bestElement == \varnothing$
+  \IF {$betterSolution$}
+    \STATE $replace\ tempFunction\ with\ saved\ solution$
+    \STATE $newFunction: Double \leftarrow FO(tempFunction)$
+    \IF {$newFunction > bestFunction$}
+      \STATE $bestSolution \leftarrow tempFunction$
+    \ENDIF
+    \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
+  \ELSE
+    \IF {$bestWorstSolution$}
+      \STATE $replace\ tempFunction\ with\ saved\ solution$
+      \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
+    \ENDIF
+  \ENDIF
 \ENDWHILE
-\RETURN $selected$
+\RETURN $newSolution$
 \end{algorithmic}
 \caption{Algoritmo búsqueda tabú sobre bundles}\label{alg:algBusTabuBundle}
 \end{algorithm}

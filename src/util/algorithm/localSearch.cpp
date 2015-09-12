@@ -126,12 +126,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
             }
         }
     }
-
-    for (auto bundle : temporarySolution) {
-        for (auto element : bundle.ids()) {
-        }
-    }
-
     return bestSolution;
 }
 
