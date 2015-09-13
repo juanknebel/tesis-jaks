@@ -214,15 +214,15 @@ Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle.
 La primera búsca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución. 
 
 \subsection{Inter-Bundle}
-La búsqueda se concebío especialmente para la fase de selección del algoritmo \texttt{Produce-and-Choose}. En esta fase se eligen los bundles que pertencen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce.\\
-Los movEl movimiento de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
+La búsqueda se concebío especialmente para la fase de selección del algoritmo \texttt{Produce-and-Choose}. En esta fase se eligen los bundles que pertencen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
+Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
 	\item Obtener el Bundle de la solución a reemplazar.
 	\item Determinar el bundle centroide de la solución.
 	\item Agregar a la solución el bundle más alejado al centroide.
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle 1) es el más acopolado al de la solucion $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de 2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es $b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$. El bundle que se agrega a la solucion es el bundle producido que no pertences a la solución y es el más alejado al centroide $b_c$. $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle 1) es el más acopolado al de la solucion $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de 2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es $b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$. El bundle que se agrega a la solucion es el bundle producido que no pertences a la solución y es el más alejado al centroide $b_c$. $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $aSolution: Vector<SnowFlake>, remainingBundles: Vector<SnowFlake>, gamma: Double$
