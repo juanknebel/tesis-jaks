@@ -1,15 +1,14 @@
-\section{Comparando soluciones}
-Para comparar la calidad de las distintas soluciones, además del valor objetivo se compara con 
-la cantidad de elementos iguales en toda la solución y la cantidad igual de elementos para cada 
-bundle. De esta manera se observa que tan \textquotedblleft parecidas\textquotedblright son las 
-soluciones y con más detalle que tan \textquotedblleft parecidos\textquotedblright son los bundles. 
-Entre los diferentes algoritmos buscamos la cantidad de elementos iguales en cada una de las 
-soluciones y también la cantidad de elementos iguales por bundle.
-\section{Papers}
-Originalmente la base de datos contenía unos 7777 papers, de los cuáles se tuvo que hacer una 
-depuración, ya que había papers que no tenían ningún autor asociado o perfil creado. Luego de la 
-depuración obtuvimos 4937 que cumplen los requisitos para la búsqueda de las soluciones.\\
-Se generaron soluciones con las siguientes características:\\
+\section{Búsquedas de Artículos}
+Originalmente la base de datos contenía unos 7777 papers, de los cuáles se tuvo que hacer una depuración de los mismo, ya que había papers que no tenían ningún autor asociado. Luego de la depuración quedaron 4937 que cumplen los requisitos para la búsqueda de las soluciones.
+\subsection{Soluciones repetidas}
+En las primeras pruebas pruebas de la implementación de las búsquedas se usaron todos los artículos. Se observaron que todas las soluciones tenían un alto valor en su función objetivo, al analizar en detalle las soluciones y los artículos de cada uno de los bundles se encotró que muchos de esos artículos tenían un solo elemento de temática en su topicProfile.\\
+Esto ocasionaba que para los difrentes $\gamma$ que se probara el algoritmo HAC, éste generaba soluciones practicamente idénticas ya que los valores inter e intra alcanzaban valores cercanos al máximo. Ocasionando la pérdida de variedad en las soluciones. A fines de comparar las implementaciones generadas y obtener resultados más interesantes, se decidió no tener en cuenta a los artículos con un solo topicProfile.\\
+\subsection{Soluciones con bundles unitarios}
+En las pruebas en las que se intenta priorizar el inter, se observó que se generaban muchos bundles unitarios o de dos elementos a causa de que existían artículos sin topicProfile por lo se decidió no tenerlos en cuenta. Otra causa que se identificó fue que en la generación de bundles de HAC, no estaba seleccionando bien los bundles ya que siempre prioriza la similitud inter, por ejemplo: Existen 5 articulos del topico 'METHODOLOGIES' donde su distribution > 0.7. Estos 5 articulos pertenecen a 3 venues distintos, venue A para el articulo 1, venue B para el articulo 2 y venue C para el resto. El jerarquico genera 3 bundles: uno con el articulo 1 con uno del venue C, otro con el articulo 2 con otro del venue C y por ultimo un bundle con el restante articulo del venue C.\\
+Luego uno de estos bundles (el de mayor intra) es seleccionado para la solución ya que es el unico que contiene el topic 'METHODOLOGIES'  En este caso se podría haber generado un bundle que contenga articulos de los 3 bundles. Para mejorar el intra. Una posible solución que se elaboró, pero no se implementó, para corregir este problema fue intentar realizar una búsqueda sobre los bundles que no superaron el presupuesto e intercambiar con elementos de otros en caso que se mejore su similitud intra.
+\subsection{comparando}
+Para comparar la calidad de las distintas soluciones, además del valor objetivo se compara con la cantidad de elementos iguales en toda la solución y la cantidad igual de elementos para cada bundle. De esta manera se observa que tan \textquotedblleft parecidas\textquotedblright son las soluciones y con más detalle que tan \textquotedblleft parecidos\textquotedblright son los bundles.\\ 
+Entre los diferentes algoritmos buscamos la cantidad de elementos iguales en cada una de las soluciones y también la cantidad de elementos iguales por bundle. Se generaron soluciones con las siguientes características:\\
 \Solucion
 {}
 {simple}
