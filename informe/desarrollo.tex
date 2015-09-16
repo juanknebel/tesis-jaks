@@ -1,12 +1,23 @@
-
 \section{Modelo}
-Dado el conjunto de items $I$ y la función de similitud \textbf{S}: $I x I\rightarrow R[0;1]$. El problema se puede representar como un grafo con peso en las aristas, en el cuál los vértices son los items y el peso de las aristas es la similitud entres estos.
+Dado el conjunto de documentos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada documento es univocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vertice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
+
 \section{Problema}
-El problema de obtener el conjunto de bundles que máximiza la función objetivo se puede considerar como un problema de clusterización en el cual la calidad de los cluster esta dado por la cohesión de los items que lo componen y la separación entre cluster con menos similitud. Las diferencias con los problemas tipicos de clusterización son:
-\begin{enumerate}
- \item La cantidad de items en un bundle esta limitada por el presupuesto.
- \item En el bundle no puede existir más de un item con el mismo atributo de complementaridad.
-\end{enumerate}
+El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ donde el bundle $S_i \in 2^{I}$ es un conjunto de documentos que satisface las reglas de \textit{complementaridad} y \textit{presupuesto}.\\
+\textbf{Definción} Dado el conjunto de documentos $I=\left\{i_1,\ldots, i_n\right\}$ el bundle $S \in 2^{I}$ es valido si solo si satisface las reglas:
+\begin{itemize}
+	\item \textbf{Complementaridad:} dada la propiedad $\alpha$ de los documentos, $\forall u,v \in S_i, u.\alpha \neq v.\alpha$
+	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall S_i \in S, f(S_i) \leq \beta$
+\end{itemize}
+
+La definción formal de \textit{Composite Retrieval} es:\\
+Dado el conjunto de documentos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hayar el conjunto valido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
+	
+	\begin{equation}
+		\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-)\max_{u \in S_i, v \in S_j}{s(u,v)}}
+	\end{equation}
+	
+En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo. Para obtener una solución se realizaron los algoritmos de aproximación Produce-and-Choose y uno goloso. Produce-and-Choose consiste en dos etapas, la primera en producir varios bundles validos y una segunda etapa de selección de los bundles.
+
 \section{Función de similitud}
 La similitud se emplea para comparar dos documentos y determinar que tan parecido son entre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo de la base de datos \cite{dataDrive}, es el valor en el vector.\\
 El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen con las propiedades:
@@ -34,10 +45,7 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtien qu
 
 
 \section{Produce-and-Choose}
-Encontrar una solución al problema planteado es reducible 
-
-El algoritmo que se utilizó para obtener las soluciones es \texttt{Produce-and-Choose}, cuenta con 
-dos fases. En la primer fase se generan cierta cantidad de bundles, e la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, Consiste en dos fases. En la primer fase se generan cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
 Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
