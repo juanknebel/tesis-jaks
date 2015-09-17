@@ -6,7 +6,7 @@ Esto ocasionaba que para los difrentes $\gamma$ que se probara el algoritmo HAC,
 \subsection{Soluciones con bundles unitarios}
 En las pruebas en las que se intenta priorizar el inter, se observó que se generaban muchos bundles unitarios o de dos elementos a causa de que existían artículos sin topicProfile por lo se decidió no tenerlos en cuenta. Otra causa que se identificó fue que en la generación de bundles de HAC, no estaba seleccionando bien los bundles ya que siempre prioriza la similitud inter, por ejemplo: Existen 5 articulos del topico 'METHODOLOGIES' donde su distribution > 0.7. Estos 5 articulos pertenecen a 3 venues distintos, venue A para el articulo 1, venue B para el articulo 2 y venue C para el resto. El jerarquico genera 3 bundles: uno con el articulo 1 con uno del venue C, otro con el articulo 2 con otro del venue C y por ultimo un bundle con el restante articulo del venue C.\\
 Luego uno de estos bundles (el de mayor intra) es seleccionado para la solución ya que es el unico que contiene el topic 'METHODOLOGIES'  En este caso se podría haber generado un bundle que contenga articulos de los 3 bundles. Para mejorar el intra. Una posible solución que se elaboró, pero no se implementó, para corregir este problema fue intentar realizar una búsqueda sobre los bundles que no superaron el presupuesto e intercambiar con elementos de otros en caso que se mejore su similitud intra.
-\subsection{comparando}
+\subsection{Comparando}
 Para comparar la calidad de las distintas soluciones, además del valor objetivo se compara con la cantidad de elementos iguales en toda la solución y la cantidad igual de elementos para cada bundle. De esta manera se observa que tan \textquotedblleft parecidas\textquotedblright son las soluciones y con más detalle que tan \textquotedblleft parecidos\textquotedblright son los bundles.\\ 
 Entre los diferentes algoritmos buscamos la cantidad de elementos iguales en cada una de las soluciones y también la cantidad de elementos iguales por bundle. Se generaron soluciones con las siguientes características:\\
 \Solucion
@@ -68,7 +68,7 @@ de la intra es menor y al rojo mayor.
 \end{figure}
 
 \begin{figure}[H]
-  \centering
+  \centering	
     \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy01.png}
   \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
   \label{res:img-papers-gamma01-greedy}
