@@ -1,5 +1,5 @@
 \section{Modelo}
-Dado el conjunto de documentos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada documento es univocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vertice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
+Dado el conjunto de documentos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada documento es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$. 
 
 \section{Problema}
 El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ donde el bundle $S_i \in 2^{I}$ es un conjunto de documentos que satisface las reglas de \textit{complementaridad} y \textit{presupuesto}.\\
@@ -9,8 +9,8 @@ El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots,
 	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall S_i \in S, f(S_i) \leq \beta$
 \end{itemize}
 
-La definción formal de \textit{Composite Retrieval} es:\\
-Dado el conjunto de documentos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hayar el conjunto valido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
+La definición formal de \textit{Composite Retrieval} es:\\
+Dado el conjunto de documentos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hallar el conjunto valido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
 	
 	\begin{equation}
 		\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-)\max_{u \in S_i, v \in S_j}{s(u,v)}}
@@ -19,7 +19,7 @@ Dado el conjunto de documentos $I = \left\{i_1, \ldots, i_n \right\}$, la funci�
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo. Para obtener una solución se realizaron los algoritmos de aproximación Produce-and-Choose y uno goloso. Produce-and-Choose consiste en dos etapas, la primera en producir varios bundles validos y una segunda etapa de selección de los bundles.
 
 \section{Función de similitud}
-La similitud se emplea para comparar dos documentos y determinar que tan parecido son entre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo de la base de datos \cite{dataDrive}, es el valor en el vector.\\
+La similitud se emplea para comparar dos documentos y determinar qué tan parecido son entre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo de la base de datos \cite{dataDrive}, es el valor en el vector.\\
 El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen con las propiedades:
 \begin{enumerate}
  \item $v_i \leqslant 1$
@@ -27,15 +27,14 @@ El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N
 \end{enumerate}
 
 Con los vectores es posible calcular el coeficiente de similitud a través de la función $ S (V_i, V_j)$ la cual refleja el grado de similitud de los pesos de los tópicos correspondientes. Existen varias medidas de similitud, En este trabajo se utilizó una de las más utilizadas que es la medida de similitud basada en el ángulo de los vectores.\\
-En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar que tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con identica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
-Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tienen la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un articulo profesional y un articulo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclediano.
+En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar qué tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con idéntica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
+Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tiene la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclidiano. Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
 
-Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
 \begin{equation} \label{eq:angulovectorial}
 \cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
 \end{equation}
 
-Como los componentes de todos los vectores son mayor o igual a cero se obtien que $0\leq\cos(\theta)\leq1$. Que corresponde con la función de similitud.
+Como los componentes de todos los vectores son mayor o igual a cero se obtiene que $0\leq\cos(\theta)\leq1$. Que corresponde con la función de similitud.
 
 \begin{figure}[H]
 \includegraphics[width=0.8\textwidth]{img/coseno.png}
@@ -49,7 +48,7 @@ El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, Consiste
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
 Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
-Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a continuación existen tres (o más) formas de clusterizar que son validas. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
+Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a continuación existen tres (o más) formas de clusterizar que son válidas. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
   \centering
@@ -58,39 +57,23 @@ Definir como se constituye un cluster es complejo. Por ejemplo para los 20 punto
   \label{res:img-howToCluster}
 \end{figure}
 
-En la clusterización para Composite Retrival, la definición es generar cluster máximizando el costo que esta acotado por el budget.
-Ya que lo esperado es obtener cluster que utilicen el máximo del presupuesto.\\
-
-El problema de la clusterización es NP-hard (agregar ref, explicar problema de clusterizacion),
-por lo que se utilizaron dos técnicas ya conocidas para aproximarse a una solución.\\
-La principal diferencia entre las estrategias de clusterización es entre la jerárquica y de 
-partición.\\
-La primer técnica produce un árbol de particiones, la raíz es un cluster que contiene todos los items
-y las hojas son clusters con un único ítem. Cada nivel intermedio, puede ser visto, como la 
-combinación entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un 
-nivel de las particiones de los items de una vez.\\ 
-Se implementaron las dos técnicas para la clusterización jerárquica con el algoritmo
-Hierarchical clustering y la de partición con Bundles One-By-One.\\
+En la clusterización para Composite Retrival, la definición es generar cada cluster maximizando el costo que esta acotado por el budget. Ya que lo esperado es obtener cluster que utilicen el máximo del presupuesto.\\
+El problema de la clusterización es NP-hard (agregar ref, explicar problema de clusterizacion), por lo que se utilizaron dos técnicas ya conocidas para aproximarse a una solución. La principal diferencia entre las estrategias de clusterización es entre la jerárquica y de partición.\\
+La primer técnica produce un árbol de particiones, la raíz es un cluster que contiene todos los ítems y las hojas son clusters con un único ítem. Cada nivel intermedio, puede ser visto, como la combinación entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un nivel de las particiones de los items de una vez.\\ 
+Se implementaron las dos técnicas. La clusterización jerárquica con el algoritmo Hierarchical clustering y la de partición con Bundles One-By-One.\\
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-x} esta inspirado en k-nn. Consiste en cada paso seleccionar, de manera azarosa, un item del conjunto de pivotes (en el inicio este conjunto contiente todos los items),
-con el que se genera un bundle valido a al rededor de este. En el caso de que el intra del bundle sea bueno se agrga al conjunto de candidatos de bundle.
-La iteración finaliza cuando se generan la cantidad de candidatos definidos en el parámetro $x$ o cuando el conjunto de bundles es vacío. El caso de que $x$ sea 'Ex' todos los 
-items son pivotes.\\
-Para generar el bundle a partir del pivote, se realiza de manera golosa de eligiendo en cada iteración el item que
-máximiza el intra y que cumple con las resticciones.\\
+El método \texttt{BOBO-x} está inspirado en k-nn. Consiste en cada paso seleccionar, de manera azarosa, un ítem del conjunto de pivotes (en el inicio este conjunto contiene todos los ítems), con el que se genera un bundle valido a alrededor de este. En el caso de que el intra del bundle sea bueno se agrega al conjunto de candidatos de bundle. La iteración finaliza cuando se generan la cantidad de candidatos definidos en el parámetro $x$ o cuando el conjunto de bundles es vacío. Para el caso de que $x$ sea 'Ex' todos los items son pivotes.\\
+Para generar el bundle a partir del pivote, se realiza de manera golosa de eligiendo en cada iteración el ítem que maximiza el intra y que cumple con las restricciones.\\
+
 \subsubsection{Hierarchical clustering}
-La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está 
-conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. 
-Para ello se define la función de distancia para los items $u$ y $v$ como:\\
+La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
+
 \begin{equation}
 d_{1}(u,v) = 1 - s(u, v)
 \end{equation}
 
-Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles,
-En la figura 1 se observa que el algoritmo selecciona los items más cercanos. En las búsquedas que 
-se realizan en ``Composite ...''\cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica 
-que tipo de resultado es el esperado. 
+Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles, En la figura 1 se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
 
 \begin{figure}[H]
   \centering
@@ -99,10 +82,8 @@ que tipo de resultado es el esperado.
   \label{res:img-usingEfficientHAC}
 \end{figure}
 
-En caso de que el $\gamma$ sea pequeño, la 
-clusterización esperada para la misma instancia es la que se visualiza en la imágen 2, clusters no 
-tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el 
-$\gamma$.\\
+En caso de que el $\gamma$ sea pequeño, la clusterización esperada para la misma instancia es la que se visualiza en la imagen 2, clusters no tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el $\gamma$.\\
+
 \begin{equation}
 d2(u,v) = 1 - FO(\{u\} \cup \{v\})
 \end{equation}
@@ -115,10 +96,7 @@ Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
   \label{res:img-usingSingleHAC}
 \end{figure}
 
-Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una 
-complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que 
-la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de 
-\cite{informationRetrival}.
+Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de \cite{informationRetrival}.
 
 
 \subsection{Selección de bundles}
@@ -129,7 +107,7 @@ Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vér
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
 
-El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hayar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vertices por:
+El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vértices por:
  
 \begin{equation}
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
@@ -139,7 +117,7 @@ A esta nueva instancia del problema, se le aplica la heurística golosa en la qu
 
 (aca va el algoritmo)\\
 
-Otra heurística propuesta para la selección, también goloso, consiste en seleccionar en cada iteración un bundle para la solución. Sea $B$ el conjunto de bundles producidos, $S \subseteq B$ el conjunto de bundles seleccionados, en la iteración $i$ se agregá a la solución el bundle que cumple con:
+Otra heurística propuesta para la selección, también goloso, consiste en seleccionar en cada iteración un bundle para la solución. Sea $B$ el conjunto de bundles producidos, $S \subseteq B$ el conjunto de bundles seleccionados, en la iteración $i$ se agrega a la solución el bundle que cumple con:
 
 \begin{equation}
 \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
@@ -160,28 +138,10 @@ Otra heurística propuesta para la selección, también goloso, consiste en sele
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
 
-\section{Modificación de PAC para búsquedas específicas}
-Para la obtención de la solución se modificó la producción de bundles como así también la 
-selección de los mismos (Produce and Choose). \\
-En la producción de bundles en el algoritmo jerárquico, se utilizó la similitud del perfil 
-específico con los papers en cada paso que intenta unificar dos clusters. A diferencia del cálculo 
-original que la compatibilidad de dos nodos esta dada por su distancia previamente obtenida, en 
-este nuevo caso se agrega a ese resultado la compatibilidad de cada uno de ellos con el perfil 
-específico. \\
-Para la producción del algoritmo BOBO, se agregó junto al pivote en todos los clusters. \\
-Para la selección de los bundles que formarán parte de la solución, a cada cluster se le 
-calculo el valor intra también se tuvo en cuenta la similitud de todos los elementos con el perfil  
-específico, de esta manera a los clusters que contenían papers con los mismos tópicos que el del 
-vector especifico se le dio mayor peso.
-
 \section{Algoritmo goloso}
-En los algoritmos previos se centraron en construir bundles máximizando el intra y una vez generado 
-una cantidad suficiente seleccionar un conjunto de estos para la solución.
-En el algoritmo goloso propuesto, se generan unicamente los bundles que pertenecen a la solución.
-Agregando iterativamente el item al bundle que máximiza la función objetivo.\\
-El algoritmo comienza con los bundles de la solución vacíos. En cada paso selecciona, de los items que no son parte
-de la solución, aquel que máximiza la función objetivo agregandolo a alguno de los bundles sin violar las restricciones
-del problema.
+En los algoritmos previos se centraron en construir bundles maximizando el intra y una vez generado una cantidad suficiente seleccionar un conjunto de estos para la solución. En el algoritmo goloso propuesto, se generan únicamente los bundles que pertenecen a la solución. Agregando iterativamente el item al bundle que maximiza la función objetivo.\\
+El algoritmo comienza con los bundles de la solución vacíos. En cada paso selecciona, de los items que no son parte de la solución, aquel que máximiza la función objetivo agregándolo a alguno de los bundles sin violar las restricciones del problema.
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $numOfSnowFlakes:Integer$
@@ -216,13 +176,12 @@ del problema.
 
 \section{Búsquedas Tabú}
 Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos consisten en comenzar con una solución e iterativamente moverse a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de búsqueda. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice o minimice (según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un mínimo (ó máximo) local y nunca pueda salir de él.\\
-\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina que no cumple con el criterio de búsqueda. De esta manera se permite al algorimo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada por una determinada cantidad de iteraciones para también de esta manera evitar caer en ciclos y mínimos o máximos locales.\\
-Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cuál se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.\\
-Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle.
-La primera búsca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución. 
+\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina que no cumple con el criterio de búsqueda. De esta manera se permite al algoritmo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada por una determinada cantidad de iteraciones para también de esta manera evitar caer en ciclos y mínimos o máximos locales.\\
+Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar el algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.\\
+Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución.
 
 \subsection{Inter-Bundle}
-La búsqueda se concebío especialmente para la fase de selección del algoritmo \texttt{Produce-and-Choose}. En esta fase se eligen los bundles que pertencen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
+La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce-and-Choose}. En esta fase se eligen los bundles que pertenecen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
 	\item Obtener el Bundle de la solución a reemplazar.
@@ -230,7 +189,7 @@ Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguient
 	\item Agregar a la solución el bundle más alejado al centroide.
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acopolado al de la solucion $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es $b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$. El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es $b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$. El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $aSolution: Vector<SnowFlake>, remainingBundles: Vector<SnowFlake>, gamma: Double$
@@ -287,12 +246,12 @@ En Intra-Bundle explora soluciones con bundles más cohesivos. De la solución a
 \begin{enumerate}
 	\item Obtener el bundle menos cohesivos de la solución.
 	\item Determinar el centroide del bundle.
-	\item Hallar el item más alejado del centroide.
-	\item Reemplazar con el item, que no pertenece a la solución, más cercano al centroide.
+	\item Hallar el ítem más alejado del centroide.
+	\item Reemplazar con el ítem, que no pertenece a la solución, más cercano al centroide.
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de items, el bundle de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
- 
+Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de ítems, el bundle de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $aSolution: Vector<SnowFlake>, gamma: Double$
