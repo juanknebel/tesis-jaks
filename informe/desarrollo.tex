@@ -47,7 +47,7 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtiene q
 El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, Consiste en dos fases. En la primer fase se generan cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
-Dado un conjunto de papers el objetivo es generar clusters en los cuales los papers suficientemente similares pertenezcan al mismo cluster y en cluster distintos los disímiles. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
+La generación de bundles se puede pensar como un problema de clustering, donde dado un conjunto de artículos se agrupan los papers suficientemente similares y disímiles a los artículos de otros grupos. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
 Definir como se constituye un cluster es complejo. Por ejemplo para los 20 puntos que se muestran a continuación existen tres (o más) formas de clusterizar que son válidas. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
@@ -57,10 +57,11 @@ Definir como se constituye un cluster es complejo. Por ejemplo para los 20 punto
   \label{res:img-howToCluster}
 \end{figure}
 
-En la clusterización para Composite Retrival, la definición es generar cada cluster maximizando el costo que esta acotado por el budget. Ya que lo esperado es obtener cluster que utilicen el máximo del presupuesto.\\
-El problema de la clusterización es NP-hard (agregar ref, explicar problema de clusterizacion), por lo que se utilizaron dos técnicas ya conocidas para aproximarse a una solución. La principal diferencia entre las estrategias de clusterización es entre la jerárquica y de partición.\\
-La primer técnica produce un árbol de particiones, la raíz es un cluster que contiene todos los ítems y las hojas son clusters con un único ítem. Cada nivel intermedio, puede ser visto, como la combinación entre dos clusters del nivel inferior inmediato. Mientras que la segunda genera solo un nivel de las particiones de los items de una vez.\\ 
-Se implementaron las dos técnicas. La clusterización jerárquica con el algoritmo Hierarchical clustering y la de partición con Bundles One-By-One.\\
+En la clusterización para Composite Retrieval, la definición es que cada cluster maximice el costo que esta acotado por el presupesto. Ya que lo esperado es obtener cluster que utilicen el máximo del presupuesto.\\
+Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos.\\
+Los métodos particionales reubican iterativamente los objetos, moviéndolos de un cluster a otro. Generalmente estos métodos requieren que la cantidad de cluster a generar sea preestablecido.\\
+Los métodos jerárquicos construyen los clusters mediante la partición recursiva de los grupos de objetos. Estos métodos se pueden subdividir entre aglomerativo y divisivo. En el aglomerativo, inicialmente cada objeto representa un cluster en si mismo y luego sucesivamente los cluster son combinados entre ellos. En el divisorio, en el incio todos los objetos pertenecen al mismo cluster. El cluster es divido en sub-cluster que se siguen dividiendo en sub-cluster.\\
+Se implemento un algoritmo de cada categoria. Del método jerárquico se desarrolló el algoritmo Hierarchical clustering. Mientras que para el método de partición el algoritmo Bundles One-By-One.\\
 
 \subsubsection{Bundles One-By-One}
 El método \texttt{BOBO-x} está inspirado en k-nn. Consiste en cada paso seleccionar, de manera azarosa, un ítem del conjunto de pivotes (en el inicio este conjunto contiene todos los ítems), con el que se genera un bundle valido a alrededor de este. En el caso de que el intra del bundle sea bueno se agrega al conjunto de candidatos de bundle. La iteración finaliza cuando se generan la cantidad de candidatos definidos en el parámetro $x$ o cuando el conjunto de bundles es vacío. Para el caso de que $x$ sea 'Ex' todos los items son pivotes.\\
