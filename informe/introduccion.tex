@@ -19,13 +19,13 @@ el criterio buscado con otros elementos que se relacionan. Un posible resultado 
   \item Led Zeppelin - Led Zeppelin
   \item It's Hard - The Who
   \item Perfect Strangers - Deep Purple
-	\item El Cielo Puede Esperar - Attaque 77
+  \item El Cielo Puede Esperar - Attaque 77
   \item wheels of fire - Cream
-	\item Confesiones de Invierno - Sui Generis
+  \item Confesiones de Invierno - Sui Generis
   \item The White Album - The Beatles
   \item Innuendo - Queen
   \item Sticky Fingers - The Rolling Stones
-	\item Kamikaze - Luis Alberto Spinetta
+  \item Kamikaze - Luis Alberto Spinetta
 \end{itemize}
 
 Si el usuario está interesado en comprar discos, cuenta con un presupuesto limitado y le interesa la diversidad de los artistas a adquirir, con este resultado lineal, el usuario debería realizar reiteradas búsquedas para encontrar los discos de los artistas que que le interesen.\\
@@ -33,14 +33,9 @@ Si el usuario está interesado en comprar discos, cuenta con un presupuesto limi
 El resultado que se propone en ``Composite Retrieval of Diverse and Complementary Bundles'' esta diseñado para aquellas consultas 
 que requieren obtener un conjunto de elementos que se relacionan como respuesta. En las técnicas tradicionales de 
 clusterización la agrupación se hace por la similitud entre items. En el ejemplo de los discos con una clusterización tradicional,
-donde la similitud sea el genero músical, seguramente se generen tantos clusters como géneros de discos existan y en cada cluster estén todos 
-los discos de ese género. Con este resultado se deberá explorar todo el cluster para elegir los discos; donde la información es redundate 
-porque algunos discos son tan parecidos que no se comprarían juntos.\\
+donde la similitud sea el genero músical, seguramente se generen tantos clusters como géneros de discos existan y en cada cluster estén todos los discos de ese género. Con este resultado se deberá explorar todo el cluster para elegir los discos; donde la información es redundate porque algunos discos son tan parecidos que no se comprarían juntos.\\
 
-En ``Composite Retrieval of Diverse and Complementary Bundles'' la clusterización se ajuste al presupuesto y a que los itmes sean complementarios, 
-para que el usuario seleccionando un bundle (es el nombre que se le da al agrupamiento de items) cubra su necesidad. Con los discos 
-se establece la complementariedad de algún atributo, como puede ser el origen de la banda, cada bundle es una opción de discos que el usuario 
-puede comprar porque cumplen con el presupuesto, son del mismo género de música y hay variedad entre ellos. Una solución posible es:
+En ``Composite Retrieval of Diverse and Complementary Bundles'' la clusterización se ajuste al presupuesto y a que los itmes sean complementarios, para que el usuario seleccionando un bundle (es el nombre que se le da al agrupamiento de items) cubra su necesidad. Con los discos se establece la complementariedad de algún atributo, como puede ser el origen de la banda, cada bundle es una opción de discos que el usuario puede comprar porque cumplen con el presupuesto, son del mismo género de música y hay variedad entre ellos. Una solución posible es:
 \begin{itemize}
   \item Bundle 1:
   \begin{itemize}
@@ -70,10 +65,10 @@ Lo que se propone es otorgar un conjunto de \textbf{bundles} que cumplen con las
   \item \textbf{Diversificada}: Los bundles entre si deben ser diversos.
 \end{itemize}
 
-\section{Instanciación}
-Este trabajo consiste en implementar el diseño de resultados de  \textit{\textquotedblleft Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}\cite{compositeRetrival} para la base de datos de los papers de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}.
+\section{Instancia elegida}
+Este trabajo consiste en implementar el diseño de resultados de \textit{\textquotedblleft Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}\cite{compositeRetrival} para la base de datos de los papers de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}.
 La decisión de utilizar esta base de datos es por la completitud de la información y que el tamaño de la cantidad de elementos
 que contiene requiere de una optimización de los algoritmos propuestos.\\
-
-La base de datos contiene cerca de $7800$ papers con información de quienes son sus autores y dónde fueron presentados. 
-Cada paper tiene un \texttt{topicProfile} que es una clasificación en porcentajes de cada tópico. De los $9800$ autores se conoce de que universidad es y de cada universidad a que región pertenece.
+La base de datos contiene cerca de $7800$ papers con identificando todos los autores que participaron en ellos, en que conferencia fueron presentados y lo más importante es que se cuenta con una clasificación ya realizada de los tópicos a los que hacen referencia cada uno de ellos. Ésta última caracterísitica es llamada \texttt{topicProfile} y esta expresada en porcentajes para cada uno de tópicos que son tratados en el paper.\\
+Cuenta con $9800$ autores y de ellos tenemos la información de que a universidad pertenecen, que será útil como criterio de diversidad y además de cada una de las universidades se sabe a que región pertenece cada una.\\
+El \texttt{topicProfile} es muy importante porque, como veremos más adelante, nos permitirá definir la similitud no sólo entre los papers, sino entre los autores y las universidades de la base da datos de una manera practicamente directa.

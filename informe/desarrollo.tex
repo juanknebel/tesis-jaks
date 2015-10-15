@@ -1,5 +1,5 @@
 \section{Modelo}
-Dado el conjunto de documentos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada documento es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$. 
+Dado el conjunto de documentos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada documento es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
 
 \section{Problema}
 El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ donde el bundle $S_i \in 2^{I}$ es un conjunto de documentos que satisface las reglas de \textit{complementaridad} y \textit{presupuesto}.\\
