@@ -53,7 +53,6 @@ Definir como se constituye un cluster es complejo. Por ejemplo para los 20 punto
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{img/howToCluster.png}
-  \caption{Agregar descripcion}
   \label{res:img-howToCluster}
 \end{figure}
 
@@ -61,11 +60,38 @@ En la clusterización para Composite Retrieval, la definición es que cada clust
 Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos.\\
 Los métodos particionales reubican iterativamente los objetos, moviéndolos de un cluster a otro. Generalmente estos métodos requieren que la cantidad de cluster a generar sea preestablecido.\\
 Los métodos jerárquicos construyen los clusters mediante la partición recursiva de los grupos de objetos. Estos métodos se pueden subdividir entre aglomerativo y divisivo. En el aglomerativo, inicialmente cada objeto representa un cluster en si mismo y luego sucesivamente los cluster son combinados entre ellos. En el divisorio, en el incio todos los objetos pertenecen al mismo cluster. El cluster es divido en sub-cluster que se siguen dividiendo en sub-cluster.\\
-Se implemento un algoritmo de cada categoria. Del método jerárquico se desarrolló el algoritmo Hierarchical clustering. Mientras que para el método de partición el algoritmo Bundles One-By-One.\\
+Se implementó un algoritmo de cada categoria. Del método jerárquico se desarrolló el algoritmo Hierarchical clustering, mientras que para el método de partición el algoritmo Bundles One-By-One.\\
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-x} está inspirado en k-nn. Consiste en cada paso seleccionar, de manera azarosa, un ítem del conjunto de pivotes (en el inicio este conjunto contiene todos los ítems), con el que se genera un bundle valido a alrededor de este. En el caso de que el intra del bundle sea bueno se agrega al conjunto de candidatos de bundle. La iteración finaliza cuando se generan la cantidad de candidatos definidos en el parámetro $x$ o cuando el conjunto de bundles es vacío. Para el caso de que $x$ sea 'Ex' todos los items son pivotes.\\
-Para generar el bundle a partir del pivote, se realiza de manera golosa de eligiendo en cada iteración el ítem que maximiza el intra y que cumple con las restricciones.\\
+El método \texttt{BOBO-k} está inspirado en k-means. Consiste en generar $k$ cluster del conjunto de $n$ ítems, de forma tal que la similitud intra es elevada y la inter es baja.\\
+El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido a alrededor de este. Si el bundle generado es sufcientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.\\
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE $I, s, \mu, k $
+\ENSURE Conjunto valido de bundles
+\STATE $P \leftarrow I$
+\STATE $C \leftarrow \emptyset$
+\WHILE {$ \left|C\right| < k\ and\ P \neq \emptyset$}
+\STATE $p \leftarrow selPivote(P)$
+\STATE $b \leftarrow generarBundle(D, p, s)$
+\IF {$inter(b, s) \geq \mu$}
+\STATE $C \leftarrow C \cup \left\{b\right\}$
+\STATE $I \leftarrow I \setminus b$
+\STATE $P \leftarrow P \setminus b$
+\ELSE
+\STATE $P \leftarrow P \setminus \left\{p\right\}$
+\ENDIF
+\ENDWHILE
+\RETURN $C$
+\end{algorithmic}
+\caption{BOBO-k}\label{alg:bobo}
+\end{algorithm}
+Donde $I$ es el conjunto de ítems, $s$ la función de similitud, $\mu$ el intra a superar por el bundle y $k$ los bundles a generar.
+
+La función $selPivote$ selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria.\\
+En cuanto a la función $generarBundle$, la generación del bundle a partir del pivote se realiza con un algoritmo goloso. En el que en cada iteración se agrega al bundle el ítem de $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto.\\
+Cuando se dice que el bundle sea suficientemente bueno significa que el valor de la intra supera un umbral establecido. O sea para el bundle $b$ se tiene que cumplir que: $\sum_{v_i, v_j \in b / i < j}{s(v_i,v_j)} \geq \mu$\\
 
 \subsubsection{Hierarchical clustering}
 La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
@@ -116,9 +142,23 @@ El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértice
 
 A esta nueva instancia del problema, se le aplica la heurística golosa en la que en cada iteración se remueve el nodo con menos peso en las aristas.\\
 
-(aca va el algoritmo)\\
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE $k, \alpha,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\ENSURE Conjunto de k bundles
+\STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
+\STATE $S \leftarrow V$
+\WHILE {$ \left|S\right| > k$}
+\STATE $u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$
+\STATE $S \leftarrow S \setminus  \left\{u\right\} $
+\ENDWHILE
+\RETURN $C$
+\end{algorithmic}
+\caption{Selección de bundles}\label{alg:chooseBundles}
+\end{algorithm}
 
-Otra heurística propuesta para la selección, también goloso, consiste en seleccionar en cada iteración un bundle para la solución. Sea $B$ el conjunto de bundles producidos, $S \subseteq B$ el conjunto de bundles seleccionados, en la iteración $i$ se agrega a la solución el bundle que cumple con:
+Otra heurística propuesta para la selección (también golosa) en lugar de ir descartando los bundles, la solución se genera agregando un bundle en cada iteración. Los valores del intra al ser mayores que los de inter, por lo tanto para mantener la relación del $\gamma$ inter-intra durante todo el proceso el cálculo que se realiza para seleccionar el bundle es proporcional a la iteración actual. De esta manera se asegura que en las primeras iteraciones el valor del intra no haga despreciable al inter en el momento de realizar la selección.\\
+Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundles seleccionados en la iteración $i$ se agrega a la solución el bundle que cumple con:
 
 \begin{equation}
 \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
@@ -126,15 +166,15 @@ Otra heurística propuesta para la selección, también goloso, consiste en sele
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $produced:Vector<SnowFlake>, numRequested:Integer$
-\ENSURE $selected:Vector<SnowFlake>$
-\STATE $w(u) = \dfrac{k}{u.size} * (\gamma \sum_{v \in U}(w(v))) + \dfrac{(k * (k-1))}{2} * \dfrac{2}{(u.size() * (u.size() - 1))} * 1 - \gamma \sum_{v,w \in U}(\psi(v,w))$
-\STATE $available \leftarrow produced$
-\STATE $selected \leftarrow []$
-\WHILE {$selected.size < numRequested\ AND\ selected.size < produced.size$}
-\STATE $candidate \leftarrow max_{i}$
+\REQUIRE $B, k$
+\ENSURE Conjunto de k bundles
+\STATE $S \leftarrow V$
+\WHILE {$ \left|S\right| < k$}
+\STATE $c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$
+\STATE $S \leftarrow S \cup \left\{c\right\}$
+\STATE $B \leftarrow B \setminus \left\{c\right\}$
 \ENDWHILE
-\RETURN $selected$
+\RETURN $S$
 \end{algorithmic}
 \caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
