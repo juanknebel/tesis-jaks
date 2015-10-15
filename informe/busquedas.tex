@@ -1,4 +1,5 @@
-A cada búsquedas se le define los componentes:
+La primer tarea fue definir búsquedas que tengan no solo en cuenta los datos que se encuentran en la base de datos, sino también búsquedas que tengan un sentido práctico y que a cualquier usuario sin necesidad de saber como se componen los datos pueda utilizarlas.\\
+Todas las búsquedas que se quieran realizar deben poder definirse los siguientes componentes:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos items devuelve la similitud entre estos.
   \item \textbf{Costo}: Función que dado un item devuelve el costo del mismo.
@@ -6,9 +7,8 @@ A cada búsquedas se le define los componentes:
   \item \textbf{Complmentariedad}: Propiedad del item que es único en cada bundle.
 \end{itemize}
 
-Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, 
-en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5.
-Por lo que en cada criterio resta definir la función de similitud y la propiedad de complementariedad.
+Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Esta decisión se tomo porque no tiene sentido asociarle un costo a los papers, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elemntos. La elección del 5 elementos por bundle nos parecio un buen número.\\
+Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
 
 \section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
 Generar una solución, en el que cada bundle contenga 
@@ -33,5 +33,30 @@ En este caso, la búsqueda es para instituciones de diferentes regiones.
   \item \textbf{Complmentariedad}: Región de la institución.
 \end{itemize}
 
-El perfil de cada paper se calcula con el Topic Profile, el de los autores con la unión de los perfiles de los papers que participaron
-y el perfil de las instituciones por la unión de los perfiles de los autores.
+Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada paper que es un porcentage del tema al que hace referencia. Ésto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada paper se obtiene un vector de la misma dimensión. Ésto es clave para la generarción de la similitud entre los papers.\\
+Para los autores no se cuenta con información más allá de que papers escribieron, pero sólo con eso nos alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los papers en los cuales participó y con eso obtenemos un \texttt{Topic Profile de Autores}.\\
+Con las universidades para obtener su perfil se aplicó el mismo criterio que para los autores. Haciendo la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad se genera un \texttt{Topic Profile de Universidades}.\\
+En los dos casos siempre se aplica normalización sobre los vectores resultantes.
+
+Ejemplo de los perfiles de los elementos:
+
+\begin{description}
+ \item[Paper - Topic Profile - Autores]
+ \item Paper 1 - $[$0.20, 0.40, 0.40, 0.00$]$ - Autor 1, Autor 2, Autor 3
+ \item Paper 2 - $[$0.30, 0.70, 0.00, 0.00$]$ - Autor 2, Autor 3
+ \item Paper 3 - $[$0.00, 0.10, 0.00, 0.90$]$ - Autor 2
+ \item Paper 4 - $[$0.00, 0.00, 1.00, 0.00$]$ - Autor 1, Autor 3
+\end{description}
+
+\begin{description}
+ \item[Autor - Topic Profile - Universidad]
+ \item Autor 1 - $[$0.14, 0.27, 0.95, 0.00$]$ - Universidad 1
+ \item Autor 2 - $[$0.30, 0.74, 0.25, 0.55$]$ - Universidad 2
+ \item Autor 3 - $[$0.27, 0.60, 0.76, 0.0$]$ - Universidad 2
+\end{description}
+
+\begin{description}
+ \item[Universidad - Topic Profile]
+ \item Universidad 1 - $[$0.14, 0.27, 0.95, 0.00$]$
+ \item Universidad 2 - $[$0.31, 0.72, 0.54, 0.30$]$
+\end{description}
