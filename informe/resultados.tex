@@ -35,52 +35,15 @@ producción:\\
     \caption {Cantidad de bundles generados antes de la selección final}
 \end{table}
 
-En los siguientes gráficos se visualiza los resultados obtenidos para $\gamma$ 0.1 y 0.9. Cada 
-nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
-gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
-de la intra es menor y al rojo mayor.
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC}
-  \label{res:img-papers-gamma01-hac}
-\end{figure}
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC}
-  \label{res:img-papers-gamma09-hac}
-\end{figure}
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC}
-  \label{res:img-papers-gamma01-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC}
-  \label{res:img-papers-gamma09-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering	
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
-  \label{res:img-papers-gamma01-greedy}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
-  \label{res:img-papers-gamma09-greedy}
-\end{figure}
+%\begin{figure}[H]
+%  \centering
+%    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy09.png}
+%  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
+%  \label{res:img-papers-gamma09-greedy}
+%\end{figure}
 
 \section{Autores}
 Se generaron soluciones con las siguientes características:\\
@@ -97,47 +60,6 @@ nodo representa un bundle y los ejes el valor de la similitud entre cada uno de 
 gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
 de la intra es menor y al rojo mayor.
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC, selección simple}
-  \label{res:img-authors-gamma01-hac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC, selección simple}
-  \label{res:img-authors-gamma09-hac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC, selección simple}
-  \label{res:img-authors-gamma01-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC, selección simple}
-  \label{res:img-authors-gamma09-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
-  \label{res:img-authors-gamma01-greedy}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
-  \label{res:img-authors-gamma09-greedy}
-\end{figure}
 
 Tanto para las soluciones generadas por \texttt{SingleHAC} como por \texttt{EfficientHAC} y con 
 cualquier estrategia de selección, todas las soluciones formaron los mismos bundles a pesar de la 
@@ -165,16 +87,3 @@ bundles relevantes con el perfil elegido.\\
 A continuación mostramos la temáticas obtenidas para una búsqueda con un perfil específico de 
 ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
 del algoritmo SingleHAC con $\gamma$ = 0.1 y $\gamma$ = 0.9.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm01.png}
-  \caption{$\gamma$ = 0.1}
-  \label{res:img-gamma01-especifico}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm09.png}
-  \caption{$\gamma$ = 0.9}
-  \label{res:img-gamma09-especifico}
-\end{figure}
