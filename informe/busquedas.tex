@@ -1,26 +1,25 @@
-La primer tarea fue definir búsquedas que tengan no solo en cuenta los datos que se encuentran en la base de datos, sino también búsquedas que tengan un sentido práctico y que a cualquier usuario sin necesidad de saber como se componen los datos pueda utilizarlas.\\
-Todas las búsquedas que se quieran realizar deben poder definirse los siguientes componentes:
+Las búsquedas sobre la base de datos se concibieron a partir de lo que se consideró interesante para el público en general y de cierta complejidad para que el valor teórico de este trabajo.\\
+Las búsquedas propuestas son: autores que investigaron sobre los mismos tópicos de distintas universidades; o universidades de distintas regiones en la que se escribieron papares similares.\\
+Para realizar las búsquedas se requiere las siguientes definiciones sobre los ítems:
 \begin{itemize}
-  \item \textbf{Similitud}: Función que dado dos items devuelve la similitud entre estos.
-  \item \textbf{Costo}: Función que dado un item devuelve el costo del mismo.
+  \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
+  \item \textbf{Costo}: Función que dado un ítem devuelve el costo del mismo.
   \item \textbf{Presupuesto}: El presupuesto que se tiene, el cual no podrá ser excedido por ningún bundle.
-  \item \textbf{Complmentariedad}: Propiedad del item que es único en cada bundle.
+  \item \textbf{Complmentariedad}: Propiedad del ítem que es único en cada bundle.
 \end{itemize}
-
-Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Esta decisión se tomo porque no tiene sentido asociarle un costo a los papers, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elemntos. La elección del 5 elementos por bundle nos parecio un buen número.\\
-Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
-
+Para todas las búsquedas, sin importar el ítem que sea (papers, autores o universidades),  se definió que el costo de cada ítem sea de una unidad (lo que se identificó como mejor criterio para estos ítems, sin afectar la complejidad del problema) el presupuesto es de cinco unidades, se debe a que en la base de datos de muestra solo se tiene información de cinco conferencias. Por lo anterior es que en todos los resultados cada bundle contiene como máximo 5 ítems. Además se deicidio que sean diez los bundles devueltos en cada búsqueda. El motivo de esta decisión es para que sea sencillo para un humano valorizar el resultado propuesto. Entonces de aquí en adelante para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad.\\
+Como se menciona anteriormente, en la base de datos cada paper cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de cada paper asignándole un porcentaje a cada tópico que se hace referencia. El \texttt{Topic Profile} del paper \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams}  se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY el porcentaje de cada uno de estos es 71.43 %, 17.86 %, 7.14 % y 3.57 %. \\
+De los autores no se cuenta con una información directa que defina el perfil. Por lo tanto el perfil de los autores  se genera a partir de los perfiles de los papers que estos escribieron. Para definir el perfil de las universidades se aplicó  se utilizaron los perfiles de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems.\\
+Las búsquedas que se realizaron en este trabajo son las siguientes:
 \section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
-Generar una solución, en el que cada bundle contenga 
-papers similares que se hayan presentado en distintas conferencias.\\
+Generar una solución, en el que cada bundle contenga papers de tópicos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada paper.
   \item \textbf{Complmentariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
 \section{Autores de distintas universidades}
-Solución de bundles en el que cada uno contiene autores 
-similares de distinta universidad de afiliación.\\
+Solución de bundles en el que cada uno contiene autores que escribieron sobre temas similares y que están afiliados a diferentes universidades.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
   \item \textbf{Complmentariedad}: Universidad de pertenencia del autor.
@@ -33,10 +32,6 @@ En este caso, la búsqueda es para instituciones de diferentes regiones.
   \item \textbf{Complmentariedad}: Región de la institución.
 \end{itemize}
 
-Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada paper que es un porcentage del tema al que hace referencia. Ésto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada paper se obtiene un vector de la misma dimensión. Ésto es clave para la generarción de la similitud entre los papers.\\
-Para los autores no se cuenta con información más allá de que papers escribieron, pero sólo con eso nos alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los papers en los cuales participó y con eso obtenemos un \texttt{Topic Profile de Autores}.\\
-Con las universidades para obtener su perfil se aplicó el mismo criterio que para los autores. Haciendo la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad se genera un \texttt{Topic Profile de Universidades}.\\
-En los dos casos siempre se aplica normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
 

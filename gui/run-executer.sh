@@ -1,2 +1,2 @@
 #!/bin/bash 
-python resultMain.py
+python2.7 resultMain.py
