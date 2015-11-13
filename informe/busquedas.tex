@@ -1,6 +1,5 @@
-Las búsquedas sobre la base de datos se concibieron a partir de lo que se consideró interesante para el público en general y de cierta complejidad para que el valor teórico de este trabajo.\\
-Las búsquedas propuestas son: autores que investigaron sobre los mismos tópicos de distintas universidades; o universidades de distintas regiones en la que se escribieron papares similares.\\
-Para realizar las búsquedas se requiere las siguientes definiciones sobre los ítems:
+Las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron papers similares en distintas universidades o las universidades de diferentes regiones donde se escribieron papers de los mismos tópicos.\\
+Todas las búsquedas que se quieran realizar deben poder definirse los siguientes componentes:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
   \item \textbf{Costo}: Función que dado un ítem devuelve el costo del mismo.
@@ -13,13 +12,20 @@ De los autores no se cuenta con una información directa que defina el perfil. P
 Las búsquedas que se realizaron en este trabajo son las siguientes:
 \section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
 Generar una solución, en el que cada bundle contenga papers de tópicos similares que se hayan presentado en distintas conferencias.\\
+
+Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los papers, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. \\
+Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
+
+\section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
+Generar una solución, en el que cada bundle contenga papers similares que se hayan presentado en distintas conferencias.\\
+
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada paper.
   \item \textbf{Complmentariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
 \section{Autores de distintas universidades}
-Solución de bundles en el que cada uno contiene autores que escribieron sobre temas similares y que están afiliados a diferentes universidades.\\
+Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
   \item \textbf{Complmentariedad}: Universidad de pertenencia del autor.
@@ -32,6 +38,10 @@ En este caso, la búsqueda es para instituciones de diferentes regiones.
   \item \textbf{Complmentariedad}: Región de la institución.
 \end{itemize}
 
+Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada paper que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada paper se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los papers.\\
+Para los autores no se cuenta con información más allá de que papers escribieron, pero sólo con eso nos alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los papers en los cuales participó y con eso obtenemos un \texttt{Topic Profile de Autores}.\\
+Con las universidades para obtener su perfil se aplicó el mismo criterio que para los autores. Haciendo la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad se genera un \texttt{Topic Profile de Universidades}.\\
+En los dos casos siempre se aplica normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
 
