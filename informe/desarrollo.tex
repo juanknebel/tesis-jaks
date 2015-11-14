@@ -11,11 +11,10 @@ El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots,
 
 La definición formal de \textit{Composite Retrieval} es:\\
 Dado el conjunto de documentos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hallar el conjunto valido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
-	
-	\begin{equation}
-		\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-)\max_{u \in S_i, v \in S_j}{s(u,v)}}
-	\end{equation}
-	
+\begin{equation} \label{des:eq-fnObj}
+  \sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-)\max_{u \in S_i, v \in S_j}{s(u,v)}}
+\end{equation}
+
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo. Para obtener una solución se realizaron los algoritmos de aproximación Produce-and-Choose y uno goloso. Produce-and-Choose consiste en dos etapas, la primera en producir varios bundles validos y una segunda etapa de selección de los bundles.
 
 \section{Función de similitud}
@@ -48,13 +47,13 @@ El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, Consiste
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
 La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del clúster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el clúster (intra) y mayor la diferencia entre los clúster (inter) es mejor la clusterización.\\
-No existe una definición formal de que es un clúster correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura ~\ref{res:img-howToCluster} existen tres (o más) formas de clusterizar que son válidas. Si se permite que los clúster estén amontonados, entonces la estructura de los clúster más razonable es en la que hay dos clústeres. Pero la división de los dos clústeres en tres subclusters es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro clústeres. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
+No existe una definición formal de que es un clúster correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de clusterizar que son válidas. Si se permite que los clúster estén amontonados, entonces la estructura de los clúster más razonable es en la que hay dos clústeres. Pero la división de los dos clústeres en tres subclusters es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro clústeres. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.8\textwidth]{img/howToCluster.png}
-  \label{res:img-howToCluster}
-	\caption{}
+   \includegraphics[width=0.8\textwidth]{img/howToCluster.png}
+   \caption{}
+   \label{res:img-howToCluster}
 \end{figure}
 
 En la clusterización para Composite Retrieval, la definición es que cada clúster maximice el costo que está acotado por el presupuesto. Ya que lo esperado es obtener clúster que utilicen el máximo del presupuesto. En cuanto al criterio utilizado para realizar la agrupación de los artículos es la función de similitud que descripta anteriormente. Por lo tanto la intención es que los cluster que se generan contengan los artículos que según la función de similitud sean lo más parecidos posible, para obtener bundles cohesivos.\\
@@ -98,34 +97,34 @@ Cuando se dice que el bundle sea suficientemente bueno significa que el valor de
 \subsubsection{Hierarchical clustering}
 La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
 
-\begin{equation}
+\begin{equation} \label{des:eq-dist-d1}
 d_{1}(u,v) = 1 - s(u, v)
 \end{equation}
 
-Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles, En la figura 1 se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
+Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles. En la figura \ref{des:img-usingEfficientHAC} se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.3\textwidth]{img/cluster2.png}
   \caption{Selección de bundles usando $d_{1}$}
-  \label{res:img-usingEfficientHAC}
+  \label{des:img-usingEfficientHAC}
 \end{figure}
 
-En caso de que el $\gamma$ sea pequeño, la clusterización esperada para la misma instancia es la que se visualiza en la imagen 2, clusters no tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el $\gamma$.\\
+En caso de que el $\gamma$ sea pequeño, la clusterización esperada para la misma instancia es la que se visualiza en la imagen \ref{des:img-usingSingleHAC}, clusters no tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el $\gamma$.\\
 
-\begin{equation}
+\begin{equation} \label{des:eq-dist-d2}
 d2(u,v) = 1 - FO(\{u\} \cup \{v\})
 \end{equation}
-Donde $FO$ es la función definida en \eqref{eq:fnObj} \\
+Donde $FO$ es la función definida en \ref{des:eq-fnObj} \\
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.3\textwidth]{img/cluster1.png}
   \caption{Selección de bundles usando $d_{2}$}
-  \label{res:img-usingSingleHAC}
+  \label{des:img-usingSingleHAC}
 \end{figure}
 
-Para la distancia $d_{1}$ se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ el algoritmo es \texttt{SingleHAC} que la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de \cite{informationRetrival}.
+Para la distancia $d_{1}$ \ref{des:eq-dist-d1} se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ \ref{des:eq-dist-d2} el algoritmo es \texttt{SingleHAC} que la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de \cite{informationRetrival}.
 
 
 \subsection{Selección de bundles}
@@ -224,7 +223,7 @@ Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy c
 Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución.
 
 \subsection{Inter-Bundle}
-La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce-and-Choose}. En esta fase se eligen los bundles que pertenecen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
+La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}. En esta fase se eligen los bundles que pertenecen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
 	\item Obtener el Bundle de la solución a reemplazar.
@@ -232,10 +231,13 @@ Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguient
 	\item Agregar a la solución el bundle más alejado al centroide.
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es $b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$. El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es:
+$$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$$
+El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $aSolution: Vector<SnowFlake>, remainingBundles: Vector<SnowFlake>, gamma: Double$
+\REQUIRE $aSolution: Vector<SnowFlake>, $\\
+         $remainingBundles: Vector<SnowFlake>, gamma: Double$
 \ENSURE $newSolution:Vector<SnowFlake>$
 \STATE $iteration:Integer \leftarrow 0$
 \STATE $tabuBundles: Set<SnowFlake>$
@@ -246,9 +248,10 @@ Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundl
   \STATE $updateTabuCount(tabuBundles)$
   \STATE $iterationSolution: Vector<SnowFlake> \leftarrow tempFunction$
   \STATE $worstBundle: SnowFlake \leftarrow$\\
-  $getWorstBundle(iterationSolution, tabuBundles)$
+         $getWorstBundle(iterationSolution, tabuBundles)$
   \STATE $centroidBundle: SnowFlake \leftarrow findCentroid(iterationSolution)$
-  \STATE $bestBundles: Set<SnowFlake> \leftarrow findBestBundles(centroidBundle, remainingBundles, tabuBundles)$
+  \STATE $bestBundles: Set<SnowFlake> \leftarrow findBestBundles($\\
+         $centroidBundle, remainingBundles, tabuBundles)$
   \STATE $interFunction: Doubel \leftarrow calculateInter(iterationSolution)$
   \FOR {$aBundle \in bestBundles$}
     \STATE $iterationSolution.replace(worstBundle, aBundle)$
