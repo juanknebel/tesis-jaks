@@ -1,4 +1,4 @@
-Los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron papers similares de distintas universidades o las universidades de diferentes regiones donde se escribieron papers de los mismos tópicos.\\
+Los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículo de los mismos tópicos.\\
 Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben realizar las siguientes definiciones:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
@@ -8,49 +8,49 @@ Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben real
 \end{itemize}
 Para todas las búsquedas, sin importar el ítem que sea (artículo, autores o universidades),  se definió que el costo de cada ítem sea de una unidad y que el presupuesto para cada búsqueda es de cinco unidades. Por lo que en todos los resultados se obtienen bundles que contienen como máximo cinco ítems; además se deicidió que sean diez los bundles devueltos en cada búsqueda. El motivo es para que sea fácil para un humano valorizar el resultado propuesto. Entonces de aquí en adelante para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad.\\
 Como se mencionó anteriormente, en la base de datos cada artículo cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de cada artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY el porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. \\
-De los autores no se cuenta con una información directa que defina el perfil. Por lo tanto el perfil de los autores se genera a partir de los perfiles de los artículos que escribieron. Para definir el perfil de las universidades se aplicó se utilizaron los perfiles de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems.\\
+De los autores no se cuenta con una información directa que defina el perfil. Por lo tanto el perfil de los autores se genera a partir de los artículos que escribieron. Para definir el perfil de las universidades se aplicó el perfil de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems.\\
 A continuación se detallan las consultas realizadas en este trabajo:
-\section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
-Generar una solución, en el que cada bundle contenga papers de tópicos similares que se hayan presentado en distintas conferencias.\\
+\section{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
+Generar una solución, en el que cada bundle contenga artículos de tópicos similares que se hayan presentado en distintas conferencias.\\
 
-Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los papers, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. \\
+Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. \\
 Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
 
-\section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
-Generar una solución, en el que cada bundle contenga papers similares que se hayan presentado en distintas conferencias.\\
+\section{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
+Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 
 \begin{itemize}
-  \item \textbf{Similitud}: Función que compara el perfil de cada paper.
-  \item \textbf{Complmentariedad}: Lugar dónde fue presentado.
+  \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
+  \item \textbf{Complementariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
 \section{Autores de distintas universidades}
 Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
-  \item \textbf{Complmentariedad}: Universidad de pertenencia del autor.
+  \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
 \end{itemize}
 
 \section{Instituciones de diferentes regiones}
 En este caso, la búsqueda es para instituciones de diferentes regiones. 
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
-  \item \textbf{Complmentariedad}: Región de la institución.
+  \item \textbf{Complementariedad}: Región de la institución.
 \end{itemize}
 
-Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada paper que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada paper se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los papers.\\
-Para los autores no se cuenta con información más allá de que papers escribieron, pero sólo con eso nos alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los papers en los cuales participó y con eso obtenemos un \texttt{Topic Profile de Autores}.\\
+Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada artículo que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada artículo se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los artículos.\\
+Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso obtenemos el \texttt{Topic Profile de Autores}.\\
 Con las universidades para obtener su perfil se aplicó el mismo criterio que para los autores. Haciendo la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad se genera un \texttt{Topic Profile de Universidades}.\\
 En los dos casos siempre se aplica normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
 
 \begin{description}
- \item[Paper - Topic Profile - Autores]
- \item Paper 1 - $[$0.20, 0.40, 0.40, 0.00$]$ - Autor 1, Autor 2, Autor 3
- \item Paper 2 - $[$0.30, 0.70, 0.00, 0.00$]$ - Autor 2, Autor 3
- \item Paper 3 - $[$0.00, 0.10, 0.00, 0.90$]$ - Autor 2
- \item Paper 4 - $[$0.00, 0.00, 1.00, 0.00$]$ - Autor 1, Autor 3
+ \item[Artículo - Topic Profile - Autores]
+ \item Artículo 1 - $[$0.20, 0.40, 0.40, 0.00$]$ - Autor 1, Autor 2, Autor 3
+ \item Artículo 2 - $[$0.30, 0.70, 0.00, 0.00$]$ - Autor 2, Autor 3
+ \item Artículo 3 - $[$0.00, 0.10, 0.00, 0.90$]$ - Autor 2
+ \item Artículo 4 - $[$0.00, 0.00, 1.00, 0.00$]$ - Autor 1, Autor 3
 \end{description}
 
 \begin{description}
