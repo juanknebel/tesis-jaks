@@ -56,7 +56,7 @@ SOLVER	3
 #ARTICLE para traer articulos
 #AUTHOR para traer autores
 #AFFILIATION para traer universidades
-ELEMENT AUTHOR
+ELEMENT	AUTHOR
 
 #Usa la similaridad inter (de estar en 1, la estrategia debe ser #RANK_BY_INTRA_INTER o #RANK_BY_DENSEST_SUBGRAPH)
 INTER_SIMILARITY_WEIGHT	0.9
