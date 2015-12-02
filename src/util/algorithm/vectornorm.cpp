@@ -220,17 +220,17 @@ void calculateSpecificSimilarity(std::vector<float> *vector1,String tableName, S
 }
 
 void insertSimilarity() {
-    String tableNameArticles = "ARTICLE_ITEM";
+    /*String tableNameArticles = "ARTICLE_ITEM";
     String fieldIdArticles = "ArticleId";
     String queryArticles = "SELECT ArticleId, distribution, distribution_KEY FROM ARTICLES a, TopicProfile_distribution t WHERE a.topicProfile_identifier = t.topicProfile_identifier ORDER BY ArticleId";
     String tableNameSimilarityArticles = "SIMILARITY";
-    insertSimilarity(tableNameArticles, fieldIdArticles, tableNameSimilarityArticles, queryArticles);
+    insertSimilarity(tableNameArticles, fieldIdArticles, tableNameSimilarityArticles, queryArticles);*/
 
-    /*String tableNameAuthors = "AUTHOR_ITEM";
+    String tableNameAuthors = "AUTHOR_ITEM";
     String fieldIdAuthors = "AuthorId";
-    String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM tesis.TopicProfileAuthors ORDER BY authors_AuthorId";
+    String queryAuthors = "SELECT authors_AuthorId, distributionAuthor, distribution_KEY FROM TopicProfileAuthors ORDER BY authors_AuthorId";
     String tableNameSimilarityAuthors = "SIMILARITY_AUTHOR";
-    insertSimilarity(tableNameAuthors, fieldIdAuthors, tableNameSimilarityAuthors, queryAuthors);*/
+    insertSimilarity(tableNameAuthors, fieldIdAuthors, tableNameSimilarityAuthors, queryAuthors);
 
     /*String tableNameAffiliations = "AFFILIATION_ITEM";
     String fieldIdAffiliations = "affiliationId";
