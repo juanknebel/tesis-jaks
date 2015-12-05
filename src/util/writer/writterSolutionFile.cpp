@@ -6,7 +6,7 @@
 
 void WritterSolutionFile::writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) {
     FileOutput file(fileName.c_str());
-    file << "Bundle" << this->separator_ << "Atraction" << this->endOfLIne_;
+    file << "Bundle" << this->separator_ << "AtractionId" << this->separator_ << "Atraction" << this->endOfLIne_;
     int bundle = 0;
     for (std::vector<SnowFlake>::const_iterator itSF = solution.begin(); itSF != solution.end(); ++itSF) {
         ++bundle;
