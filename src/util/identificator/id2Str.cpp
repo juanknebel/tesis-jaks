@@ -21,7 +21,9 @@ Id2Str::Id2Str(String fileName) {
 	while(getline(file, line, '\n')) {
 		StrVector tokens;
 		stringToVectorSplit(line, "\t", tokens);
-		(*(this->node2name_))[tokens[0]] = tokens[1]; 
+        std::stringstream name;
+        name<<tokens[0]<<"\t"<<tokens[1];
+		(*(this->node2name_))[tokens[0]] = name.str();
 	}
 	file.close();
 }
