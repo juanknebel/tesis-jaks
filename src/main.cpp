@@ -77,15 +77,15 @@ void initializeDefaultLogger(char *log) {
     }
 }
 
-std::vector<float>* generateVector(char *theVector, int dimension) {
-    std::vector<float> *vectorProfile = new std::vector<float>();
+std::vector<float> generateVector(char *theVector, int dimension) {
+    std::vector<float> vectorProfile = std::vector<float>();
     std::string separator = "-";
     std::vector<std::string> vectorString;
 
     stringToVectorSplit(theVector,separator,vectorString);
 
     for (std::vector<string>::const_iterator i = vectorString.begin(); i != vectorString.end(); ++i) {
-        vectorProfile->push_back(convertToDouble(*i));
+        vectorProfile.push_back(convertToDouble(*i));
     }
 
     return vectorProfile;
@@ -123,14 +123,13 @@ int main(int argc, char *argv[]) {
                 case 'p': {
                     std::cout<<"Calculating the similarity of the specific profile ..."<<std::endl;
                     initializeDefaultLogger(argv[4]);
-                    std::vector<float> *specificProfile = generateVector(argv[2], convertToInt(argv[3]));
-                    if (specificProfile != nullptr) {
+                    std::vector<float> specificProfile = generateVector(argv[2], convertToInt(argv[3]));
+                    if (!specificProfile.empty()) {
                         insertSimilarity(specificProfile);
                     }
                     else {
                         std::cerr<<"Error el vector de entrada"<<std::endl;
                     }
-
                     break;
                 }
                 case 'h': {
