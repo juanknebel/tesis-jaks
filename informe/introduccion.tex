@@ -1,16 +1,18 @@
-\section{Motivación}
+\section{Estado Actual de las Búsquedas}
 {\begin{small}%
 \begin{flushright}%
 \it An algorithm must be seen to be believed.\\Donald Knuth.
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-La búsqueda de información relevante en inmensos conjunto de datos y con criterios de lo más variado, desde el resultado de una final de un mundial de fútbol hasta el mail de un pedido de compra de un cliente, encontrar la información indicada puede volverse una tarea tediosa, repetitiva y hasta frustrante para el usuario que esta realizando la búsqueda. Estas búsquedas son realizadas por ciento de millones de personas diariamente en diversos repositorios digitales. La consecuencia de esto es el crecimiento de la \textbf{Recuperación de Información} (IR por Information Retrieval en inglés) que es la actividad de obtener información relevante a partir de una necesidad sobre una colección de recursos de información. En la actualidad la Recuperación de Información esta predominando la forma en la que se accede a la información, superando a las consultas tradicionales sobre base de datos (aquellas en la cual el vendedor decía: ``Disculpe solo con el número de orden puedo encontrar su orden de compra'').\\
+La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés), es la actividad de obtener información relevante a partir de una inmensa colección de datos y con criterios de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de la confirmación de una compra.\\
+Los motores de búsquedas de la web como Google, Yahoo, etc son los clásicos ejemplos de una aplicación de IR. El proceso comienza cuando el usuario ingresa una consulta en el sistema y espera obtener un resultado en base a su búsqueda. El problema radica en que dificilmente un único elemento del universo concuerde con la consulta elegida, en cambio lo que ocurre es que se cuenta con un conjunto de elementos que coinciden pero con grados de relevancia diferentes (ranking de resultados). Para obtener el ranking de resultados los sistemas de IR trabajan con una representación lógica de los elementos que incluye los metadatos necesarios para operar sobre ellos.\\
+El principal problema con los ranking de resultados es que únicamente se compara la consulta de la búsqueda con los metadatos de los objetos dejando de lado el análisis de los elementos entre sí. Conviritiendo, en ocasiones, al proceso en una acción tediosa y repetitiva ya que deberá cambiar la consulta original hasta lograr encontrar el resultado deseado.\\
+El término \textbf{Composite Retrieval} mencionado en el paper \textit{\textquotedblleft Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}\cite{compositeRetrival} propone, en lugar de entregar una lista vertical de elementos, agruparlos bajo algún criterio de similitud. Al usuario se le presentará una lista de conjuntos de elementos relacionados con su búsqueda
+ordenados de forma lógica con la finalidad de que uno o más conjuntos satisfaga las expectativas del mismo sin necesidad de una nueva intervención para refinar su búsqueda.
 
-Planear un viaje típicamente requiere realizar múltiples búsquedas para juntar información de los diferentes lugares, leer opiniones acerca de las atracciones turísticas y validar las distancias geográficas de los lugares a visitar. El artículo \textit{\textquotedblleft Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}\cite{compositeRetrival} propone para estos tipos de casos que los objetos resultantes de las búsquedas se agrupen bajo un criterio, con la finalidad de que alguno de los grupos de objetos satisfaga las expectativas del usuario. De este modo al usuario se le ofrece una variedad de objetos ordenados de forma lógica para facilitar la exploración de los objetos devueltos.\\
-
-\section{Ejemplo de escenario}
-
+\section{Motivación}
+Planear un viaje típicamente requiere realizar múltiples búsquedas para juntar información de los diferentes lugares, leer opiniones acerca de las atracciones turísticas y validar las distancias geográficas de los lugares a visitar.\\
 En una búsqueda típica los resultados obtenidos son una larga lista ordenada por la relevancia del criterio de la consulta. Este tipo de resultados no otorgan respuestas que relacionen el criterio buscado con otros elementos que se relacionan. Por ejemplo el caso de que un usuario de una tienda online de venta de discos, realice una búsqueda discos de rock el resultado puede ser una lista como la siguiente:\\
 \begin{itemize}
   \item Physical Graffiti - Led Zeppelin
@@ -18,7 +20,7 @@ En una búsqueda típica los resultados obtenidos son una larga lista ordenada p
   \item It's Hard - The Who
   \item Perfect Strangers - Deep Purple
   \item El Cielo Puede Esperar - Attaque 77
-  \item wheels of fire - Cream
+  \item Wheels of Fire - Cream
   \item Confesiones de Invierno - Sui Generis
   \item The White Album - The Beatles
   \item Innuendo - Queen
