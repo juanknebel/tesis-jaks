@@ -13,7 +13,7 @@ A continuación se detallan las consultas realizadas en este trabajo.\\
 Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. \\
 Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
 
-\section{Papers de diferentes conferencias}\label{bus:papSimDisLug}
+\section{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
 Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
@@ -35,9 +35,7 @@ En este caso, la búsqueda es para instituciones de diferentes regiones.
 \end{itemize}
 
 Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada artículo que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada artículo se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los artículos.\\
-Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil pero de autores. Para cada autor se hace una suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso obtenemos el \texttt{Topic Profile de Autores}.\\
-Con las universidades para obtener su perfil se aplicó el mismo criterio que para los autores. Haciendo la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad se genera un \texttt{Topic Profile de Universidades}.\\
-En los dos casos siempre se aplica normalización sobre los vectores resultantes.
+Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores, por lo tanto para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso obtenemos el \texttt{Topic Profile de Autores}.Para obtener el perfil de las universidades se aplicó el mismo criterio que para los autores, de hacer la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así generar el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
 
