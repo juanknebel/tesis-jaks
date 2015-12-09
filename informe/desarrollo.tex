@@ -2,55 +2,30 @@ El desarrollo de este trabajo comenzó con la implementación de la estrategía 
 Adicionalmente en este trabajo se propuso un algoritmo nuevo goloso para hallar la solución que no comporte las estrategias mencionadas y dos instancias de una Búsqueda Tabú. La primera se encarga de encontrar mejores bundles producidos en la etapa del PAC y la otra para hallar una mejor solución tomando como entrada cualquier solución de todos los algoritmos implementados en este trabajo.
 
 \section{Modelo}
-Dado el conjunto de objetos $I$ y una función de similitud $ s: I x I \rightarrow [0;1]$, cada objeto es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
+Dado el conjunto de objetos $I$ y una función de similitud $ s: I \times I \rightarrow [0;1]$, cada objeto es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
 
 \section{Problema}
 El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ donde el bundle $S_i \in 2^{I}$ es un conjunto de objetos que satisface las reglas de \textit{complementaridad} y \textit{presupuesto}.\\
-\textbf{Definición} Dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$ el bundle $S \in 2^{I}$ es válido si sólo si satisface las reglas:
+\textbf{Definición} Dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$ el bundle $S \in 2^{I}$ es válido si y sólo si satisface las reglas:
 \begin{itemize}
 	\item \textbf{Complementaridad:} dada la propiedad $\alpha$ de los objetos, $\forall u,v \in S_i, u.\alpha \neq v.\alpha$
 	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall S_i \in S, f(S_i) \leq \beta$
 \end{itemize}
 
 La definición formal de \textit{Composite Retrieval} es:\\
-Dado el conjunto de objetos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hallar el conjunto valido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
+Dado el conjunto de objetos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hallar el conjunto válido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
 \begin{equation} \label{des:eq-fnObj}
   \sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-\max_{u \in S_i, v \in S_j}{s(u,v)})}
 \end{equation}
 
-En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo. Para obtener una solución se realizaron los algoritmos de aproximación Produce-and-Choose y uno goloso. Produce-and-Choose consiste en dos etapas, la primera en producir varios bundles validos y una segunda etapa de selección de los bundles.
-
-\section{Función de similitud}
-La similitud se emplea para comparar dos documentos y determinar qué tan parecido son entre si. La comparación se realiza en el \textit{modelo de espacio vectorial} donde los artículos se representan con vectores, en la que cada dimensión corresponde a un tópico. El valor del tópico del artículo de la base de datos \cite{dataDrive}, es el valor en el vector.\\
-El artículo $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos. Los vectores cumplen con las propiedades:
-\begin{enumerate}
- \item $v_i \leqslant 1$
- \item $\sum{v_i} = 1$
-\end{enumerate}
-
-Con los vectores es posible calcular el coeficiente de similitud a través de la función $ S (V_i, V_j)$ la cual refleja el grado de similitud de los pesos de los tópicos correspondientes. Existen varias medidas de similitud, En este trabajo se utilizó una de las más utilizadas que es la medida de similitud basada en el ángulo de los vectores.\\
-En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar qué tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con idéntica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
-Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tiene la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclidiano. Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
-
-\begin{equation} \label{eq:angulovectorial}
-\cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
-\end{equation}
-
-Como los componentes de todos los vectores son mayor o igual a cero se obtiene que $0\leq\cos(\theta)\leq1$. Que corresponde con la función de similitud.
-
-\begin{figure}[H]
-\includegraphics[width=0.8\textwidth]{img/coseno.png}
-\caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
-\label{bus:img-coseno}
-\end{figure}
-
+En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, por el momento no se puede encontrar una solución exacta en tiempo polinomial, por lo cual este trabajo se enfoca a encontrar soluciones suficientemente buenas para el problema. Para poder encontrar la mejor solución se implementaron dos algoritmos para poder comparar los resultados: Produce-and-Choose y algoritmo goloso.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, Consiste en dos fases. En la primer fase se generan cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, consiste en dos fases: En la primera fase se generan cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
-La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del clúster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el clúster (intra) y mayor la diferencia entre los clúster (inter) es mejor la clusterización.\\
-No existe una definición formal de que es un clúster correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de clusterizar que son válidas. Si se permite que los clúster estén amontonados, entonces la estructura de los clúster más razonable es en la que hay dos clústeres. Pero la división de los dos clústeres en tres subclusters es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro clústeres. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
+La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del cluster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
+No existe una definición formal de que es un cluster correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de clusterizar que son válidas. Si se permite que los cluster estén acoplados, entonces la estructura de los cluster más razonable es en la que hay dos clusteres. Pero la división de los dos clusteres en tres subclusters es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro clusteres. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
   \centering
@@ -59,10 +34,10 @@ No existe una definición formal de que es un clúster correctamente constituido
    \label{res:img-howToCluster}
 \end{figure}
 
-En la clusterización para Composite Retrieval, la definición es que cada clúster maximice el costo que está acotado por el presupuesto. Ya que lo esperado es obtener clúster que utilicen el máximo del presupuesto. En cuanto al criterio utilizado para realizar la agrupación de los artículos es la función de similitud que descripta anteriormente. Por lo tanto la intención es que los cluster que se generan contengan los artículos que según la función de similitud sean lo más parecidos posible, para obtener bundles cohesivos.\\
+En la clusterización para Composite Retrieval, la definición es que cada cluster maximice el costo que está acotado por el presupuesto, pues lo esperado es obtener cluster que utilicen el máximo del presupuesto. En cuanto al criterio utilizado para realizar la agrupación es a través de la función de similitud para que los cluster que se generan contengan los objetos, que según la función de similitud, lo más parecidos posible y de esta manera obtener bundles cohesivos.\\
 Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos.\\
-Los métodos particionales reubican iterativamente los objetos, moviéndolos de un clúster a otro. Generalmente estos métodos requieren que la cantidad de clúster a generar sea preestablecido.\\
-Los métodos jerárquicos construyen los clústeres mediante la partición recursiva de los grupos de objetos. Estos métodos se pueden subdividir entre aglomerativo y divisivo. En el aglomerativo, inicialmente cada objeto representa un clúster en sí mismo y luego sucesivamente los clúster son combinados entre ellos. En el divisorio, en el inicio todos los objetos pertenecen al mismo clúster. El clúster es divido en subclúster que se siguen dividiendo en subclúster.\\
+Los métodos particionales reubican iterativamente los objetos, moviéndolos de un cluster a otro. Generalmente estos métodos requieren que la cantidad de cluster a generar sea preestablecido.\\
+Los métodos jerárquicos construyen los clusteres mediante la partición recursiva de los grupos de objetos. Estos métodos se pueden subdividir entre aglomerativo y divisivo. En el aglomerativo, inicialmente cada objeto representa un cluster en sí mismo y luego sucesivamente los cluster son combinados entre ellos. En el divisorio, en el inicio todos los objetos pertenecen al mismo cluster. El cluster es divido en subcluster que se siguen dividiendo en subcluster.\\
 Se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo Hierarchical clustering, mientras que para el método de partición el algoritmo Bundles One-By-One.\\
 
 
@@ -73,7 +48,7 @@ El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE $I, s, \mu, k $
-\ENSURE Conjunto valido de bundles
+\ENSURE Conjunto válido de bundles
 \STATE $P \leftarrow I$
 \STATE $C \leftarrow \emptyset$
 \WHILE {$ \left|C\right| < k\ and\ P \neq \emptyset$}
