@@ -21,7 +21,7 @@ Dado el conjunto de objetos $I = \left\{i_1, \ldots, i_n \right\}$, la función 
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, por el momento no se puede encontrar una solución exacta en tiempo polinomial, por lo cual este trabajo se enfoca a encontrar soluciones suficientemente buenas para el problema. Para poder encontrar la mejor solución se implementaron dos algoritmos para poder comparar los resultados: Produce-and-Choose y algoritmo goloso.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, consiste en dos fases: En la primera fase se generan cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, consiste en dos fases: En la primera fase se genera una cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
 A continuación se explican los algoritmos utilizados para cada fase.
 \subsection{Generación de bundles}
 La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del cluster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
@@ -42,8 +42,7 @@ Se implementó un algoritmo de cada categoría. Del método jerárquico se desar
 
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k} está inspirado en k-means. Consiste en generar $k$ cluster del conjunto de $n$ ítems, de forma tal que la similitud intra es elevada y la inter es baja.\\
-El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido a alrededor de este. Si el bundle generado es sufcientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.\\
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ cluster del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido alrededor de este. Si el bundle generado es suficientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -66,20 +65,22 @@ El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots 
 \end{algorithmic}
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
-Donde $I$ es el conjunto de ítems, $s$ la función de similitud, $\mu$ el intra a superar por el bundle y $k$ los bundles a generar.
+Donde $I$ es el conjunto de ítems, $s$ la función de similitud, $\mu$ el umbral del valor del intra a superar por cada bundle y $k$ la cantidad de bundles a generar.
 
-La función $selPivote$ selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria.\\
-En cuanto a la función $generarBundle$, la generación del bundle a partir del pivote se realiza con un algoritmo goloso. En el que en cada iteración se agrega al bundle el ítem de $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto.\\
+La función $selPivote$ selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función $generarBundle$ genera un bundle a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al bundle que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto.\\
 Cuando se dice que el bundle sea suficientemente bueno significa que el valor de la intra supera un umbral establecido. O sea para el bundle $b$ se tiene que cumplir que: $\sum_{v_i, v_j \in b / i < j}{s(v_i,v_j)} \geq \mu$\\
 
 \subsubsection{Hierarchical clustering}
-La heurística Hierarchical clustering \texttt{HAC} comienza con tantos clusters como cantidad de elementos, cada uno está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
+La heurística Hierarchical clustering \texttt{HAC} se inicia con tantos clusters como cantidad de elementos, dado que cada cluster está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
 
 \begin{equation} \label{des:eq-dist-d1}
 d_{1}(u,v) = 1 - s(u, v)
 \end{equation}
 
-Con la función de distancia $d_{1}$ en la clusterización se generan los cluster lo más cohesivos posibles. En la figura \ref{des:img-usingEfficientHAC} se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
+Los cluster que se generan a partir de la función de distancia $d_{1}$ 
+
+Con la  se generan los cluster lo más cohesivos posibles.\\
+En la figura \ref{des:img-usingEfficientHAC} se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
 
 \begin{figure}[H]
   \centering

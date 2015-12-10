@@ -1,4 +1,8 @@
-Los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículo de los mismos tópicos.\\
+La instancia seleccionada para realizar las pruebas de lo propuesto en este trabajo es sobre la base de datos de los artículos de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La decisión de utilizar esta base de datos es por la completitud de la información y que la cantidad de elementos que contiene requiere de algoritmos eficientes. La base de datos contiene cerca de $7800$ artículos, de los que se tiene los autores que participaron en ellos, en la conferencia que fueron presentados y lo más importante es que se cuenta con una clasificación ya realizada de los tópicos a los que hacen referencia cada uno de ellos. Ésta última característica es llamada \texttt{topicProfile} y esta expresada en porcentajes para cada uno de tópicos que son tratados. De los $9800$ autores se tiene la información de que a universidad pertenecen y además de cada una de las universidades se sabe a que región pertenece cada una.\\
+
+El \texttt{topicProfile} es muy importante porque permitirá definir la similitud no sólo entre los artículos, sino que también entre los autores y las universidades de la base da datos de una manera prácticamente directa.\\
+
+Para las pruebas, los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículo de los mismos tópicos.\\
 Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben realizar las siguientes definiciones:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
@@ -59,3 +63,31 @@ Ejemplo de los perfiles de los elementos:
  \item Universidad 1 - $[$0.14, 0.27, 0.95, 0.00$]$
  \item Universidad 2 - $[$0.31, 0.72, 0.54, 0.30$]$
 \end{description}
+
+\section{Función de similitud}
+La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. Para esta instancia la comparación de los objetos (ahora artículos, autores o universidades) se realiza en el \textit{modelo de espacio vectorial} ya que estos se representan con vectores, en la que cada dimensión corresponde a un tópico. Donde el valor del vector es el valor del tópico del objeto según corresponda en la base de datos \cite{dataDrive}.\\
+El objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos y cumple con las propiedades:
+\begin{enumerate}
+ \item $v_i \geq 0$
+ \item $\sum{v_i} = 1$
+\end{enumerate}
+
+Para los sistemas basados en vectores existen varias maneras para medir la similitud, la utilizada en este trabajo es la medida de similitud basada en el ángulo de los vectores. Sean $V_i$ y $V_j$ los vectores que representan a los objetos $i$ y $j$ respectivamente la similitud de estos objetos esta dado por la función $S(V_i, V_j)$ que devuelve 
+
+esta dado por 
+
+Dados los vectores , los cuales representan a los objetos respectivamente, se define la función de similitud  que devuelve el coseno de los vectores. Este resultado es el utilizado  similitud entre los objetos , se define la función de similitud  la cual refleja el grado de similitud de los pesos de los tópicos correspondientes .\\
+En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar qué tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con idéntica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
+Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tiene la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclidiano. Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
+
+\begin{equation} \label{eq:angulovectorial}
+\cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
+\end{equation}
+
+Como los componentes de todos los vectores son mayor o igual a cero se obtiene que $0\leq\cos(\theta)\leq1$. Que corresponde con la función de similitud.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\textwidth]{img/coseno.png}
+\caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
+\label{bus:img-coseno}
+\end{figure}

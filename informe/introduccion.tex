@@ -61,12 +61,3 @@ Lo que se propone es otorgar un conjunto de \textbf{bundles} que cumplen con las
   \item \textbf{Validez}: El costo total de los elementos del bundle no debe superar el presupuesto.
   \item \textbf{Diversificada}: Los bundles entre si deben ser diversos.
 \end{itemize}
-
-\section{Instancia elegida}
-Este trabajo consiste en implementar el diseño de resultados de \textit{\textquotedblleft Composite Retrieval of Diverse and Complementary Bundles\textquotedblright}\cite{compositeRetrival} de consultas sobre la base de datos de los artículos de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La decisión de utilizar esta base de datos es por la completitud de la información y que el tamaño de la cantidad de elementos que contiene requiere de optimizar los algoritmos propuestos.\\
-
-La base de datos contiene cerca de $7800$ artículos, de los que se tiene los autores que participaron en ellos, en la conferencia que fueron presentados y lo más importante es que se cuenta con una clasificación ya realizada de los tópicos a los que hacen referencia cada uno de ellos. Ésta última característica es llamada \texttt{topicProfile} y esta expresada en porcentajes para cada uno de tópicos que son tratados.\\
-
-Cuenta con $9800$ autores y de ellos tenemos la información de que a universidad pertenecen, que será útil como criterio de diversidad y además de cada una de las universidades se sabe a que región pertenece cada una.\\
-
-El \texttt{topicProfile} es muy importante porque, como veremos más adelante, nos permitirá definir la similitud no sólo entre los artículos, sino que también entre los autores y las universidades de la base da datos de una manera prácticamente directa.
