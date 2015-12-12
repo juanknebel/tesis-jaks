@@ -29,6 +29,7 @@ set(tesis-jaks_source_files
         src/util/algorithm/vectornorm.cpp
         src/util/algorithm/pairsToJaccardSimilarity.cpp
         src/util/algorithm/localSearch.cpp
+        src/util/algorithm/localSearchBundles.cpp
         src/util/system/exception.cpp
         src/util/system/stringUtilities.cpp
         src/util/system/systemUtilities.cpp
@@ -67,6 +68,6 @@ set(tesis-jaks_source_files
         src/test/testingProblemInstance.cpp
         src/test/testingProblemInstanceFromFiles.cpp
         src/test/testSuites.cpp
-        src/util/writer/writterSolutionFile.cpp src/util/writer/writterSolutionFile.h)
-add_executable(tesis-jaks ${tesis-jaks_source_files} src/util/algorithm/localSearchBundles.cpp src/util/algorithm/localSearchBundles.h)
+        src/util/writer/writterSolutionFile.cpp)
+add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks mysqlcppconn)
