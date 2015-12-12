@@ -4,6 +4,7 @@
 #include "writerSolutionAffiliations.h"
 #include "writerSolutionArticles.h"
 #include "writerSolutionAuthors.h"
+#include "writterSolutionFile.h"
 #include "../configurator/configurationJaks.h"
 
 class FactoryWriter {

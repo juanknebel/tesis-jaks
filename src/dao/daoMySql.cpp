@@ -70,15 +70,6 @@ void DaoMySql::manageException(sql::SQLException &e) {
 	this->error_ = error.str();
 }
 
-DaoMySql::DaoMySql() : Dao() {
-}
-
-DaoMySql::DaoMySql(String database, String user, String password, String server) : Dao(database, user, password, server) {
-}
-
-DaoMySql::DaoMySql(const DaoMySql& dao) : Dao(dao.database_, dao.user_, dao.password_, dao.server_) {
-}
-	
 DaoMySql::~DaoMySql() {
 	this->disconnect();
 }

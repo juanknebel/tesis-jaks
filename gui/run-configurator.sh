@@ -1,2 +1,2 @@
 #!/bin/bash 
-python main.py
+python2.7 main.py

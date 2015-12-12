@@ -33,9 +33,6 @@ protected:
 	int fields_;
 	void init(String database, String user, String password, String server);
 public:
-	Dao() {
-		this->init("", "", "", "");
-	};
 	Dao(String database, String user, String password, String server) {
 		this->init(database, user, password, server);
 	};

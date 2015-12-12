@@ -1,65 +1,93 @@
-Antes de comenzar con las búsquedas propuestas se debe definir una función de similitud entre los 
-elementos pertenecientes al conjunto de búsqueda y una noción de complementariedad entre ellos.\\
-Una vez definido estos parámetros de comparación se puede comenzar con la generación de bundles que 
-luego algunos de ellos formarán parte de la solución entregada.
-\section{Similitud entre elementos}
-En todas las búsquedas para poder definir la similitud entre elementos, partimos de los perfiles de los papers que pueden ser vistos como vectores de $N$ dimensiones normalizados ya que cada compenente representa un porcentaje del tema al que pertenece.\\
-Dados estos vectores podemos calcular el ángulo que forman entre sí uno a uno y a partir de ese ángulo definir que tan similares son dos perfiles de los papers. Dos vectores que formen un ángulo cercano a $0$\textdegree nos representa una similitud alta entre los perfiles, mientras que un ángulo cercano a $90$\textdegree dos perfiles ortogonales o diferentes, como mostraremos más adelante.\\
-\subsection{Cálculo de ángulos}
-Para los siguientes cálculos y explicaciones mostramos la idea en $\Re^{2}$ por ser visualmente más fácil de exponer, pero todo es fácilemente extensible a $\Re^{n}$.\\
-Recordemos el cálculo de un ángulo para dos vectores $V, U$:\\
-$$\cos(\hat{\theta}) = \dfrac{\overrightarrow{V}.\overrightarrow{U}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}$$
-A continuación podemos ver como se comporta la función $\cos$\\
+La instancia seleccionada para realizar las pruebas de lo propuesto en este trabajo es sobre la base de datos de los artículos de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La decisión de utilizar esta base de datos es por la completitud de la información y que la cantidad de elementos que contiene requiere de algoritmos eficientes. La base de datos contiene cerca de $7800$ artículos, de los que se tiene los autores que participaron en ellos, en la conferencia que fueron presentados y lo más importante es que se cuenta con una clasificación ya realizada de los tópicos a los que hacen referencia cada uno de ellos. Ésta última característica es llamada \texttt{topicProfile} y esta expresada en porcentajes para cada uno de tópicos que son tratados. De los $9800$ autores se tiene la información de que a universidad pertenecen y además de cada una de las universidades se sabe a que región pertenece cada una.\\
+
+El \texttt{topicProfile} es muy importante porque permitirá definir la similitud no sólo entre los artículos, sino que también entre los autores y las universidades de la base da datos de una manera prácticamente directa.\\
+
+Para las pruebas, los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró que tiene un interés general. Por ejemplo quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículo de los mismos tópicos.\\
+Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben realizar las siguientes definiciones:
+\begin{itemize}
+  \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
+  \item \textbf{Costo}: Función que dado un ítem devuelve el costo del mismo.
+  \item \textbf{Presupuesto}: El presupuesto que se tiene, el cual no podrá ser excedido por ningún bundle.
+  \item \textbf{Complmentariedad}: Propiedad del ítem que es único en cada bundle.
+\end{itemize}
+Para todas las búsquedas, sin importar el ítem que sea (artículo, autores o universidades),  se definió que el costo de cada ítem sea de una unidad y que el presupuesto para cada búsqueda es de cinco unidades. Por lo que en todos los resultados se obtienen bundles que contienen como máximo cinco ítems; además se deicidió que sean diez los bundles devueltos en cada búsqueda. El motivo es para que sea fácil para un humano valorizar el resultado propuesto. Entonces de aquí en adelante para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad.\\
+Como se mencionó anteriormente, en la base de datos cada artículo cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de cada artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY el porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. \\
+De los autores no se cuenta con una información directa que defina el perfil. Por lo tanto el perfil de los autores se genera a partir de los artículos que escribieron. Para definir el perfil de las universidades se aplicó el perfil de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems.\\
+A continuación se detallan las consultas realizadas en este trabajo.\\
+Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. \\
+Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
+
+\section{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
+Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
+  \item \textbf{Complementariedad}: Lugar dónde fue presentado.
+\end{itemize}
+
+\section{Autores de distintas universidades}
+Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de los autores.
+  \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
+\end{itemize}
+
+\section{Instituciones de diferentes regiones}
+En este caso, la búsqueda es para instituciones de diferentes regiones. 
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
+  \item \textbf{Complementariedad}: Región de la institución.
+\end{itemize}
+
+Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada artículo que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada artículo se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los artículos.\\
+Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores, por lo tanto para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso obtenemos el \texttt{Topic Profile de Autores}.Para obtener el perfil de las universidades se aplicó el mismo criterio que para los autores, de hacer la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así generar el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
+
+Ejemplo de los perfiles de los elementos:
+
+\begin{description}
+ \item[Artículo - Topic Profile - Autores]
+ \item Artículo 1 - $[$0.20, 0.40, 0.40, 0.00$]$ - Autor 1, Autor 2, Autor 3
+ \item Artículo 2 - $[$0.30, 0.70, 0.00, 0.00$]$ - Autor 2, Autor 3
+ \item Artículo 3 - $[$0.00, 0.10, 0.00, 0.90$]$ - Autor 2
+ \item Artículo 4 - $[$0.00, 0.00, 1.00, 0.00$]$ - Autor 1, Autor 3
+\end{description}
+
+\begin{description}
+ \item[Autor - Topic Profile - Universidad]
+ \item Autor 1 - $[$0.14, 0.27, 0.95, 0.00$]$ - Universidad 1
+ \item Autor 2 - $[$0.30, 0.74, 0.25, 0.55$]$ - Universidad 2
+ \item Autor 3 - $[$0.27, 0.60, 0.76, 0.0$]$ - Universidad 2
+\end{description}
+
+\begin{description}
+ \item[Universidad - Topic Profile]
+ \item Universidad 1 - $[$0.14, 0.27, 0.95, 0.00$]$
+ \item Universidad 2 - $[$0.31, 0.72, 0.54, 0.30$]$
+\end{description}
+
+\section{Función de similitud}
+La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. Para esta instancia la comparación de los objetos (ahora artículos, autores o universidades) se realiza en el \textit{modelo de espacio vectorial} ya que estos se representan con vectores, en la que cada dimensión corresponde a un tópico. Donde el valor del vector es el valor del tópico del objeto según corresponda en la base de datos \cite{dataDrive}.\\
+El objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos y cumple con las propiedades:
+\begin{enumerate}
+ \item $v_i \geq 0$
+ \item $\sum{v_i} = 1$
+\end{enumerate}
+
+Para los sistemas basados en vectores existen varias maneras para medir la similitud, la utilizada en este trabajo es la medida de similitud basada en el ángulo de los vectores. Sean $V_i$ y $V_j$ los vectores que representan a los objetos $i$ y $j$ respectivamente la similitud de estos objetos esta dado por la función $S(V_i, V_j)$ que devuelve 
+
+esta dado por 
+
+Dados los vectores , los cuales representan a los objetos respectivamente, se define la función de similitud  que devuelve el coseno de los vectores. Este resultado es el utilizado  similitud entre los objetos , se define la función de similitud  la cual refleja el grado de similitud de los pesos de los tópicos correspondientes .\\
+En la medida de similitud del coseno la dirección de los vectores es lo que se utiliza para determinar qué tan parecidos son entre si. Cuanto más parecido sean los documentos el ángulo de los vectores se acerca a cero. Siendo que dos vectores con idéntica distribución de los términos, el ángulo es cero, produciendo la máxima medida de similitud.\\
+Conforme a \cite{newSimilarity} el ángulo de dos vectores proporcionales tiene la misma dirección con lo que el ángulo es cero. Entonces estos vectores son exactamente similares en cuanto a la medida de similitud basada en el ángulo. Esta medida no considera el peso de cada tópico. Por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo, por las propiedades de los vectores los documentos. Porque los documentos con tópicos similares se representan con vectores que se encuentran muy cerca en el espacio euclidiano. Dado los vectores $V_i$ y $V_j$ la función de similitud basada en el ángulo se obtiene por la definición del producto escalar.\\
+
+\begin{equation} \label{eq:angulovectorial}
+\cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
+\end{equation}
+
+Como los componentes de todos los vectores son mayor o igual a cero se obtiene que $0\leq\cos(\theta)\leq1$. Que corresponde con la función de similitud.
+
 \begin{figure}[H]
-  \centering
-    \includegraphics[width=0.8\textwidth]{img/coseno.png}
-  \caption{Comportamiento de la función $\cos$. En rojo la región que involucra nustros resutlados}
-  \label{bus:img-coseno}
+\includegraphics[width=0.8\textwidth]{img/coseno.png}
+\caption{Comportamiento de la función $\cos$. En rojo la región que involucra los resutlados de la función de similitud}
+\label{bus:img-coseno}
 \end{figure}
-Si bien la función es circular, en nuestro problema particular solo nos centramos en un área de ella, ya que nuestros vectores solo pertenecen a un solo cuadrante del plano y además estan normalizados porque son porcentajes, con lo cuál sus componentes siempre serán positivas.\\
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.4\textwidth]{img/planoCartesiano.png}
-  \caption{Plano cartesiano. En rojo al cuadrante al que pertenecen nuestros vectores}
-  \label{bus:img-planoCartesiano}
-\end{figure}
-De la anterior imágen podemos concluir que los ángulos que podemos obtener se encuentran limitados entre $0$\textdegree y $90$\textdegree, o lo que es lo mismo $0$ y $\frac{\pi}{2}$. De todo lo anterior obtenemos que:
-$$0\leq \cos(\hat{\theta}) \leq 1$$
-Como en la región que nos interesa la función $\cos$ es decreciente y su inversa $\arccos$ también lo es en el intervalo deseado $[0, 1]$. Entonces buscar el menor ángluo $\theta$ o su $\cos$ nos resulta igual.\\
-Lo que nos llevó a definir que la similitud de dos vectores estará dada por el $\cos$ del ángulo que forman éstos y de esta manera introducimos menos errores de redondeo al no calcular la función.\\
-Siempre que dos vectores tengan un ángulo cercano a $0$\textdegree más similares van a ser los papers. Eso lo podemos ver geometricamente porque vectores de este estilo son paralelos o sus pendientes son muy cercanas, haciendo que en muchos puntos la distancia entre ellos sea muy pequeña.  En nuestro problema particular, esto implicaría que en muchas de sus coordenas o temas a los que pertenece sus porcentajes son parecidos.\\
-Ángulos cercanos a $90$\textdegree son ortogonales o muy diferentes ya que no tienen ningún atributo en común por lo que comparten temáticas entre ellos.
-\section{Papers similares, diferentes conferencias}\label{bus:papSimDisLug}
-El objetivo de esta búsqueda es generar una solución de bundles, en el que cada elemento contenga 
-papers de tópicos similares pero que se hayan presentado en distintas conferencias.\\
-Para realizar esta búsqueda se debe definir que se entiende por papers de tópicos similares y cual 
-es la presentación de la conferencia. Para ello en la base de datos \cite{dataDrive} cuenta 
-con la información de la presentación del paper, \texttt{venue} de ahora en adelante, y los 
-perfiles de cada paper, \texttt{topicProfile} a partir de ahora.\\
-La primer característica se utilizó para la complementariedad de dos papers, por lo que en cada 
-bundle no habrá dos papes de un mismo \texttt{venue}. Cada paper se representó
-con un vector de dimensión $N$ en el que el valor de cada elemento es el porcentaje del \texttt{topicProfile}.\\ 
-La función de similitud se define como la distancia angular entre los vectores.
-\section{Autores similares, distintas universidades}
-Esta búsqueda consiste en encontrar una solución de bundles en el que cada bundle contiene autores 
-similares pero de distinta universidad de afiliación.\\
-Para determinar la similitud entre los autores se creó un perfil de cada uno. Para lograrlo lo 
-primero que se hizo fue tener en cuenta todos los perfiles de papers en los que participaron cada 
-uno de ellos. Al igual que con los papers, el perfil de los autores se representó con un vector. 
-Este vector se cálculo sumarizando los vectores de cada uno de los papers en el que participó.\\
-Para la función de similitud se utilizaron dos definiciones. La primera, al igual que con los papers,
-consiste en la distancia angular. La otra definición es calcular la norma del vector resultante de la resta
-vectorial entre los vectores de cada autor.\\
-La complementariedad de dos papers se definió al lugar de pertenencia del autor en cuestión.
-\section{Papers similares, con un perfil específico}
-A la búsqueda de ``papers similares de diferente conferencia'' se le agregó una variante para ponderar
-soluciones que contengan \texttt{topicProfile} específicos.
-Para ello se agregó un parámetro que con el porcentaje de cada \texttt{topicProfile} para la ponderación.
-Encontrar una solución de bundles de manera similar a ~\ref{bus:papSimDisLug} teniendo en cuenta que cada 
-bundle además de compartir sus similitudes, también deben guardar relación con los tópicos 
-específicos.\\
-\section{Instituciones similares, diferentes regiones}
-En este caso, la búsqueda es para instituciones similares de diferentes regiones. Al igual que con las 
-búsquedas de autores, el perfil de cada institución se determino a partir del \texttt{topicProfile} de los papers
-de estas. La complementariedad por la el atributo de la región de la institución. 
-Luego el procedimiento para buscar soluciones, fue idéntico al utilizado para el de los autores.

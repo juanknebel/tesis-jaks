@@ -26,16 +26,16 @@ void TestingProblemInstance::setProblem(ProblemInstance *theProblem) {
 
 void TestingProblemInstance::testNumNodes(int numNodes) {
 	if (this->theProblem_->numNodes() == numNodes) {
-		std::cout<<"Numero de nodos funciono"<<std::cout;
+		std::cout<<"Numero de nodos funciono"<<std::endl;
 	}
 	else {
-		std::cout<<"Numero de nodos fallo"<<std::cout;
+		std::cout<<"Numero de nodos fallo"<<std::endl;
 	}
 }
 
 void TestingProblemInstance::testGetCost(int id, Double cost) {
 	if (this->theProblem_->getCost(id) == cost) {
-		std::cout<<"Costo funciono"<<std::cout;
+		std::cout<<"Costo funciono"<<std::endl;
 	}
 	else {
 		std::cout<<"Costo fallo"<<std::endl;
@@ -44,7 +44,7 @@ void TestingProblemInstance::testGetCost(int id, Double cost) {
 
 void TestingProblemInstance::testGetBudget(Double budget) {
 	if (this->theProblem_->getbudget() == budget) {
-		std::cout<<"Presupuesto funciono"<<std::cout;
+		std::cout<<"Presupuesto funciono"<<std::endl;
 	}
 	else {
 		std::cout<<"Presupuesto fallo"<<std::endl;

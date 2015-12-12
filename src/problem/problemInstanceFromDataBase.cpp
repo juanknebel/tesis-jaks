@@ -40,7 +40,7 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->getIds();
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
     std::stringstream query, query1;
-	query<<"select * from "<<this->tableCompat_;
+	query<<"select "<<this->itemCompat1_<<","<<this->itemCompat2_<<","<<this->compatField_<<" from "<<this->tableCompat_;
     if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
             this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
@@ -103,8 +103,6 @@ int ProblemInstanceFromDataBase::numNodes() {
 }
 
 Double ProblemInstanceFromDataBase::getCost(int id) {
-	//if (id == 3730 || id == 3735 || id == 3791 || id == 3971 || id == 4032)
-	//	return 10.0;
 	return 1.0;
 	/*Double cost = -1.0;
 	int primaryId = this->getPrimaryId(id);
@@ -170,11 +168,8 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
 
 Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
 	if (id1 > id2) {
-                std::swap(id1, id2);
-        }
-        if (id1 == id2) {
-                return 0;
-        }
+		std::swap(id1, id2);
+    }
 	return ProblemInstance::getCompat(id1, id2);
 }
 

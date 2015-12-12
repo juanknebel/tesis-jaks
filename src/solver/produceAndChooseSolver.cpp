@@ -7,7 +7,9 @@
 
 #include "produceAndChooseSolver.h"
 #include "../util/system/stringUtilities.h"
+#include "../util/logger/logger.h"
 #include <float.h>
+#include "../util/algorithm/localSearchBundles.h"
 
 void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy) {
 	this->rankingStrategy_ = strategy;
@@ -29,6 +31,7 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
 	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
+    SnowFlake::sortByDecresingSumCompat(*produced);
 	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
 	return produced;
 }
@@ -77,7 +80,7 @@ ProduceAndChooseSolver::RankingStrategy ProduceAndChooseSolver::getDefault() {
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested) {
 	SnowFlake::sortByDecresingSumCompat(*produced);
-	int minValue = ((numRequested < produced->size()) ? numRequested : produced->size());
+	auto minValue = ((numRequested < produced->size()) ? numRequested : produced->size());
 	SnowFlakeVector* selected = new SnowFlakeVector();
 	for (int i = 0; i < minValue; ++i) {
 		SnowFlake selectedSnowFlake(produced->at(i));
@@ -90,19 +93,19 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
     if(this->interSimilarityWeight_ < 0.00) {
         throw Exception(__FILE__, __LINE__, "You need to set the value of inter similarity weight");
     }
-    SnowFlake::sortByDecresingSumCompat(*produced);
-    SnowFlakeVector available(*produced);
+    //SnowFlake::sortByDecresingSumCompat(*produced);
+    SnowFlakeVector remainingFlakes(*produced);
     SnowFlakeVector *selected = new SnowFlakeVector();
     Double currentSumIntra = 0.0;
     Double currentSumOneMinusInter = 0.0;
     while (selected->size() < numRequested && selected->size() < produced->size()) {
         Double maxScore = -1.0;
         int bestCandidateId = -1;
-        if (available.size() == 0) {
-            throw Exception(__FILE__, __LINE__, "There are no available condidates");
+        if (remainingFlakes.size() == 0) {
+            throw Exception(__FILE__, __LINE__, "There are no remainingFlakes condidates");
         }
-        for (Uint candidateId = 0; candidateId < available.size(); ++candidateId) {
-            SnowFlake candidate = available[candidateId];
+        for (Uint candidateId = 0; candidateId < remainingFlakes.size(); ++candidateId) {
+            SnowFlake candidate = remainingFlakes[candidateId];
             Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             //Double score = scoreSetIntraInterWithSpecificProfile(selected, candidate, currentSumIntra, currentSumOneMinusInter);
             if (score > maxScore) {
@@ -112,22 +115,26 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntra(SnowFlakeVe
         }
 
         if (bestCandidateId == -1) {
-            throw Exception(__FILE__, __LINE__, "There is no best candidate (available.size()==" + convertToString(static_cast<int> (available.size()))
+            throw Exception(__FILE__, __LINE__, "There is no best candidate (remainingFlakes.size()==" + convertToString(static_cast<int> (remainingFlakes.size()))
                     + ", maxScore==" + convertToString(maxScore) + ")");
         }
 
         //Calcula las nuevas puntuaciones
-        SnowFlake bestCandidate = available[bestCandidateId];
+        SnowFlake bestCandidate = remainingFlakes[bestCandidateId];
         currentSumIntra += bestCandidate.getSumIntraCompat();
         for (SnowFlakeVector::iterator it = selected->begin(); it != selected->end(); ++it) {
             currentSumOneMinusInter += 1.0 - problem_->maxPairwiseCompatibility((*it).ids(), bestCandidate.ids());
         }
 
         //Borro el candidato que ya use
-        available.erase(available.begin() + bestCandidateId);
+        remainingFlakes.erase(remainingFlakes.begin() + bestCandidateId);
         //Agrego el elemento a la solucion
         selected->push_back(bestCandidate);
     }
+    LocalSearchBundles localSearchBundles;
+    SnowFlakeVector theFlakes = localSearchBundles.execute(1000,*selected, remainingFlakes, *this->problem_, this->interSimilarityWeight_);
+    selected->clear();
+    *selected = theFlakes;
     return selected;
 }
 
@@ -292,10 +299,10 @@ Double ProduceAndChooseSolver::scoreSetIntraInter(SnowFlakeVector* selected, Sno
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFlakeVector* produced, int numRequested) {
-	int numProduced = produced->size();
+	auto numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
 	MatrixWrapper* w;
-	w= new MatrixConcrete(numProduced, numProduced);
+	w = new MatrixConcrete(numProduced, numProduced);
 
 	for (int ui = 0; ui < numProduced; ++ui) {
 		SnowFlake& u = (*produced)[ui];
@@ -308,21 +315,21 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 	}
 
 	IntSet selected = IntSet();
+	MapIntDouble weights = MapIntDouble();
 	for (int ui = 0; ui < numProduced; ui++) {
-			selected.insert(ui);
+		double weight = 0.0;
+		for (int vi = 0; vi < numProduced; ++vi) {
+			weight += w->get(ui,vi);
+		}
+		weights[ui] = weight;
+		selected.insert(ui);
 	}
 
 	while(selected.size() > numRequested){
-		Double minWeightedDegree = FLT_MAX;
+		Double minWeightedDegree = std::numeric_limits<double>::max();
 		int minElement = -1;
 		for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {
-			Double weightedDegree = 0.0;
-			for (IntSet::iterator vi = selected.begin(); vi != selected.end(); ++vi) {
-				weightedDegree += w->get(*ui,*vi);
-				if (weightedDegree > minWeightedDegree) {
-					break;
-				}
-			}
+			Double weightedDegree = weights[*ui];
 			if (weightedDegree < minWeightedDegree) {
 				minWeightedDegree = weightedDegree;
 				minElement = *ui;
@@ -332,6 +339,10 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 			throw Exception(__FILE__, __LINE__, "Tried to remove element " + convertToString(minElement) + " that does not belong to " + "selected");
 		}
 		selected.erase(minElement);
+		for (int ui = 0; ui < numProduced; ui++) {
+			weights[ui] -= w->get(ui,minElement);
+		}
+
 	}
 	SnowFlakeVector* solution = new SnowFlakeVector();
 	for (IntSet::iterator ui = selected.begin(); ui != selected.end(); ++ui) {

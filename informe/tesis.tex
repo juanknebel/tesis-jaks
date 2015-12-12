@@ -19,6 +19,15 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{textcomp}
+\usepackage{caption}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \begin{document}
@@ -59,16 +68,18 @@
 
 \chapter{Introducción}
 \input{introduccion.tex}
-\chapter{Búsquedas}
-\input{busquedas.tex}
 \chapter{Desarrollo}
 \input{desarrollo.tex}
 \chapter{Resultados}
 \input{resultados.tex}
+\chapter{Búsquedas}
+\input{busquedas.tex}
 \chapter{Conclusiones}
 \input{conclusiones.tex}
 \chapter{Implementación}
 \input{implementacion.tex}
+\chapter{Trabajo futuro}
+\input{trabajos-futuros.tex}
 \chapter{Apéndice}
 \input{tablas-resutlados.tex}
 \input{bibliografia.tex}

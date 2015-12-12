@@ -42,9 +42,8 @@ private:
 	bool executeModifiableQuery(String query);
 	void manageException(sql::SQLException& e);
 public:
-	DaoMySql();
-	DaoMySql(String database, String user, String password, String server);
-	DaoMySql(const DaoMySql& dao);
+	DaoMySql(String database, String user, String password, String server) : Dao(database, user, password, server) {}
+	DaoMySql(const DaoMySql& dao) : Dao(dao.database_, dao.user_, dao.password_, dao.server_) {}
 	~DaoMySql();
 	
 	bool connect();

@@ -110,7 +110,6 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakes(int numToProduce) {
          */
         for (int i = 0; i < totalElements; ++i) {
             if ((*theIVector)[i] == true && i != k1Index) {
-                ;
                 (*theMatrixC)(i, k2Index);
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k1Index));
                 theVectorPriorityQueue->at(i)->erase((*theMatrixC)(i, k2Index));
@@ -165,6 +164,9 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
         tempMaxSimilarity = -1.00;
         tempMaxIndex = -1;
         for (int j = 0; j < totalElements; ++j) {
+            if(i == j){
+                continue;
+            }
             //similarity = this->problem_->getCompatWithSpecificProfile(i, j);//ESTA LINEA HAY QUE CAMBIAR
             similarity = this->problem_->getCompat(i, j);
             IntSet aSetWithElementI = IntSet();
@@ -290,8 +292,8 @@ SnowFlakeVector* RestrictedHACSolver::produceManySnowflakesSingleCluster(int num
 
     SnowFlakeVector* solution = new SnowFlakeVector;
     for (MapIntIntSet::iterator it = clustering->begin(); it != clustering->end(); ++it) {
-        SnowFlake *aFlake = new SnowFlake(*it->second, this->problem_);
-        solution->push_back(*aFlake);
+        SnowFlake aFlake(*it->second, this->problem_);
+        solution->push_back(aFlake);
     }
 
     delete theIVector;

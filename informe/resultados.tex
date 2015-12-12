@@ -1,24 +1,30 @@
-\section{Comparando soluciones}
-Para comparar la calidad de las distintas soluciones, además del valor objetivo se compara con 
-la cantidad de elementos iguales en toda la solución y la cantidad igual de elementos para cada 
-bundle. De esta manera se observa que tan \textquotedblleft parecidas\textquotedblright son las 
-soluciones y con más detalle que tan \textquotedblleft parecidos\textquotedblright son los bundles. 
-Entre los diferentes algoritmos buscamos la cantidad de elementos iguales en cada una de las 
-soluciones y también la cantidad de elementos iguales por bundle.
-\section{Papers}
-Originalmente la base de datos contenía unos 7777 papers, de los cuáles se tuvo que hacer una 
-depuración, ya que había papers que no tenían ningún autor asociado o perfil creado. Luego de la 
-depuración obtuvimos 4937 que cumplen los requisitos para la búsqueda de las soluciones.\\
-Se generaron soluciones con las siguientes características:\\
+\section{Búsquedas de Papers}\label{res:busPaper}
+Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
+  \item \textbf{Complementariedad}: Lugar dónde fue presentado.
+\end{itemize}
+
+La base de datos de \cite{dataDrive} contiene $7777$ items de papers, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los papers que no cuentan con alguno de estos datos no se tuvieron en cuenta para las búsquedas y fueron eliminados. A partir de las primeras ejecuciones y los resultados obtenidos se pudieron observar dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles con un solo elemento}, a continuación explicamos con más detalle estos comportamientos.\\
+Al finalizar la depuración de papers que consideramos afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
+\subsection{Soluciones similares para distintos gammas}
+A partir de las ejecuciones realizadas y su primer análisis se destaca que el valor de la función objetivo es muy cercano a la cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ probados las soluciones eran muy similares. Un segundo análisis más detallado que se realizó a los bundles de papers, se detectó que muchos de ellos contenían papers de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo y así también la distancia con los otros bundles.\\
+Al contar con muchos papers con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los papers que contengan un solo un tópico.
+\subsection{Soluciones con bundles unitarios}
+Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{valor inter}), se generaban muchos conjuntos de uno o dos elementos únicamente, tal comportamiento no era el deseado porque no se estaba utilizando todo el presupuesto.\\
+La causa del comportamiento se debe a que en la etapa de generación de bundles \texttt{PAC}. Por ejemplo supongamos el caso que los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ con distribución del tópico $t$ mayor a $0.7$ y su lugar de presentación (\textbf{venue}) de $A_1$ es $V_1$, de $A_2$ es $V_2$ y de $A_3$, $A_4$ y $A_5$ es $V_3$. Al generarse los bundles de manera jerárquica, puede darse que en un paso existan el bundle $B_1$ con los artículos $A_1$ y $A_3$ el $B_2$ con $A_2$ y $A_4$ y $B_3$ con $A_5$. Con esta configuración no se pueden juntar los bundles porque se estaría violando la regla de la complementariedad, pero se podría haber generado un bundle más cohesivo (\textbf{mayor intra}) si se hubiera elegido el siguiente bundle $A_1$, $A_2$ y $A_3$.\\
+Este fue un problema que no pudimos corregir en la generación de bundles, porque nos hubiera obligado a realizar una estrategía de \texttt{backtracking} que afectaría mucho la complejidad temporal, por eso fue que se propuso realizar una Búsqueda Tabú al finalizar la etapa del Produce con los bundles ya generados e intentar combinarlos antes de la etapa de selección.
+\subsection{Resultados}
+De todos los algorimos descriptos en las secciones anteriores las pruebas realizadas fueron usando \texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO}. Al terminar su ejecución se aplicó una búsqueda Tabú para intentar mejorar la solución obtenida.\\
 \Solucion
 {}
-{simple}
-{\texttt{SingleHAC}, \texttt{EfficientHAC} y \texttt{Greedy}}
+{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{Denset Subgraph, Intra, Intra-Inter, Proportional (no aplican a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
-Como primera observación podemos ver la cantidad de bundles que se generan para cada algoritmo de 
-producción:\\
+
+De la tabla \ref{res:tbl-cant-bundles} se observa la cantidad de bundles que generan en la etapa de producción en cada una de las heuristicas de PAC:\\
 \begin{table}[h]
   \centering
   \resizebox{0.5\textwidth}{!} {
@@ -27,135 +33,186 @@ producción:\\
     Algoritmo & Bundles Generados \\
     \hline
     SingleHAC & $2378$ \\
-    EfficientHAC & $2378$ \\
-    Greedy & $10$ \\
+    Búsqueda Golosa & $10$ \\
+    BOBO-100 & $100$ \\
     \hline
     \end{tabular}
   }
     \caption {Cantidad de bundles generados antes de la selección final}
+    \label{res:tbl-cant-bundles}
 \end{table}
+\newpage
 
-En los siguientes gráficos se visualiza los resultados obtenidos para $\gamma$ 0.1 y 0.9. Cada 
-nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
-gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
-de la intra es menor y al rojo mayor.
+En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se muestran agrupados por algoritmo de resolución las diferentes estrategias usadas en cada caso y los valores de la función objetivo alcanzado toma los dos extremos del valor de $\gamma$ $0.1$ y $0.9$. Cada color corresponde a una estratégia diferente de selección de acuerdo a la siguiente nomenclatura.
+\begin{itemize}
+ \item DenT: Denset Subgraph sin la aplicación de la Búsqueda Tabú.
+ \item DesT: Denset Subgraph con la aplicación de la Búsqueda Tabú.
+ \item InT: Intra sin la aplicación de la Búsqueda Tabú.
+ \item IsT: Intra con la aplicación de la Búsqueda Tabú.
+ \item IInT: Intra Inter sin la aplicación de la Búsqueda Tabú.
+ \item IIsT: Intra Inter con la aplicación de la Búsqueda Tabú.
+ \item PnT: Proportional sin la aplicación de la Búsqueda Tabú.
+ \item PsT: Proportional con la aplicación de la Búsqueda Tabú.
+ \item SEnT: Sin estratégia sin la aplicación de la Búsqueda Tabú.
+ \item SEsT: Sin estratégia con la aplicación de la Búsqueda Tabú.
+\end{itemize}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC}
-  \label{res:img-papers-gamma01-hac}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/Graficos_agrupados/gamma01.png}
+  \caption{Función Objetivo $\gamma$ = $0.1$ vs Algoritmos de resolución}
+  \label{res:img-papers-agr-gamma01}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/hac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC}
-  \label{res:img-papers-gamma09-hac}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/Graficos_agrupados/gamma09.png}
+  \caption{Función Objetivo $\gamma$ = $0.9$ vs Algoritmos de resolución}
+  \label{res:img-papers-agr-gamma09}
+\end{figure}
+
+De lo anterior se observa para todas las soluciones obtenidas, se puede mejorar la función objetivo aplicando la búsqueda tabú, aún sea en un valor pequeño. Otra observación interesante es que en todos los valores de $\gamma$ utilizados el algoritmo BOBO fue el más beneficiado en el uso de la búsqueda Tabú, sobre todo en las más altos. De forma inversa a lo que sucedía con los resultados iniciales que a medida que $\gamma$ crecía la función objetivo disminuía, utilizando la heurística revirtió la tendencia.\\
+Para el HAC y la Búsqueda Golosa, el uso de Búsqueda Tabú tuvo un comportamiento similar entre las diferentes soluciones.\\
+Para visualizar como se diferencian las distintas soluciones que se obtuvieron con distintos los $\gamma$ y los algoritmos utilizados, se generaron dos tipos de gráficos para la comprensión de los resultados obtenidos.\\
+En los gráficos de \ref{res:img-explain-bars} se puede ver como se distribuyen los perfiles en la solución obtenida.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{img/explain-bars.png}
+  \caption{}
+  \label{res:img-explain-bars}
+\end{figure}
+
+En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la relación entre los tópicos y los bundles. Cada burbuja representa un tópico de un artículo de la solución. El tamaño de la burbuja es el porcentaje del tópico y el color referncia al bundle al que pertenece el artículo. Las burbujas del mismo tópico se agrupan para facilitar la interpretación del gráfico.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{img/explain-bubbles.png}
+  \caption{}
+  \label{res:img-explain-bubbles}
+\end{figure}
+\subsubsection{Jerarquico (o SingleHAC)}
+En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visualiza que utilizando una búsqueda Tabú al final de la ejecución  de HAC no mejora considerablemente la solución. Por lo que se decidió para este caso comparar el algoritmo sin la búsqueda tabú.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/gamma-01.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y HAC - Intra Inter}
+  \label{res:img-papers-gamma01-hac-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC}
-  \label{res:img-papers-gamma01-effhac}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/gamma-09.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y HAC - Intra Inter}
+  \label{res:img-papers-gamma09-hac-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/effhac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC}
-  \label{res:img-papers-gamma09-effhac}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/bubbles-gamma-01.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y HAC - Intra Inter}
+  \label{res:img-papers-bubbles-gamma01-hac-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
-  \label{res:img-papers-gamma01-greedy}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/bubbles-gamma-09.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.9$ y HAC - Intra Inter}
+  \label{res:img-papers-bubbles-gamma09-hac-intra-inter}
+\end{figure}
+
+De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se puede observar como para $\gamma$ de valor bajo los perfiles de los artículos elegidos se encuentran más distribuidos entre los tópicos mientras que para valores más altos el mayor porcentaje se concentra en un pocos perfiles, generando en este último bundles más cohesivos como se está buscando, pero a la vez se tiene menos diversidad ya que en toda la solución se concentran los valores más representantivos de los perfiles de los artículos en un pocos como bien puede observarse en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}.\\
+El comportamiento fue el mismo para todas las estrategias de selección que se utilizaron, la única diferencia fueron los valores finales de la función objetivo.
+\subsubsection{BOBO-100}
+En este caso al ser muy grande la diferencia entre entre la utilización de la heurística Tabú y la ejecución sin ella,  se incluyó para poder visualizar los cambios en la solución.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-01.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter}
+  \label{res:img-papers-gamma01-bobo-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/papers/intra_inter/greedy09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
-  \label{res:img-papers-gamma09-greedy}
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-with-local-01.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
+  \label{res:img-papers-gamma01-bobo-intra-inter-tabu}
 \end{figure}
 
-\section{Autores}
-Se generaron soluciones con las siguientes características:\\
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-01.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter}
+  \label{res:img-papers-bubbles-gamma01-bobo-intra-inter}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-with-local-01.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
+  \label{res:img-papers-bubbles-gamma01-hac-intra-inter-bobo}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-09.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter}
+  \label{res:img-papers-gamma09-bobo-intra-inter}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-with-local-09.png}
+  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
+  \label{res:img-papers-gamma09-bobo-intra-inter-tabu}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-09.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter}
+  \label{res:img-papers-bubbles-gamma09-bobo-intra-inter}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-with-local-09.png}
+  \caption{Distribución de los papers por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
+  \label{res:img-papers-bubbles-gamma09-hac-intra-inter-bobo}
+\end{figure}
+\newpage
+\section{Búsqueda de Autores}
+Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de los autores.
+  \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
+\end{itemize}
+
+La instancia elegida, luego de la depuración mencionada en \ref{res:busPaper}, cuenta con $5577$ autores en condiciones de ser elegidos por los algoritmos implementados.\\
+Al igual que con las búsquedas de papers realizamos las mismas ejecuciones con los mismos parámetros, es decir, se generaron soluciones con las siguientes características:\\
 \Solucion
 {}
-{simple y proporcional}
-{\texttt{SingleHAC}, \texttt{EfficientHAC} y \texttt{Greedy}}
+{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{Denset Subgraph, Intra, Intra-Inter, Proportional (no aplican a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
 
-En los siguientes gráficos se visualiza los resultados obtenidos para $\gamma$ 0.1 y 0.9. Cada 
-nodo representa un bundle y los ejes el valor de la similitud entre cada uno de ellos. La línea más 
-gruesa indica un mayor grado de similitud. En cuanto a los vértices al acercarse al azul el valor 
-de la intra es menor y al rojo mayor.
-
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo SingleHAC, selección simple}
-  \label{res:img-authors-gamma01-hac}
+    \includegraphics[width=0.8\textwidth]{resultados/authors/Graficos_agrupados/gamma01-autores.png}
+  \caption{Función Objetivo $\gamma$ = $0.1$ vs Algoritmos de resolución}
+  \label{res:img-autores-agr-gamma01}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/hac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo SingleHAC, selección simple}
-  \label{res:img-authors-gamma09-hac}
+    \includegraphics[width=0.8\textwidth]{resultados/authors/Graficos_agrupados/gamma09-autores.png}
+  \caption{Función Objetivo $\gamma$ = $0.9$ vs Algoritmos de resolución}
+  \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo EfficientHAC, selección simple}
-  \label{res:img-authors-gamma01-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/effhac09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo EfficientHAC, selección simple}
-  \label{res:img-authors-gamma09-effhac}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy01.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.1$ y algoritmo Greedy}
-  \label{res:img-authors-gamma01-greedy}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{resultados/authors/intra_inter/greedy09.png}
-  \caption{Relación entre bundles para $\gamma$ = $0.9$ y algoritmo Greedy}
-  \label{res:img-authors-gamma09-greedy}
-\end{figure}
-
-Tanto para las soluciones generadas por \texttt{SingleHAC} como por \texttt{EfficientHAC} y con 
-cualquier estrategia de selección, todas las soluciones formaron los mismos bundles a pesar de la 
-variación del parámetro $\gamma$. Esto se puede ver en los gráficos ya que todos los bundles 
-tienen el mayor valor posible para la similitud intra y ningún bundle tiene relación con el 
-resto.\\
-En parte se debe a que existen $40000$ relaciones de similitud con valor uno. Con la 
-heurística Produce and Choose, al momento de producir no se tiene en cuenta el $\gamma$ por lo tanto 
-para todos los $\gamma$ en la etapa de producción se producen los mismos bundles.\\
-Se realizaron otras búsquedas de soluciones, excluyendo a cinco de los autores que se encuentran 
-presentes en todas las soluciones. Pero aún de esta manera en los nuevos resultados obtenidos se 
-repite el mismo comportamiento que antes.\\
-Además como veremos en \ref{conc:compDifAlgo} los resultados para las ejecuciones con los 
-algoritmos jerárquicos se encuentran en los óptimos.
-%Por otro lado todas las soluciones generadas por el algoritmo \texttt{HAC} prácticamente no 
-%comparten bundles similares con las demás soluciones, ni siquiera autores similares en toda la 
-%solución.
-
+El comportamiento de las ejecuciones fueron muy similares a las que obtuvimos en la búsqueda de papers, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de papers, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
+Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de papers no incluímos los gráficos ya que sería mostrar lo mismo.
+\newpage
 \section{Búsqueda con perfil específico}
 En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
 lo cuál, si bien generó resultados diferentes al algoritmo original, no se veía reflejado en los 
@@ -165,16 +222,3 @@ bundles relevantes con el perfil elegido.\\
 A continuación mostramos la temáticas obtenidas para una búsqueda con un perfil específico de 
 ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
 del algoritmo SingleHAC con $\gamma$ = 0.1 y $\gamma$ = 0.9.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm01.png}
-  \caption{$\gamma$ = 0.1}
-  \label{res:img-gamma01-especifico}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=\textwidth]{resultados/papers/intra_inter/grafico_gamm09.png}
-  \caption{$\gamma$ = 0.9}
-  \label{res:img-gamma09-especifico}
-\end{figure}
