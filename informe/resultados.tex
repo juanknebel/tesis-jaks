@@ -14,9 +14,9 @@ Al contar con muchos papers con un solo tópico las soluciones obtenidas no perm
 Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}), contenía una alta cantidad de bundles con uno o dos elementos únicamente, tal comportamiento no era el deseado porque no se estaba utilizando todo el presupuesto.\\
 Este comportamiento ocurre particularmente con el método jerárquico en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster que se generan no superan el presupuesto pero no se pueden unir con otro cluster porque invalida la restricción de la complementaridad. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ que tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2 y V_3$ y los artículos se presentaron de la siguiente manera:
 \begin{itemize}
-	\item $A_1$ \rightarrow $V_1$
-	\item $A_2$ \rightarrow $V_2$
-	\item $A_3, A_4 y A_5$ \rightarrow $V_3$
+	\item $A_1$ $\rightarrow$ $V_1$
+	\item $A_2$ $\rightarrow$ $V_2$
+	\item $A_3, A_4 y A_5$ $\rightarrow$ $V_3$
 \end{itemize} 
 
 Entonces para ese criterio de búsqueda los artículos $A_3, A_4 y A_5$ no pueden pertenecer al mismo bundle (ya que se violaría la restricción de la complementariedad).\\
