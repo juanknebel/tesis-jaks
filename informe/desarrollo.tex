@@ -36,11 +36,8 @@ No existe una definición formal de que es un cluster correctamente constituido 
 \end{figure}
 
 En la clusterización para Composite Retrieval, la definición es que cada cluster maximice el costo que está acotado por el presupuesto, pues lo esperado es obtener cluster que utilicen el máximo del presupuesto. En cuanto al criterio utilizado para realizar la agrupación es a través de la función de similitud para que los cluster que se generan contengan los objetos, que según la función de similitud, lo más parecidos posible y de esta manera obtener bundles cohesivos.\\
-Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos.\\
-Los métodos particionales reubican iterativamente los objetos, moviéndolos de un cluster a otro. Generalmente estos métodos requieren que la cantidad de cluster a generar sea preestablecido.\\
-Los métodos jerárquicos construyen los clusteres mediante la partición recursiva de los grupos de objetos. Estos métodos se pueden subdividir entre aglomerativo y divisivo. En el aglomerativo, inicialmente cada objeto representa un cluster en sí mismo y luego sucesivamente los cluster son combinados entre ellos. En el divisorio, en el inicio todos los objetos pertenecen al mismo cluster. El cluster es divido en subcluster que se siguen dividiendo en subcluster.\\
-Se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo Hierarchical clustering, mientras que para el método de partición el algoritmo Bundles One-By-One.\\
-
+Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales reubican iterativamente los objetos moviéndolos de un cluster a otro. Generalmente, estos métodos, requieren que la cantidad de cluster a generar sea preestablecido. Los métodos jerárquicos construyen los clusteres mediante la partición recursiva de los grupos de objetos y no requieren preestablecer la cantidad de cluster.\\
+En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.\\
 
 \subsubsection{Bundles One-By-One}
 El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ cluster del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido alrededor de este. Si el bundle generado es suficientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.
@@ -71,41 +68,69 @@ Donde $I$ es el conjunto de ítems, $s$ la función de similitud, $\mu$ el umbra
 La función $selPivote$ selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función $generarBundle$ genera un bundle a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al bundle que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto.\\
 Cuando se dice que el bundle sea suficientemente bueno significa que el valor de la intra supera un umbral establecido. O sea para el bundle $b$ se tiene que cumplir que: $\sum_{v_i, v_j \in b / i < j}{s(v_i,v_j)} \geq \mu$\\
 
-\subsubsection{Hierarchical clustering}
-La heurística Hierarchical clustering \texttt{HAC} se inicia con tantos clusters como cantidad de elementos, dado que cada cluster está conformado por un solo ítem y en cada paso se unen los dos clusters más cercanos que respetan las restricciones. Para ello se define la función de distancia para los ítems $u$ y $v$ como:\\
-
-\begin{equation} \label{des:eq-dist-d1}
-d_{1}(u,v) = 1 - s(u, v)
-\end{equation}
-
-Los cluster que se generan a partir de la función de distancia $d_{1}$ 
-
-Con la  se generan los cluster lo más cohesivos posibles.\\
-En la figura \ref{des:img-usingEfficientHAC} se observa que el algoritmo selecciona los ítems más cercanos. En las búsquedas que se realizan en \cite{compositeRetrival} se tiene el parámetro $\gamma$ que indica que tipo de resultado es el esperado.
+\subsubsection{Constrained hierarchical agglomerative clustering}
+La clusterización jerárquicos se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un cluster unitario y luego sucesivamente se unen un par de clusters hasta que todos los clusters se hayan unido en un único cluster que contenga a todos los objetos. El algoritmo aglomerativo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único cluster al que todos los objetos pertenecen y recursivamente se realiza una división del cluster hasta alcanzar clusters con un solo objeto.\\
+Comúnmente HAC es visualizado como un dendrograma,como se ve en la figura ~\ref{dendrograma} , cada unión se representa por una línea horizontal, la coordenada Y es la similitud en la que los dos clusters han sido unidos. Por ejemplo la unión del cluster que contiene a \textit{Indiana tobacco lawsuit} con el cluster de \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el cluster resultante se une con el cluster de \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos cluster hasta que quede uno solo.\\
+Ascendiendo desde la capa inferior hasta obtener un único cluster el dendrograma permite reconstruir la historia de las uniones de los clusters. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de cluster es con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.\\
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.3\textwidth]{img/cluster2.png}
-  \caption{Selección de bundles usando $d_{1}$}
-  \label{des:img-usingEfficientHAC}
+    \includegraphics[width=1\textwidth]{img/Dendrogram.png}
+  \caption{dendrograma}
+  \label{des:Dendrogram}
 \end{figure}
 
-En caso de que el $\gamma$ sea pequeño, la clusterización esperada para la misma instancia es la que se visualiza en la imagen \ref{des:img-usingSingleHAC}, clusters no tan cohesivos pero más variados. Por lo que se define una función de distancia que considera el $\gamma$.\\
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los clusters $S_1$ y $S_2$ si el cluster resultante $S_1 \cup S_2$ es inválido, o sea sí el cluster resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \textit{Simple C-HAC}, que es el que se propone en \cite{compositeRetrival}.\\
 
-\begin{equation} \label{des:eq-dist-d2}
-d2(u,v) = 1 - FO(\{u\} \cup \{v\})
-\end{equation}
-Donde $FO$ es la función definida en \ref{des:eq-fnObj} \\
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE $I, \alpha, f, \beta, cantidad de bundles a generear c $
+\ENSURE Conjunto válido de bundles
+\STATE $Cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$
+\WHILE {$ \left|Cand\right| > c$}
+\STATE $bestcore \leftarrow -\infty$
+\STATE $bestcandidate \leftarrow \emptyset$
+\FOR{$each S_i\in Cand$}
+\FOR{$each S_j\in Cand; S_i \neq S_j$}
+\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} \label{validMerge}
+\IF {$score(S_i \cup S_j) \geq bestcore$} \label{score}
+\STATE $bestcore \leftarrow score(S_i,S_j)$
+\STATE $bestcandidate \leftarrow \left\{S_i,S_j\right\}$
+\ENDIF
+\ENDIF
+\ENDFOR
+\ENDFOR
+\IF {$bestcandidate = \emptyset$}
+\BREAK
+\ENDIF
+\STATE $Cand \leftarrow Cand - S \forall S \in bestcandidate$
+\STATE $Cand \leftarrow Cand \cup bestcandidate $
+\ENDWHILE
+\RETURN $Cand$
+\end{algorithmic}
+\caption{Simple C-HAC}\label{alg:SimpleC-HAC}
+\end{algorithm}
+
+El algoritmo ejecuta $N - c$ pasos donde se unen los dos clusters más similares que forman un cluster válido. En cada paso se realiza una comparación entre todos los clusters. Por lo tanto el orden de complejidad de \textit{Simple C-HAC} es $\mathcal{O}(n^{2})$.\\
+
+La función \textit{score} devuelve la similitud entre dos clusters. Para realizar esta medición se plantearon dos alternativas: \textit{single-link} y \textit{complete-link}.\\
+
+En \textit{single-link}, la similitud entre dos clusters es la similitud de los miembros más similares. Este criterio de unión es local, ya que solo se presta atención al área dónde los dos clusters están mas cerca.\\
+
+En \textit{complete-link}, el par de cluster que se selecciona para unir es el que maximiza la función objetivo. Por lo tanto este criterio no es local, la estructura del clustering influye en la decisión de cuales son los cluster a unir.\\
+
+La figura ~\ref{LinkageCriteria} representa el comportamiento de los criterios \textit{single-link} y \textit{complete-link} en el proceso de clusterización de ocho objetos. Cada elipse corresponde a un paso sucesivo de la clusterización. En los primeros cuatro pasos los cluster generados son iguales. En \textit{single-link} se unen el par de clusters de arriba (después el par de abajo) porque la similitud entre los objetos $d_2$ y $d_3$ es mayor a la similitud entre $d_2$ y $d_6$. Mientras que \textit{Complete-link} une el par de clusters de la izquierda (después el par de la derecha) porque la similitud entre 
+ $d_1$ y $d_4$ es menor a la similitud entre $d_1$ y $d_6$.\\
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=0.3\textwidth]{img/cluster1.png}
-  \caption{Selección de bundles usando $d_{2}$}
-  \label{des:img-usingSingleHAC}
+    \includegraphics[width=1\textwidth]{img/LinkageCriteria.png}
+  \caption{single-link (izquierda) y complete-link (derecha)}
+  \label{des:LinkageCriteria}
 \end{figure}
 
-Para la distancia $d_{1}$ \ref{des:eq-dist-d1} se implementó el algoritmo \texttt{EfficientHAC} que es tiene una complejidad $\mathcal{O}(n^{2})$, mientras que para $d_{2}$ \ref{des:eq-dist-d2} el algoritmo es \texttt{SingleHAC} que la complejidad es $\mathcal{O}(n^{2} * \ln{n})$. Según se demostró en el capítulo 17 de \cite{informationRetrival}.
 
+Falta agregar el algoritmo Efficient C-HAC que es mas performante.
 
 \subsection{Selección de bundles}
 Al finalizar la producción de bundles, se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en encontrar en el grafo G el k-subgrafo de mayor peso de nodos y vértices. Dónde el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos.\\
