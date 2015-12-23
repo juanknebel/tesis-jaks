@@ -50,4 +50,5 @@ CMakeLists.txt.user
 *.toc
 *.backup
 *.kilepr
+*.out
 tesis.pdf
