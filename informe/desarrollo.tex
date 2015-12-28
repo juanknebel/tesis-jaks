@@ -40,33 +40,33 @@ Existen varios algoritmos de clustering, los cuales se pueden categorizar entre 
 En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.\\
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ cluster del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido alrededor de este. Si el bundle generado es suficientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ cluster del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido alrededor de este. Si el bundle generado es suficientemente bueno, se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada, que es la generación de $k$ bundles, o en el caso de que el valor de $k$ sea 'Ex' cuando el conjunto $P$ este vacío.\\
+
+El algoritmo \texttt{BOBO-k} recibe los parámetros: $I$ el conjunto de ítems, $\alpha$ el atributo complementario, $f: 2^{I} \rightarrow \rm I\!R$ la función de presupuesto, \beta el limite del presupuesto, $\mu$ el umbral del valor del intra a superar por cada bundle y $c$ la cantidad de bundles a generar. El algoritmo devuelve un conjunto de bundles válidos.\\
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $I, s, \mu, k $
+\REQUIRE {$I,\alpha,f,\beta,\mu,c$}
 \ENSURE Conjunto válido de bundles
 \STATE $P \leftarrow I$
 \STATE $C \leftarrow \emptyset$
-\WHILE {$ \left|C\right| < k\ and\ P \neq \emptyset$}
-\STATE $p \leftarrow selPivote(P)$
-\STATE $b \leftarrow generarBundle(D, p, s)$
-\IF {$inter(b, s) \geq \mu$}
-\STATE $C \leftarrow C \cup \left\{b\right\}$
-\STATE $I \leftarrow I \setminus b$
-\STATE $P \leftarrow P \setminus b$
-\ELSE
-\STATE $P \leftarrow P \setminus \left\{p\right\}$
-\ENDIF
+\WHILE {$ \left|C\right| < c\ and\ P \neq \emptyset$}
+	\STATE $p \leftarrow selPivote(P)$
+	\STATE $b \leftarrow generarBundle(p,I,\alpha,f,\beta)$
+	\IF {$score(b) \geq \mu$}
+		\STATE $C \leftarrow C \cup \left\{b\right\}$
+		\STATE $I \leftarrow I \setminus b$
+		\STATE $P \leftarrow P \setminus b$
+	\ELSE
+		\STATE $P \leftarrow P \setminus \left\{p\right\}$
+	\ENDIF
 \ENDWHILE
 \RETURN $C$
 \end{algorithmic}
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
-Donde $I$ es el conjunto de ítems, $s$ la función de similitud, $\mu$ el umbral del valor del intra a superar por cada bundle y $k$ la cantidad de bundles a generar.
 
-La función $selPivote$ selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función $generarBundle$ genera un bundle a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al bundle que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto.\\
-Cuando se dice que el bundle sea suficientemente bueno significa que el valor de la intra supera un umbral establecido. O sea para el bundle $b$ se tiene que cumplir que: $\sum_{v_i, v_j \in b / i < j}{s(v_i,v_j)} \geq \mu$\\
+La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes. En este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{generarBundle} genera un bundle a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al bundle que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto. La función \texttt{score} calcula el valor intra del bundle. Se dice que un bundle es suficientemente bueno si el valor intra supera un umbral establecido por \mu.\\
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
 La clusterización jerárquicos se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un cluster unitario y luego sucesivamente se unen un par de clusters hasta que todos los clusters se hayan unido en un único cluster que contenga a todos los objetos. El algoritmo aglomerativo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único cluster al que todos los objetos pertenecen y recursivamente se realiza una división del cluster hasta alcanzar clusters con un solo objeto.\\
@@ -80,38 +80,38 @@ Ascendiendo desde la capa inferior hasta obtener un único cluster el dendrogram
   \label{des:Dendrogram}
 \end{figure}
 
-\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los clusters $S_1$ y $S_2$ si el cluster resultante $S_1 \cup S_2$ es inválido, o sea sí el cluster resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \textit{Simple C-HAC}, que es el que se propone en \cite{compositeRetrival}.\\
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los clusters $S_1$ y $S_2$ si el cluster resultante $S_1 \cup S_2$ es inválido, o sea sí el cluster resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, que es el que se propone en \cite{compositeRetrival} tiene la misma entrada y salida que el algorito \texttt{BOBO-k} .\\
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $I, \alpha, f, \beta, cantidad de bundles a generear c $
+\REQUIRE {$I,\alpha,f,\beta,$ cantidad de bundles a generear $c$}
 \ENSURE Conjunto válido de bundles
 \STATE $Cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$
 \WHILE {$ \left|Cand\right| > c$}
-\STATE $bestcore \leftarrow -\infty$
-\STATE $bestcandidate \leftarrow \emptyset$
-\FOR{$each S_i\in Cand$}
-\FOR{$each S_j\in Cand; S_i \neq S_j$}
-\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} \label{validMerge}
-\IF {$score(S_i \cup S_j) \geq bestcore$} \label{score}
-\STATE $bestcore \leftarrow score(S_i,S_j)$
-\STATE $bestcandidate \leftarrow \left\{S_i,S_j\right\}$
-\ENDIF
-\ENDIF
-\ENDFOR
-\ENDFOR
-\IF {$bestcandidate = \emptyset$}
-\BREAK
-\ENDIF
-\STATE $Cand \leftarrow Cand - S \forall S \in bestcandidate$
-\STATE $Cand \leftarrow Cand \cup bestcandidate $
+	\STATE $bestcore \leftarrow -\infty$
+	\STATE $bestcandidate \leftarrow \emptyset$
+	\FOR{each $S_i\in Cand$}
+		\FOR{each $S_j\in Cand; S_i \neq S_j$}
+			\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} \label{validMerge}
+				\IF {$score(S_i \cup S_j) \geq bestcore$} \label{score}
+					\STATE $bestcore \leftarrow score(S_i,S_j)$
+					\STATE $bestcandidate \leftarrow \left\{S_i,S_j\right\}$
+				\ENDIF
+			\ENDIF
+		\ENDFOR
+	\ENDFOR
+	\IF {$bestcandidate = \emptyset$}
+		\BREAK
+	\ENDIF
+	\STATE {$Cand \leftarrow Cand - S$ $\forall S \in bestcandidate$}
+	\STATE $Cand \leftarrow Cand \cup bestcandidate $
 \ENDWHILE
 \RETURN $Cand$
 \end{algorithmic}
 \caption{Simple C-HAC}\label{alg:SimpleC-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos donde se unen los dos clusters más similares que forman un cluster válido. En cada paso se realiza una comparación entre todos los clusters. Por lo tanto el orden de complejidad de \textit{Simple C-HAC} es $\mathcal{O}(n^{2})$.\\
+El algoritmo ejecuta $N - c$ pasos donde se unen los dos clusters más similares que forman un cluster válido. En cada paso se realiza una comparación entre todos los clusters. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(n^{2})$.\\
 
 La función \textit{score} devuelve la similitud entre dos clusters. Para realizar esta medición se plantearon dos alternativas: \textit{single-link} y \textit{complete-link}.\\
 
@@ -130,7 +130,57 @@ La figura ~\ref{des:LinkageCriteria} representa el comportamiento de los criteri
 \end{figure}
 
 
-Falta agregar el algoritmo Efficient C-HAC que es mas performante.
+Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la clusterización se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC}.\\
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$I,\alpha,f,\beta$}
+\FOR{each $S_i\in I$}
+	\FOR{each $S_j\in I$}
+		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} 
+			\STATE $C[i][j].sim \leftarrow score(S_i \cup S_j)$
+		\ELSE
+			\STATE $C[i][j].sim \leftarrow -1$
+		\ENDIF
+		\STATE $C[i][j].index \leftarrow j$
+	\ENDFOR
+	\STATE $I[i] \leftarrow 1$
+	\STATE {$P[i] \leftarrow $ priority queue for $C[i]$ sorted on sim}
+	\STATE {P[i].Delete(C[i][i]) (se elimina así mismo de la pila)}
+\ENDFOR
+\STATE $A \leftarrow []$
+\FOR {$k \leftarrow 1$ to $I.length$}
+	\STATE $k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$
+	\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$}
+		\BREAK
+	\ENDIF
+	\STATE $k_2 \leftarrow P[k_1].max().index$
+	\STATE $A.Append(\left\langle k_1,k_2 \right\rangle)$
+	\STATE $I[k_2] \leftarrow 0$
+	\STATE $P[k_1] \leftarrow []$
+	\FOR {$i$ with $I[i]-1 \vee i \neq k_1$}
+		\STATE $P[i].Delete(C[i][K_1])$
+		\STATE $P[i].Delete(C[i][k_2])$
+		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$}
+			\STATE $C[i][k_1].sim \leftarrow score(i,k_1,k_2)$
+			\STATE $C[k_1][i].sim \leftarrow score(i,k_1,k_2)$
+		\ELSE
+			\STATE $C[i][k_1].sim \leftarrow -1$
+			\STATE $C[k_1][i].sim \leftarrow -1$
+		\ENDIF
+		\STATE $C[i][k_1].index \leftarrow i$
+		\STATE $C[k_1][i].index \leftarrow i$		
+		\STATE $P[i].Insert(C[i][k_1])$
+		\STATE $P[K_1].Insert(C[k_1][i])$		
+	\ENDFOR
+\ENDFOR
+
+\RETURN $A$
+\end{algorithmic}
+\caption{Efficient C-HAC}\label{alg:Efficient C-HAC}
+\end{algorithm}
+
+
 
 \subsection{Selección de bundles}
 Al finalizar la producción de bundles, se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo, se traduce en encontrar en el grafo G el k-subgrafo de mayor peso de nodos y vértices. Dónde el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos.\\
@@ -150,7 +200,7 @@ A esta nueva instancia del problema, se le aplica la heurística golosa en la qu
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $k, \alpha,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\REQUIRE $k,\alpha,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
 \ENSURE Conjunto de k bundles
 \STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
 \STATE $S \leftarrow V$
@@ -172,7 +222,7 @@ Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundl
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $B, k$
+\REQUIRE $B,k$
 \ENSURE Conjunto de k bundles
 \STATE $S \leftarrow V$
 \WHILE {$ \left|S\right| < k$}
