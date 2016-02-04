@@ -1,6 +1,5 @@
-El desarrollo de este trabajo comenzó con la implementación de la estrategía Produce-and-Choose (PAC) especificado en el artículo \cite{compositeRetrival} que cuenta con una serie de algoritmos para cumplir su objetivo. La estratégia consta de dos fases que más adelante serán explicadas detalladamente. En la primer fase se producen los bundles y en la siguiente se realiza la selección de los bundles que serán parte de la solución.\\
-En la producción de bundles se plantean los algoritmos del estilo \textit{Bundles One-By-One} y \textit{Hierarchical clustering}, siendo éste último modificado con respecto a la propuesta orignal del artículo. El cambio consistió principalmente en mejorar la complejidad temporal, usando nuevas estructuras de datos auxiliares, para que las pruebas puedan ser ejecutadas exitosamente con una base de datos suceptiblemente más grande. En cuanto a la fase de selección, además de las estrategias descriptas en el artículo se implementaron nuevas llamadas golosa-proporcional.\\
-Adicionalmente en este trabajo se propusieron nuevas formas de alcanzar el objetivo final, la primera fue la implementación de un nuevo algoritmo goloso el cuál no comparte la estrategía de producir y luego seleccionar. También se desarrollaron nuevas meta huerísitcas de Búsqueda Tabú que interactúan en diferentes momentos del PAC. Una de ellas intenta encontrar mejores bundles producidos antes de comenzar con la selección final y la segunda es la encargada de mejorar la solución una vez finalizado el proceso, realizando intercambios entre ítems dentro de la solución junto con aquellos que no formaron parte. Se aclara que esta última búsqueda toma como entrada cualquier solución sin importar el algoritmo que la generó.
+Para el problema de devolver un conjunto de bundles diversos y complementarios se implementó el algoritmo Produce-and-Choose (PAC) sugerido en el artículo \cite{compositeRetrival} consiste en generar un conjunto de bundles y luego elige el posible mejor subconjunto para que sea la solución. Adicionalmente para encontrar una mejor solución se desarrolló un algoritmo goloso en el que la solución se construye seleccionando el ítem que maximiza la función objetivo en cada paso.\\
+En pos de mejorar las soluciones obtenidas se implantaron dos metaheurísticas de la familia de la búsqueda tabú. La primera tiene como objetivo encontrar mejores bundles en la etapa de producción del algoritmo PAC. Mientras que la segunda explora las soluciones vecinas de un resultado dado.\\
 \section{Modelo}
 Dado el conjunto de objetos $I$ y una función de similitud $ s: I \times I \rightarrow [0;1]$, cada objeto es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
 
@@ -21,8 +20,19 @@ Dado el conjunto de objetos $I = \left\{i_1, \ldots, i_n \right\}$, la función 
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, por el momento no se puede encontrar una solución exacta en tiempo polinomial, por lo cual este trabajo se enfoca a encontrar soluciones suficientemente buenas para el problema. Para poder encontrar la mejor solución se implementaron dos algoritmos para poder comparar los resultados: Produce-and-Choose y algoritmo goloso.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose}, consiste en dos fases: En la primera fase se genera una cierta cantidad de bundles, en la fase siguiente se seleccionan los bundles que serán parte de la solución.\\
-A continuación se explican los algoritmos utilizados para cada fase.
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} primero genera una cierta cantidad de bundles y luego selecciona los bundles de la solución. 
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
+\ENSURE Conjunto válido de $k$ bundles
+\STATE $Cand \leftarrow produce_bundle(I,\alpha,f,\beta)$
+\STATE $G \leftarrow build_bundle_graph(Cand)$
+\RETURN $ChooseBundles(k,\gamma,G)$
+\end{algorithmic}
+\caption{Produce-and-Choose}\label{alg:PAC}
+\end{algorithm}
+
 \subsection{Generación de bundles}
 La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del cluster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
 No existe una definición formal de que es un cluster correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de clusterizar que son válidas. Si se permite que los cluster estén acoplados, entonces la estructura de los cluster más razonable es en la que hay dos clusteres. Pero la división de los dos clusteres en tres subclusters es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro clusteres. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
