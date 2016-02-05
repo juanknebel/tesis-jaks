@@ -1,4 +1,4 @@
-Para el problema de devolver un conjunto de bundles diversos y complementarios sujeto a un presupuesto se implementó el algoritmo Produce-and-Choose (PAC) sugerido en el artículo \cite{compositeRetrival} consiste en generar un conjunto de bundles y luego elegir el posible mejor subconjunto para que sea la solución. Adicionalmente se desarrolló un algoritmo goloso en el que la solución se construye seleccionando el ítem que maximiza la función objetivo en cada paso.\\
+Para el problema de devolver un conjunto de bundles diversos y complementarios sujeto a un presupuesto se implementó el algoritmo Produce-and-Choose (PAC), sugerido en el artículo \cite{compositeRetrival}, consiste en generar un conjunto de bundles y luego elegir el posible mejor subconjunto para que sea la solución. Adicionalmente se desarrolló un algoritmo goloso en el que la solución se construye seleccionando el ítem que maximiza la función objetivo en cada paso.\\
 En pos de mejorar las soluciones obtenidas se implantaron dos metaheurísticas de la familia de la búsqueda tabú. La primera tiene como objetivo encontrar mejores bundles en la etapa de producción del algoritmo PAC. Mientras que la segunda explora las soluciones vecinas de un resultado dado.\\
 \section{Modelo}
 Dado el conjunto de objetos $I$ y una función de similitud $ s: I \times I \rightarrow [0;1]$, cada objeto es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
@@ -208,7 +208,7 @@ A esta nueva instancia del problema se le aplica la heurística golosa, del art�
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $k,\alpha,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\REQUIRE $k,\gamma,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
 \ENSURE Conjunto de k bundles
 \STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
 \STATE $S \leftarrow V$
@@ -230,7 +230,8 @@ Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundl
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE $B,k$
+\REQUIRE $k,\gamma,$ el grafo con peso en los vértices y aristas  $G=(V,E)$ donde $\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\ENSURE Conjunto de k bundles
 \ENSURE Conjunto de k bundles
 \STATE $S \leftarrow V$
 \WHILE {$ \left|S\right| < k$}
@@ -249,29 +250,30 @@ La heuristica que se propone es un algoritmo goloso, se generan únicamente los 
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$I,\alpha,f,\beta,$ cantidad de bundles $c$}
+\REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
 \ENSURE Conjunto válido de bundles
-\STATE $Cand \leftarrow \bigcup_{1 \ldots c}\emptyset$
+\STATE $\omega(s) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $Cand \leftarrow \bigcup_{1 \ldots k}\emptyset$
 \STATE $isComplete \leftarrow False$
 \WHILE {$isComplete = False$}
   \STATE $bestScore \leftarrow -\infty$
-  \STATE $bestElement \leftarrow \varnothing$
+  \STATE $bestCandidate \leftarrow \varnothing$
   \STATE $bestBundle \leftarrow \varnothing$
   \FOR {each $elem \in I$}
     \FOR {each $bundle \in cand$}
-      \IF {$isValidBundle(bundle \cup \{elem\})$}
-        \STATE $score \leftarrow FO((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$
+      \IF {$validMerge(bundle,\{elem\},\alpha,f,\beta)$}
+        \STATE $score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$
         \IF {$score > bestScore$}
           \STATE $bestScore \leftarrow score$
           \STATE $bestBundle \leftarrow bundle$
-          \STATE $bestElement \leftarrow elem$
+          \STATE $bestCandidate \leftarrow elem$
         \ENDIF
       \ENDIF
     \ENDFOR
   \ENDFOR
-	\IF {$bestElement \neq \varnothing$}
-		\STATE $Cand \leftarrow (Cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestElement\right\}\right\}$
-		\STATE $I \leftarrow I \setminus \left\{bestElement\right\}$
+	\IF {$bestCandidate \neq \varnothing$}
+		\STATE $Cand \leftarrow (Cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$
+		\STATE $I \leftarrow I \setminus \left\{bestCandidate\right\}$
 	\ELSE
 		\STATE $isComplete \leftarrow True$
 	\ENDIF
