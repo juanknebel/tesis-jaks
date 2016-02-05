@@ -1,18 +1,18 @@
-\section{Búsquedas de Papers}\label{res:busPaper}
+\section{Búsquedas de Artículos}\label{res:busPaper}
 Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
   \item \textbf{Complementariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
-La base de datos de \cite{dataDrive} contiene $7777$ items de papers, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los papers que no cuentan con alguno de estos datos no se tuvieron en cuenta para las búsquedas y fueron eliminados. A partir de las primeras ejecuciones y los resultados obtenidos se pudieron observar dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles con un solo elemento}, a continuación explicamos con más detalle estos comportamientos.\\
-Al finalizar la depuración de papers que consideramos afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
+La base de datos de \cite{dataDrive} contiene $7777$ items de artículos, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los artículos que no cuentan con alguno de estos datos no se tuvieron en cuenta para la experimentación y fueron eliminados. A partir de las primeras ejecuciones y resultados obtenidos se observaron dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles unitarios}, a continuación explicamos con más detalle estos comportamientos.\\
+Al finalizar la depuración de artículos que consideramos afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
 \subsection{Soluciones similares para distintos gammas}
-A partir de las ejecuciones realizadas y su primer análisis se destaca que el valor de la función objetivo es muy cercano a la cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ probados las soluciones eran muy similares. Un segundo análisis más detallado que se realizó a los bundles de papers, se detectó que muchos de ellos contenían papers de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo y así también la distancia con los otros bundles.\\
-Al contar con muchos papers con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los papers que contengan un solo un tópico.
+Como primer análisis de la experimentación realizada se destaca que el valor de la función objetivo se encuentra cercano a una cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ utilizados las soluciones eran muy similares entre sí. Un posterior análisis más detallado realizado sobre los bundles de artículos, se detectó que muchos de ellos contenían artículos de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo, así también la distancia con los otros bundles.\\
+Al contar con muchos artículos con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines prácticos de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los artículos que contengan un solo un tópico.
 \subsection{Soluciones con bundles unitarios}
-Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}), contenía una alta cantidad de bundles con uno o dos elementos únicamente, tal comportamiento no era el deseado porque no se estaba utilizando todo el presupuesto.\\
-Este comportamiento ocurre particularmente con el método jerárquico en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster que se generan no superan el presupuesto pero no se pueden unir con otro cluster porque invalida la restricción de la complementaridad. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ que tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2 y V_3$ y los artículos se presentaron de la siguiente manera:
+Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}) contenían una alta cantidad de bundles con uno o dos elementos únicamente, tal comportamiento no es el deseado porque queda presupuesto para ser usado.\\
+Este comportamiento ocurre particularmente con el método jerárquico o HAC en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster que se generan no superan el presupuesto pero no se pueden unir con otro cluster porque invalida la restricción de la complementaridad. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ que tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2 y V_3$ y los artículos se presentaron de la siguiente manera:
 \begin{itemize}
 	\item $A_1$ $\rightarrow$ $V_1$
 	\item $A_2$ $\rightarrow$ $V_2$
@@ -195,7 +195,7 @@ Solución de bundles en el que cada uno contiene autores similares de distinta u
 \end{itemize}
 
 La instancia elegida, luego de la depuración mencionada en \ref{res:busPaper}, cuenta con $5577$ autores en condiciones de ser elegidos por los algoritmos implementados.\\
-Al igual que con las búsquedas de papers realizamos las mismas ejecuciones con los mismos parámetros, es decir, se generaron soluciones con las siguientes características:\\
+Al igual que con las búsquedas de artículos realizamos las mismas ejecuciones con los mismos parámetros, es decir, se generaron soluciones con las siguientes características:\\
 \Solucion
 {}
 {\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
@@ -218,8 +218,8 @@ Al igual que con las búsquedas de papers realizamos las mismas ejecuciones con 
   \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-El comportamiento de las ejecuciones fueron muy similares a las que obtuvimos en la búsqueda de papers, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de papers, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
-Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de papers no incluímos los gráficos ya que sería mostrar lo mismo.
+El comportamiento de las ejecuciones fueron muy similares a las que obtuvimos en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
+Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no incluímos los gráficos ya que sería mostrar lo mismo.
 \newpage
 \section{Búsqueda con perfil específico}
 En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
