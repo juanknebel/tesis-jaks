@@ -1,3 +1,4 @@
+\section{Base de datos de artículos}
 La instancia seleccionada para realizar las pruebas de lo propuesto en este trabajo es sobre la base de datos de los artículos de \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La decisión de utilizar esta base de datos es por la completitud de la información y que la cantidad de elementos que contiene requiere de algoritmos eficientes. La base de datos contiene cerca de $7800$ artículos, de los que se tiene los autores que participaron en ellos, en la conferencia que fueron presentados y lo más importante es que se cuenta con una clasificación ya realizada de los tópicos a los que hacen referencia cada uno de ellos. Ésta última característica es llamada \texttt{topicProfile} y esta expresada en porcentajes para cada uno de tópicos que son tratados. De los $9800$ autores se tiene la información de que a universidad pertenecen y además de cada una de las universidades se sabe a que región pertenece cada una.\\
 
 El \texttt{topicProfile} es muy importante porque permitirá definir la similitud no sólo entre los artículos, sino que también entre los autores y las universidades de la base da datos de una manera prácticamente directa.\\
@@ -15,21 +16,21 @@ Como se mencionó anteriormente, en la base de datos cada artículo cuenta con s
 De los autores no se cuenta con una información directa que defina el perfil. Por lo tanto el perfil de los autores se genera a partir de los artículos que escribieron. Para definir el perfil de las universidades se aplicó el perfil de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems. A continuación se detallan las consultas realizadas en este trabajo.\\
 Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
 
-\section{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
+\subsection{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
 Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
   \item \textbf{Complementariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
-\section{Autores de distintas universidades}
+\subsection{Autores de distintas universidades}
 Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
   \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
 \end{itemize}
 
-\section{Instituciones de diferentes regiones}
+\subsection{Instituciones de diferentes regiones}
 En este caso, la búsqueda es para instituciones de diferentes regiones. 
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
@@ -62,7 +63,7 @@ Ejemplo de los perfiles de los elementos:
  \item Universidad 2 - $[$0.31, 0.72, 0.54, 0.30$]$
 \end{description}
 
-\section{Función de similitud}
+\subsection{Función de similitud}
 La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. En este trabajo para determinar la similitud entre los objetos es por la medida conocida como \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos. El coseno para el ángulo cero es 1, es menor a 1 para cualquier otro ángulo y es 0 cuando los vectores son ortogonales. De esta forma lo que define la similitud de los vectores es la orientación y no así la magnitud.\\
 Entonces se define la función de similitud $S(V_i, V_j)$ para los vectores $V_i$ y $V_j$ a partir del producto escalar\\
 
@@ -84,4 +85,7 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtiene q
 \label{bus:img-coseno}
 \end{figure}
 
-Dos vectores proporcionales tiene la misma dirección y el ángulo entre ellos es cero, entonces la función de similitud es 1. Lo que significa que esta medida de similitud no considera el peso de cada tópico, por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1. 
+Dos vectores proporcionales tiene la misma dirección y el ángulo entre ellos es cero, entonces la función de similitud es 1. Lo que significa que esta medida de similitud no considera el peso de cada tópico, por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1.
+\section{Atracciones turísticas}
+Se dispuso de una instancia de datos correspondiente a 200 atracciones turísticas de Europa que contiene la información del valor de la visita, que tipo de visita es (parque, musea, edificio) cual es la similitud entre ellos (VER CUAL ES).\\
+En esta caso en particular al tener una noción de costo que tiene sentido aplicar se lograron ejecutar los algoritmos y observar el cambio de las soluciones obtenidas a medida que se modificaba dicho atributo. Como ya se cuenta con la similitud entre los elementos solo restó ejecutar los algoritmos y obtener las soluciones que representan grupos de atracciones que puede visitar un turista con un presupuesto máximo.
