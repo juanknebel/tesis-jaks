@@ -6,13 +6,11 @@
  */
 
 #include "randomSOBOSolver.h"
-#include <time.h>
-#include <cstdlib>
 
 int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) {
-	srand(time(0));
+	srand((unsigned int) time(0));
 	int pivot = randomNode();
-	while(pivotsUsed.count(pivot) == 1 || !(possiblePivots.count(pivot) == 1)) {
+	while (pivotsUsed.count(pivot) == 1 || possiblePivots.count(pivot) != 1) {
 		pivot = randomNode();
 	}
 	return pivot;

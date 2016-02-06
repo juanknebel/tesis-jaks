@@ -11,7 +11,7 @@
 int RandomBOBOSolver::INITIAL_TRIALS_FOR_MU = 5;
 
 Double RandomBOBOSolver::chooseMu() {
-	DblVector listOfSumIntra = DblVector(this->INITIAL_TRIALS_FOR_MU);
+	DblVector listOfSumIntra = DblVector((unsigned long) this->INITIAL_TRIALS_FOR_MU);
 	IntSet allIds = IntSet(this->problem_->getIds());
 	int pivot;
 	Double median = 0.0;
@@ -21,7 +21,7 @@ Double RandomBOBOSolver::chooseMu() {
 		listOfSumIntra.push_back(this->pickFlake(pivot, allIds)->getSumIntraCompat());
 	}
 	std::sort(listOfSumIntra.begin(), listOfSumIntra.end());
-	int middle = listOfSumIntra[this->INITIAL_TRIALS_FOR_MU/2];
+	int middle = (int) listOfSumIntra[this->INITIAL_TRIALS_FOR_MU / 2];
 
 	if (this->INITIAL_TRIALS_FOR_MU % 2 == 0) {
 		median = (listOfSumIntra[middle] + listOfSumIntra[middle - 1])/2;

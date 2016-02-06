@@ -34,11 +34,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         setOfTabuElements.push_back(0);
     }
 
-    for (auto bundle : temporarySolution) {
-        for (auto element : bundle.ids()) {
-        }
-    }
-
     maxIter = 1000;
     int iteration = 0;
     SnowFlakeVector bestSolution(temporarySolution.begin(), temporarySolution.end());
@@ -171,7 +166,8 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 
 int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem) {
     int farAwayBundle = -1;
-    if (worstFlake.ids().size() == 5) {
+    // TODO: REEMPLAZAR URGENTE este tres por el numero total de categorias que exista o simplemente mejorar esto para que no apareca de esta manera
+    if (worstFlake.ids().size() == 3) {
         double minSimilarity = std::numeric_limits<double>::max();
         for (auto element : worstFlake.ids()) {
             if (element != centroid) {
@@ -233,23 +229,31 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
     bool ret = true;
     for (auto element : worstFlake.ids()) {
         if (element != elementToReplace) {
-            const IntSet* covers = theProblem.getCover(element);
+            const IntSet *covers = theProblem.getCover(element);
             for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-                if (coverageCovered.count(*cover)!=0) {
+                if (coverageCovered.count(*cover) != 0) {
                     ret = false;
                 }
                 coverageCovered.insert(*cover);
             }
         }
     }
-    const IntSet* covers = theProblem.getCover(newElement);
+    const IntSet *covers = theProblem.getCover(newElement);
     for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-        if (coverageCovered.count(*cover)!=0) {
+        if (coverageCovered.count(*cover) != 0) {
             ret = false;
         }
         coverageCovered.insert(*cover);
     }
-    return ret;
+    bool checkBudget;
+    if (elementToReplace != -1) {
+        checkBudget = (worstFlake.getCost() - theProblem.getCost(elementToReplace) + theProblem.getCost(newElement)) <=
+                      theProblem.getbudget();
+    }
+    else {
+        checkBudget = (worstFlake.getCost() + theProblem.getCost(newElement)) <= theProblem.getbudget();
+    }
+    return ret && checkBudget;
 }
 
 void LocalSearch::updateTabuElements(std::vector<int> &tabuSet) {

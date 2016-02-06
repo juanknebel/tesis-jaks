@@ -22,7 +22,8 @@ public:
 
 protected:
 	SnowFlakeVector* produceManySnowflakes(int numSnowflakes);
-	bool candidateAcceptable(SnowFlake& candidate);
+
+	virtual bool candidateAcceptable(SnowFlake &candidate);
 
 private:
 	SnowFlakeVector* produceManySnowflakesSimple(int numSnowflakes);

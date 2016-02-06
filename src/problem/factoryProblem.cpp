@@ -10,7 +10,7 @@ ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks& config
     std::string fileOfCover = configFile["file_cover"];
     double budget = atof(configFile["budget"].c_str());
 
-    bool withSpecificItem = ((configFile["with_specific_item"] == "1") ? true : false);
+    bool withSpecificItem = configFile["with_specific_item"] == "1";
     int specificItem = atoi(configFile["specific_item"].c_str());
 
     ProblemInstanceFromFiles* theProblem = new ProblemInstanceFromFiles(

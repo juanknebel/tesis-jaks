@@ -41,7 +41,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
         SnowFlake centroidSnowFlake = this->getCentroidBundle(worstSnowFlake, iterationSolution, theProblem,
                                                               interSimilarityWeight);
         SnowFlakeVector betterFlakes = this->getBetterFlakes(centroidSnowFlake, setOfTabuBundles, remainingFlakes,
-                                                             theProblem, interSimilarityWeight);
+                                                             theProblem);
 
         double betterInterFunction = SnowFlake::objetiveFunction(iterationSolution, 1);
         SnowFlake bestBundle;
@@ -178,8 +178,8 @@ SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlake
     return centroid;
 }
 
-SnowFlakeVector LocalSearchBundles::getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles, SnowFlakeVector &remainingFlakes,
-                                ProblemInstance &theProblem, double interSimilarityWeight) {
+SnowFlakeVector LocalSearchBundles::getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles,
+                                                    SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem) {
     SnowFlakeVector bestBundles;
     SnowFlakeVector temporaryFlakes;
     temporaryFlakes.push_back(centroid);

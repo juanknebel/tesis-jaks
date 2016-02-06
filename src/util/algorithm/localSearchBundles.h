@@ -20,8 +20,8 @@ private:
     SnowFlake getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
                                                     ProblemInstance &theProblem, Double interSimilarityWeight);
 
-    SnowFlakeVector getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles, SnowFlakeVector &remainingFlakes,
-                                    ProblemInstance &theProblem, double interSimilarityWeight);
+    SnowFlakeVector getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles,
+                                    SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem);
 public:
     LocalSearchBundles() {}
     SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, SnowFlakeVector& remainingFlakes

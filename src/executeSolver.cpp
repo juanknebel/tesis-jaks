@@ -3,7 +3,6 @@
 #include "executeSolver.h"
 #include "util/configurator/factoryConfigurator.h"
 #include "util/algorithm/localSearch.h"
-#include "util/writer/writerSolution.h"
 
 using namespace std;
 
@@ -13,36 +12,14 @@ void showSolution(SnowFlakeVector& solution, Configurator& configurator) {
 	}
 }
 
-void writeSolution(SnowFlakeVector& solution, Configurator& configurator) {
+void writeSolution(SnowFlakeVector &solution, Configurator &configurator, String fileName,
+                   Double interSimilarityWeight) {
     if(configurator.getWriteToFile()) {
         WriterSolution* theWriter = configurator.getTheWrtiter();
-		std::stringstream fileName;
-        fileName << configurator.getDirectoryOfWork() << "SolverWithLocal-";
-        fileName << configurator.getSolverName();
-        Double gamma = configurator.getGamma();
-        Double interSimilarityWeight = 1.00 - gamma;
-
-        fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
-		std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
-        theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
-        WriterSolution::writeInterAndIntraValues(solution, fileName.str());
+        std::cout << "Writing the solution into the file: " << fileName << std::endl;
+        theWriter->writeSolution(solution, fileName, configurator.getTheNodeName(), interSimilarityWeight);
+        WriterSolution::writeInterAndIntraValues(solution, fileName);
 	}
-}
-
-void writeSolutionOld(SnowFlakeVector& solution, Configurator& configurator) {
-    if(configurator.getWriteToFile()) {
-        WriterSolution* theWriter = configurator.getTheWrtiter();
-        std::stringstream fileName;
-        fileName << configurator.getDirectoryOfWork() << "Solver-";
-        fileName << configurator.getSolverName();
-        Double gamma = configurator.getGamma();
-        Double interSimilarityWeight = 1.00 - gamma;
-
-        fileName << "_ToProduce-"<<configurator.getNumToProduce()<<"_Gamma-"<<gamma<<".csv";
-        std::cout<<"Writing the solution into the file: "<<fileName.str()<<std::endl;
-        theWriter->writeSolution(solution, fileName.str(), configurator.getTheNodeName(), interSimilarityWeight);
-        WriterSolution::writeInterAndIntraValues(solution, fileName.str());
-    }
 }
 
 void execute(ConfigurationJaks& configFile) {
@@ -65,9 +42,21 @@ void execute(ConfigurationJaks& configFile) {
 		std::cerr<<"Unexpected error"<<std::endl;
 		exit(0);
 	}*/
+
     showSolution(newSolution, *theConfigurator);
-    writeSolution(newSolution, *theConfigurator);
-    writeSolutionOld(*solution, *theConfigurator);
+
+    std::stringstream fileName;
+    fileName << theConfigurator->getDirectoryOfWork() << "SolverWithLocal-";
+    fileName << theConfigurator->getSolverName();
+    fileName << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
+    writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
+
+    std::stringstream fileNameOrg;
+    fileNameOrg << theConfigurator->getDirectoryOfWork() << "Solver";
+    fileNameOrg << theConfigurator->getSolverName();
+    fileNameOrg << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
+    writeSolution(*solution, *theConfigurator, fileNameOrg.str(), interSimilarityWeight);
+
     int i=0;
     for (auto& bundle : *solution) {
         bundle.setIdentificator(i);
