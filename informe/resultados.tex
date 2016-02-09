@@ -230,3 +230,37 @@ bundles relevantes con el perfil elegido.\\
 A continuación mostramos la temáticas obtenidas para una búsqueda con un perfil específico de 
 ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
 del algoritmo SingleHAC con $\gamma$ = 0.1 y $\gamma$ = 0.9.
+\newpage
+\section{Atracciones turísticas}\label{res:busAtracciones}
+Aquí se muestran las soluciones en las que cada bundle representa un conjunto de atracciones que un turista puede visitar, cada uno de ellos no supera el presupuesto máximo y cada elemento es un tipo de atracción diferente.
+\begin{itemize}
+  \item \textbf{Similitud}: Los valores fueron entregados ya calculados.
+  \item \textbf{Complementariedad}: Tipo de atracción turística.
+  \item \textbf{presupuesto}: Valor de la atracción.
+\end{itemize}
+Se generaron soluciones con las siguientes características:\\
+\SolucionBudget
+{}
+{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{Intra-Inter, Proportional (no aplica a la búsqueda golosa)}
+{$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
+{10}
+{3}
+{7}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/cities/Graficos_agrupados/gamma01-cities.png}
+  \caption{Función Objetivo $\gamma$ = $0.1$ vs Algoritmos de resolución}
+  \label{res:img-cities-agr-gamma01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/cities/Graficos_agrupados/gamma09-cities.png}
+  \caption{Función Objetivo $\gamma$ = $0.9$ vs Algoritmos de resolución}
+  \label{res:img-cities-agr-gamma09}
+\end{figure}
+
+Al igual que en los demas escenarios de ejecuciones el comportamiento fue el esperado y en todas las estrategias usadas para los distintos algoritmos, aplicando la búsqueda Tabú a la solución obtenida encuentra siempre una mejor. También se puede observar que usando la implementación BOBO para valores de $\gamma$ altos es donde mejor funciona la metaheurística y que la búsqueda golosa siempre esta debajo de la solución HAC.\\
+Solo se muestran los gráficos y comportamientos para las pruebas realizadas con un solo presupuesto, pero los mismos tuvieron el mismo efecto a medida que se cambiaba el valor.
