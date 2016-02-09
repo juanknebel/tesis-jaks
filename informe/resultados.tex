@@ -5,8 +5,8 @@ Generar una solución, en el que cada bundle contenga artículos similares que s
   \item \textbf{Complementariedad}: Lugar dónde fue presentado.
 \end{itemize}
 
-La base de datos de \cite{dataDrive} contiene $7777$ items de artículos, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los artículos que no cuentan con alguno de estos datos no se tuvieron en cuenta para la experimentación y fueron eliminados. A partir de las primeras ejecuciones y resultados obtenidos se observaron dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles unitarios}, a continuación explicamos con más detalle estos comportamientos.\\
-Al finalizar la depuración de artículos que consideramos afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
+La base de datos de \cite{dataDrive} contiene $7777$ items de artículos, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los artículos que no cuentan con alguno de estos datos no se tuvieron en cuenta para la experimentación y fueron eliminados. A partir de las primeras ejecuciones y resultados obtenidos se observaron dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles unitarios}, a continuación se explica con más detalle estos comportamientos.\\
+Al finalizar la depuración de artículos que se consideró afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
 \subsection{Soluciones similares para distintos gammas}
 Como primer análisis de la experimentación realizada se destaca que el valor de la función objetivo se encuentra cercano a una cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ utilizados las soluciones eran muy similares entre sí. Un posterior análisis más detallado realizado sobre los bundles de artículos, se detectó que muchos de ellos contenían artículos de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo, así también la distancia con los otros bundles.\\
 Al contar con muchos artículos con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines prácticos de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los artículos que contengan un solo un tópico.
@@ -195,7 +195,7 @@ Solución de bundles en el que cada uno contiene autores similares de distinta u
 \end{itemize}
 
 La instancia elegida, luego de la depuración mencionada en \ref{res:busPaper}, cuenta con $5577$ autores en condiciones de ser elegidos por los algoritmos implementados.\\
-Al igual que con las búsquedas de artículos realizamos las mismas ejecuciones con los mismos parámetros, es decir, se generaron soluciones con las siguientes características:\\
+Al igual que con las búsquedas de artículos se realizaron las mismas ejecuciones con los mismos parámetros, es decir, se generaron soluciones con las siguientes características:\\
 \Solucion
 {}
 {\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
@@ -218,8 +218,8 @@ Al igual que con las búsquedas de artículos realizamos las mismas ejecuciones 
   \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-El comportamiento de las ejecuciones fueron muy similares a las que obtuvimos en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
-Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no incluímos los gráficos ya que sería mostrar lo mismo.
+El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
+Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
 \newpage
 \section{Búsqueda con perfil específico}
 En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
@@ -227,7 +227,7 @@ lo cuál, si bien generó resultados diferentes al algoritmo original, no se ve�
 resultados las temáticas de los bundles con la elegida para la búsqueda.\\
 A partir de ello se decidió modificar también la selección de los bundles para intentar obtener 
 bundles relevantes con el perfil elegido.\\
-A continuación mostramos la temáticas obtenidas para una búsqueda con un perfil específico de 
+A continuación se muestra la temáticas obtenidas para una búsqueda con un perfil específico de 
 ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
 del algoritmo SingleHAC con $\gamma$ = 0.1 y $\gamma$ = 0.9.
 \newpage
