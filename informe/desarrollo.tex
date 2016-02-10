@@ -363,50 +363,38 @@ Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de ítems, el b
 \STATE $tabuElements \leftarrow \emptyset$
 \STATE $bestSolution \leftarrow S$
 \STATE $visitSolution \leftarrow S$
+\STATE $thresholdScore \leftarrow -\inf$
 \WHILE {$iteration < MAX\_ITER$}
-  \STATE $bunldeWithWorstInter \leftarrow \min_{}{}$
-  \STATE $centroid: Element \leftarrow findCentroid(bundeWithWorstInter)$
-  \STATE $farAwayElement: Element \leftarrow$\\
-  $findFarAwayElement(centroid, bundeWithWorstInter)$
-  \STATE $bestElements: Set<SnowFlake> \leftarrow$\\
-  $nearestElements(centroid, farAwayElement, bundeWithWorstInter, tabuElements)$
-  \STATE $tempFunction: Double \leftarrow FO(tempSolution)$
-  \FOR {$near:Element \in bestElements$}
-    \STATE $newBunlde: SnowFlake \leftarrow bundeWithWorstInter.replace(farAwayElement, near)$
-    \STATE $otherSolution: Vector<SnowFlake> \leftarrow$\\
-    $tempSolution.replace(bundeWithWorstInter, newBunlde)$
-    \STATE $otherFunction: Double \leftarrow FO(otherSolution)$
-    \IF {$otherFunction > tempSolution$}
-      \STATE $betterSolution: Bool \leftarrow True$
-      \STATE $saveSolution$
-    \ELSE
-      \IF {$not betterSolution$\\
-           $and\ otherFunction\ is\ better\ than\ others\ functions$\\
-           $and\ bundeWithWorstInter\ was\ tabu\ before$}
-	\STATE $bestWorstSolution: Bool \leftarrow True$
-	\STATE $saveSolution$
-      \ENDIF
+  \STATE $worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$
+  \STATE $centroid \leftarrow GetCentroid(worstBunlde)$
+  \STATE $faraway \leftarrow GetFarawayElement(worstBunlde,centroid)$
+  \STATE $bestElements: \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
+	\STATE $scoreInter \leftarrow \omega(visitSolution)$
+  \FOR {$near \in bestElements$}
+		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{near\right\}$
+		\STATE $itSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
+    \STATE $newScore \Leftarrow \omega(itSolution)$
+		\IF {$newScore > scoreInter$}
+			\STATE $thresholdScore \leftarrow scoreInter$
+			\STATE $scoreInter \leftarrow newScore$
+			\STATE $visitSolution \leftarrow itSolution$
+    \ELSIF {$newScore > thresholdScore$}
+				\STATE $thresholdScore \leftarrow newScore$
+				\STATE $visitSolution \leftarrow itSolution$
     \ENDIF
   \ENDFOR
-  \IF {$betterSolution$}
-    \STATE $replace\ tempSolution\ with\ saved\ solution$
-    \STATE $newScore: Double \leftarrow FO(tempSolution)$
-    \IF {$newScore > bestScore$}
-      \STATE $bestSolution \leftarrow tempSolution$
-    \ENDIF
-    \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
-  \ELSE
-    \IF {$bestWorstSolution$}
-      \STATE $replace\ tempSolution\ with\ saved\ solution$
-      \STATE $tabuElements \leftarrow tabuElements \cup {farAwayElement}$
-    \ENDIF
+  \IF {$\omega(visitSolution) > \omega(bestSolution)$}
+		\STATE $bestSolution \leftarrow visitSolution$
   \ENDIF
+	\STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
+	\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$
+  \STATE $tabuElements \leftarrow tabuElements \cup \left\{
+	\left\langle faraway, ITER\_TABU \right\rangle\right\}$
 	\STATE $tabuBundles \leftarrow UpdateTabu(tabuBundles)$
   \STATE $tabuElements \leftarrow UpdateTabu(tabuElements)$
 	\STATE $iteration \leftarrow iteration + 1$
 \ENDWHILE
-\STATE $newSolution \leftarrow bestSolution$
-\RETURN $newSolution$
+\RETURN $bestSolution$
 \end{algorithmic}
 \caption{Algoritmo búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
 \end{algorithm}
