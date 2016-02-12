@@ -1,4 +1,21 @@
 \section{Base de datos de artículos}
+Para poder comprender el comportamiento de los resultados de las búsquedas se diseñaron dos tipos de gráficos. La intención es visualizar en los resultados que tan cohesivos son los bundles y la distancia que existe entre estos. De esta forma se podrá analizar la calidad del resultado obtenido más allá del valor de la función objetivo.\\
+En los gráficos de \ref{res:img-explain-bars} se visualiza a través del tamaño de un círculo la proporción de cada artículo con cada tópico y con el color del artículo al bundle al que pertenece. Por lo tanto si para un bundle se tiene que la distribución entre los tópicos y el tamaño de los círculos es similar para cada artículo se puede deducir que ese bundle es cohesivo. Por otro lado si los círculos de un bundle no coinciden con los círculos de otro bundle el resultado es diverso.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1\textwidth]{img/explain-bars.png}
+  \caption{}
+  \label{res:img-explain-bars}
+\end{figure}
+
+En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la relación entre los tópicos y los bundles. Cada burbuja representa un tópico y contiene los círculos de la proporción en la relación entre el tópico que representa y un artículo del resultado, además el color del círculo representa al bundle al que pertence el artículo. Entonces si las burbujas contienen círculos de más de un color se puede decir que ese resultado no es muy diverso, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado es más diverso. En cuanto a la cohesión de los bundles, es más cohesivo cuando el tamaño de cada circulo dentro de cada burbuja sea similar (para el mismo color) y la distribución de los círculos entre cada burbuja es equitativa.
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.5\textwidth]{img/explain-bubbles.png}
+  \caption{}
+  \label{res:img-explain-bubbles}
+\end{figure}
 \subsection{Búsquedas de Artículos}\label{res:busPaper}
 Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
@@ -8,10 +25,10 @@ Generar una solución, en el que cada bundle contenga artículos similares que s
 
 La base de datos de \cite{dataDrive} contiene $7777$ items de artículos, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los artículos que no cuentan con alguno de estos datos no se tuvieron en cuenta para la experimentación y fueron eliminados. A partir de las primeras ejecuciones y resultados obtenidos se observaron dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles unitarios}, a continuación se explica con más detalle estos comportamientos.\\
 Al finalizar la depuración de artículos que se consideró afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
-\subsubsection{Soluciones similares para distintos gammas}
+\paragraph{Soluciones similares para distintos gammas}
 Como primer análisis de la experimentación realizada se destaca que el valor de la función objetivo se encuentra cercano a una cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ utilizados las soluciones eran muy similares entre sí. Un posterior análisis más detallado realizado sobre los bundles de artículos, se detectó que muchos de ellos contenían artículos de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo, así también la distancia con los otros bundles.\\
 Al contar con muchos artículos con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines prácticos de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los artículos que contengan un solo un tópico.
-\subsubsection{Soluciones con bundles unitarios}
+\paragraph{Soluciones con bundles unitarios}
 Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}) contenían una alta cantidad de bundles con uno o dos elementos únicamente, tal conducta no es la deseada ya que queda una parte del presupuesto sin ser usado.\\
 Este comportamiento ocurre particularmente con el método jerárquico o HAC en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster generados no superan el presupuesto pero no pueden ser unidos con otro cluster porque invalida la complementaridad que se quiere lograr. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ y tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2 y V_3$ y los artículos se presentan de la siguiente manera:
 \begin{itemize}
@@ -82,22 +99,7 @@ En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamm
 
 De lo anterior se observa para todas las soluciones obtenidas, se puede mejorar la función objetivo aplicando la búsqueda tabú, aún sea en un valor pequeño. Otra observación interesante es que en todos los valores de $\gamma$ utilizados el algoritmo BOBO fue el más beneficiado en el uso de la búsqueda Tabú, sobre todo en las más altos. De forma inversa a lo que sucedía con los resultados iniciales que a medida que $\gamma$ crecía la función objetivo disminuía, utilizando la heurística revirtió la tendencia.\\
 Para el HAC y la Búsqueda Golosa, el uso de Búsqueda Tabú tuvo un comportamiento similar entre las diferentes soluciones.\\
-Para visualizar como se diferencian las distintas soluciones que se obtuvieron con distintos los $\gamma$ y los algoritmos utilizados, se generaron dos tipos de gráficos para la comprensión de los resultados obtenidos.\\
-En los gráficos de \ref{res:img-explain-bars} se puede ver como se distribuyen los perfiles en la solución obtenida.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{img/explain-bars.png}
-  \caption{}
-  \label{res:img-explain-bars}
-\end{figure}
 
-En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la relación entre los tópicos y los bundles. Cada burbuja representa un tópico de un artículo de la solución. El tamaño de la burbuja es el porcentaje del tópico y el color referncia al bundle al que pertenece el artículo. Las burbujas del mismo tópico se agrupan para facilitar la interpretación del gráfico.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.5\textwidth]{img/explain-bubbles.png}
-  \caption{}
-  \label{res:img-explain-bubbles}
-\end{figure}
 \paragraph{Jerarquico (o SingleHAC)}
 En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visualiza que utilizando una búsqueda Tabú al final de la ejecución  de HAC no mejora considerablemente la solución. Por lo que se decidió para este caso comparar el algoritmo sin la búsqueda tabú.
 \begin{figure}[H]
