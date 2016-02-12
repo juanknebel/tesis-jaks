@@ -1,4 +1,5 @@
-\section{Búsquedas de Artículos}\label{res:busPaper}
+\section{Base de datos de artículos}
+\subsection{Búsquedas de Artículos}\label{res:busPaper}
 Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
@@ -7,10 +8,10 @@ Generar una solución, en el que cada bundle contenga artículos similares que s
 
 La base de datos de \cite{dataDrive} contiene $7777$ items de artículos, para las búsquedas se requiere que ellos cuenten con la información del autor, de su perfil como paper (\textbf{topic profile}) y su lugar de publicación (\textbf{venue}). Los artículos que no cuentan con alguno de estos datos no se tuvieron en cuenta para la experimentación y fueron eliminados. A partir de las primeras ejecuciones y resultados obtenidos se observaron dos comportamientos no deseados, \textit{soluciones similares para distintos valores de $\gamma$} y \textit{soluciones con bundles unitarios}, a continuación se explica con más detalle estos comportamientos.\\
 Al finalizar la depuración de artículos que se consideró afectaban los resultados obtenidos, se obtuvieron $3954$ para realizar todas las pruebas mencionadas.
-\subsection{Soluciones similares para distintos gammas}
+\subsubsection{Soluciones similares para distintos gammas}
 Como primer análisis de la experimentación realizada se destaca que el valor de la función objetivo se encuentra cercano a una cota máxima (ver \ref{conc:valoresOptimos}) y que para todos los valores de $\gamma$ utilizados las soluciones eran muy similares entre sí. Un posterior análisis más detallado realizado sobre los bundles de artículos, se detectó que muchos de ellos contenían artículos de un solo tópico, por lo tanto el valor cohesivo (\textbf{intra}) de los bundles generados es el máximo, así también la distancia con los otros bundles.\\
 Al contar con muchos artículos con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines prácticos de comparar las implementaciones mencionas y obtener bundles más interesantes, se decidió eliminar los artículos que contengan un solo un tópico.
-\subsection{Soluciones con bundles unitarios}
+\subsubsection{Soluciones con bundles unitarios}
 Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}) contenían una alta cantidad de bundles con uno o dos elementos únicamente, tal conducta no es la deseada ya que queda una parte del presupuesto sin ser usado.\\
 Este comportamiento ocurre particularmente con el método jerárquico o HAC en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster generados no superan el presupuesto pero no pueden ser unidos con otro cluster porque invalida la complementaridad que se quiere lograr. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ y tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2 y V_3$ y los artículos se presentan de la siguiente manera:
 \begin{itemize}
@@ -22,7 +23,7 @@ Este comportamiento ocurre particularmente con el método jerárquico o HAC en l
 Entonces para el criterio de búsqueda los artículos $A_3, A_4 y A_5$ no pueden pertenecer al mismo bundle pues éstos no son complementarios entre sí.\\
 El proceso de clusterización jerárquico, puede generar la siguiente configuración en la cual no se pueden unir los bundles, el bundle $B_1$ con los artículos $A_1$ y $A_3$ el bundle $B_2$ con los artículos $A_2$ y $A_4$ y el bundle $B_3$ con el artículo $A_5$. Efectivamente esta clusterización no es la más óptima para el problema porque se podría haber generado un bundle más cohesivo (\textbf{mayor intra}) si se hubiera elegido el siguiente bundle $A_1$, $A_2$ y $A_3$.\\
 La propuesta para corregir esta situación fue la de realizar una Búsqueda Tabú al finalizar la etapa del \textit{Produce} con los bundles ya generados asi de esta forma mejorar el intra de los bundles antes de la etapa de selección.
-\subsection{Resultados}
+\subsubsection{Resultados}
 De todos los algorimos descriptos en las secciones anteriores las pruebas se realizaron utilizando \texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO}. Al terminar su ejecución se aplicó una búsqueda Tabú para intentar mejorar la solución obtenida.\\
 \Solucion
 {}
@@ -97,7 +98,7 @@ En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la rel
   \caption{}
   \label{res:img-explain-bubbles}
 \end{figure}
-\subsubsection{Jerarquico (o SingleHAC)}
+\paragraph{Jerarquico (o SingleHAC)}
 En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visualiza que utilizando una búsqueda Tabú al final de la ejecución  de HAC no mejora considerablemente la solución. Por lo que se decidió para este caso comparar el algoritmo sin la búsqueda tabú.
 \begin{figure}[H]
   \centering
@@ -129,7 +130,7 @@ En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visual
 
 De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se puede observar como para $\gamma$ de valor bajo los perfiles de los artículos elegidos se encuentran más distribuidos entre los tópicos mientras que para valores más altos el mayor porcentaje se concentra en un pocos perfiles, generando en este último bundles más cohesivos como se está buscando, pero a la vez se tiene menos diversidad ya que en toda la solución se concentran los valores más representantivos de los perfiles de los artículos en un pocos como bien puede observarse en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}.\\
 El comportamiento fue el mismo para todas las estrategias de selección que se utilizaron, la única diferencia fueron los valores finales de la función objetivo.
-\subsubsection{BOBO-100}
+\paragraph{BOBO-100}
 En este caso al ser muy grande la diferencia entre entre la utilización de la heurística Tabú y la ejecución sin ella,  se incluyó para poder visualizar los cambios en la solución.
 \begin{figure}[H]
   \centering
@@ -187,7 +188,7 @@ En este caso al ser muy grande la diferencia entre entre la utilización de la h
   \label{res:img-papers-bubbles-gamma09-hac-intra-inter-bobo}
 \end{figure}
 \newpage
-\section{Búsqueda de Autores}
+\subsection{Búsqueda de Autores}
 Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
@@ -220,17 +221,6 @@ Al igual que con las búsquedas de artículos se realizaron las mismas ejecucion
 
 El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
 Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
-\newpage
-\section{Búsqueda con perfil específico}
-En una primera aproximación para realizar esta búsqueda solo se modifico la generación de bundles, 
-lo cuál, si bien generó resultados diferentes al algoritmo original, no se veía reflejado en los 
-resultados las temáticas de los bundles con la elegida para la búsqueda.\\
-A partir de ello se decidió modificar también la selección de los bundles para intentar obtener 
-bundles relevantes con el perfil elegido.\\
-A continuación se muestra la temáticas obtenidas para una búsqueda con un perfil específico de 
-ALGORITHM = 50 \%, DISTRIBUTED SYSTEMS = 25 \% y KNOWLEDGE ENGINEERING = 25 \% para la ejecución 
-del algoritmo SingleHAC con $\gamma$ = 0.1 y $\gamma$ = 0.9.
-\newpage
 \section{Atracciones turísticas}\label{res:busAtracciones}
 Aquí se muestran las soluciones en las que cada bundle representa un conjunto de atracciones que un turista puede visitar, cada uno de ellos no supera el presupuesto máximo y cada elemento es un tipo de atracción diferente.
 \begin{itemize}
