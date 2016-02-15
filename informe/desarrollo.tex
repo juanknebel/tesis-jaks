@@ -285,12 +285,13 @@ Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy c
 Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución.
 
 \subsection{Inter-Bundle}
-La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}. En esta fase se eligen los bundles que pertenecen a la solución. De la solución obtenida se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de recorrer las soluciones con bundles menos cohesivos entre si.\\
+La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose} que es la fase en la que se selecciona un subconjunto de bundles del conjunto de bundles generados en la fase anterior. De la solución obtenida en la fase de selección se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de visitar las soluciones vecinas.\\
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
-	\item Obtener el Bundle de la solución a reemplazar.
+	\item Quitar de la solución el bundle con menor Inter.
 	\item Determinar el bundle centroide de la solución.
-	\item Agregar a la solución el bundle más alejado al centroide.
+	\item Calcular la función objetivo agregando uno de los $K$ bundles generados más lejos del centroide.
+	\item Quedarse con la solución con mayor función objetivo. 
 \end{enumerate}
 
 Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es:
@@ -346,7 +347,8 @@ En Intra-Bundle explora soluciones con bundles más cohesivos. De la solución a
 	\item Obtener el bundle menos cohesivos de la solución.
 	\item Determinar el centroide del bundle.
 	\item Hallar el ítem más alejado del centroide.
-	\item Reemplazar con el ítem, que no pertenece a la solución, más cercano al centroide.
+	\item Calcular el inter del bundle agregando uno de los $K$ items más cercano del centroide.
+	\item Generar un nuevo bundle en la solución con el item que maximiza el inter.
 \end{enumerate}
 
 Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de ítems, el bundle de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
