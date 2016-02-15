@@ -100,26 +100,26 @@ En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamm
 De lo anterior se observa para todas las soluciones obtenidas, se puede mejorar la función objetivo aplicando la búsqueda tabú, aún sea en un valor pequeño. Otra observación interesante es que en todos los valores de $\gamma$ utilizados el algoritmo BOBO fue el más beneficiado en el uso de la búsqueda Tabú, sobre todo en las más altos. De forma inversa a lo que sucedía con los resultados iniciales que a medida que $\gamma$ crecía la función objetivo disminuía, utilizando la heurística revirtió la tendencia.\\
 Para el HAC y la Búsqueda Golosa, el uso de Búsqueda Tabú tuvo un comportamiento similar entre las diferentes soluciones.\\
 
-\paragraph{Jerarquico (o SingleHAC)}
-En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visualiza que utilizando una búsqueda Tabú al final de la ejecución  de HAC no mejora considerablemente la solución. Por lo que se decidió para este caso comparar el algoritmo sin la búsqueda tabú.
+\paragraph{Jerárquico (Efficient C-HAC)}
+En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visualiza que utilizando la búsqueda Tabú al final de la ejecución de HAC no mejora considerablemente la solución. Por lo que se decidió para este caso comparar el algoritmo sin la búsqueda tabú.
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/gamma-01.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y HAC - Intra Inter}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.1$ y HAC - Intra Inter}
   \label{res:img-papers-gamma01-hac-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/gamma-09.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y HAC - Intra Inter}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.9$ y HAC - Intra Inter}
   \label{res:img-papers-gamma09-hac-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/HAC/INTRA_INTER/bubbles-gamma-01.png}
-  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y HAC - Intra Inter}
+  \caption{Distribución de los artículos por perfil $\gamma$ = $0.1$ y HAC - Intra Inter}
   \label{res:img-papers-bubbles-gamma01-hac-intra-inter}
 \end{figure}
 
@@ -137,56 +137,56 @@ En este caso al ser muy grande la diferencia entre entre la utilización de la h
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-01.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter}
   \label{res:img-papers-gamma01-bobo-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-with-local-01.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
   \label{res:img-papers-gamma01-bobo-intra-inter-tabu}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-01.png}
-  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter}
+  \caption{Distribución de los artículos por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter}
   \label{res:img-papers-bubbles-gamma01-bobo-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-with-local-01.png}
-  \caption{Distribución de los papers por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
+  \caption{Distribución de los artículos por perfil $\gamma$ = $0.1$ y BOBO - Intra Inter con búsqueda Tabú}
   \label{res:img-papers-bubbles-gamma01-hac-intra-inter-bobo}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-09.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter}
   \label{res:img-papers-gamma09-bobo-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-with-local-09.png}
-  \caption{Distribución de los perfiles por paper y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
+  \caption{Distribución de los perfiles por artículo y bundle $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
   \label{res:img-papers-gamma09-bobo-intra-inter-tabu}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-09.png}
-  \caption{Distribución de los papers por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter}
+  \caption{Distribución de los artículos por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter}
   \label{res:img-papers-bubbles-gamma09-bobo-intra-inter}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/bubbles-gamma-with-local-09.png}
-  \caption{Distribución de los papers por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
+  \caption{Distribución de los artículos por perfil $\gamma$ = $0.9$ y BOBO - Intra Inter con búsqueda Tabú}
   \label{res:img-papers-bubbles-gamma09-hac-intra-inter-bobo}
 \end{figure}
 \newpage
