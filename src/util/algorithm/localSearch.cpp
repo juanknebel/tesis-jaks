@@ -167,7 +167,7 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem) {
     int farAwayBundle = -1;
     // TODO: REEMPLAZAR URGENTE este tres por el numero total de categorias que exista o simplemente mejorar esto para que no apareca de esta manera
-    if (worstFlake.ids().size() == 3) {
+    if (worstFlake.ids().size() == 5) {
         double minSimilarity = std::numeric_limits<double>::max();
         for (auto element : worstFlake.ids()) {
             if (element != centroid) {

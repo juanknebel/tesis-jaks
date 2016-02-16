@@ -44,8 +44,8 @@ La propuesta para corregir esta situación fue la de realizar una Búsqueda Tab�
 De los algorimos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de bundles se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heuristicas \texttt{Selección de bundles} y \texttt{Selección de bundles proporcional}. Adémas una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución.\\
 \Solucion
 {}
-{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
-{Denset Subgraph, Intra, Intra-Inter, Proportional (no aplican a la búsqueda golosa)}
+{\texttt{EfficientHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{Denset Subgraph, Proportional (no aplican a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
@@ -73,10 +73,6 @@ En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamm
 \begin{itemize}
  \item DenT: Denset Subgraph sin la aplicación de la Búsqueda Tabú.
  \item DesT: Denset Subgraph con la aplicación de la Búsqueda Tabú.
- \item InT: Intra sin la aplicación de la Búsqueda Tabú.
- \item IsT: Intra con la aplicación de la Búsqueda Tabú.
- \item IInT: Intra Inter sin la aplicación de la Búsqueda Tabú.
- \item IIsT: Intra Inter con la aplicación de la Búsqueda Tabú.
  \item PnT: Proportional sin la aplicación de la Búsqueda Tabú.
  \item PsT: Proportional con la aplicación de la Búsqueda Tabú.
  \item SEnT: Sin estratégia sin la aplicación de la Búsqueda Tabú.
@@ -202,7 +198,7 @@ Al igual que con las búsquedas de artículos se realizaron las mismas ejecucion
 \Solucion
 {}
 {\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
-{Denset Subgraph, Intra, Intra-Inter, Proportional (no aplican a la búsqueda golosa)}
+{Denset Subgraph, Proportional (no aplican a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
@@ -223,7 +219,37 @@ Al igual que con las búsquedas de artículos se realizaron las mismas ejecucion
 
 El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
 Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
-\section{Atracciones turísticas}\label{res:busAtracciones}
+\newpage
+\subsection{Búsqueda de Instituciones}\label{res:busInstituciones}
+Solución de bundles en el que cada uno contiene las instituciones o universidades similares de regiones diferentes.\\
+\begin{itemize}
+  \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
+  \item \textbf{Complementariedad}: Región a la que pertence la instituciones.
+\end{itemize}
+Se generaron soluciones con las siguientes características:\\
+\Solucion
+{}
+{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{Denset Subgraph, Proportional (no aplica a la búsqueda golosa)}
+{$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
+{10}
+{5}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/affiliations/Graficos_agrupados/gamma01-affiliations.png}
+  \caption{Función Objetivo $\gamma$ = $0.1$ vs Algoritmos de resolución}
+  \label{res:img-affiliations-agr-gamma01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=0.8\textwidth]{resultados/affiliations/Graficos_agrupados/gamma09-affiliations.png}
+  \caption{Función Objetivo $\gamma$ = $0.9$ vs Algoritmos de resolución}
+  \label{res:img-affiliations-agr-gamma09}
+\end{figure}
+\newpage
+\section{Búsqueda de Atracciones turísticas}\label{res:busAtracciones}
 Aquí se muestran las soluciones en las que cada bundle representa un conjunto de atracciones que un turista puede visitar, cada uno de ellos no supera el presupuesto máximo y cada elemento es un tipo de atracción diferente.
 \begin{itemize}
   \item \textbf{Similitud}: Los valores fueron entregados ya calculados.
@@ -234,7 +260,7 @@ Se generaron soluciones con las siguientes características:\\
 \SolucionBudget
 {}
 {\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
-{Intra-Inter, Proportional (no aplica a la búsqueda golosa)}
+{Denset Subgraph, Proportional (no aplica a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {3}
