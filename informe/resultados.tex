@@ -8,7 +8,7 @@ En los gráficos de \ref{res:img-explain-bars} se visualiza a través del tamañ
   \label{res:img-explain-bars}
 \end{figure}
 
-En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la relación entre los tópicos y los bundles. Cada burbuja representa un tópico y contiene los círculos de la proporción en la relación entre el tópico que representa y un artículo del resultado, además el color del círculo representa al bundle al que pertence el artículo. Entonces si las burbujas contienen círculos de más de un color se puede decir que ese resultado no es muy diverso, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado es más diverso. En cuanto a la cohesión de los bundles, es más cohesivo cuando el tamaño de cada circulo dentro de cada burbuja sea similar (para el mismo color) y la distribución de los círculos entre cada burbuja es equitativa.
+En los gráficos de tipo burbuja \ref{res:img-explain-bubbles} se observa la relación entre los tópicos y los bundles. Cada burbuja representa un tópico y contiene los círculos de la proporción en la relación entre el tópico que representa y un artículo del resultado, además el color del círculo representa al bundle al que pertenece el artículo. Entonces si las burbujas contienen círculos de más de un color se puede decir que ese resultado no es muy diverso, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado es más diverso. En cuanto a la cohesión de los bundles, es más cohesivo cuando el tamaño de cada circulo dentro de cada burbuja sea similar (para el mismo color) y la distribución de los círculos entre cada burbuja es equitativa.
 
 \begin{figure}[H]
   \centering
@@ -30,7 +30,7 @@ En las primeras ejecuciones realizada se observa que el valor de la función obj
 Al contar con muchos artículos con un solo tópico las soluciones obtenidas no permiten realizar una correcta comparación de las heurísticas, por lo tanto a fines prácticos de comparar las distintas implementaciones y obtener un conjunto de bundles más interesantes, se decidió eliminar los artículos que contengan un solo un tópico.
 \paragraph{Soluciones con bundles unitarios}
 Las soluciones obtenidas mediante las búsquedas en las que se prioriza que los bundles sean más cohesivos (\textbf{inter}) contenían una alta cantidad de bundles con uno o dos elementos únicamente, tal conducta no es la deseada ya que queda una parte del presupuesto sin ser usado.\\
-Este comportamiento ocurre particularmente con el método jerárquico o HAC en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster generados no superan el presupuesto pero no pueden ser unidos con otro cluster porque invalida la complementaridad que se quiere lograr. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ y tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2$ y $V_3$ y los artículos se presentan de la siguiente manera:
+Este comportamiento ocurre particularmente con el método jerárquico o HAC en la etapa de producción del algoritmo \texttt{PAC}, ya que algunos cluster generados no superan el presupuesto pero no pueden ser unidos con otro cluster porque invalida la complementariedad que se quiere lograr. Suponiendo que para la búsqueda \textit{Artículos de diferentes conferencias} existen los artículos $A_1$, $A_2$, $A_3$, $A_4$ y $A_5$ y tienen una distribución del tópico $t$ mayor a $0.7$, es lógico que se genere un bundle con estos 5 artículos porque es cohesivo. Ahora si las conferencias son $V_1, V_2$ y $V_3$ y los artículos se presentan de la siguiente manera:
 \begin{itemize}
 	\item $A_1$ $\rightarrow$ $V_1$
 	\item $A_2$ $\rightarrow$ $V_2$
@@ -39,14 +39,21 @@ Este comportamiento ocurre particularmente con el método jerárquico o HAC en l
 
 Entonces para el criterio de búsqueda los artículos $A_3, A_4$ y $A_5$ no pueden pertenecer al mismo bundle pues éstos no son complementarios entre sí.\\
 El proceso de clusterización jerárquico, puede generar la siguiente configuración en la cual no se pueden unir los bundles, el bundle $B_1$ con los artículos $A_1$ y $A_3$ el bundle $B_2$ con los artículos $A_2$ y $A_4$ y el bundle $B_3$ con el artículo $A_5$. Efectivamente esta clusterización no es la más óptima para el problema porque se podría haber generado un bundle más cohesivo (\textbf{mayor intra}) si se hubiera elegido el siguiente bundle $A_1$, $A_2$ y $A_3$.\\
-La propuesta para corregir esta situación fue la de realizar una Búsqueda Tabú al finalizar la etapa del \textit{Produce} con los bundles ya generados asi de esta forma mejorar el intra de los bundles antes de la etapa de selección.
+La propuesta para corregir esta situación fue la de realizar una Búsqueda Tabú al finalizar la etapa del \textit{Produce} con los bundles ya generados así de esta forma mejorar el intra de los bundles antes de la etapa de selección.
 \subsubsection{Resultados}
 De los algorimos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de bundles se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heuristicas \texttt{Selección de bundles} y \texttt{Selección de bundles proporcional}. Adémas una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución.\\
 \Solucion
 {}
-{\texttt{EfficientHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
-{Denset Subgraph, Proportional (no aplican a la búsqueda golosa)}
-{$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
+{
+\begin{description}
+	\item[alg\_1] \texttt{PAC(BOBO-100/Selección de bundles)}
+	\item[alg\_2] \texttt{PAC(BOBO-100/Selección de bundles proporcional)}
+	\item[alg\_3] \texttt{PAC(Efficient C-HAC/Selección de bundles)}
+	\item[alg\_4] \texttt{PAC(Efficient C-HAC/Selección de bundles proporcional)}
+	\item[alg\_5] \texttt{Búsqueda Golosa}
+\end{description}
+}
+{$(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
 {5}
 
@@ -58,26 +65,17 @@ De la tabla \ref{res:tbl-cant-bundles} se observa la cantidad de bundles que gen
     \hline
     Algoritmo & Bundles Generados \\
     \hline
-    SingleHAC & $2378$ \\
-    Búsqueda Golosa & $10$ \\
+    Efficient C-HAC & $2378$ \\
     BOBO-100 & $100$ \\
     \hline
     \end{tabular}
   }
-    \caption {Cantidad de bundles generados antes de la selección final}
+    \caption {Cantidad de bundles generados en la fase de producción de PAC según algoritmo}
     \label{res:tbl-cant-bundles}
 \end{table}
 \newpage
 
-En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se muestran agrupados por algoritmo de resolución las diferentes estrategias usadas en cada caso y los valores de la función objetivo alcanzado toma los dos extremos del valor de $\gamma$ $0.1$ y $0.9$. Cada color corresponde a una estratégia diferente de selección de acuerdo a la siguiente nomenclatura.
-\begin{itemize}
- \item DEnT: Denset Subgraph sin la aplicación de la Búsqueda Tabú.
- \item DEsT: Denset Subgraph con la aplicación de la Búsqueda Tabú.
- \item PnT: Proportional sin la aplicación de la Búsqueda Tabú.
- \item PsT: Proportional con la aplicación de la Búsqueda Tabú.
- \item SEnT: Sin estratégia sin la aplicación de la Búsqueda Tabú.
- \item SEsT: Sin estratégia con la aplicación de la Búsqueda Tabú.
-\end{itemize}
+En los gráficos \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se muestran agrupados por algoritmo de resolución las diferentes estrategias usadas en cada caso y los valores de la función objetivo alcanzado toma los dos extremos del valor de $\gamma$ $0.1$ y $0.9$. 
 
 \begin{figure}[H]
   \centering
@@ -126,7 +124,7 @@ En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visual
   \label{res:img-papers-bubbles-gamma09-hac-intra-inter}
 \end{figure}
 
-De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se puede observar como para $\gamma$ de valor bajo los perfiles de los artículos elegidos se encuentran más distribuidos entre los tópicos mientras que para valores más altos el mayor porcentaje se concentra en un pocos perfiles, generando en este último bundles más cohesivos como se está buscando, pero a la vez se tiene menos diversidad ya que en toda la solución se concentran los valores más representantivos de los perfiles de los artículos en un pocos como bien puede observarse en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}.\\
+De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se puede observar como para $\gamma$ de valor bajo los perfiles de los artículos elegidos se encuentran más distribuidos entre los tópicos mientras que para valores más altos el mayor porcentaje se concentra en un pocos perfiles, generando en este último bundles más cohesivos como se está buscando, pero a la vez se tiene menos diversidad ya que en toda la solución se concentran los valores más representativos de los perfiles de los artículos en un pocos como bien puede observarse en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}.\\
 El comportamiento fue el mismo para todas las estrategias de selección que se utilizaron, la única diferencia fueron los valores finales de la función objetivo.
 \paragraph{BOBO-100}
 En este caso al ser muy grande la diferencia entre entre la utilización de la heurística Tabú y la ejecución sin ella,  se incluyó para poder visualizar los cambios en la solución.
@@ -217,7 +215,7 @@ Al igual que con las búsquedas de artículos se realizaron las mismas ejecucion
   \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estratégia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las difrencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
+El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estrategia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las diferencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
 Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
 \newpage
 \subsection{Búsqueda de Instituciones}\label{res:busInstituciones}
@@ -259,7 +257,7 @@ Aquí se muestran las soluciones en las que cada bundle representa un conjunto d
 Se generaron soluciones con las siguientes características:\\
 \SolucionBudget
 {}
-{\texttt{SingleHAC}, \texttt{Búsqueda Golosa} y \texttt{BOBO-100}}
+{\texttt{Goloso}, \texttt{PAC(SingleHAC},  y \texttt{BOBO-100}}
 {Denset Subgraph, Proportional (no aplica a la búsqueda golosa)}
 {$\in$ $(0,1; 0,3; 0,5; 0,7; 0,9)$}
 {10}
