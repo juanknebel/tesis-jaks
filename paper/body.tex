@@ -8,10 +8,314 @@ El problema en forma formal
 La complejidad del problema
 \section{Produce and Choose}
 Explicar el algoritmo produce and choose y que para el produce se utilizo el Hierichal
-\subsubsection{Inline (In-text) Equations}
-\subsubsection{Display Equations}
-\subsection{Citations}
-\subsection{Tables}
-\subsection{Figures}
-\subsection{Theorem-like Constructs}
-\subsection*{A {\secit Caveat} for the \TeX\ Expert}
+\section{Proposal}
+Sobre el trabajo de 1 se realizaron las siguientes propuestas con el objetivo 1) realizar las búsquedas en instancias más grandes y 2)heuristicas que mejoren el resultado obtenido.
+\subsection{Greedy algorithm}
+Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} de construir una cantidad suficiente bundles y luego seleccionar un conjunto se puede suponer que las soluciones se enfocan más en la parte intra que inter, esto motivo realizar una otra heurística.\\
+La heuristica que se propone es un algoritmo goloso, se generan únicamente los bundles que pertenecen a la solución, que incorporan iterativamente el item al bundle que maximiza la función objetivo, aceptando que la función objetivo disminuya de un paso a otro. El algoritmo comienza con los bundles de la solución vacíos y en cada paso se selecciona el item que agregándolo a uno de los bundles maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución.
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
+\ENSURE Conjunto válido de bundles
+\STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $cand \leftarrow \bigcup_{1 \ldots k}\emptyset$
+\STATE $isComplete \leftarrow False$
+\WHILE {$isComplete = False$}
+  \STATE $bestScore \leftarrow -\infty$
+  \STATE $bestCandidate \leftarrow \varnothing$
+  \STATE $bestBundle \leftarrow \varnothing$
+  \FOR {$\text{each}\ elem \in I$}
+    \FOR {$\text{each}\ bundle \in cand$}
+      \IF {$validMerge(bundle,\{elem\},\alpha,f,\beta)$}
+        \STATE $score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$
+        \IF {$score > bestScore$}
+          \STATE $bestScore \leftarrow score$
+          \STATE $bestBundle \leftarrow bundle$
+          \STATE $bestCandidate \leftarrow elem$
+        \ENDIF
+      \ENDIF
+    \ENDFOR
+  \ENDFOR
+	\IF {$bestCandidate \neq \varnothing$}
+		\STATE $cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$
+		\STATE $I \leftarrow I \setminus \left\{bestCandidate\right\}$
+	\ELSE
+		\STATE $isComplete \leftarrow True$
+	\ENDIF
+\ENDWHILE
+\RETURN $cand$
+\end{algorithmic}
+\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
+\end{algorithm}
+
+\subsection{Produce Phase}
+La clusterización jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un cluster unitario y luego sucesivamente se unen un par de clusters hasta que todos los clusters se hayan unido en un único cluster que contenga a todos los objetos, esete algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único cluster al que todos los objetos pertenecen y recursivamente se realiza una división del cluster hasta obtener clusters con un solo objeto.\\
+Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos clusters han sido unidos. Por ejemplo la unión del cluster que contiene a \textit{Indiana tobacco lawsuit} con el cluster de \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el cluster resultante se une con el cluster de \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos cluster hasta que quede uno solo.\\
+Ascendiendo desde la capa inferior hasta obtener un único cluster el dendrograma permite reconstruir la historia de las uniones de los clusters. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de cluster es con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.\\
+
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los clusters $S_1$ y $S_2$ si el cluster resultante $S_1 \cup S_2$ es inválido, o sea sí el cluster resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.\\
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$I,\alpha,f,\beta,\gamma,\text{ cantidad de bundles }c$}
+\ENSURE Conjunto válido de bundles
+\STATE $cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$
+\WHILE {$ \left|cand\right| > c$}
+	\STATE $bestScore \leftarrow -\infty$
+	\STATE $bestCandidate \leftarrow \emptyset$
+	\FOR{$\text{each}\ S_i\in cand$}
+		\FOR{$\text{each}\ S_j\in cand; S_i \neq S_j$}
+			\IF {$ValidMerge(S_i,S_j,\alpha,f,\beta)$} \label{validMerge}
+				\IF {$Score(S_i \cup S_j) \geq bestcore$} \label{score}
+					\STATE $bestScore \leftarrow score(S_i \cup  S_j)$
+					\STATE $bestCandidate \leftarrow \left\{S_i,S_j\right\}$
+				\ENDIF
+			\ENDIF
+		\ENDFOR
+	\ENDFOR
+	\IF {$bestCandidate = \emptyset$}
+		\BREAK
+	\ENDIF
+	\STATE {$cand \leftarrow cand \setminus \left\{S\right\}$ $(\forall S \in bestCandidate)$}
+	\STATE $cand \leftarrow cand \cup bestCandidate $
+\ENDWHILE
+\RETURN $cand$
+\end{algorithmic}
+\caption{Simple C-HAC}\label{alg:SimpleC-HAC}
+\end{algorithm}
+
+El algoritmo ejecuta $N - c$ pasos donde se unen los dos clusters más similares que forman un cluster válido. En cada paso se realiza una comparación entre todos los clusters. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$.\\
+
+En cada iteración se unen los dos clusters que maximizan la función \textit{Score}. El artículo \cite{compositeRetrival} proponé que \textit{Score} se calcule sumarizando la similitud entre todos los objetos del cluster candidato. Este criterio de unión es local, ya que presta atención unicamente a la similitud inter cluster. Por lo que se propuso un criterio que tenga en cuenta toda la estructura del clustering al momento de decidir la unión de los clusters. La función que se propone es \textit{Sim} que sumariza la similitud entre todos los elementos de la unión de los clusters y se le suma la similitud de los dos elementos más disimiles proporcionando el peso con el valor de $\gamma$ entre la similitud y el disímil.\\
+
+La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función \textit{Sim} para \texttt{$\gamma$ igual a uno} (que es el mismo cálculo para que para el criterio original) y con \texttt{$\gamma$ igual a cero} ambos criterios en el proceso de clusterización de ocho objetos. Cada elipse corresponde a un paso sucesivo de la clusterización, donde en los primeros cuatro pasos los cluster generados son iguales. Luego en el caso de \texttt{$\gamma$ igual a uno} se unen el par de clusters de arriba (después el par de abajo) porque la sumatoria de la similitud entre los objetos $d_1,d_2,d_3,d_4$ es mayor a $d_1,d_2,d_5,d_6$. Mientras que con \texttt{$\gamma$ igual a cero} une el par de clusters de la izquierda (después el par de la derecha) porque la similitud entre $d_1$ y $d_6$ es mayor a la similitud entre $d_1$ y $d_4$.\\
+
+
+
+Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la clusterización se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los clusters se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el cluster de mayor similitud con el k-ésimo cluster. Luego de combinar los clusters $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los clusters y se actualiza en las colas de similitud. Para identificar entre dos cluster que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.\\
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$I,\alpha,f,\beta,\gamma$}
+\ENSURE Conjunto válido de bundles
+\FOR{$\text{each}\ S_i\in I$}
+	\FOR{$\text{each}\ S_j\in I$}
+		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} 
+			\STATE $C[i][j].sim \leftarrow Score(S_i \cup S_j)$
+		\ELSE
+			\STATE $C[i][j].sim \leftarrow -1$
+		\ENDIF
+		\STATE $C[i][j].index \leftarrow j$
+	\ENDFOR
+	\STATE $I[i] \leftarrow 1$
+	\STATE {$P[i] \leftarrow $ priority queue for $C[i]$ sorted on sim}
+	\STATE {P[i].Delete(C[i][i]) (se elimina así mismo de la pila)}
+\ENDFOR
+\STATE $A \leftarrow []$
+\FOR {$k \leftarrow 1$ to $I.length$}
+	\STATE $k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$
+	\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$}
+		\BREAK
+	\ENDIF
+	\STATE $k_2 \leftarrow P[k_1].max().index$
+	\STATE $A.Append(\left\langle k_1,k_2 \right\rangle)$
+	\STATE $I[k_2] \leftarrow 0$
+	\STATE $P[k_1] \leftarrow []$
+	\FOR {$i$ with $I[i]-1 \vee i \neq k_1$}
+		\STATE $P[i].Delete(C[i][K_1])$
+		\STATE $P[i].Delete(C[i][k_2])$
+		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$}
+			\STATE $C[i][k_1].sim \leftarrow Sim(i,k_1 \cup k_2,\gamma)$
+			\STATE $C[k_1][i].sim \leftarrow Sim(i,k_1 \cup k_2,\gamma)$
+		\ELSE
+			\STATE $C[i][k_1].sim \leftarrow -1$
+			\STATE $C[k_1][i].sim \leftarrow -1$
+		\ENDIF
+		\STATE $C[i][k_1].index \leftarrow i$
+		\STATE $C[k_1][i].index \leftarrow i$		
+		\STATE $P[i].Insert(C[i][k_1])$
+		\STATE $P[K_1].Insert(C[k_1][i])$		
+	\ENDFOR
+\ENDFOR
+
+\RETURN $A$
+\end{algorithmic}
+\caption{Efficient C-HAC}\label{alg:Efficient C-HAC}
+\end{algorithm}
+\subsection{Choose Phase}
+Al finalizar la producción de bundles comienza la etapa de selección de bundles en la cual se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).\\
+Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vértices con k nodos, consiste en dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
+
+\begin{equation}
+\gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
+\end{equation}
+
+El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vértices por:
+ 
+\begin{equation}
+\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
+\end{equation}
+
+A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{compositeRetrival}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.\\
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE $k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\ENSURE Conjunto de k bundles
+\STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
+\STATE $S \leftarrow V$
+\WHILE {$ \left|S\right| > k$}
+\STATE $u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$
+\STATE $S \leftarrow S \setminus  \left\{u\right\} $
+\ENDWHILE
+\RETURN $C$
+\end{algorithmic}
+\caption{Selección de bundles}\label{alg:chooseBundles}
+\end{algorithm}
+
+En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los bundles de la solución. En cada iteración se elije al bundle que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.\\
+Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundles seleccionados en la iteración $i$ se agrega a la solución el bundle que cumple con:
+
+\begin{equation}
+\max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
+\end{equation}
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE $k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
+\ENSURE Conjunto de k bundles
+\STATE $S \leftarrow V$
+\WHILE {$ \left|S\right| < k$}
+\STATE $c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$
+\STATE $S \leftarrow S \cup \left\{c\right\}$
+\STATE $B \leftarrow B \setminus \left\{c\right\}$
+\ENDWHILE
+\RETURN $S$
+\end{algorithmic}
+\caption{Selección de bundles proporcional}\label{alg:algSelProp}
+\end{algorithm}
+
+\subsection{Tabu search}
+Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos consisten en comenzar con una solución e iterativamente moverse a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de búsqueda. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice o minimice (según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un mínimo (ó máximo) local y nunca pueda salir de él.\\
+\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina que no cumple con el criterio de búsqueda. De esta manera se permite al algoritmo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que una vez que una solución determinada es visitada, se la marca como tabú para que no vuelva a ser visitada por una determinada cantidad de iteraciones para también de esta manera evitar caer en ciclos y mínimos o máximos locales.\\
+Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar el algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.\\
+Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución.
+
+\subsection{Inter-Bundle}
+La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose} que es la fase en la que se selecciona un subconjunto de bundles del conjunto de bundles generados en la fase anterior. De la solución obtenida en la fase de selección se realiza la búsqueda tabú con los bundles generados en la fase del produce con el objetivo de visitar las soluciones vecinas.\\
+Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
+\begin{enumerate}
+	\item Quitar de la solución el bundle con menor Inter.
+	\item Determinar el bundle centroide de la solución.
+	\item Calcular la función objetivo agregando uno de los $K$ bundles generados más lejos del centroide.
+	\item Quedarse con la solución con mayor función objetivo. 
+\end{enumerate}
+
+Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es:
+$$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$$
+El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$S\text{ solucion},cand\text{ conjunto valido de bundles},\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\ENSURE Conjunto válido de bundles
+\STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
+\STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $iteration \leftarrow 0$
+\STATE $tabuBundles \leftarrow \emptyset$
+\STATE $bestSolution \leftarrow S$
+\STATE $visitSolution \leftarrow S$
+\STATE $thresholdScore \leftarrow -\infty$ 
+\WHILE {$iteration < MAX\_ITER$}
+  \STATE $worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$
+	\STATE $centroidBundle \leftarrow getCentroid(visitSolution)$
+	\STATE $bestBundles \leftarrow \text{fetch first MAX\_BUND} \max_{b \in cand \setminus tabuBundles}{Dist(b, centroidBundle)}$
+	\STATE $scoreInter \leftarrow \sum_{b \in visitSolution}{Inter(b, iterationSolution)}$
+	\FOR {$\text{each}\ aBundle \in bestBundles$}
+    \STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{aBundle\right\}$
+    \STATE $newScoreInter \leftarrow \sum_{b \in iterationSolution}{Inter(b, iterationSolution)}$
+    \IF {$newScoreInter > scoreInter$}
+			\STATE $thresholdScore \leftarrow scoreInter$
+      \STATE $scoreInter \leftarrow newScoreInter$
+      \STATE $visitSolution \leftarrow iterationSolution$
+    \ELSE
+      \IF {$newScoreInter > thresholdScore$}
+        \STATE $thresholdScore \leftarrow newScoreInter$
+        \STATE $visitSolution \leftarrow iterationSolution$
+      \ENDIF
+    \ENDIF
+  \ENDFOR
+  \IF {$\omega(iterationSolution) > \omega(bestSolution)$}
+    \STATE $bestSolution \leftarrow iterationSolution$
+  \ENDIF
+  \STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
+	\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$
+	\STATE $tabuBundles \leftarrow UpdateTabu(tabuBundles)$
+	\STATE $iteration \leftarrow iteration + 1$
+\ENDWHILE
+\RETURN $bestSolution$
+\end{algorithmic}
+\caption{Búsqueda tabú sobre bundles}\label{alg:algBusTabuBundle}
+\end{algorithm}
+
+\subsection{Intra-Bundle}
+En Intra-Bundle explora soluciones con bundles más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
+\begin{enumerate}
+	\item Obtener el bundle menos cohesivos de la solución.
+	\item Determinar el centroide del bundle.
+	\item Hallar el ítem más alejado del centroide.
+	\item Calcular el inter del bundle agregando uno de los $K$ items más cercano del centroide.
+	\item Generar un nuevo bundle en la solución con el item que maximiza el inter.
+\end{enumerate}
+
+Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de ítems, el bundle de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
+
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\REQUIRE {$S\text{ solucion},cand\text{ conjunto valido de bundles},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\ENSURE Conjunto válido de bundles
+\STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$
+\STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
+\STATE $iteration \leftarrow 0$
+\STATE $tabuBundles \leftarrow \emptyset$
+\STATE $tabuElements \leftarrow \emptyset$
+\STATE $bestSolution \leftarrow S$
+\STATE $visitSolution \leftarrow S$
+\STATE $thresholdScore \leftarrow -\inf$
+\WHILE {$iteration < MAX\_ITER$}
+  \STATE $worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$
+  \STATE $centroid \leftarrow GetCentroid(worstBunlde)$
+  \STATE $faraway \leftarrow GetFarawayElement(worstBunlde,centroid)$
+  \STATE $bestElements: \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
+	\STATE $scoreInter \leftarrow \omega(visitSolution)$
+  \FOR {$near \in bestElements$}
+		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{near\right\}$
+		\STATE $itSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
+    \STATE $newScore \Leftarrow \omega(itSolution)$
+		\IF {$newScore > scoreInter$}
+			\STATE $thresholdScore \leftarrow scoreInter$
+			\STATE $scoreInter \leftarrow newScore$
+			\STATE $visitSolution \leftarrow itSolution$
+    \ELSIF {$newScore > thresholdScore$}
+				\STATE $thresholdScore \leftarrow newScore$
+				\STATE $visitSolution \leftarrow itSolution$
+    \ENDIF
+  \ENDFOR
+  \IF {$\omega(visitSolution) > \omega(bestSolution)$}
+		\STATE $bestSolution \leftarrow visitSolution$
+  \ENDIF
+	\STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
+	\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$
+  \STATE $tabuElements \leftarrow tabuElements \cup \left\{
+	\left\langle faraway, ITER\_TABU \right\rangle\right\}$
+	\STATE $tabuBundles \leftarrow UpdateTabu(tabuBundles)$
+  \STATE $tabuElements \leftarrow UpdateTabu(tabuElements)$
+	\STATE $iteration \leftarrow iteration + 1$
+\ENDWHILE
+\RETURN $bestSolution$
+\end{algorithmic}
+\caption{Búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
+\end{algorithm}
