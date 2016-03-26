@@ -52,3 +52,5 @@ CMakeLists.txt.user
 *.kilepr
 *.out
 tesis.pdf
+*.dvi
+main.pdf
