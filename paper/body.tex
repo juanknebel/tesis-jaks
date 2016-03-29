@@ -1,59 +1,33 @@
 \section{Related Work}
-En el artículo en cuál esta inspirado éste trabajo \texttt{Composite Retrieval of Diverse and Complementary Bundles}, se propusieron diferentes maneras de solucionar el problema usando técnicas de clusterización. La estrategía de producir y seleccionar (PAC) tenía dos varianetes una inspirada en k-means llamada BOBO y la restante basada en técnicas jerarquicas con restricción para el momento de la producción de bundles, en cambio en la selección de los bundles que luego formarían parte de la solución del problema se traducía a un problema de grafos (max edge subgraph). En este trabajo se toman éstas mismas ideas y se propuso aplicarles mejoras primero en la etapa de producción de bundles de los algoritmos jerárquicos, como fue generar una búsqueda tabú luego del proceso en pos de mejorar las bundles unitarios o las malas uniones de los bundles. En particular en el c-hac se modificaron las estructuras de datos usadas (colas de prioridad) mejorando la complejidad temporal permitiendo que se puedan ejecutar instancias mas grandes del problema y a la vez mejorar las uniones de los bundles. En la etapa de selección se presentaron dos estrategías distintas a las que menciona el paper que tienen en cuenta toda la posible solución final y no solo la selección actual.
+\texttt{Composite Retrieval of Diverse and Complementary Bundles} es el artículo que propone esta forma de devolver los resultados. En el mismo sugieren distintos algoritmos para hallar una solución entre ellos se encuentra Produce and Choose que consiste en una primer fase de generar bundles y en la siguiente fase seleccionar los bundles de la solución. En el artículo para la fase de producción uno de los algoritmos que se utiliza es de clusterización jerárquico, más adelante se explicara con más detalle.
 \subsection{Data Model}
-El modelo de datos
+Dado el conjunto de objetos $I$ y una función de similitud $ s: I \times I \rightarrow [0;1]$, cada objeto es unívocamente identificado y contiene un conjunto de atributos. La entrada puede pensarse como un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.
 \subsection{Problem Statement}
-El problema en forma formal
+El problema consiste en devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ donde el bundle $S_i \in 2^{I}$ es un conjunto de objetos que satisface las reglas de \textit{complementaridad} que no permite que existen dos objetos con igual atributo en el mismo bundle y de \textit{presupuesto} para que la suma de los costos de los objetos no exceda el presupuesto dado.\\
+\textbf{Definición} Dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$ el bundle $S \in 2^{I}$ es válido si y sólo si satisface las reglas:
+\begin{itemize}
+	\item \textbf{Complementaridad:} dada la propiedad $\alpha$ de los objetos, $\forall u,v \in S_i, u.\alpha \neq v.\alpha$
+	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall S_i \in S, f(S_i) \leq \beta$
+\end{itemize}
+
+La definición formal de \textit{Composite Retrieval} es:\\
+Dado el conjunto de objetos $I = \left\{i_1, \ldots, i_n \right\}$, la función de similitud $s(u,v)$, el atributo complementario $\alpha$, la función de costo $f$, el presupuesto $\beta$ y el entero $k$ se desea hallar el conjunto válido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
+\begin{equation} \label{des:eq-fnObj}
+  \sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-\max_{u \in S_i, v \in S_j}{s(u,v)})}
+\end{equation}
+Esta es una tipia función objetivo de un problema de clustering, donde la calidad del clustering es una combinación entre la calidad de cada cluster (intra-cluster) y de la separación entre clusters (inter-cluster). A través del parámetro $\gamma$ el usuario puede definir el balance entre intra e inter de una solución. Si El usuario prioriza una solución de bundles cohesivos sobre la diversidad el  valor de $\gamma$ será cerca de uno y si lo que prioriza es la diversidad el valor estará cerca del cero.\\
+En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, por el momento no se puede encontrar una solución exacta en tiempo polinomial, por lo cual este trabajo se enfoca a encontrar soluciones suficientemente buenas para el problema. Para poder encontrar la mejor solución se implementaron dos algoritmos para poder comparar los resultados: Produce-and-Choose y algoritmo goloso.
 \subsection{Problem Complexity}
 La complejidad del problema
 \section{Produce and Choose}
 Explicar el algoritmo produce and choose y que para el produce se utilizo el Hierichal
 \section{Proposal}
-Sobre el trabajo de 1 se realizaron las siguientes propuestas con el objetivo 1) realizar las búsquedas en instancias más grandes y 2)heuristicas que mejoren el resultado obtenido.
-\subsection{Greedy algorithm}
-Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} de construir una cantidad suficiente bundles y luego seleccionar un conjunto se puede suponer que las soluciones se enfocan más en la parte intra que inter, esto motivo realizar una otra heurística.\\
-La heuristica que se propone es un algoritmo goloso, se generan únicamente los bundles que pertenecen a la solución, que incorporan iterativamente el item al bundle que maximiza la función objetivo, aceptando que la función objetivo disminuya de un paso a otro. El algoritmo comienza con los bundles de la solución vacíos y en cada paso se selecciona el item que agregándolo a uno de los bundles maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución.
-
-\begin{algorithm}[H]
-\begin{algorithmic}[1]
-\REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
-\ENSURE Conjunto válido de bundles
-\STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-\STATE $cand \leftarrow \bigcup_{1 \ldots k}\emptyset$
-\STATE $isComplete \leftarrow False$
-\WHILE {$isComplete = False$}
-  \STATE $bestScore \leftarrow -\infty$
-  \STATE $bestCandidate \leftarrow \varnothing$
-  \STATE $bestBundle \leftarrow \varnothing$
-  \FOR {$\text{each}\ elem \in I$}
-    \FOR {$\text{each}\ bundle \in cand$}
-      \IF {$validMerge(bundle,\{elem\},\alpha,f,\beta)$}
-        \STATE $score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$
-        \IF {$score > bestScore$}
-          \STATE $bestScore \leftarrow score$
-          \STATE $bestBundle \leftarrow bundle$
-          \STATE $bestCandidate \leftarrow elem$
-        \ENDIF
-      \ENDIF
-    \ENDFOR
-  \ENDFOR
-	\IF {$bestCandidate \neq \varnothing$}
-		\STATE $cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$
-		\STATE $I \leftarrow I \setminus \left\{bestCandidate\right\}$
-	\ELSE
-		\STATE $isComplete \leftarrow True$
-	\ENDIF
-\ENDWHILE
-\RETURN $cand$
-\end{algorithmic}
-\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
-\end{algorithm}
+Sobre el trabajo de 1 se realizaron las siguientes propuestas con los objetivos 1) realizar las búsquedas en instancias más grandes y 2)heuristicas que mejoren el resultado obtenido.\\
+Para 1) se realizo una variante del algoritmo jerárquico que reduce el orden de complejidad. 
+Para 2) se propusieron dos implementaciones de la metahuristica tabu search para encontrar mejores soluciones en cada una de las etapas de PAC.
 
 \subsection{Produce Phase}
 La clusterización jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un cluster unitario y luego sucesivamente se unen un par de clusters hasta que todos los clusters se hayan unido en un único cluster que contenga a todos los objetos, esete algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único cluster al que todos los objetos pertenecen y recursivamente se realiza una división del cluster hasta obtener clusters con un solo objeto.\\
-Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos clusters han sido unidos. Por ejemplo la unión del cluster que contiene a \textit{Indiana tobacco lawsuit} con el cluster de \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el cluster resultante se une con el cluster de \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos cluster hasta que quede uno solo.\\
-Ascendiendo desde la capa inferior hasta obtener un único cluster el dendrograma permite reconstruir la historia de las uniones de los clusters. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de cluster es con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.\\
-
 \textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los clusters $S_1$ y $S_2$ si el cluster resultante $S_1 \cup S_2$ es inválido, o sea sí el cluster resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.\\
 
 \begin{algorithm}[H]
@@ -88,10 +62,6 @@ Ascendiendo desde la capa inferior hasta obtener un único cluster el dendrogram
 El algoritmo ejecuta $N - c$ pasos donde se unen los dos clusters más similares que forman un cluster válido. En cada paso se realiza una comparación entre todos los clusters. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$.\\
 
 En cada iteración se unen los dos clusters que maximizan la función \textit{Score}. El artículo \cite{compositeRetrival} proponé que \textit{Score} se calcule sumarizando la similitud entre todos los objetos del cluster candidato. Este criterio de unión es local, ya que presta atención unicamente a la similitud inter cluster. Por lo que se propuso un criterio que tenga en cuenta toda la estructura del clustering al momento de decidir la unión de los clusters. La función que se propone es \textit{Sim} que sumariza la similitud entre todos los elementos de la unión de los clusters y se le suma la similitud de los dos elementos más disimiles proporcionando el peso con el valor de $\gamma$ entre la similitud y el disímil.\\
-
-La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función \textit{Sim} para \texttt{$\gamma$ igual a uno} (que es el mismo cálculo para que para el criterio original) y con \texttt{$\gamma$ igual a cero} ambos criterios en el proceso de clusterización de ocho objetos. Cada elipse corresponde a un paso sucesivo de la clusterización, donde en los primeros cuatro pasos los cluster generados son iguales. Luego en el caso de \texttt{$\gamma$ igual a uno} se unen el par de clusters de arriba (después el par de abajo) porque la sumatoria de la similitud entre los objetos $d_1,d_2,d_3,d_4$ es mayor a $d_1,d_2,d_5,d_6$. Mientras que con \texttt{$\gamma$ igual a cero} une el par de clusters de la izquierda (después el par de la derecha) porque la similitud entre $d_1$ y $d_6$ es mayor a la similitud entre $d_1$ y $d_4$.\\
-
-
 
 Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la clusterización se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los clusters se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el cluster de mayor similitud con el k-ésimo cluster. Luego de combinar los clusters $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los clusters y se actualiza en las colas de similitud. Para identificar entre dos cluster que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.\\
 
@@ -142,58 +112,6 @@ Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios d
 \RETURN $A$
 \end{algorithmic}
 \caption{Efficient C-HAC}\label{alg:Efficient C-HAC}
-\end{algorithm}
-\subsection{Choose Phase}
-Al finalizar la producción de bundles comienza la etapa de selección de bundles en la cual se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).\\
-Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vértices con k nodos, consiste en dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
-
-\begin{equation}
-\gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
-\end{equation}
-
-El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vértices por:
- 
-\begin{equation}
-\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
-\end{equation}
-
-A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{compositeRetrival}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.\\
-
-\begin{algorithm}[H]
-\begin{algorithmic}[1]
-\REQUIRE $k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
-\ENSURE Conjunto de k bundles
-\STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
-\STATE $S \leftarrow V$
-\WHILE {$ \left|S\right| > k$}
-\STATE $u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$
-\STATE $S \leftarrow S \setminus  \left\{u\right\} $
-\ENDWHILE
-\RETURN $C$
-\end{algorithmic}
-\caption{Selección de bundles}\label{alg:chooseBundles}
-\end{algorithm}
-
-En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los bundles de la solución. En cada iteración se elije al bundle que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.\\
-Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundles seleccionados en la iteración $i$ se agrega a la solución el bundle que cumple con:
-
-\begin{equation}
-\max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
-\end{equation}
-
-\begin{algorithm}[H]
-\begin{algorithmic}[1]
-\REQUIRE $k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
-\ENSURE Conjunto de k bundles
-\STATE $S \leftarrow V$
-\WHILE {$ \left|S\right| < k$}
-\STATE $c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$
-\STATE $S \leftarrow S \cup \left\{c\right\}$
-\STATE $B \leftarrow B \setminus \left\{c\right\}$
-\ENDWHILE
-\RETURN $S$
-\end{algorithmic}
-\caption{Selección de bundles proporcional}\label{alg:algSelProp}
 \end{algorithm}
 
 \subsection{Tabu search}
