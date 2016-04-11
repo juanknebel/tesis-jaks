@@ -1,10 +1,50 @@
-%APPENDICES are optional
-%\balancecolumns
 \appendix
-%Appendix A
-%\subsection{Additional Authors}
-%This section is inserted by \LaTeX; you do not insert it.
-%You just add the names and information in the
-%\texttt{{\char'134}additionalauthors} command at the start
-%of the document.
-\section{Used algorithms}
+\section{Tables}\label{appendix-tables}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!} {
+		\begin{tabular}{|lc|cc|}
+			\hline
+			~  & ~ & Valor función objetivo & Duración de la 
+				ejecución (mm:ss) \\
+			Algoritmo & $\gamma$ & Selección denset &  Selección denset \\ 
+			\hline
+			C-HAC & $0,1$ & $48,9470$  & $10:00$ \\
+			C-HAC & $0,3$ & $59,1852$  & $10:00$ \\
+			C-HAC & $0,5$ & $70,5931$  & $10:00$ \\
+			C-HAC & $0,7$ & $82,0687$  & $10:00$ \\
+			C-HAC & $0,9$ & $93,8227$  & $10:00$ \\
+			BOBO-10 & $0,1$ & $29,3038$  & $1:30$ \\
+			BOBO-10 & $0,3$ & $25,9363$  & $1:30$ \\
+			BOBO-10 & $0,5$ & $20,9841$  & $1:30$ \\
+			BOBO-10 & $0,7$ & $22,3052$  & $1:30$ \\
+			BOBO-10 & $0,9$ & $18,8381$  & $1:30$ \\
+			\hline
+		\end{tabular}
+	}
+	\caption {Valor función objetivo y tiempo de ejecución para la búsqueda de artículos similares}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!} {
+		\begin{tabular}{|lc|cccc|}
+			\hline
+			~  & ~ & \multicolumn{2}{|c}{Valor función objetivo} & \multicolumn{2}{c|}{Duración de la ejecución (mm:ss)} \\
+			Algoritmo & $\gamma$ & Sin Tabú & Con Tabú & Sin Tabúuuu & Con Tabúuuuuuuuuuuuuuuuuuuuuuuuuuuuu \\ 
+			\hline
+			HAC & $0,1$ & $50,5$  & $50,5$ & $8:40$ & $9:00$ \\
+			HAC & $0,3$ & $61,5$  & $61,5$ & $8:40$ & $9:00$ \\
+			HAC & $0,5$ & $72,5$  & $72,5$ & $8:40$ & $9:00$ \\
+			HAC & $0,7$ & $83,5$  & $83,5$ & $8:40$ & $9:00$ \\
+			HAC & $0,9$ & $94,5$  & $94,5$ & $8:40$ & $9:00$ \\
+			BOBO-10 & $0,1$ & $30,2956$  & $31,6080$ & $2:30$ & $2:30$ \\
+			BOBO-10 & $0,3$ & $33,6794$  & $35,4411$ & $2:30$ & $2:30$ \\
+			BOBO-10 & $0,5$ & $33,0506$  & $37,5776$ & $2:30$ & $2:30$ \\
+			BOBO-10 & $0,7$ & $37,2855$  & $34,5657$ & $2:30$ & $2:30$ \\
+			BOBO-10 & $0,9$ & $41,0119$  & $35,2511$ & $2:30$ & $2:30$ \\
+			\hline
+		\end{tabular}
+	}
+	\caption {Valor función objetivo y tiempo de ejecución para la búsqueda de autores similares}
+\end{table}

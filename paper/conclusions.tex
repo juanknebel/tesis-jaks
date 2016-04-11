@@ -4,29 +4,34 @@ Los resultados que aquí se verán son los obtenidos de las ejecuciones de los a
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.25\textwidth]{img/gamma01.png}
-	\caption{}
+	\caption{$\gamma$ = 0.1}
 	\label{res:img-gamma01-papers}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.25\textwidth]{img/gamma09.png}
-	\caption{}
+	\caption{$\gamma$ = 0.9}
 	\label{res:img-gamma09-papers}
 \end{figure}
 En la segunda búsqueda que se realizo se buscaron bundles de autores los cuáles no sean sean de la misma universidad de afiliación. Como similitud se cuenta con la función que compara el perfil de los autores y como complementaridad la universidad de pertenencia del autor.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.25\textwidth]{img/gamma01-autores.png}
-	\caption{}
+	\caption{$\gamma$ = 0.1}
 	\label{res:img-gamma01-authors}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.25\textwidth]{img/gamma09-autores.png}
-	\caption{}
+	\caption{$\gamma$ = 0.9}
 	\label{res:img-gamma09-authors}
 \end{figure}
 \section{Conclusiones}
-Como se ve en los gráficos del punto anterior el uso de la estrategía de búsqueda Tabú funcionó en todos los casos. Para el algoritmo BOBO la mejora fue significativamente mejor y no implicó ningún aumento considerable en el tiempo de ejecución, por lo cuál sin importar el algoritmo usado para generar la solución siempre se debe intentar mejorar mediante la búsqueda Tabú.
+Como se ve en los gráficos del punto anterior el uso de la estrategía de búsqueda Tabú funcionó en todos los casos. Para el algoritmo BOBO la mejora fue significativamente mejor y no implicó ningún aumento considerable en el tiempo de ejecución, por lo cuál sin importar el algoritmo usado para generar la solución siempre se debe intentar mejorar mediante la búsqueda Tabú.\\
+Teniendo en cuenta que las búsquedas realizadas con el algoritmo BOBO en todos los casos fueron hasta 5 veces más rápidas, sumarle la búsqueda Tabú no influyó en el tiempo total de ejecución y que los valores obtenidos en relación del valor de la función objetivo se encuentran muy cercanos a los obtenidos en las soluciones generadas por los algoritmos C-HAC, en ~\ref{appendix-tables} pueden observarse los tiempos.
+\section{Future work}
+En un trabajo futuro se propone explorar las mismas búsquedas aquí presentadas pero tomando como ejemplo un paper que uno elija o un autor que le interese y generar bundles en el que cada uno de ellos este incluido el elemento específico que se usó para la búsqueda. Los elementos al ser tratados como un vector de $n$ posiciones, como se explicó en ~\ref{body-data-model}, podrían permitir más genericamente que se indiquen los porcentajes de cada uno de los temas involucrados que se quiera obtener un conjunto de soluciones.\\
+Para un trabajo posterior se debe mejorar la implementación interna de los algoritmos para poder ejecutar en paralelelo partes de los algoritmos y depuración general de los mismos, ésto ayudado con un mejor diseño lógico de los datos pertenecientes al universo de búsqueda lograría una mejor performance general.\\
+Se debe crear una nueva interfaz de usuario que sea amigable al interesado y muestre de forma prolija las soluciones obtenidas.\\
