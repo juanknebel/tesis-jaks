@@ -54,3 +54,5 @@ CMakeLists.txt.user
 tesis.pdf
 *.dvi
 main.pdf
+*.synctex.gz
+*.txss
