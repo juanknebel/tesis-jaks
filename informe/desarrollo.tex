@@ -45,8 +45,7 @@ No existe una definición formal de que es un cluster correctamente constituido 
    \caption{}
    \label{res:img-howToCluster}
 \end{figure}
-
-En la clusterización para Composite Retrieval, la definición es que cada cluster maximice el costo indicado y que no cambiará en la ejecución de la búsqueda, pues lo esperado es obtener distintos clusters que hayan utilizado el máximo del presupuesto. El criterio utilizado para realizar la agrupación es a través de la similitud entre los objetos del universo, ésta será representada por una función logrando que los clusters obtenidos sean lo mas parecidos posibles entre ellos, logrando de esta manera bundles cohesivos.\\
+En este trabajo la definición para la clusterización es que cada cluster contenga la máxima cantidad de items sin excederse del presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items del cluster sean lo más parecido posible y así obtener bundles coehsivos.\\
 Existen varios algoritmos de clustering, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales reubican iterativamente los objetos moviéndolos de un cluster a otro. Generalmente, estos métodos, requieren que la cantidad de cluster a generar sea preestablecido. Los métodos jerárquicos construyen los clusteres mediante la partición recursiva de los grupos de objetos y no requieren preestablecer la cantidad de cluster.\\
 En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.\\
 
