@@ -5,20 +5,21 @@
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-Las búsquedas que se realizan en Internet son acciones que se llevan a cabo con el fin de hallar elementos. Para lograr el objetivo el usuario debe ingresar frases o términos relacionados a fin de encontrar los resultados deseados. A lo largo del desarrollo de Internet las búsquedas fueron adquiriendo cada vez más importancia por la enorme cantidad de información que cada día se almacena en los distintos servidores del planeta.\\
-En un principio los algoritmos utilizados eran más simples o se basaban únicamente en buscar coincidencias exactas de las frases ingresadas en los elementos a buscar. Con el paso del tiempo las estrategias fueron evolucionando y adaptándose, con el objetivo de devolverle al usuario resultados más completos y que a la vez sean relevantes.\\
+Los usuarios de Internet, u otros medios informáticos, constantemente realizan búsquedas para hallar elementos de su interés generalmente a través de términos o frases. A lo largo del desarrollo de Internet las búsquedas fueron adquiriendo cada vez más importancia por la enorme cantidad de información que cada día se almacena en los distintos servidores del planeta.\\
+En un principio los algoritmos utilizados eran más simples o se basaban únicamente en buscar coincidencias exactas de las frases ingresadas entre los elementos. Con el paso del tiempo las estrategias fueron evolucionando y adaptándose, con el objetivo de devolverle al usuario resultados más completos y que a la vez sean relevantes.\\
 La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés) es la actividad de obtener información relevante de una inmensa colección de datos a partir de algún criterio. Criterios de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de la confirmación de una compra.\\
-Los motores de búsquedas de la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando que el buscador devuelva una colección de elementos que coincidan con el criterio de búsqueda elegido. En general lo que ocurre es que son varios los elementos del universo que concuerdan pero con grados de relevancia diferentes (ranking de resultados) que se utiliza para ordenar la colección de elementos devueltos. Para obtener el ranking de resultados los sistemas de IR trabajan con una representación lógica de los elementos que incluye los metadatos necesarios para operar sobre ellos. La desventaja de los ranking de resultados es que únicamente se compara la consulta de la búsqueda con los metadatos de los elementos, dejando de lado el análisis de los elementos entre sí y conviritiendo, en ocasiones, al proceso en una acción tediosa y repetitiva ya que el usuario deberá cambiar la consulta original y explorar la colección de elementos hasta lograr encontrar el o los elementos deseado.\\
-En el  artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles}\cite{compositeRetrival} se propone presentar una lista de grupos de elementos, en lugar de entregar una lista vertical de los mismos. Cada grupo deberá estar relacionado internamente bajo algún criterio de similitud y ordenado de forma tal que que uno o más conjuntos satisfagan las expectativas del usuario sin necesidad de una nueva intervención de refinar la consulta para lograr una mejor experiencia de búsqueda.\\
-Los algoritmos de agrupamiento (o clustering) realizan la tarea de agrupar en conjuntos disjuntos a elementos que pertenecen a una misma clase. Las dos técnicas más usadas son agrupamiento jerárquico y no jerárquico. De la primera a su vez se puede dividir en dos tipos, aglomerativos donde todos los elementos comienzan como un cluster para luego mezclarse entre ellos y divisivos en el cual se comienza con un único grupo y se comienza a dividir (para las decisiones de unir o dividir se usan medidas de similitud o disimilitud de los elementos del conjunto). De la segunda técnica de clusterización se definen previamente cuales serán los grupos finales y se van asignado los demás elementos al grupo que correspondan. Algoritmos de ambas técnicas son propuestas en \textbf{Composite Retrieval of Diverse and Complementary Bundles} devolver los resultados de las búsquedas como plantea el artículo. En este trabajo se analizaron e implementaron variantes de estos algoritmos para ser utilizados con conjuntos de datos más grande. Además de las técnicas de clusterización, se desarrollaron heurísticas que dada una solución buscan una dentro de las soluciones vecinas.\\
+Los motores de búsquedas de la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando que el buscador devuelva una colección de elementos que coincidan con el criterio de búsqueda. Ocurre es que son varios los elementos del universo que concuerdan con el criterio de busqueda, pero el grados de relevancia difiere, esta diferencia se utiliza para ordenar el resultado, lo que se conoce como ranking de resultado.\\
+El ranking de resultado se se obtiene mediante la comparación del criterio de búsqueda con la representación lógica de los elementos. La desventaja, es que se deja de lado el análisis de los elementos entre sí, por lo tanto el usuario deberá cambiar el criterio de búsqueda original y explorar la colección de elementos  resultantes, hasta lograr encontrar el resultado deseado.\\
+El artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles}\cite{compositeRetrival} propone devolver los elementos resultantes agrupados, en lugar de una lista vertical, dónde cada grupo esta relacionado internamente bajo algún criterio de similitud de forma tal que satisfaga las expectativas del usuario para que no tenga la necesidad de realizar una nueva intervención y así lograr una mejor experiencia de búsqueda.\\
+Este trabajo consiste en la implementación del artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles} sobre consultas realizadas en una base de datos de artículos de investigación relacionados con la ingeniería de software. Para ello se analizan e implementan algoritmos de agrupamiento (o clustering) que realizan la tarea de agrupar en conjuntos disjuntos a elementos que pertenecen a una misma clase. Las dos técnicas más usadas son agrupamiento jerárquico y no jerárquico. De la primera a su vez se puede dividir en dos tipos, aglomerativos donde todos los elementos comienzan como un cluster para luego mezclarse entre ellos y divisivos en el cual se comienza con un único grupo y se comienza a dividir (para las decisiones de unir o dividir se usan medidas de similitud o disimilitud de los elementos del conjunto). De la segunda técnica de clusterización se definen previamente cuales serán los grupos finales y se van asignado los demás elementos al grupo que correspondan. Además de las técnicas de clusterización, se desarrollaron heurísticas que dada una solución buscan una mejor solución dentro de las soluciones vecinas.\\
 \section{Motivación}
 Planear un viaje típicamente requiere realizar múltiples búsquedas en distintos motores para recabar la información de los diferentes destinos que se quiere visitar, las distancias geográficas, los precios de las atracciones, las actividades que se pueden realizar o leer opiniones acerca de los destinos seleccionados, entre otros.\\
 En una búsqueda típica los resultados obtenidos son una larga lista ordenada por la relevancia del criterio de la consulta. Este tipo de soluciones no otorgan respuestas que relacionen el criterio buscado con los demás elementos de la lista resultante.\\
-Otro ejemplo es el caso en el que un cliente de una tienda online de venta de discos que le gusta escuchar música de diferentes países, cuenta con un presupuesto limitado y no está interesado en un ningún género musical específico, pero si quiere comprar un conjunto de discos que pertenezcan al mismo género musical. El cliente al comenzar su búsqueda obtendría una lista parecida a la siguiente:
+Otro ejemplo es el caso en el que un cliente de una tienda online de venta de discos que le gusta escuchar música de diferentes países, cuenta con un presupuesto limitado de \$70 y no está interesado en un ningún género musical específico, pero si quiere comprar que los discos pertenezcan al mismo género musical. El cliente al comenzar su búsqueda obtendría una lista parecida a la siguiente:
 \begin{itemize}
   \item Physical Graffiti - Led Zeppelin
   \item Led Zeppelin - Led Zeppelin
-  \item It's Hard - The Who
+  \item It's Hard - The Who 
   \item Perfect Strangers - Deep Purple
   \item El Cielo Puede Esperar - Attaque 77
   \item Wheels of Fire - Cream
@@ -31,26 +32,26 @@ Otro ejemplo es el caso en el que un cliente de una tienda online de venta de di
 
 Para realizar la compra el usuario primero deberá seleccionar aquellos discos que sean de su interés de la lista obtenida (con el posible error de elegir más de un disco del mismo origen). Segundo, deberá ir agregando y eliminando de su lista manualmente en el caso que la elección de un disco superase el presupuesto que él posee. Tercero, no necesariamente elegirá el mejor subconjunto de discos que se ajuste a su presupuesto y a su vez el origen de los discos sean distintos.\\
 Para este tipo de búsquedas la solución que se propone está pensada para aquellas consultas que requieren obtener un conjunto de elementos que se relacionan como respuesta. Se podría realizar una clusterización de los resultados pero, en las técnicas tradicionales la agrupación se hace por la similitud entre ítems. En el ejemplo de los discos con una clusterización tradicional, donde la similitud sea el género musical, seguramente se generen tantos cluster como géneros de discos existan y en cada cluster se encontrarán todos los discos de ese género. Una vez obtenido el resultado se deberá explorar todos los clusters para elegir los discos.\\
-En cambio si se aplicase las técnicas mencionadas en \textit{``Composite Retrieval of Diverse and Complementary Bundles''} las soluciones obtenidas se ajustarían al presupuesto y cada uno de los ítems dentro del bundle (es el nombre que se le da al agrupamiento de ítems) sean complementarios entre sí, de modo tal que el usuario pordrá optar por cualquier bundle de la solución y estar seguro que su elección cumple con su objetivo inicial, similitud, referido a que pertenece a un mismo género musical y que exista variedad entre las diferentes opciones.\\
-Si en el ejemplo de la tienda de discos se establece la complementariedad del atributo que refleja el origen de la banda y se establece un presupuesto máximo a cada bundle, una solución posible sería:
+En cambio si se aplicase las técnicas mencionadas en \textit{``Composite Retrieval of Diverse and Complementary Bundles''} las soluciones obtenidas se ajustarían al presupuesto y cada uno de los ítems dentro del bundle (es el nombre que se le da al agrupamiento de ítems) sean complementarios entre sí, de modo tal que el usuario podrá optar por cualquier bundle de la solución y estar seguro que su elección cumple con su objetivo de comprar discos del mismo género, que sean de distinto país y que no excedan su presupuesto de \$70. Un posible resultado para este usuario es:
 \begin{itemize}
   \item Bundle 1:
   \begin{itemize}
-    \item Physical Graffiti - Led Zeppelin (Inglaterra)
-    \item After chabón - Sumo (Argentina)
-    \item Back in Black - AC/DC (Estados Unidos)
+    \item Physical Graffiti - Led Zeppelin (Inglaterra) \$20
+    \item After chabón - Sumo (Argentina) \$20
+    \item Back in Black - AC/DC (Estados Unidos) \$20
   \end{itemize}
   \item Bundle 2:
   \begin{itemize}
-    \item Natty Dread - Bob Marley (Jamaica)
-    \item El ritual de la Banana - Los Pericos (Argentina)
-    \item Labour of Love - UB40 (Inglaterra)
+    \item Natty Dread - Bob Marley (Jamaica) \$30
+    \item El ritual de la Banana - Los Pericos (Argentina) \$15
+    \item Labour of Love - UB40 (Inglaterra) \$20
   \end{itemize}
 	  \item Bundle 3:
   \begin{itemize}
-    \item Ramones - Ramones (Estados Unidos)
-    \item El Cielo Puede Esperar - Attaque 77 (Argentina)
-    \item Sandinista! - The Clash (Inglaterra)
+    \item Ramones - Ramones (Estados Unidos) \$17
+    \item El Cielo Puede Esperar - Attaque 77 (Argentina) \$17
+    \item Sandinista! - The Clash (Inglaterra) \$15
+		\item Upstyledown - 28 Days (Australia) \$15
   \end{itemize}
 \end{itemize}
 Lo que se quiere lograr en los ejemplos descriptos y en cualquier otro problema similar de búsquedas, es otorgarle al usuario un conjunto de bundles que cumplan siempre con las siguientes propiedades: 
