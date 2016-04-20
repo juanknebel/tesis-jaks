@@ -1,0 +1,58 @@
+
+\section{Introduction}
+En las búsquedas convencionales el usuario ingresa una consulta esperando que el buscador devuelva una colección de elementos que coincidan con el criterio de búsqueda elegido. En general lo que ocurre es que son varios los elementos del universo que concuerdan pero con grados de relevancia diferentes, los motores de búsqudas utilizan el ranking de resultados para ordenar la colección de elementos devueltos. El ranking de resultados se obtiene a partir de la representación lógica de los elementos que incluye los metadatos necesarios para operar sobre ellos. La desventaja de los ranking de resultados es que únicamente se compara la consulta de la búsqueda con los metadatos de los elementos, dejando de lado la relación de los elementos entre sí y convirtiendo, en ocasiones, al proceso en una acción tediosa y repetitiva ya que el usuario deberá cambiar la consulta original y explorar la colección de elementos hasta lograr encontrar el o los elementos deseados.\\
+En el  artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles}\cite{compositeRetrival} se propone presentar una lista de grupos de elementos, en lugar de entregar una lista vertical de los mismos. Cada grupo deberá estar relacionado internamente bajo el criterio de similitud elegido y la lista ordenada de forma lógica con la finalidad de que uno o más conjuntos satisfagan las expectativas del usuario sin necesidad de una nueva intervención para refinar su consulta para lograr una mejor experiencia de búsqueda.\\
+Pongamos como ejemplo la planificación de un viaje a una determinada ciudad. Eso típicamente requiere realizar múltiples búsquedas en distintos motores para recabar la información de los diferentes destinos que se quiere visitar, las distancias geográficas, los precios de las atracciones, las actividades que se pueden realizar o leer opiniones acerca de los destinos seleccionados, entre otros.\\
+En una búsqueda típica los resultados obtenidos son una larga lista ordenada por la relevancia del criterio de la consulta, mezclando indiscriminadamente soluciones de distinto tipo a la requerida por el usuario. Este tipo de soluciones no otorgan respuestas que relacionen el criterio buscado con los demás elementos de la lista resultante.\\
+Otro ejemplo es el caso de un cliente de una tienda online de venta de discos que le gusta escuchar música de diferentes países, cuenta con un presupuesto limitado de \$70 y no está interesado en un ningún género musical específico, pero si está interesado en comprar un conjunto de discos que pertenezcan al mismo género musical. Si el cliente ingresara como patrón de búsqueda \textquotedblleft Rock \& Roll clásico\textquotedblright\ obtendría una lista parecida a la siguiente:
+\begin{itemize}
+  \item Physical Graffiti - Led Zeppelin
+  \item Led Zeppelin - Led Zeppelin
+  \item It's Hard - The Who
+  \item Perfect Strangers - Deep Purple
+  \item El Cielo Puede Esperar - Attaque 77
+  \item Wheels of Fire - Cream
+  \item Confesiones de Invierno - Sui Generis
+  \item The White Album - The Beatles
+  \item Innuendo - Queen
+  \item Sticky Fingers - The Rolling Stones
+  \item Kamikaze - Luis Alberto Spinetta
+\end{itemize}
+
+De la lista obtenida el usuario deberá seleccionar aquellos discos que sean de su interes con el posible error de elegir más de un disco del mismo origen. Segundo, deberá ir agregando y eliminando de su lista manualmente en el caso que la elección de un disco superase el presupuesto que él posee. Tercero, no necesariamente elegirá el mejor subconjunto de discos que maximice su presupuesto y a su vez el origen de los discos sean distintos.\\
+Para este tipo de búsquedas la solución que se propone está pensada para aquellas consultas que requieren obtener un conjunto de elementos que se relacionan como respuesta. Se podría realizar una clusterización de los resultados pero, en las técnicas tradicionales la agrupación se hace por la similitud entre ítems. En el ejemplo de los discos con una clusterización tradicional, donde la similitud sea el género musical, seguramente se generen tantos cluster como géneros de discos existan y en cada cluster se encontrarán todos los discos de ese género. Una vez obtenido el resultado se deberá explorar todos los clusters para elegir los discos.\\
+En cambio si se aplicase las técnicas mencionadas en \textit{``Composite Retrieval of Diverse and Complementary Bundles''} las soluciones obtenidas se ajustarían al presupuesto y cada uno de los ítems dentro del bundle (es el nombre que se le da al agrupamiento de ítems) sean complementarios entre sí, de modo tal que el usuario pordrá optar por cualquier bundle de la solución y estar seguro que su elección cumple con su objetivo inicial, que pertenece a un mismo género musical y exista variedad en la elección.\\
+Si en el ejemplo de la tienda de discos se establece la complementariedad del atributo que refleja el origen de la banda y se establece un presupuesto de \$70 una solución posible sería:
+\begin{itemize}
+  \item Bundle 1:
+  \begin{itemize}
+    \item Physical Graffiti - Led Zeppelin (Inglaterra) \$20
+    \item After chabón - Sumo (Argentina) \$20
+    \item Back in Black - AC/DC (Estados Unidos) \$20
+  \end{itemize}
+  \item Bundle 2:
+  \begin{itemize}
+    \item Natty Dread - Bob Marley (Jamaica) \$30
+    \item El ritual de la Banana - Los Pericos (Argentina) \$15
+    \item Labour of Love - UB40 (Inglaterra) \$15
+  \end{itemize}
+	  \item Bundle 3:
+  \begin{itemize}
+    \item Ramones - Ramones (Estados Unidos) \$17
+    \item El Cielo Puede Esperar - Attaque 77 (Argentina) \$17
+    \item Sandinista! - The Clash (Inglaterra) \$15
+		\item Upstyledown - 28 Days (Australia) \$15
+  \end{itemize}
+\end{itemize}
+Lo que se quiere lograr en los ejemplos descriptos y en cualquier otro problema similar de búsquedas es otorgarle al usuario un conjunto de bundles que cumplan siempre con las siguientes propiedades: 
+\begin{itemize}
+  \item \textbf{Cubrimiento}: Maximizar la cantidad de elementos en el bundle.
+  \item \textbf{Compatibilidad}: Los elementos del bundle deben ser similares.
+  \item \textbf{Validez}: El costo total de los elementos del bundle no debe superar el presupuesto.
+  \item \textbf{Diversidad}: Los bundles entre si deben ser diversos.
+\end{itemize}
+\section{Motivation}
+Consideramos que puede ser de utilidad que para instancias bibliográficas el resultado de una búsqueda este compuesto por bundles de items complementarios, sujetos a un presupuesto. 
+Lo que permite que el usuario pueda explorar items bibliográficos como libros, editoriales o autores diversos y acotados por algún criterio.\\
+La base de datos con la que se trabajo en este artículo es la proporcionada por "Data-Driven Journey through Software Engineering Research" que contiene artículos relacionados con la ingeniería de software presentados en diferentes conferencias entre los años 1975 y 2011 catalogados por autores, tópicos, venues y afiliaciones. Sobre esta base se realizaron diferentes consultas para las que se debió definir la similitud entre los items, el atributo complementario y la cota por bundle. Por ejemplo una de las consultas realizadas 'Artículos de diferentes conferencias'
+en la que el resultado esperado consiste de una lista de bundles en la que cada bundle contiene artículos similares dictados en distintas conferencia. La similitud entre los artículos se definió por los tópicos, de esta consulta se obtuvieron los siguientes resultados:

@@ -1,0 +1,49 @@
+\appendix
+\section{Tables}\label{appendix-tables}
+\begin{table}[H]
+	\centering
+	\resizebox{.4\textwidth}{!} {
+		\begin{tabular}{|lc|cccc|}
+			\hline
+			~  & ~ & \multicolumn{2}{|c}{Valor función objetivo} & \multicolumn{2}{c|}{Duración de la ejecución (mm:ss)} \\
+			Algoritmo & $\gamma$ & Sin Tabú & Con Tabú & Sin Tabú & Con Tabú \\ 
+			\hline
+			C-HAC & $0,1$ & $44,0473$  & $44,2626$ & $6:00$ & $6:05$ \\
+			C-HAC & $0,3$ & $53,8511$  & $54,2146$ & $6:00$ & $6:05$ \\
+			C-HAC & $0,5$ & $64,7655$  & $65,0120$ & $6:00$ & $6:05$ \\
+			C-HAC & $0,7$ & $76,3662$  & $76,6152$ & $6:00$ & $6:05$ \\
+			C-HAC & $0,9$ & $88,7674$  & $88,9978$ & $6:00$ & $6:05$ \\
+			BOBO-10 & $0,1$ & $24,4045$  & $40,5981$ & $1:40$ & $1:44$ \\
+			BOBO-10 & $0,3$ & $23,1291$  & $48,7412$ & $1:40$ & $1:44$ \\
+			BOBO-10 & $0,5$ & $23,1884$  & $56,0248$ & $1:40$ & $1:44$ \\
+			BOBO-10 & $0,7$ & $25,3126$  & $61,9265$ & $1:40$ & $1:44$ \\
+			BOBO-10 & $0,9$ & $27,9388$  & $79,0399$ & $1:40$ & $1:44$ \\
+			\hline
+		\end{tabular}
+	}
+	\caption {Valor función objetivo y tiempo de ejecución para la búsqueda de artículos similares}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\resizebox{.4\textwidth}{!} {
+		\begin{tabular}{|lc|cccc|}
+			\hline
+			~  & ~ & \multicolumn{2}{|c}{Valor función objetivo} & \multicolumn{2}{c|}{Duración de la ejecución (mm:ss)} \\
+			Algoritmo & $\gamma$ & Sin Tabú & Con Tabú & Sin Tabú & Con Tabú \\ 
+			\hline
+			C-HAC & $0,1$ & $50,3286$  & $50,3286$ & $8:00$ & $8:05$ \\
+			C-HAC & $0,3$ & $61,1834$  & $61,1978$ & $8:00$ & $8:05$ \\
+			C-HAC & $0,5$ & $72,5000$  & $72,5000$ & $8:00$ & $8:05$ \\
+			C-HAC & $0,7$ & $83,5000$  & $83,5000$ & $8:00$ & $8:05$ \\
+			C-HAC & $0,9$ & $94,5000$  & $94,5000$ & $8:00$ & $8:05$ \\
+			BOBO-10 & $0,1$ & $35,2315$  & $45,9345$ & $2:30$ & $2:33$ \\
+			BOBO-10 & $0,3$ & $38,6787$  & $56,8802$ & $2:30$ & $2:33$ \\
+			BOBO-10 & $0,5$ & $43,7428$  & $67,5085$ & $2:30$ & $2:33$ \\
+			BOBO-10 & $0,7$ & $49,0782$  & $78,0417$ & $2:30$ & $2:33$ \\
+			BOBO-10 & $0,9$ & $54,7914$  & $88,7830$ & $2:30$ & $2:33$ \\
+			\hline
+		\end{tabular}
+	}
+	\caption {Valor función objetivo y tiempo de ejecución para la búsqueda de autores similares}
+\end{table}
