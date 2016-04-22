@@ -8,9 +8,13 @@ Para generar los resultados de \textit{composite} se tiene un conjunto de objeto
 \subsection{Problem Statement}
 Formalmente el problema consiste en dado un conjunto de items $ I=\left\{i_1 \ldots i_n\right\} $, una función de similitud $ s(u,v) $ para cada par $ (u,v) \in IxI $ un atributo complementario $\alpha$, una función budget, un presupesto y un entero k se debe hallar $ S=\left\{S_1 \ldots S_k\right\} $ que maximice:(funcion objetivo).
 
-\section{Produce and Choose}
-PAC consiste en dos partes: primero en generar bundles válidos y luego seleccionar los k mejores que formarán parte de la solución. Para la parte de generación del bundle se utilizaron las estrategias de clusterización hierarchical y bobo. Para la parte de selección se utiliza un algoritmo goloso.\\
+\section{Algorithm}
+\subsection{Produce and Choose}
+Como se mencionó anteriormente el alogoritmo con el que se obtuvo los mejores resultados fue PAC. PAC consiste en dos partes: primero en generar un conjunto de bundles válidos y luego seleccionar los k mejores que formarán parte de la solución. Para la parte de generación de bundles se plantearon los métodos de clusterización \texttt{Efficient C-HAC} y \texttt{k-BOBO}.\\
+\texttt{Efficient C-HAC} es un 
+
+ Para la parte de selección se utiliza un algoritmo goloso.\\
 Para la instancia de los items bibliográficos se tuvo que optimizar el algoritmo de clusterización jerárquico propuesto en 1 por la cantidad de elementos que de la base de datos.\\
  
-\section{Tabu Search}
+\subsection{Tabu Search}
 Se explora un conjunto de soluciones para encontrar una solución más cohesiva. En esta implementación de la búsqueda tabú se reemplaza el item de menor similitud del centroide del bundle menos cohesivo de la solución por algún ítem que no pertenezca a la solución con mayor similitud al centroide. El item reemplazado se agrega a la lista de items tabú.
