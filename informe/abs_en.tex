@@ -1,13 +1,15 @@
 %\begin{center}
-%\large \bf \runtitle
+%\large \bf \runtitulo
 %\end{center}
 %\vspace{1cm}
-\chapter*{\runtitle}
+\chapter*{\runtitulo}
 
-\noindent Las búsquedas tradicionales nos ofrecen una solución que solo tiene en cuenta un atributo de los elementos y no la relación que éstos tienen con el resto del universo. Las mismas nos ofrecen un lista ordenada de resultados que cumplen con el criterio elegido en mayor o menos medida, ocasionando que muchas veces se necesite reformular la consulta original para así lograr la solución que el usuario quiere encontrar.\\
-Los algoritmos de agrupación clásicos o clustering generan conjuntos de soluciones, que al igual que las búsquedas tradicionales, los elementos dentro de cada conjunto o cluster cumplen con el criterio elegido y además entre sí comparten alguna propiedad (generalmente una similitud o distancia), pero no se analiza ningún tipo de Complementaridad entre los elementos. La relación entre los cluster no es analizada ocacionando que entre ellos sean muy similares o diferentes dependiendo del universo en el cuál se encuentre trabajando.\\
-Es por eso que surge \textbf{Composite Retrieval}, su objetivo es agrupar elementos en cluster bajo un mismo atributo, al mismo tiempo que éstos son complementarios entre sí por algún atributo definido previamente. A diferencia de las anteriores técnicas se permite elegir el grado de interdepencia entre los conjuntos generados permitiendo, según el caso, que los conjuntos que componen la solución sean más o menos parecidos facilitando al usuario la elección de un grupo de elementos que satisfagan su consulta original.
+\noindent Las búsquedas tradicionales ofrecen soluciones que solo tienen en cuenta un solo atributo de los elementos y no la relación que estos tienen con el resto del universo. Las mismas suelen ofrecer una lista ordenada de resultados relacionadas con
+el criterio utilizado. Ocasionando, muchas veces, re formular la consulta original para así lograr una solución adecuada al criterio de búsqueda elegido previamente.\\
+Los algoritmos de agrupación clásicos o clustering generan conjuntos de soluciones, al igual que las búsquedas tradicionales, en los cuales los elementos dentro de cada conjunto (o cluster) tiene una relación directa con la búsqueda original y además se encuentran relacionados de alguna manera (generalmente una similitud o distancia). Aún así, éstas soluciones no tienen en cuenta ningún atributo que represente la complementaridad que existe entre los elementos, ocasionando que la solución encontrada contenga conjuntos de objetos muy similares sin diversidad. La relación entre los cluster no es sujeto de ningún análisis en estos algoritmos. En orden de lograr una solución con mayor diversidad (evitar cluster similares) y que cumpla las expectativas del usuario, debería existir un análisis entre los clusters.\\
+Como respuesta a éste último comportamiento surge Composite Retrieval of Diverse and Complementary Bundles \cite{compositeRetrival}, su objetivo es agrupar elementos en bundles en los cuales los elementos dentro de ellos se encuentran relacionados internamente bajo algún criterio de similitud y a la vez sean complementarios de forma tal que satisfaga las expectativas del usuario y no tenga la necesidad de realizar una nueva intervención logrando así una mejor experiencia de búsqueda.\\
+En este trabajo se tomaron las ideas ya desarrolladas previamente en \cite{compositeRetrival}, se propuso un nuevo algoritmo, nuevas mejoras y enfoques en orden de mejorar los resultados que se obtuvieron originalmente y los tiempos de ejecución para instancias más grandes. Las nuevas aplicaciones se aplicaron a la resolución de búsquedas sobre una base de datos de artículos científicos pertenecientes a la Ingeniería de Software \cite{dataDrive} y sobre una instancia conformada por atracciones turísticas de Europa.
 
 \bigskip
 
-\noindent\textbf{Keywords:} Composite Retrieval, Similarity, Complementary, Tabú Search, Produce Bundles, Clustering.
+\noindent\textbf{Palabras claves:} Composite Retrieval, Similitud, Complementaridad, Búsqueda Tabú, Generación de Bundles, Agrupamiento.
