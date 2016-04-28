@@ -12,8 +12,6 @@ Cada elemento $s_i \in S$ es válido si y sólo si satisface las reglas:
 	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall s_i \in S, f(s_i) \leq \beta$, donde $f(s_i)$ es la suma de costos de los elementos pertenecientes al bundle.
 \end{itemize}		  
 El parámetro $\gamma$ sirve para que el usuario pueda definir el balance entre que la solución contenga bundles más cohesivos (intra) o la diversidad de los bundles (inter) de una solución. Si El usuario prioriza una solución inter el valor de $\gamma$ será cercano a uno y si lo que prioriza es la intra el valor estará cercano a cero.\\
-\section{Modelo}
- El modelo que se diseño para el problema es de un grafo completo con peso en las aristas $G=(I,E,s)$ donde el peso del vértice $(u,v)$ es $s(u,v)$. Se define también la \textit{función de distancia} $d(u,v) = 1 - s(u,v)$ que también toma valores en el intervalo $[0;1]$.\\
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, lo que implica que por el momento no se puede encontrar una solución exacta en tiempo polinomial. En base a esto, este trabajo se enfoca en encontrar soluciones suficientemente buenas para el problema en tiempo polimonial por lo que se implementaron los algoritmos Produce-and-Choose y el goloso.
 
 \section{Produce-and-Choose}
@@ -31,7 +29,7 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-En ~\ref{alg:PAC} se obseva los tres grandes pasos a realizar en la ejecución del algoritmo. En primer lugar se genera el conjunto \textit{cand} que contiene bundles válidos y solo algunos de ellos formarán parte de la solución final. Como segundo paso se genera el grafo \textit{G} no dirigido y completo en el que cada bundle es un vértice y las aristas con peso que representan la distancia o disimilitud entre los vértices que la forman. Por último se seleccionan los mejores \textit{k} bundles del grafo y se devuelven como la solución.
+La función \texttt{ProduceBundle} genera un conjunto de bundles candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de bundles candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un bundle del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los bundles que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los bundles que pertenecen a la solución.
 
 \subsection{Generación de bundles}
 La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso es conocido como clustering, que consiste en agrupar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del cluster sean similares entre sí y diferentes de los objetos de los otros grupos. Cuanto mayor es la similitud en el cluster (intra) y mayor la diferencia entre los cluster (inter) es mejor la clusterización.\\
