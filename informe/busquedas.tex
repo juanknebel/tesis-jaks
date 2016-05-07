@@ -13,30 +13,32 @@ Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben real
 Para todas las búsquedas, sin importar el ítem que sea (artículo, autores o universidades),  se definió que el costo de cada ítem sea de una unidad y que el presupuesto para cada búsqueda es de cinco unidades. En consecuencia, todos los bundles de todos los resultados contienen como máximo cinco ítems; además se deicidió que sean diez los bundles devueltos en cada búsqueda. El motivo que se tuvo en cuenta para tomar esta decisión es que un humano pueda valorizar el resultado propuesto fácilmente. Entonces, de aquí en adelante, para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad.\\
 Como se mencionó anteriormente, en la base de datos cada artículo cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de cada artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. \\
 De los autores no se cuenta con una información directa que defina el perfil, entonces el perfil de los autores se genera a partir de los artículos que escribieron. Para definir el perfil de las universidades se aplicó el perfil de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems. A continuación se detallan las consultas realizadas en este trabajo.\\
-Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.
+Se utilizaron los siguientes criterios a las consultas que se hicieron en la base de datos, en los cuales la función costo para todos los elementos se defino con la constante 1 y el presupuesto de 5. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. Entonces de aquí en adelante para cada criterio solo resta definir la función de similitud y la propiedad de complementariedad.\\
 
-\subsection{Artículos de diferentes conferencias}\label{bus:papSimDisLug}
-Generar una solución, en el que cada bundle contenga artículos similares que se hayan presentado en distintas conferencias.\\
-\begin{itemize}
-  \item \textbf{Similitud}: Función que compara el perfil de cada artículo.
-  \item \textbf{Complementariedad}: Lugar dónde fue presentado.
-\end{itemize}
+Las consultas realizadas son:
+\begin{enumerate}
+	\item
+		Artículos con tópicos similares presentados en distintas conferencias.
+		\begin{itemize}
+			\item \textbf{Similitud}: Función que compara el perfil de cada artículo.
+			\item \textbf{Complementariedad}: Lugar dónde fue presentado.
+		\end{itemize}
 
-\subsection{Autores de distintas universidades}
-Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
-\begin{itemize}
-  \item \textbf{Similitud}: Función que compara el perfil de los autores.
-  \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
-\end{itemize}
+	\item
+	Autores que escribieron artículos con tópicos similares afiliados en universidades distintas.
+	\begin{itemize}
+		\item \textbf{Similitud}: Función que compara el perfil de los autores.
+		\item \textbf{Complementariedad}: Universidad de pertenencia del autor.
+	\end{itemize}
 
-\subsection{Instituciones de diferentes regiones}
-En este caso, la búsqueda es para instituciones de diferentes regiones. 
-\begin{itemize}
-  \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
-  \item \textbf{Complementariedad}: Región de la institución.
-\end{itemize}
-
-Como se menciona antes, la base de datos cuenta con un \texttt{Topic Profile} de cada artículo que es un porcentaje del tema al que hace referencia. Esto se puede transformar a un vector de $n$ dimensiones en dónde cada posición representa un tópico diferente, entonces para cada artículo se obtiene un vector de la misma dimensión. Ésto es clave para la generación de la similitud entre los artículos.\\
+	\item 
+	Universidades en las que se escribieron artículos de tópicos similares que se encuentran en distintas regiones. 
+	\begin{itemize}
+		\item \textbf{Similitud}: Función que compara el perfil de las universidades.
+		\item \textbf{Complementariedad}: Región de la institución.
+	\end{itemize}
+\end {enumerate}
+El modelo computacional del perfil de cada artículo es un vector de $n$ dimensiones, dónde $n$ es la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.\\
 Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores, por lo tanto para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}.Para obtener el perfil de las universidades se aplicó el mismo criterio que para los autores, de hacer la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así generar el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
@@ -70,7 +72,7 @@ Entonces se define la función de similitud $S(V_i, V_j)$ para los vectores $V_i
 \cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
 \end{equation}
 
-Para esta instancia los objetos (ahora artículos, autores o universidades) son representados por vectores, donde cada dimensión corresponde a un tópico y el valor se corresponde con el valor del tópico del objeto según la base de datos \cite{dataDrive}. Por lo tanto el objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $N$ es la cantidad de tópicos y cumple con las siguientes propiedades:
+Para esta instancia los objetos (ahora artículos, autores o universidades) son representados por vectores, donde cada dimensión corresponde a un tópico y el valor se corresponde con el valor del tópico del objeto según la base de datos \cite{dataDrive}. Por lo tanto el objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $n$ es la cantidad de tópicos y cumple con las siguientes propiedades:
 \begin{enumerate}
  \item $v_i \geq 0$
  \item $\sum{v_i} = 1$
