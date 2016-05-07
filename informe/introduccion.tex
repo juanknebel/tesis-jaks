@@ -5,36 +5,55 @@
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-Los usuarios de Internet, u otros medios informáticos, constantemente realizan búsquedas para hallar elementos de su interés generalmente a través de términos o frases. A lo largo del desarrollo de Internet las búsquedas fueron adquiriendo cada vez más importancia por la enorme cantidad de información que cada día se almacena en los distintos servidores del planeta.\\
+Los usuarios de Internet, u otros medios informáticos, constantemente realizan búsquedas para hallar elementos de su interés, generalmente a través de términos o frases. A lo largo del desarrollo de Internet las búsquedas fueron adquiriendo cada vez más importancia por la enorme cantidad de información que cada día se almacena en los distintos servidores del planeta.\\
 En un principio los algoritmos de búsqueda únicamente buscaban coincidencias exactas de las frases ingresadas entre los elementos para obtener el resultado. Con el paso del tiempo las estrategias fueron evolucionando y adaptándose, con el objetivo de devolverle al usuario resultados más completos y que a la vez sean relevantes.\\
-La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés) es la actividad de obtener información relevante de una inmensa colección de datos a partir de algún criterio. Criterios de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de confirmación sobre una compra.\\
-Los motores de búsquedas que se utilizan en la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando obtener una colección de elementos que coincidan con el criterio de búsqueda elegido. Ocurre que son varios los elementos del universo que concuerdan con el criterio de búsqueda, pero los grados de relevancia difieren, esta diferencia se utiliza para ordenar el resultado, en lo que se conoce como ranking de resultado.\\
+La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés) es la actividad de obtener información relevante de una inmensa colección de datos a partir de algún criterio. Los criterios elegidos pueden ser de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de confirmación sobre una compra.\\
+Los motores de búsquedas que se utilizan en la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando obtener una colección de elementos que coincidan con el criterio de búsqueda elegido. Ocurre que son varios los elementos del universo que concuerdan con el criterio de búsqueda, pero los grados de relevancia difieren. Esta diferencia se utiliza para ordenar el resultado, en lo que se conoce como ranking de resultado.\\
 El ranking de resultados se obtiene mediante la comparación del criterio de búsqueda con la representación lógica de los elementos. La desventaja es que se deja de lado el análisis de los elementos entre sí, por lo tanto el usuario deberá cambiar el criterio de búsqueda original y explorar las colecciones de elementos resultantes hasta lograr encontrar el resultado deseado.\\
 En el artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles}\cite{compositeRetrival} se propone devolver los elementos resultantes agrupados en lugar de una lista vertical. Cada grupo esta relacionado internamente bajo algún criterio de similitud satisfaciendo las expectativas del usuario, evitando de esta manera la necesidad de realizar una nueva intervención y lograr una mejor experiencia de búsqueda.\\
-Este trabajo consiste en la implementación del artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles} sobre consultas realizadas en una base de datos que contiene artículos de investigación relacionados con la ingeniería de software. Para la generación de resultados se utiliza \textit{Produce and Choose} (PAC) de \cite{compositeRetrival}, un algoritmo que primero genera bundles y luego selecciona los $k$ mejores bundles que formarán parte de la solución. En la etapa de producción se plantean dos variantes, \texttt{BOBO} que es del algoritmo original, y \texttt{Efficient C-HAC} un algoritmo de clusterización jerárquico aglomerativo el cual es más eficiente en tiempo de ejecución en comparación con el perteneciente al artículo original. Otra alternativa a PAC que se propone en este trabajo es un algoritmo goloso que construye la solución iterativamente.\\
-Con el objetivo de encontrar una soluciones mejores a las obtenidas por los algoritmos mencionados anteriormente, se implementa la metaheuristica tabu search en dos ocasiones: Inter-Bundle y Intra-Bundle. En Inter-Bundle se exploran soluciones vecinas intercambiando bundles que pertenecen a la solución con otros bundles que no son parte de la solución. Mientras que Intra-Bundle explora las soluciones vecinas reemplazando tomando el item de menor similitud sobre el centroide del bundle menos cohesivo de la solución y lo intercambia con un ítem que no pertenezca a la solución y que además tenga la mayor similitud con el centroide. Para ambos casos el criterio de parada es por la cantidad de soluciones vecinas visitadas.\\
+Este trabajo consiste en la implementación del artículo \textbf{Composite Retrieval of Diverse and Complementary Bundles} sobre consultas realizadas en una base de datos que contiene artículos de investigación relacionados con la ingeniería de software. Para la generación de resultados se utiliza \textit{Produce and Choose} (PAC) de \cite{compositeRetrival}, un algoritmo que primero genera bundles y luego selecciona los $k$ mejores bundles que formarán parte de la solución. En la etapa de producción se plantean dos variantes, \texttt{BOBO} que es del algoritmo original e incorporamos una nueva, \texttt{Efficient C-HAC} un algoritmo de clusterización jerárquico aglomerativo el cual es más eficiente en tiempo de ejecución en comparación con el perteneciente al artículo original. Otra alternativa a PAC que se propone en este trabajo es un algoritmo goloso que construye la solución iterativamente.\\
+Con el objetivo de encontrar una soluciones mejores a las obtenidas por los algoritmos mencionados anteriormente, se implementa la metaheuristica tabu search en dos ocasiones: Inter-Bundle y Intra-Bundle. En Inter-Bundle se exploran soluciones vecinas intercambiando bundles que pertenecen a la solución con otros bundles que no son parte de la solución. Mientras que Intra-Bundle explora las soluciones vecinas reemplazando el item de menor similitud sobre el centroide del bundle menos cohesivo de la solución y lo intercambia con un ítem que no pertenezca a ningún bundle y que además tenga la mayor similitud con el centroide. Para ambos casos el criterio de parada es por la cantidad de soluciones vecinas visitadas.\\
 
 \section{Motivación}
 Planear un viaje típicamente requiere realizar múltiples búsquedas en distintos motores para recabar la información de los diferentes destinos que se quiere visitar, las distancias geográficas, los precios de las atracciones, las actividades que se pueden realizar o leer opiniones acerca de los destinos seleccionados, entre otros.\\
 En una búsqueda típica los resultados obtenidos son una larga lista ordenada por la relevancia del criterio de la consulta. Este tipo de soluciones no otorgan respuestas que relacionen el criterio buscado con los demás elementos de la lista resultante.\\
-Otro ejemplo es el caso en el que un cliente de una tienda online de venta de discos que le gusta escuchar música de diferentes países, cuenta con un presupuesto limitado de \$70 y no está interesado en un ningún género musical específico, pero si quiere comprar que los discos pertenezcan al mismo género musical. El cliente al comenzar su búsqueda obtendría una lista parecida a la siguiente:
+Otro ejemplo es el caso en el que un cliente de una tienda online de venta de discos que le gusta escuchar música de diferentes países, cuenta con un presupuesto limitado de \$70 y no está interesado en un ningún género musical específico, pero si quiere comprar discos que pertenezcan al mismo género musical. El cliente podría realizar una búsqueda en la tienda de discos de Inglaterra, y obtendría:
 \begin{itemize}
   \item Physical Graffiti - Led Zeppelin
-  \item Led Zeppelin - Led Zeppelin
-  \item It's Hard - The Who 
   \item Perfect Strangers - Deep Purple
-  \item El Cielo Puede Esperar - Attaque 77
+  \item It's Hard - The Who 
   \item Wheels of Fire - Cream
-  \item Confesiones de Invierno - Sui Generis
   \item The White Album - The Beatles
   \item Innuendo - Queen
   \item Sticky Fingers - The Rolling Stones
+\end{itemize}
+Luego de discos de Argentina, con respuesta:
+\begin{itemize}
+  \item El Cielo Puede Esperar - Attaque 77
+  \item Confesiones de Invierno - Sui Generis
   \item Kamikaze - Luis Alberto Spinetta
+  \item Acariciando lo Aspero - Divididos
+  \item La Biblia - Vox Dei
+\end{itemize} 
+Sobre discos de Estados Unidos:
+\begin{itemize}	
+	\item Experience - Jimi Hendrix
+	\item Morrison Hotel - The Doors
+	\item The Freewheelin - Bob Dylan
+	\item Appetite for Destruction - Guns N' Roses
+	\item Toys in the Atic - Aerosmith
+\end{itemize}
+Además debería realizar una búsqueda por género musical. Por ejemplo ingresando el criterio Rock Clásico obtendría una lista similar a la siguiente:
+\begin{itemize}
+	\item Clics Modernos - Charly Garcia
+	\item Ghost in the Machine - The Police
+	\item Rocks - Aerosmith
+	\item Let it Bleed - The Rolling Stones
 \end{itemize}
 
-Para realizar la compra el usuario primero deberá seleccionar aquellos discos que sean de su interés de la lista obtenida (con el posible error de elegir más de un disco del mismo origen). Segundo, deberá ir agregando y eliminando de su lista manualmente en el caso que la elección de un disco superase el presupuesto que él posee. Tercero, no necesariamente elegirá el mejor subconjunto de discos que se ajuste a su presupuesto y a su vez el origen de los discos sean distintos.\\
+A partir de todas estas búsquedas, para efectuar la compra el usuario primero deberá realizar la tediosa tarea de seleccionar aquellos discos que sean de su interés de las listas obtenidas. Con el posible error de elegir más de un disco del mismo origen o seleccionar alguno de diferente estilo musical. También deberá ir agregando y eliminando de su lista manualmente en el caso que la elección de un disco superase el presupuesto que él posee. Por último, no necesariamente elegirá el mejor subconjunto de discos que se ajuste a su presupuesto y a su vez el origen de los discos sean distintos.\\
 Para este tipo de búsquedas la solución que se propone está pensada para aquellas consultas que requieren obtener un conjunto de elementos que se relacionan como respuesta. Se podría realizar una clusterización de los resultados pero, en las técnicas tradicionales la agrupación se hace por la similitud entre ítems. En el ejemplo de los discos con una clusterización tradicional, donde la similitud sea el género musical, seguramente se generen tantos cluster como géneros de discos existan y en cada cluster se encontrarán todos los discos de ese género. Una vez obtenido el resultado se deberá explorar todos los clusters para elegir los discos.\\
-En cambio si se aplicase las técnicas mencionadas en \textit{``Composite Retrieval of Diverse and Complementary Bundles''} las soluciones obtenidas se ajustarían al presupuesto y cada uno de los ítems dentro del bundle (es el nombre que se le da al agrupamiento de ítems) sean complementarios entre sí, de modo tal que el usuario podrá optar por cualquier bundle de la solución y estar seguro que su elección cumple con su objetivo de comprar discos del mismo género, que sean de distinto país y que no excedan su presupuesto de \$70. Un posible resultado para este usuario es:
+En cambio si la tienda online aplicase las técnicas mencionadas en \textit{``Composite Retrieval of Diverse and Complementary Bundles''}, permitiendo ingresar presupuesto máximo, criterios de similitud (en este caso igual género musical) y de complementariedad (diferentes países de origen pare este ejemplo), las soluciones obtenidas se ajustarían al presupuesto y cada uno de los ítems dentro del bundle (es el nombre que se le da al agrupamiento de ítems) serán complementarios entre sí, de modo tal que el usuario podrá optar por cualquier bundle de la solución y estar seguro que su elección cumple con su objetivo de comprar discos del mismo género, que sean de distinto país y que no excedan su presupuesto de \$70. Un posible resultado para este usuario es:
 \begin{itemize}
   \item Bundle 1:
   \begin{itemize}
@@ -53,13 +72,14 @@ En cambio si se aplicase las técnicas mencionadas en \textit{``Composite Retrie
     \item Ramones - Ramones (Estados Unidos) \$17
     \item El Cielo Puede Esperar - Attaque 77 (Argentina) \$17
     \item Sandinista! - The Clash (Inglaterra) \$15
-		\item Upstyledown - 28 Days (Australia) \$15
+	\item Upstyledown - 28 Days (Australia) \$15
   \end{itemize}
 \end{itemize}
-Lo que se quiere lograr en los ejemplos descriptos y en cualquier otro problema similar de búsquedas, es otorgarle al usuario un conjunto de bundles que cumplan siempre con las siguientes propiedades: 
+Lo que se quiere lograr en los ejemplos descriptos, en cualquier otro problema similar de búsquedas, es otorgarle al usuario un conjunto de bundles que cumplan siempre con las siguientes propiedades: 
 \begin{itemize}
   \item \textbf{Cubrimiento}: Maximizar la cantidad de elementos en el bundle según algún criterio relevante para el usuario.
   \item \textbf{Compatibilidad}: Los elementos del bundle deben ser similares.
+  \item \textbf{Complementaridad}: Todos los bundles cumplen que, para un mismo atributo especificado los elementos dentro del bundle contienen un valor diferente para tal propiedad.
   \item \textbf{Validez}: El costo total de los elementos del bundle no debe superar el presupuesto.
   \item \textbf{Diversificación}: Los bundles entre si deben ser diversos.
 \end{itemize}
