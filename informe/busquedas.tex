@@ -2,7 +2,7 @@
 La base de datos utilizada para realizar los experimentos computacionales de lo propuesto en este trabajo es la proporcionada por el artículo \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. Contiene artículos relacionados con la ingeniería de software presentados en diferentes conferencias entre los años 1975 y 2011 catalogados por autores, tópicos, venues y afiliaciones. La decisión de utilizar esta base de datos es por la completitud de la información, al contener una gran cantidad de elementos requiere de algoritmos eficientes. La base de datos contiene cerca de $7800$ artículos de los que se tiene los autores, la conferencia en que fueron presentados y se encuentran clasificados en tópicos. Esta clasificación, conocida como \texttt{topicProfile}, se expresa en porcentajes para cada uno de los tópicos que son tratados. De los $9800$ autores se tiene la información de la universidad a la que pertenecen y de las universidades en que región se encuentran.\\
 El \texttt{topicProfile} es lo que permitirá definir la similitud, no sólo entre los artículos, sino también entre los autores y las universidades de la base da datos de una manera prácticamente directa.\\
 
-Para las pruebas, los criterios de las búsquedas que se realizaron sobre la base de datos se concibieron a partir de lo que se consideró tiene un interés general. Por ejemplo, quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículos de los mismos tópicos.\\
+Los criterios de las búsquedas realizadas sobre la base de datos se concibieron a partir de lo que se considera que es de interés general. Por ejemplo, quiénes son los autores que escribieron artículos similares de distintas universidades o las universidades de diferentes regiones donde se escribieron artículos de los mismos tópicos.\\
 Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben realizar las siguientes definiciones:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
@@ -14,32 +14,6 @@ Por lo establecido en \cite{compositeRetrival} para las búsquedas se deben real
 Para todas las búsquedas, sin importar el ítem que sea (artículo, autor o universidad), se definió que el costo de cada ítem sea de una unidad y que el presupuesto para cada búsqueda es de cinco unidades. En consecuencia, todos los bundles de todos los resultados contienen como máximo cinco ítems. Se decidió así porque no tiene sentido asociarle un costo a los artículos, autores, universidades y solo nos interesa que el bundle tengo como máximo un número fijo de elementos. Además se decidió que sean diez los bundles devueltos en cada búsqueda. El motivo para tomar esta decisión es que un humano pueda valorizar el resultado propuesto fácilmente. Entonces, de aquí en adelante, para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad.\\
 
 Como se mencionó anteriormente, en la base de datos cada artículo cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de cada artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente.\\
-
-De los autores no se cuenta con una información directa que defina el perfil, entonces para los autores se generará su perfil a partir de los artículos que escribieron. Para definir el perfil de las universidades se aplicó el perfil de los autores definidos anteriormente. Más adelante se verá como se utilizan los perfiles para definir la función de similitud entre los ítems. A continuación se detallan las consultas realizadas en este trabajo.\\
-
-Las consultas realizadas son:
-\begin{enumerate}
-	\item
-		Artículos con tópicos similares presentados en distintas conferencias.
-		\begin{itemize}
-			\item \textbf{Similitud}: Función que compara el perfil de cada artículo.
-			\item \textbf{Complementariedad}: Lugar dónde fue presentado.
-		\end{itemize}
-
-	\item
-	Autores que escribieron artículos con tópicos similares afiliados en universidades distintas.
-	\begin{itemize}
-		\item \textbf{Similitud}: Función que compara el perfil de los autores.
-		\item \textbf{Complementariedad}: Universidad de pertenencia del autor.
-	\end{itemize}
-
-	\item 
-	Universidades en las que se escribieron artículos de tópicos similares que se encuentran en distintas regiones. 
-	\begin{itemize}
-		\item \textbf{Similitud}: Función que compara el perfil de las universidades.
-		\item \textbf{Complementariedad}: Región de la institución.
-	\end{itemize}
-\end {enumerate}
 
 El modelo computacional del perfil de cada artículo es un vector de $n$ dimensiones, dónde $n$ es la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.\\
 
@@ -67,6 +41,32 @@ Ejemplo de los perfiles de los elementos:
  \item Universidad 1 - $[$0.14, 0.27, 0.95, 0.00$]$
  \item Universidad 2 - $[$0.31, 0.72, 0.54, 0.30$]$
 \end{description}
+
+Las consultas realizadas son:
+\begin{enumerate}
+	\item
+		Artículos con tópicos similares presentados en distintas conferencias.
+		\begin{itemize}
+			\item \textbf{Similitud}: Función que compara el perfil de cada artículo.
+			\item \textbf{Complementariedad}: Lugar dónde fue presentado.
+		\end{itemize}
+
+	\item
+	Autores que escribieron artículos con tópicos similares afiliados en universidades distintas.
+	\begin{itemize}
+		\item \textbf{Similitud}: Función que compara el perfil de los autores.
+		\item \textbf{Complementariedad}: Universidad de pertenencia del autor.
+	\end{itemize}
+
+	\item 
+	Universidades en las que se escribieron artículos de tópicos similares que se encuentran en distintas regiones. 
+	\begin{itemize}
+		\item \textbf{Similitud}: Función que compara el perfil de las universidades.
+		\item \textbf{Complementariedad}: Región de la institución.
+	\end{itemize}
+\end {enumerate}
+
+Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). 
 
 \subsection{Función de similitud}
 La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. En este trabajo para determinar la similitud entre los objetos es por la medida conocida como \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos. El coseno para el ángulo cero es 1, es menor a 1 para cualquier otro ángulo y es 0 cuando los vectores son ortogonales. De esta forma lo que define la similitud de los vectores es la orientación y no así la magnitud.\\
