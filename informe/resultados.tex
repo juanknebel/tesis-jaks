@@ -1,4 +1,5 @@
-En esta sección se analizan los resultados obtenidos de las ejecuciones de los algoritmos discutidos en la sección de desarrollo sobre las consultas realizadas en la base de datos de artículos y de las atracciones turísticas. El análisis que se realiza es comparando la calidad de los resultados y el tiempo de ejecución de cada implementación en diferentes condiciones.
+En esta sección se analizan los resultados obtenidos de las ejecuciones de los algoritmos discutidos en la sección de desarrollo sobre las consultas realizadas en la base de datos de artículos y de las atracciones turísticas. El análisis que se realiza es comparando la calidad de los resultados y el tiempo de ejecución de cada implementación en diferentes condiciones.\\
+Para optimizar el tiempo de consulta de la similitud entre dos objetos, se tiene en memoria una matriz con todos los valores de la función similitud. En consecuencia aumenta la complejidad espacial, en las consultas que se realizaron en este trabajo la instancia utilizada no contiene más de $7000$ elementos por lo que la matriz de similitud no supera los $2$ GB de memoria. Por lo tanto, en este caso, es favorable utilizar la matriz.\\
 
 \section{Base de datos de artículos}
 De los algorimos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de bundles se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heurísticas \texttt{Selección de bundles} y \texttt{Selección de bundles proporcional}. Una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución. En \texttt{PAC} se realiza la búsqueda tabú \texttt{Inter-Bundle} luego de la etapa de producción y la \texttt{Intra-Bundle} luego de la selección. En la \texttt{Búsqueda Golosa} de la solución obtenida se realiza la búsqueda tabú \texttt{Intra-Bundle}.\\
@@ -112,10 +113,10 @@ En \ref{res:img-papers-agr-gamma01} y \ref{res:img-papers-agr-gamma09} se visual
   \label{res:img-papers-bubbles-gamma09-hac-intra-inter}
 \end{figure}
 
-De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se observa que para $\gamma$ de valor bajo los perfiles de los artículos están más distribuidos entre los tópicos mientras que para valores más altos los artículos de tópicos . Generando, en este último bundles más cohesivos como se está buscando, pero a la vez se tiene menos diversidad ya que en toda la solución se concentran los valores más representativos de los perfiles de los artículos en un pocos como bien puede observarse en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}.\\
-El comportamiento fue el mismo para todas las estrategias de selección que se utilizaron, la única diferencia fueron los valores finales de la función objetivo.
+De los gráficos \ref{res:img-papers-gamma01-hac-intra-inter} y \ref{res:img-papers-gamma09-hac-intra-inter} se observa que para $\gamma$ con valor cercano a cero, la solución contiene artículos con perfiles que cubren varios tópicos mientras que para $\gamma$ con valores más cercanos a uno, los tópicos de los artículos se concentran en unos pocos. Con esto se cumple el requerimiento de que cuando $\gamma$ se acerca el bundle es más cohesivo pero menos diverso (en \ref{res:img-papers-bubbles-gamma09-hac-intra-inter}. se observa la concentración de tópicos que hay en la solución).\\
+Este comportamiento se repitió para todas las estrategias de selección que se utilizaron, la única diferencia fueron los valores finales de la función objetivo.
 \paragraph{BOBO-100}
-En este caso al ser muy grande la diferencia entre entre la utilización de la heurística Tabú y la ejecución sin ella,  se incluyó para poder visualizar los cambios en la solución.
+En este caso al ser muy grande la diferencia entre la utilización de la heurística Tabú y la ejecución sin ella,  se incluyó la misma para poder visualizar los cambios en la solución.
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{resultados/papers/BOBO/INTRA_INTER/gamma-01.png}
@@ -173,7 +174,7 @@ En este caso al ser muy grande la diferencia entre entre la utilización de la h
 \end{figure}
 \newpage
 \subsection{Búsqueda de Autores}
-Solución de bundles en el que cada uno contiene autores similares de distinta universidad de afiliación.\\
+Solución de bundles en el que cada uno contiene autores que escribieron artículos de tópicos similares y pertenecen a distinta universidad.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de los autores.
   \item \textbf{Complementariedad}: Universidad de pertenencia del autor.
@@ -195,11 +196,11 @@ La instancia elegida, luego de la depuración, cuenta con $5577$ autores en cond
   \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos, la utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estrategia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál su función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las diferencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
+El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos. La utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estratégia de selección \texttt{Proportional}. Casualmente fue la única estrategia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál la función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las diferencias en términos de valor son mínimas y se deben a la conformación de los perfiles de los elementos.\\
 Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
 \newpage
-\subsection{Búsqueda de Instituciones}\label{res:busInstituciones}
-Solución de bundles en el que cada uno contiene las instituciones o universidades similares de regiones diferentes.\\
+\subsection{Búsqueda de universidades}\label{res:busInstituciones}
+Solución de bundles en el que cada uno contiene universidades de distintas regiones en las que se escribieron artículos de tópicos.\\
 \begin{itemize}
   \item \textbf{Similitud}: Función que compara el perfil de las instituciones.
   \item \textbf{Complementariedad}: Región a la que pertence la instituciones.
@@ -222,12 +223,12 @@ Solución de bundles en el que cada uno contiene las instituciones o universidad
 Como se observa en los gráficos anteriores el uso de las búsquedas Tabú siempre mejora la solución obtenida en primer lugar, sin importar que algoritmo se haya utilizado previamente. Particularmente, y al igual que en los demás experimentos, la variante \texttt{BOBO} es siempre la más beneficiada por el uso de la metaheurística ya que el valor de la función objetivo de la solución final por lo menos duplica al correspondiente de la solución original.\\
 A difierencia de los escenarios anteriores el algoritmo \texttt{Goloso} para $\gamma\ =\ 0.9$ no obtuvo resultados buenos como se esperaba.
 \newpage
-\section{Búsqueda de Atracciones turísticas}\label{res:busAtracciones}
+\section{Búsqueda de atracciones turísticas}\label{res:busAtracciones}
 Aquí se muestran las soluciones en las que cada bundle representa un conjunto de atracciones que un turista puede visitar, cada uno de ellos no supera el presupuesto máximo y cada elemento es un tipo de atracción diferente. resultados
 \begin{itemize}
   \item \textbf{Similitud}: Los valores fueron entregados ya calculados.
   \item \textbf{Complementariedad}: Tipo de atracción turística.
-  \item \textbf{presupuesto}: Valor de la atracción.
+  \item \textbf{presupuesto}: Cantidad de dinero que tiene el usuario para utilizar.
 \end{itemize}
 Se generaron soluciones con las siguientes características:\\
 \SolucionBudget
@@ -260,5 +261,5 @@ Se generaron soluciones con las siguientes características:\\
   \label{res:img-cities-agr-gamma09}
 \end{figure}
 
-Al igual que en los demas escenarios de ejecuciones el comportamiento fue el esperado y en todas las estrategias usadas para los distintos algoritmos, aplicando la búsqueda Tabú a la solución obtenida encuentra siempre una mejor. También se puede observar que usando la implementación BOBO para valores de $\gamma$ altos es donde mejor funciona la metaheurística y que la búsqueda golosa siempre esta debajo de la solución HAC.\\
-Solo se muestran los gráficos y comportamientos para las pruebas realizadas con un solo presupuesto, pero los mismos tuvieron el mismo efecto a medida que se cambiaba el valor.
+Al igual que en los demás escenarios de ejecuciones el comportamiento fue el esperado y en todas las estrategias usadas para los distintos algoritmos, aplicando la búsqueda Tabú a la solución obtenida encuentra siempre una mejor. También se puede observar que usando la implementación BOBO para valores de $\gamma$ altos es donde mejor funciona la metaheurística y que la búsqueda golosa siempre esta debajo de la solución HAC.\\
+Solo se muestran los gráficos y comportamientos para las pruebas realizadas con un solo presupuesto, pero los mismos tuvieron el mismo efecto a medida que se cambiaba ese valor.
