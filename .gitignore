@@ -56,3 +56,5 @@ tesis.pdf
 main.pdf
 *.synctex.gz
 *.txss
+*.tcp
+*.tps
