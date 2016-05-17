@@ -6,24 +6,3 @@ En las ejecuciones realizadas con la implementación del algoritmo \textbf{HAC},
 En los experimentos realizados el uso de una variante u otro no resultó ser significativo, al menos con los datos que se usaron.\\
 Las soluciones obtenidas usando HAC y búsquedas golosas para valores de $\gamma$ menores a $0.5$ fueron \textquotedblleft similarmente buenas\textquotedblright , dado que los resultados en términos de función objetivo fueron cercanos. En cambio para $\gamma$ más cercanos a uno se observó que el valor de la función objetivo de las soluciones HAC resultaron significativamente mayores. En todos los casos se identificó que las relaciones interbundles son mejores en las soluciones del algoritmo goloso, logrando soluciones más interdependientes.
 
-\section{Valores cercanos a la cota superior}\label{conc:valoresOptimos}
-Dada la función a maximizar $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v \in S_{j}} s(u,v))$$ es posible calcular la distancia entre el valor obtenido de una solución y la cota máxima de la función según el $\gamma$.\\
-Para las siguientes cotas se suponen escenarios ideales en el cuál la soluciones contiene bundles donde todos sus elementos tienen una similitud máxima (igual a 1) y los bundles entre si son completamente diferentes, o sea, la similitud entre cada bundle es 0. Con estas hipótesis se puede ver que la reemplazar la función por $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma 1\ +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v \in S_{j}} 0)$$ que luego se transforma en $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma 1\ +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) 1$$ como en nuestro caso $k\ =\ 10$ y la cantidad de items por bundle es $5$ entonces la sumatoria se resume en $$\displaystyle\gamma\ 100\ +\ (1-\gamma)\ 45$$
-Para los $\gamma \in (0.1, 0.3, 0.5, 0.7, 0.9)$ los resultados de la función son los siguientes:\\
-\begin{table}[H]
-  \centering
-  \resizebox{0.5\textwidth}{!} {
-    \begin{tabular}{|lc|}
-    \hline
-    $\gamma$ & Valor función objetivo \\
-    \hline
-    $0.1$  & $50.5$ \\
-    $0.3$  & $61.5$ \\
-    $0.5$  & $72.5$ \\
-    $0.7$  & $83.5$ \\
-    $0.9$  & $94.5$ \\
-    \hline
-    \end{tabular}
-  }
-    \caption {Cota superior de la función para cada $\gamma$}
-\end{table}
