@@ -44,8 +44,6 @@ ejecución (mm:ss)} \\
   }
   \caption {Valor función objetivo y tiempo de ejecución para la búsqueda de artículos similares}
 \end{table}
-Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ se acerca a $1$. Suponemos que esto se debe a la estrategia \texttt{produce and choose}. El objetivo de la primer etapa es producir bundles con máximo valor de similitud. En el caso de que se requiera una solución con mayor separación entre bundles, al haber producido menos cantidad de bundles existen menos posibilidades para generar una solución más dispersa. Un mismo análisis se podría hacer si comparamos \texttt{BOBO-10} y \texttt{HAC}.\\
-Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección de a pares obtuvimos que para \texttt{BOBO-160} y \texttt{HAC} los tiempos aumentaron a $40$ minutos y para \texttt{BOBO-10} a $2$ minutos. En cuanto al valor de la función objetivo el único beneficiado fue \texttt{BOBO-10} ya que para \texttt{HAC} empeoró y para \texttt{BOBO-160} el aumento fue muy pequeño en comparación al incremento de tiempo.
 \subsection{Autores}
 \Solucion
 {}

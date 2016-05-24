@@ -231,7 +231,7 @@ La instancia elegida, luego de la depuración, cuenta con $5577$ autores en cond
   \label{res:img-autores-agr-gamma09}
 \end{figure}
 
-El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos. La utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{SingleHAC}, solo mejoró con la estrategia de selección \texttt{Proportional}. Casualmente fue la única estrategia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál la función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las diferencias en términos de valor son mínimas que se deben a la conformación de los perfiles de los elementos.\\
+El comportamiento de las ejecuciones fueron muy similares a las que se obtuvieron en la búsqueda de artículos. La utilización de la Búsqueda Tabú mejoró sustancialmente el algoritmo \texttt{BOBO} en todos sus variantes. En el caso de \texttt{Efficient - HAC}, solo mejoró con la estrategia de selección \texttt{Proportional}. Casualmente fue la única estrategia que tuvo un comportamiento diferente en relación a la búsqueda de artículos, en la cuál la función objetivo siempre tuvo valores mayores o iguales a por ejemplo la selección \texttt{INTRA} y en este caso fue menor o igual. Igualmente las diferencias en términos de valor son mínimas que se deben a la conformación de los perfiles de los elementos.\\
 
 Como se menciona anteriormente, al no comportarse de una manera diferente a la búsqueda de artículos no se incluyeron los gráficos.
 \newpage
@@ -298,6 +298,7 @@ Se generaron soluciones con las siguientes características:\\
   \label{res:img-cities-agr-gamma09}
 \end{figure}
 
-Al igual que en los demás escenarios de ejecuciones el comportamiento fue el esperado y en todas las estrategias usadas para los distintos algoritmos, aplicando la búsqueda Tabú a la solución obtenida encuentra siempre una mejor. También se puede observar que usando la implementación BOBO para valores de $\gamma$ altos es donde mejor funciona la metaheurística y que la búsqueda golosa siempre esta debajo de la solución HAC.\\
+En esta instancia se repite el comportamiento de los resultados obtenidos en las consultas realizadas sobre la base de datos de artículos. La solución del algoritmo goloso supera al de PAC cuando la estrategia de producción es con BOBO pero con HAC valor de la función objetivo es similar. También, en esta instancia, se obtuvieron mejores valores con la selección proporcional.\\
+Al aplicar la búsqueda tabú se mejora sustancialmente la solución obtenida con PAC con la estrategia BOBO, obteniendo una solución tan optima como con el resto de los algoritmos. Con el resto de los algoritmos no se obtiene una mejora sustancial de la solución al aplicar la búsqueda tabú.\\
 
 Solo se muestran los gráficos y comportamientos para las pruebas realizadas con un solo presupuesto, pero los mismos tuvieron el mismo efecto a medida que se cambiaba ese valor.

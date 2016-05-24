@@ -11,7 +11,7 @@ Cada elemento $s_i \in S$ es válido si y sólo si satisface las reglas:
 	\item \textbf{Complementaridad:} dado el atributo $\alpha$ de los objetos, $\forall u,v \in s_i, u.\alpha \neq v.\alpha$
 	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall s_i \in S, f(s_i) \leq \beta$, donde $f(s_i)$ es la suma de costos de los elementos pertenecientes al bundle.
 \end{itemize}		  
-El parámetro $\gamma$ sirve para que el usuario pueda definir el balance entre que la solución contenga bundles más cohesivos (intra) o la diversidad de los bundles (inter) de una solución. Si El usuario prioriza una solución inter el valor de $\gamma$ será cercano a uno y si lo que prioriza es la intra el valor estará cercano a cero.\\
+El parámetro $\gamma$ sirve para que el usuario pueda definir el balance entre que la solución contenga bundles más cohesivos (intra) o la diversidad de los bundles (inter) de una solución. Si El usuario prioriza una solución con bundles cohesivos el valor de $\gamma$ será cercano a uno mientras que si lo que prioriza es una solución con bundles diversos el valor estará cercano a cero.\\
 En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, lo que implica que por el momento no se puede encontrar una solución exacta en tiempo polinomial. En base a esto, este trabajo se enfoca en encontrar soluciones suficientemente buenas para el problema en tiempo polimonial por lo que se implementaron los algoritmos Produce-and-Choose y el goloso.
 
 \section{Produce-and-Choose}
