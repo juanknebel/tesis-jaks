@@ -78,9 +78,6 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes) {
     return solution;
 }
 
-#include <iostream>
-using namespace std;
-
 // ESTA ES LA VERSION QUE SOLO MAXIMIZA LA FUNCION OBJECTIVO
 SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
   IntSet emptyIdSet;
