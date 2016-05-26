@@ -1,7 +1,7 @@
 #include "greedySolver.h"
 
 // ESTA ES LA IMPLEMENTACION ORIGINAL
-SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes) {
+SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
     IntSet emptyIdSet;
     SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
     SnowFlakeVector *solution = new SnowFlakeVector();
@@ -79,7 +79,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes) {
 }
 
 // ESTA ES LA VERSION QUE SOLO MAXIMIZA LA FUNCION OBJECTIVO
-SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes) {
+SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes) {
   IntSet emptyIdSet;
   SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
   SnowFlakeVector *solution = new SnowFlakeVector();
@@ -152,7 +152,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes) {
     for(IntSet::iterator it = theIds.begin(); it != theIds.end(); ++it) {
       for (int i = 0; i < numSnowFlakes; ++i) {
 	SnowFlake theSnowAtiPosition = (*solution)[i];
-	int newHashValue = hashValueBundles[i] + (*it);
+	int newHashValue = hashValueBundles[i] + (*it) + 1;
 	bool existSameBundle = false;
 	for (int j = 0; j < numSnowFlakes; ++j) {
 	  existSameBundle = existSameBundle || (newHashValue == hashValueBundles[j]);
@@ -181,7 +181,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes) {
       theNewIdsForBundle.insert(theBestId);
       SnowFlake theNewBestSnowFlake(theNewIdsForBundle, this->problem_);
       (*solution)[idBestBundle] = theNewBestSnowFlake;
-      hashValueBundles[idBestBundle] += theBestId;
+      hashValueBundles[idBestBundle] = hashValueBundles[idBestBundle] + theBestId + 1;
     }
     isNotComplete = hasBetterFlake;
     hasBetterFlake = false;
