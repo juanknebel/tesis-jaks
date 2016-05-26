@@ -155,6 +155,33 @@ Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Doubl
   return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
 }
 
+Double SnowFlake::getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
+  Double sumIntraCompat = 0.00;
+  for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
+    if (it->ids().size() > 0) {
+      sumIntraCompat += it->getSumIntraCompat();
+    }
+  }
+  return sumIntraCompat;
+}
+
+Double SnowFlake::getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
+  Double sumOneMinusInter = 0.00;
+  for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
+    if (it->ids().size() > 0) {
+      for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
+        if (it2->ids().size() > 0) {
+          double temp = 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
+          int id1 = it->getIdentificator();
+          int id2 = it2->getIdentificator();
+          sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
+        }
+      }
+    }
+  }
+  return sumOneMinusInter;
+}
+
 Uint SnowFlake::getIdentificator() const {
     return this->identificator_;
 }
