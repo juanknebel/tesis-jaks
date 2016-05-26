@@ -11,7 +11,7 @@ void WriterSolutionArticles::writeSolution(const std::vector<SnowFlake> &solutio
             file << "Bundle " << bundle << this->separator_ << (node2name == NULL ? node : node2name->getNodebyName(node)) << this->separator_ << this->endOfLIne_;
         }
     }
-    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
+    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, interSimilarityWeight)<<this->endOfLIne_;
     file << "Inter" << this->separator_ << SnowFlake::getInter(solution, interSimilarityWeight)<<this->endOfLIne_;
     file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, interSimilarityWeight);
     file.close();
