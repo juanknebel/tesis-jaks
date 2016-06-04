@@ -301,32 +301,25 @@ El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
 \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
+\STATE $Inter(S) = \sum_{b_1, b_2 \in S}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $iteration \leftarrow 0$
 \STATE $tabuBundles \leftarrow \emptyset$
 \STATE $bestSolution \leftarrow S$
-\STATE $visitSolution \leftarrow S$
-\STATE $thresholdScore \leftarrow -\infty$ 
+\STATE $visitSolution \leftarrow S$ 
 \WHILE {$iteration < MAX\_ITER$}
   \STATE $worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$
 	\STATE $centroidBundle \leftarrow getCentroid(visitSolution)$
 	\STATE $bestBundles \leftarrow \text{fetch first MAX\_BUND} \max_{b \in cand \setminus tabuBundles}{Dist(b, centroidBundle)}$
-	\STATE $scoreInter \leftarrow \sum_{b \in visitSolution}{Inter(b, iterationSolution)}$
+	\STATE $nextVisit \leftarrow \emptyset$
 	\FOR {$\text{each}\ aBundle \in bestBundles$}
     \STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{aBundle\right\}$
-    \STATE $newScoreInter \leftarrow \sum_{b \in iterationSolution}{Inter(b, iterationSolution)}$
-    \IF {$newScoreInter > scoreInter$}
-			\STATE $thresholdScore \leftarrow scoreInter$
-      \STATE $scoreInter \leftarrow newScoreInter$
-      \STATE $visitSolution \leftarrow iterationSolution$
-    \ELSE
-      \IF {$newScoreInter > thresholdScore$}
-        \STATE $thresholdScore \leftarrow newScoreInter$
-        \STATE $visitSolution \leftarrow iterationSolution$
-      \ENDIF
+    \IF {$inter(iterationSolution) > inter(nextVisit)$}
+			\STATE $nextVisit \leftarrow iterationSolution$
     \ENDIF
   \ENDFOR
-  \IF {$\omega(iterationSolution) > \omega(bestSolution)$}
-    \STATE $bestSolution \leftarrow iterationSolution$
+	\STATE $visitSolution \leftarrow nextVisit$
+  \IF {$\omega(visitSolution) > \omega(bestSolution)$}
+    \STATE $bestSolution \leftarrow visitSolution$
   \ENDIF
   \STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
 	\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$
