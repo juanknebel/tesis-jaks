@@ -18,7 +18,7 @@ void writeSolution(SnowFlakeVector &solution, Configurator &configurator, String
         WriterSolution* theWriter = configurator.getTheWrtiter();
         std::cout << "Writing the solution into the file: " << fileName << std::endl;
         theWriter->writeSolution(solution, fileName, configurator.getTheNodeName(), interSimilarityWeight);
-        WriterSolution::writeInterAndIntraValues(solution, fileName);
+        //WriterSolution::writeInterAndIntraValues(solution, fileName);
 	}
 }
 
@@ -27,7 +27,7 @@ void execute(ConfigurationJaks& configFile) {
     Solver* theSolver = theConfigurator->getTheSolver();
     Double gamma = theConfigurator->getGamma();
     Double interSimilarityWeight = 1.00 - gamma;
-	SnowFlakeVector* solution = 0;
+    SnowFlakeVector* solution = 0;
     SnowFlakeVector newSolution;
 	try {
         solution = theSolver->solve(theConfigurator->getNumToProduce());
@@ -44,19 +44,16 @@ void execute(ConfigurationJaks& configFile) {
 	}*/
 
     showSolution(newSolution, *theConfigurator);
-
     std::stringstream fileName;
     fileName << theConfigurator->getDirectoryOfWork() << "SolverWithLocal-";
     fileName << theConfigurator->getSolverName();
     fileName << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
     writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
-
     std::stringstream fileNameOrg;
     fileNameOrg << theConfigurator->getDirectoryOfWork() << "Solver";
     fileNameOrg << theConfigurator->getSolverName();
     fileNameOrg << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
     writeSolution(*solution, *theConfigurator, fileNameOrg.str(), interSimilarityWeight);
-
     int i=0;
     for (auto& bundle : *solution) {
         bundle.setIdentificator(i);
@@ -64,6 +61,6 @@ void execute(ConfigurationJaks& configFile) {
     }
     std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, interSimilarityWeight)<<std::endl;
     std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, interSimilarityWeight)<<std::endl;
-	delete solution;
+    delete solution;
     delete theConfigurator;
 }

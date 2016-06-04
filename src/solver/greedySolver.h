@@ -9,6 +9,8 @@ public:
     }
     ~GreedySolver() {}
     SnowFlakeVector* produceManySnowflakes(int numSnowflakes);
+    SnowFlakeVector* produceManySnowflakes1(int numSnowflakes);
+    SnowFlakeVector* produceManySnowflakes2(int numSnowflakes);
     int numToProduce(int numRequested);
 };
 

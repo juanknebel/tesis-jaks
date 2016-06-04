@@ -30,10 +30,10 @@ void ProduceAndChooseSolver::setInterSimilarityWeight(Double interSimilarityWeig
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::solve(int numSnowFlakes) {
-	SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
-    SnowFlake::sortByDecresingSumCompat(*produced);
-	produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
-	return produced;
+  SnowFlakeVector* produced = this->produceManySnowflakes(this->numToProduce(numSnowFlakes));
+  SnowFlake::sortByDecresingSumCompat(*produced);
+  produced = this->getTopSolutionByRankingStrategy(produced, numSnowFlakes);
+  return produced;
 }
 
 SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionByRankingStrategy(SnowFlakeVector* produced, int numRequested ) {

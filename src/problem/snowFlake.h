@@ -45,6 +45,8 @@ public:
     Uint getIdentificator() const;
     void setIdentificator(Uint theIdentificator);
     static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
+    static Double getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
+    static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
     Double getSumIntraCompatWithSpecificProfile() const;
 };
 
