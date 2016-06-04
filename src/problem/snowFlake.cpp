@@ -155,7 +155,7 @@ Double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, Doubl
   return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
 }
 
-Double SnowFlake::getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
+Double SnowFlake::getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
   Double sumIntraCompat = 0.00;
   for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
     if (it->ids().size() > 0) {
@@ -165,7 +165,7 @@ Double SnowFlake::getInter(const std::vector<SnowFlake>& solution, Double interS
   return sumIntraCompat;
 }
 
-Double SnowFlake::getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
+Double SnowFlake::getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight) {
   Double sumOneMinusInter = 0.00;
   for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
     if (it->ids().size() > 0) {
