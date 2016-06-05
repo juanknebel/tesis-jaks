@@ -1,23 +1,27 @@
-Para el problema de devolver un conjunto de bundles diversos y complementarios sujeto a un presupuesto se implementó el algoritmo Produce-and-Choose (PAC), sugerido en el artículo \cite{compositeRetrival}, consiste en generar un conjunto de bundles y luego elegir el posible mejor subconjunto para que sea la solución. Adicionalmente se desarrolló un algoritmo goloso en el que la solución se construye seleccionando el ítem que maximiza la función objetivo en cada paso.\\
-En pos de mejorar las soluciones obtenidas se implantaron dos metaheurísticas de la familia de la búsqueda tabú. La primera tiene como objetivo encontrar mejores bundles en la etapa de producción del algoritmo PAC. Mientras que la segunda explora las soluciones vecinas de un resultado dado.\\
+Para el problema de devolver un conjunto de paquetes diversos y complementarios sujeto a un presupuesto se implementó el algoritmo Produce-and-Choose (PAC), sugerido en el artículo \cite{compositeRetrival}, consiste en generar un conjunto de paquetes y luego elegir el posible mejor subconjunto para que sea la solución. Adicionalmente se desarrolló un algoritmo goloso en el que la solución se construye seleccionando el ítem que maximiza la función objetivo en cada paso.
+
+En pos de mejorar las soluciones obtenidas se implantaron dos metaheurísticas de la familia de la búsqueda tabú. La primera tiene como objetivo encontrar mejores paquetes en la etapa de producción del algoritmo PAC. Mientras que la segunda explora las soluciones vecinas de un resultado dado.
 \section{Problema}
-El problema que se plantea es devolver un conjunto de bundles $S = \left\{s_1, \ldots, s_k\right\}$ compuesto con elementos de $I=\left\{i_1,\ldots, i_n\right\}$, en donde el elemento $S_i \in P(I)$ es un conjunto de objetos que satisface las reglas de \textit{complementaridad} que no permite que existen dos objetos con igual atributo en el mismo bundle y de \textit{presupuesto} para que la suma de los costos de los objetos no exceda el presupuesto elegido.\\
-La definición formal del problema es que dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$, una función de similitud $s(u,v): I \times I \rightarrow [0;1]$, una de costo $f(u): I \rightarrow (0;+\infty]$, un presupuesto $\beta \in \Re+$ (servirá como cota máxima para formar un bundle), un atributo complementario $\alpha$, un valor $\gamma \in (0:1)$ y $k \in N$ que indica la cantidad de bundles que debe tener la solución se desea hallar el conjunto válido de bundles $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
+El problema que se plantea es devolver un conjunto de paquetes $S = \left\{s_1, \ldots, s_k\right\}$ compuesto con elementos de $I=\left\{i_1,\ldots, i_n\right\}$, en donde el elemento $S_i \in P(I)$ es un conjunto de objetos que satisface las reglas de \textit{complementaridad} que no permite que existen dos objetos con igual atributo en el mismo paquete y de \textit{presupuesto} para que la suma de los costos de los objetos no exceda el presupuesto elegido.
+
+La definición formal del problema es que dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$, una función de similitud $s(u,v): I \times I \rightarrow [0;1]$, una de costo $f(u): I \rightarrow (0;+\infty]$, un presupuesto $\beta \in \Re+$ (servirá como cota máxima para formar un paquete), un atributo complementario $\alpha$, un valor $\gamma \in (0:1)$ y $k \in N$ que indica la cantidad de paquetes que debe tener la solución se desea hallar el conjunto válido de paquetes $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
 \begin{equation} \label{des:eq-fnObj}
 \sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{\gamma s(u,v)}} + \sum_{1 \leq i \leq j \leq k}{(1-\gamma) (1-\max_{u \in S_i, v \in S_j}{s(u,v)})}
 \end{equation}
 Cada elemento $s_i \in S$ es válido si y sólo si satisface las reglas:
 \begin{itemize}
 	\item \textbf{Complementaridad:} dado el atributo $\alpha$ de los objetos, $\forall u,v \in s_i, u.\alpha \neq v.\alpha$
-	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall s_i \in S, f(s_i) \leq \beta$, donde $f(s_i)$ es la suma de costos de los elementos pertenecientes al bundle.
+	\item \textbf{Presupuesto:} dada la función de costo $f$ y el presupuesto $\beta$, entonces $\forall s_i \in S, f(s_i) \leq \beta$, donde $f(s_i)$ es la suma de costos de los elementos pertenecientes al paquete.
 \end{itemize}		  
-El parámetro $\gamma$ sirve para que el usuario pueda definir el balance entre que la solución contenga bundles más cohesivos (intra) o la diversidad de los bundles (inter) de una solución. Si El usuario prioriza una solución con bundles cohesivos el valor de $\gamma$ será cercano a uno mientras que si lo que prioriza es una solución con bundles diversos el valor estará cercano a cero.\\
-En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ bundles de items complementarios con un presupuesto es NP-Completo, lo que implica que por el momento no se puede encontrar una solución exacta en tiempo polinomial. En base a esto, este trabajo se enfoca en encontrar soluciones suficientemente buenas para el problema en tiempo polimonial por lo que se implementaron los algoritmos Produce-and-Choose y el goloso.
+El parámetro $\gamma$ sirve para que el usuario pueda definir el balance entre que la solución contenga paquetes más cohesivos (intra) o la diversidad de los paquetes (inter) de una solución. Si El usuario prioriza una solución con paquetes cohesivos el valor de $\gamma$ será cercano a uno mientras que si lo que prioriza es una solución con paquetes diversos el valor estará cercano a cero.
+
+En \cite{compositeRetrival} se demuestra que la complejidad de devolver $k$ paquetes de items complementarios con un presupuesto es NP-Completo, lo que implica que por el momento no se puede encontrar una solución exacta en tiempo polinomial. En base a esto, este trabajo se enfoca en encontrar soluciones suficientemente buenas para el problema en tiempo polimonial por lo que se implementaron los algoritmos Produce-and-Choose y el goloso.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de bundles y luego selecciona los bundles que pertenecerán a la solución.\\
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de paquetes y luego seleccionar los que pertenecerán a la solución.
 
-Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $\alpha$ el atributo complementario, $f: 2^{I} \rightarrow \rm I \!R$ la función de presupuesto, $\beta$ el limite del presupuesto, $\gamma$ para ponderar si se quiere bundles más cohesivos o no y $k$ la cantidad de bundles a generar. El algoritmo devuelve un conjunto de bundles válidos.\\
+Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $\alpha$ el atributo complementario, $f: 2^{I} \rightarrow \rm I \!R$ la función de presupuesto, $\beta$ el limite del presupuesto, $\gamma$ para ponderar si se quiere paquetes más cohesivos o no y $k$ la cantidad de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
@@ -29,10 +33,11 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-La función \texttt{ProduceBundle} genera un conjunto de bundles candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de bundles candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un bundle del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los bundles que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los bundles que pertenecen a la solución.
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.
 
-\subsection{Generación de bundles}
-La generación de bundles se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento, que consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre ellos (inter) el agrupamiento será mejor.\\
+\subsection{Generación de paquetes}
+La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento, que consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre ellos (inter) el agrupamiento será mejor.
+
 No existe una definición formal de que es un grupo correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas. Si se permite que los grupos estén acoplados, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
 
 \begin{figure}[H]
@@ -41,12 +46,14 @@ No existe una definición formal de que es un grupo correctamente constituido po
    \caption{}
    \label{res:img-howToCluster}
 \end{figure}
-En este trabajo el agrupamiento esta definida para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecido posible y así obtener bundles coehsivos.\\
-Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales re ubican iterativamente los objetos moviéndolos de un grupo a otro. Generalmente, estos métodos, requieren que la cantidad de grupos a generar sea preestablecido. Los métodos jerárquicos construyen los grupos mediante la partición recursiva de los grupos de objetos y no requieren preestablecer una cantidad pre definica anteriormente.\\
-En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.\\
+En este trabajo el agrupamiento esta definida para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecido posible y así obtener paquetes coehsivos.
+
+Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales re ubican iterativamente los objetos moviéndolos de un grupo a otro. Generalmente, estos métodos, requieren que la cantidad de grupos a generar sea preestablecido. Los métodos jerárquicos construyen los grupos mediante la partición recursiva de los grupos de objetos y no requieren preestablecer una cantidad pre definica anteriormente.
+
+En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ grupos del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un bundle válido alrededor de este, en caso que el bundle generado sea suficientemente bueno se agrega al conjunto de bundles candidatos y los ítems del bundle se eliminan de $I$. La generación de bundles continúa hasta que se cumpla el criterio de parada que es la generación de $k$ bundles. Con \texttt{BOBO-k} pueden quedar items excluidos de los bundles generados, por lo tanto se desarrolló una variante del método que es el \texttt{BOBO-Ex} (Ex de \textit{exhaustive}) en el cual todos los items pertenecen a un bundle. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío.\\
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ grupos del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos. Con \texttt{BOBO-k} pueden quedar ítems excluidos de los paquetes generados, por lo tanto se desarrolló una variante del método que es el \texttt{BOBO-Ex} (Ex de \textit{exhaustive}) en el cual todos los items pertenecen a un paquete. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío.\\
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -70,12 +77,14 @@ El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar 
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
 
-La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{generarBundle} genera un bundle a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al bundle que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto. La función \texttt{Score} calcula el valor intra del bundle. Se dice que un bundle es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.\\
+La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
-El agrupamiento jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un grupo unitario y luego sucesivamente se unen un par de grupos hasta que todos se hayan unido en un único gran grupo que contenga a todos los objetos, este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único grupo al que todos los objetos pertenecen y recursivamente se realiza una división del grupo hasta obtener grupos unitarios.\\
-Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos grupos han sido unidos. Por ejemplo la unión del grupo que contiene a \textit{Indiana tobacco lawsuit} con el perteneciente a \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el grupo resultante se une con el que contiene a \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos grupos hasta que quede uno solo.\\
-Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma permite reconstruir la historia de las uniones de los grupos. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de grupos con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.\\
+El agrupamiento jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un grupo unitario y luego sucesivamente se unen un par de grupos hasta que todos se hayan unido en un único gran grupo que contenga a todos los objetos, este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único grupo al que todos los objetos pertenecen y recursivamente se realiza una división del grupo hasta obtener grupos unitarios.
+
+Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos grupos han sido unidos. Por ejemplo la unión del grupo que contiene a \textit{Indiana tobacco lawsuit} con el perteneciente a \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el grupo resultante se une con el que contiene a \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos grupos hasta que quede uno solo.
+
+Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma permite reconstruir la historia de las uniones de los grupos. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de grupos con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.
 
 \begin{figure}[H]
   \centering
@@ -84,7 +93,7 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
   \label{des:Dendrogram}
 \end{figure}
 
-\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las restricciones de similitud o el costo del bundle supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.\\
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las restricciones de similitud o el costo del paquete supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -115,11 +124,11 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 \caption{Simple C-HAC}\label{alg:SimpleC-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos donde se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$.\\
+El algoritmo ejecuta $N - c$ pasos donde se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$.
 
-En cada iteración se unen los dos grupos que maximizan la función \textit{Score}. El artículo \cite{compositeRetrival} propone que \textit{Score} se calcule sumarizando la similitud entre todos los objetos del grupo candidato. Este criterio de unión es local, ya que presta atención unicamente a la similitud inter de cada grupo. Por lo que se propuso un criterio que tenga en cuenta toda la estructura del agrupamiento al momento de decidir la unión de los grupos. La función que se propone es \textit{Sim} que sumariza la similitud entre todos los elementos de la unión de los grupos y se le suma la similitud de los dos elementos más disimiles proporcionando el peso con el valor de $\gamma$ entre la similitud y el disímil.\\
+En cada iteración se unen los dos grupos que maximizan la función \textit{Score}. El artículo \cite{compositeRetrival} propone que \textit{Score} se calcule sumarizando la similitud entre todos los objetos del grupo candidato. Este criterio de unión es local, ya que presta atención unicamente a la similitud inter de cada grupo. Por lo que se propuso un criterio que tenga en cuenta toda la estructura del agrupamiento al momento de decidir la unión de los grupos. La función que se propone es \textit{Sim} que sumariza la similitud entre todos los elementos de la unión de los grupos y se le suma la similitud de los dos elementos más disimiles proporcionando el peso con el valor de $\gamma$ entre la similitud y el disímil.
 
-La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función \textit{Sim} para \texttt{$\gamma$ igual a uno} (que es el mismo cálculo para que para el criterio original) y con \texttt{$\gamma$ igual a cero} ambos criterios en el proceso de agrupamiento de ocho objetos. Cada elipse corresponde a un paso sucesivo de la agrupación, donde en los primeros cuatro pasos los grupos generados son iguales. Luego en el caso de \texttt{$\gamma$ igual a uno} se unen el par de grupos de arriba (después el par de abajo) porque la sumatoria de la similitud entre los objetos $d_1,d_2,d_3,d_4$ es mayor a $d_1,d_2,d_5,d_6$. Mientras que con \texttt{$\gamma$ igual a cero} une el par de grupos de la izquierda (después el par de la derecha) porque la similitud entre $d_1$ y $d_6$ es mayor a la similitud entre $d_1$ y $d_4$.\\
+La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función \textit{Sim} para \texttt{$\gamma$ igual a uno} (que es el mismo cálculo para que para el criterio original) y con \texttt{$\gamma$ igual a cero} ambos criterios en el proceso de agrupamiento de ocho objetos. Cada elipse corresponde a un paso sucesivo de la agrupación, donde en los primeros cuatro pasos los grupos generados son iguales. Luego en el caso de \texttt{$\gamma$ igual a uno} se unen el par de grupos de arriba (después el par de abajo) porque la sumatoria de la similitud entre los objetos $d_1,d_2,d_3,d_4$ es mayor a $d_1,d_2,d_5,d_6$. Mientras que con \texttt{$\gamma$ igual a cero} une el par de grupos de la izquierda (después el par de la derecha) porque la similitud entre $d_1$ y $d_6$ es mayor a la similitud entre $d_1$ y $d_4$.
 
 \begin{figure}[H]
   \centering
@@ -128,7 +137,7 @@ La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función
   \label{des:LinkageCriteria}
 \end{figure}
 
-Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la agrupación se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.\\
+Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la agrupación se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -179,8 +188,9 @@ Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios d
 \caption{Efficient C-HAC}\label{alg:Efficient C-HAC}
 \end{algorithm}
 
-\subsection{Selección de bundles}
-Al finalizar la producción de bundles comienza la etapa de selección de bundles en la cual se deben seleccionar los $k$ bundles para la solución. El problema de seleccionar los bundles que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los bundles y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).\\
+\subsection{Selección de paquetes}
+Al finalizar la producción de paquetes comienza la etapa de selección de los mismos, en la cual se deben seleccionar los $k$ mejores paquetes para la solución. El problema de seleccionar los que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los paquetes y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).
+
 Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vértices con k nodos, consiste en dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
 
 \begin{equation}
@@ -193,7 +203,7 @@ El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértice
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{compositeRetrival}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.\\
+A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{compositeRetrival}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -207,11 +217,12 @@ A esta nueva instancia del problema se le aplica la heurística golosa, del art�
 \ENDWHILE
 \RETURN $C$
 \end{algorithmic}
-\caption{Selección de bundles}\label{alg:chooseBundles}
+\caption{Selección de paquetes}\label{alg:chooseBundles}
 \end{algorithm}
 
-En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los bundles de la solución. En cada iteración se elije al bundle que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.\\
-Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundles seleccionados en la iteración $i$ se agrega a la solución el bundle que cumple con:
+En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
+
+Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
 
 \begin{equation}
 \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
@@ -229,14 +240,15 @@ Sea $B$ el conjunto de bundles producidos y $S \subseteq B$ el conjunto de bundl
 \ENDWHILE
 \RETURN $S$
 \end{algorithmic}
-\caption{Selección de bundles proporcional}\label{alg:algSelProp}
+\caption{Selección de paquetes proporcional}\label{alg:algSelProp}
 \end{algorithm}
 
 \section{Algoritmo goloso}
-Un algoritmos goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución óptima al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.\\
-Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} de construir una cantidad suficiente bundles y luego seleccionar un conjunto se puede suponer que las soluciones se enfocan más en la parte intra que inter, esto motivo a realizar a implementar una heurística.\\
-El algoritmo goloso que se propone comienza con con los $k$ bundles de la solución vacíos e iterativamente se agrega un item, que no pertence a la solución, en el bundle que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de items posibles.
+Un algoritmos goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución óptima al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
 
+Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} de construir una cantidad suficiente paquetes y luego seleccionar un conjunto se puede suponer que las soluciones se enfocan más en la parte intra que inter, esto motivo a realizar a implementar una heurística.
+
+El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos e iterativamente se agrega un item, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de ítems posibles.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -274,25 +286,28 @@ El algoritmo goloso que se propone comienza con con los $k$ bundles de la soluci
 \end{algorithm}
 
 \section{Búsquedas Tabú}
-Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos consisten en comenzar con una solución e iterativamente moverse a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de búsqueda. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.\\
-\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que, cuando una solución determinada es visitada se marca como tabú el movimiento que la generó por una determinada cantidad de iteraciones. Se guarda el movimiento y no la solución ya que en cada iteración sería muy costoso chequear si la nueva generación es tabú o no. Por otro al incluir el movimiento se están prohibiendo soluciones no exploradas que podrían ser mejores. Por este motivo surge el criterio de aspiración. El más conocido consiste en permitir un movimiento prohibido solo si supera en valor de su función objetivo a la mejor solución conocida hasta ahora. De esta manera lo que se busca es evitar caer en ciclos y mínimos o máximos locales.\\
-Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.\\
-Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la solución actual y los bundles ya generados; la otra consiste en mejorar los bundles con los items que quedaron fuera de la solución.
+Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos consisten en comenzar con una solución e iterativamente moverse a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de búsqueda. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
+
+\textbf{Tabú search} es una metaheurística, de la familia de las búsquedas locales, que relaja la primer regla de las búsquedas locales tradicionales y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos o mínimos locales y encontrar una mejor solución (en caso que existiese). Otras de las modificaciones que se agregan es que, cuando una solución determinada es visitada se marca como tabú el movimiento que la generó por una determinada cantidad de iteraciones. Se guarda el movimiento y no la solución ya que en cada iteración sería muy costoso chequear si la nueva generación es tabú o no. Por otro al incluir el movimiento se están prohibiendo soluciones no exploradas que podrían ser mejores. Por este motivo surge el criterio de aspiración. El más conocido consiste en permitir un movimiento prohibido solo si supera en valor de su función objetivo a la mejor solución conocida hasta ahora. De esta manera lo que se busca es evitar caer en ciclos y mínimos o máximos locales.
+
+Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.
+
+Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
 \subsection{Inter-Bundle}
-La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de bundles de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los bundles generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.\\
+La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
 
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
-	\item Quitar de la solución el bundle con menor Inter.
-	\item Determinar el bundle centroide de la solución.
-	\item Calcular la función objetivo agregando uno de los $K$ bundles generados más lejos del centroide.
+	\item Quitar de la solución el paquete con menor Inter.
+	\item Determinar el paquete centroide de la solución.
+	\item Calcular la función objetivo agregando uno de los $K$ paquetes generados más lejos del centroide.
 	\item Quedarse con la solución con mayor función objetivo. 
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solucion y B el conjunto de todos los bundles producidos. El bundle (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el bundle que tiene mayor similitud entre los bundles de la solución, sin tener en cuenta al bundle a reemplazar, entonces el centroide es:
+Sea $S$ el conjunto de paquetes de la solucion y B el conjunto de todos los paquetes producidos. El paquete (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el paquete que tiene mayor similitud entre los restantes de la solución, sin tener en cuenta al indicado a reemplazar, entonces el centroide es:
 $$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$$
-El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el bundle $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el paquete $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$S\text{ solucion},cand\text{ conjunto valido de bundles},\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
@@ -327,20 +342,20 @@ El bundle de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right
 \ENDWHILE
 \RETURN $bestSolution$
 \end{algorithmic}
-\caption{Búsqueda tabú sobre bundles}\label{alg:algBusTabuBundle}
+\caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
 \end{algorithm}
 
 \subsection{Intra-Bundle}
-En Intra-Bundle explora soluciones con bundles más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
+En Intra-Bundle explora soluciones con paquetes más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
 \begin{enumerate}
-	\item Obtener el bundle menos cohesivos de la solución.
-	\item Determinar el centroide del bundle.
+	\item Obtener el paquete menos cohesivos de la solución.
+	\item Determinar el centroide del ppaquete.
 	\item Hallar el ítem más alejado del centroide.
-	\item Calcular el inter del bundle agregando uno de los $K$ items más cercano del centroide.
-	\item Generar un nuevo bundle en la solución con el item que maximiza el inter.
+	\item Calcular el inter del paquete agregando uno de los $K$ items más cercano del centroide.
+	\item Generar un nuevo paquete en la solución con el item que maximiza el inter.
 \end{enumerate}
 
-Sea $S$ el conjunto de bundles de la solución e $I$ el conjunto de ítems, el bundle de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
+Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
