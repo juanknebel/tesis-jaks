@@ -5,9 +5,13 @@ restaurants = "restaurants"
 kitchen = "kitchen"
 restaurantKitchenType = "restaurant_kitchen"
 similarity = "similarity"
+hostName = "localhost"
+userDb = "tesis"
+paswdDb = "tesis"
+dbName = "tesis_restauratns000"
 
 def insertCities():
-	db = mysql.connector.connect(host="localhost", user="tesis", passwd="tesis", db="tesis_restauratns000")
+	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
 	cursor = db.cursor()
 	for i in range(121): 
 		theId = i+1
@@ -27,7 +31,7 @@ def insertRestaurants():
 	restaurantCost = list(map(lambda l: l.replace('\n',''),open('restaurant_cost.txt').readlines()))
 	dictOfRestaurantsCost = {x.split('\t')[0]:x.split('\t')[1].replace('\n','') for x in restaurantCost}
 	
-	db = mysql.connector.connect(host="localhost", user="tesis", passwd="tesis", db="tesis_restauratns000")
+	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
 	cursor = db.cursor()
 	
 	theId = 0
@@ -47,7 +51,7 @@ def insertRestaurants():
 	db.close()
 
 def insertKitchen():
-	db = mysql.connector.connect(host="localhost", user="tesis", passwd="tesis", db="tesis_restauratns000")
+	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
 	cursor = db.cursor()
 	for i in range(290): 
 		theId = i+1
@@ -61,7 +65,7 @@ def insertKitchen():
 	db.close()
 	
 def insertRestaurantKitchen():
-	db = mysql.connector.connect(host="localhost", user="tesis", passwd="tesis", db="tesis_restauratns000")
+	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
 	cursor = db.cursor()
 	restaurantKitchen = list(map(lambda l: l.replace('\n',''),open('restaurant_cuisine.txt').readlines()))
 	dictOfRestaurantKitchen = {}
@@ -88,7 +92,7 @@ def insertRestaurantKitchen():
 	db.close()
 
 def insertSimilarities():
-	db = mysql.connector.connect(host="localhost", user="tesis", passwd="tesis", db="tesis_restauratns000")
+	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
 	cursor = db.cursor()
 	compatIntersection = list(map(lambda l: l.replace('\n',''),open('restaurant_compat_intersection.txt').readlines()))
 	compatJaccard = list(map(lambda l: l.replace('\n',''),open('restaurant_compat_jaccard.txt').readlines()))
@@ -123,4 +127,4 @@ def insertSimilarities():
 #insertRestaurants()
 #insertKitchen()
 #insertRestaurantKitchen()
-insertSimilarities()
+#insertSimilarities()
