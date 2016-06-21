@@ -1,5 +1,3 @@
-\paragraph{Trabajos previos} \label{trabajosPrevios}
-
 En la literatura se pueden encontrar trabajos que abordan la noción de recuperación de información con diferentes semánticas. Por ejemplo, en \cite{BasuRoy:2010:CEC:1807167.1807258} se propone construir paquetes asociados a un ítem central. Un escenario de aplicación podría ser un usuario comprador de un teléfono celular (ítem central) que dispone de cierto presupuesto al que se le ofrecen paquetes que incluyen otros items relacionados tales como funda, tapa, parlantes, cargador, etc.
 
 En \cite{Xie:2010:BOB:1864708.1864739} se sugiere reemplazar una clásica lista de las mejores $k$ recomendaciones de una búsqueda por los mejores $k$ paquetes recomendados. Por ejemplo, podría aplicarse para un turista que está interesado en sugerencias de lugares o puntos de interés para su viaje, dispone de determinado tiempo y presupuesto y maneja una noción de compatibilidad entre items (a lo sumo 3 museos, recorrido menor a cierta distancia, etc). Si cada atracción tiene asociado un ranking, la idea es ofrecer los mejores $k$ paquetes de atracciones de tal manera que en cada paquete se respete el presupuesto y la compatibilidad entre items.
@@ -30,6 +28,7 @@ Los algoritmos propuestos son evaluados en \cite{compositeRetrival} sobre dos ba
 
 De la experimentación presentada en \cite{compositeRetrival}, se concluye que las mejores soluciones se obtienen con los algoritmos que primero agrupan los ítems en paquetes válidos y luego seleccionan paquetes dentro de este agrupamiento (PAC). 
 
+A continuación se presentan alternativas a los algoritmos descriptos recientemente, así como también procedimientos de búsqueda tabú que mejoren la calidad de las soluciones obtenidas.
 
 \section{Produce-and-Choose}
 El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de paquetes y luego seleccionar los que pertenecerán a la solución.
@@ -47,8 +46,9 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.\\
 
+La estructura de estos algoritmos permiten introducir mejoras en sus dos fases: generación y selección de paquetes.
 \subsection{Generación de paquetes}
 La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento, que consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre ellos (inter) el agrupamiento será mejor.
 
@@ -138,22 +138,27 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 \caption{Simple C-HAC}\label{alg:SimpleC-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos donde se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$.
+El algoritmo ejecuta $N - c$ pasos donde se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
 
-En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.
+Para salvar estas debilidades aquí se propone la siguiente alternativa inspirada en una propuesta de \cite{MRS}.\\
 
-Para salvar estas debilidades aquí se propone la siguiente alternativa inspirada en una propuesta de \cite{MRS}.
+Con el fin de incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
 
-Por lo que se propuso un criterio que tenga en cuenta toda la estructura del agrupamiento al momento de decidir la unión de los grupos. La función que se propone es \textit{Sim} que sumariza la similitud entre todos los elementos de la unión de los grupos y se le suma la similitud de los dos elementos más disimiles proporcionando el peso con el valor de $\gamma$ entre la similitud y el disímil.
+$$A(C_i,C_j) = \sum_{u \in C_i, v \in C_j}{s(u,v)},$$
 
-La figura ~\ref{des:LinkageCriteria} representa el comportamiento de la función \textit{Sim} para \texttt{$\gamma$ igual a uno} (que es el mismo cálculo para que para el criterio original) y con \texttt{$\gamma$ igual a cero} ambos criterios en el proceso de agrupamiento de ocho objetos. Cada elipse corresponde a un paso sucesivo de la agrupación, donde en los primeros cuatro pasos los grupos generados son iguales. Luego en el caso de \texttt{$\gamma$ igual a uno} se unen el par de grupos de arriba (después el par de abajo) porque la sumatoria de la similitud entre los objetos $d_1,d_2,d_3,d_4$ es mayor a $d_1,d_2,d_5,d_6$. Mientras que con \texttt{$\gamma$ igual a cero} une el par de grupos de la izquierda (después el par de la derecha) porque la similitud entre $d_1$ y $d_6$ es mayor a la similitud entre $d_1$ y $d_4$.
+$$E(C_i,C_j)=\max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=1\textwidth]{img/LinkageCriteria.png}
-  \caption{single-link (izquierda) y complete-link (derecha)}
-  \label{des:LinkageCriteria}
-\end{figure}
+$$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
+
+De esta manera el {\em cluster} resultante incrementará el valor intra y se habrán unido dos {\em clusters} con alta similitud favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario el segundo resultará siempre despreciable con respecto al primero. En este trabajo el valor que se le asigna a $t$ corresponde a la cantidad de elementos que se suman en A, o sea $\#C_i \cdot \#C_j$  
+
+Un punto clave es el costo computacional del cálculo de la función Intra-Inter. Para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y la $r-1$:
+
+$$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
+
+$$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
+
+El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.\\
 
 Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la agrupación se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
@@ -188,8 +193,8 @@ Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios d
 		\STATE $P[i].Delete(C[i][K_1])$
 		\STATE $P[i].Delete(C[i][k_2])$
 		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$}
-			\STATE $C[i][k_1].sim \leftarrow Sim(i,k_1 \cup k_2,\gamma)$
-			\STATE $C[k_1][i].sim \leftarrow Sim(i,k_1 \cup k_2,\gamma)$
+			\STATE $C[i][k_1].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$
+			\STATE $C[k_1][i].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$
 		\ELSE
 			\STATE $C[i][k_1].sim \leftarrow -1$
 			\STATE $C[k_1][i].sim \leftarrow -1$
