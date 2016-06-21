@@ -347,14 +347,14 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
   \STATE $worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$
 	\STATE $centroidBundle \leftarrow getCentroid(visitSolution)$
 	\STATE $bestBundles \leftarrow \text{fetch first MAX\_BUND} \max_{b \in cand \setminus tabuBundles}{Dist(b, centroidBundle)}$
-	\STATE $nextVisit \leftarrow \emptyset$
+	\STATE $visitSolution \leftarrow \emptyset$
 	\FOR {$\text{each}\ aBundle \in bestBundles$}
     \STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{aBundle\right\}$
     \IF {$inter(iterationSolution) > inter(nextVisit)$}
-			\STATE $nextVisit \leftarrow iterationSolution$
+			\STATE $visitSolution \leftarrow iterationSolution$
     \ENDIF
   \ENDFOR
-	\STATE $visitSolution \leftarrow nextVisit$
+	
   \IF {$\omega(visitSolution) > \omega(bestSolution)$}
     \STATE $bestSolution \leftarrow visitSolution$
   \ENDIF
@@ -392,26 +392,18 @@ Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el p
 \STATE $tabuBundles \leftarrow \emptyset$
 \STATE $tabuElements \leftarrow \emptyset$
 \STATE $bestSolution \leftarrow S$
-\STATE $visitSolution \leftarrow S$
-\STATE $thresholdScore \leftarrow -\inf$
 \WHILE {$iteration < MAX\_ITER$}
   \STATE $worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$
   \STATE $centroid \leftarrow GetCentroid(worstBunlde)$
   \STATE $faraway \leftarrow GetFarawayElement(worstBunlde,centroid)$
-  \STATE $bestElements: \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
-	\STATE $scoreInter \leftarrow \omega(visitSolution)$
-  \FOR {$near \in bestElements$}
+  \STATE $bestElements \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
+	\STATE $visitSolution \leftarrow \emptyset$
+  \FOR {$anElement \in bestElements$}
 		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{near\right\}$
-		\STATE $itSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
-    \STATE $newScore \Leftarrow \omega(itSolution)$
-		\IF {$newScore > scoreInter$}
-			\STATE $thresholdScore \leftarrow scoreInter$
-			\STATE $scoreInter \leftarrow newScore$
-			\STATE $visitSolution \leftarrow itSolution$
-    \ELSIF {$newScore > thresholdScore$}
-				\STATE $thresholdScore \leftarrow newScore$
-				\STATE $visitSolution \leftarrow itSolution$
-    \ENDIF
+		\STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
+		\IF {$\omega(iterationSolution) > \omega(visitSolution)$}
+			\STATE $visitSolution \leftarrow iterationSolution$
+		\ENDIF
   \ENDFOR
   \IF {$\omega(visitSolution) > \omega(bestSolution)$}
 		\STATE $bestSolution \leftarrow visitSolution$
