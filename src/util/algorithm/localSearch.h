@@ -10,7 +10,7 @@ using TabuBundles = std::vector<int>;
 
 class LocalSearch {
 private:
-    int findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabuBundles);
+    int findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabuBundles, bool takeTabu);
 
     int findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem);
 
@@ -18,7 +18,7 @@ private:
 
     std::vector<int> nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
                                                   IntSet &allElements, std::set<int> &usedElements,
-                                                  ProblemInstance &theProblem, TabuElements &tabuElements);
+                                                  ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu);
 
     SnowFlake createNewBunlde(SnowFlake worstFlake, int excludeElement, int newElement,
                               ProblemInstance &theProblem);

@@ -7,9 +7,9 @@ kitchen = "kitchen"
 restaurantKitchenType = "restaurant_kitchen"
 similarity = "similarity"
 hostName = "localhost"
-userDb = "tesis"
-paswdDb = "tesis"
-dbName = "tesis_restauratns000"
+userDb = "root"
+paswdDb = "passw0rd"
+dbName = "restaurants"
 nodeName = "node_name.csv"
 nodeCost = "node_cost.csv"
 nodeCompatibility = "node_compatibility.csv"
@@ -42,7 +42,7 @@ def generateNodeCost(cityId):
 	
 def generateNodeCompatibility(cityId):
 	db = mysql.connector.connect(host=hostName, user=userDb, passwd=paswdDb, db=dbName)
-	sql = "select s.restaurant1,s.restaurant2,s.jaccard from " + similarity + " s, " + restaurants + " r, " + restaurants + " re where s.restaurant1=r.id and s.restaurant2=re.id and r.city=re.city and r.city=" + str(cityId) + " order by 1 asc"
+	sql = "select s.restaurant1,s.restaurant2,s.inter from " + similarity + " s, " + restaurants + " r, " + restaurants + " re where s.restaurant1=r.id and s.restaurant2=re.id and r.city=re.city and r.city=" + str(cityId) + " order by 1 asc"
 	cursor = db.cursor()
 	cursor.execute(sql)
 	fileNodeCompatibility = open(nodeCompatibility, "w")

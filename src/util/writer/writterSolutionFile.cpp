@@ -16,6 +16,8 @@ void WritterSolutionFile::writeSolution(const std::vector<SnowFlake>& solution, 
         }
     }
     file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, interSimilarityWeight);
+    file << "Inter" << this->separator_ << SnowFlake::getInter(solution, interSimilarityWeight)<<this->endOfLIne_;
+    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, interSimilarityWeight);
     file.close();
 }
 
