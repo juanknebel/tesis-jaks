@@ -21,7 +21,7 @@ private:
                                                     ProblemInstance &theProblem, Double interSimilarityWeight);
 
     SnowFlakeVector getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles,
-                                    SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem);
+                                    SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem, bool takeTabu);
 public:
     LocalSearchBundles() {}
     SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, SnowFlakeVector& remainingFlakes
