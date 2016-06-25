@@ -332,7 +332,8 @@ double RestrictedHACSolver::sim(IntSet* snowflake1, IntSet* snowflake2) {
 
         Double gamma = 1.0 - this->interSimilarityWeight_;
         double inter = this->problem_->maxPairwiseCompatibility(*snowflake1, *snowflake2);
-        return (gamma * intra) + (snowflake1->size() * snowflake2->size()) * ((1.0 - gamma) * inter);
+	int multiplier = ((snowflake1->size() + snowflake2->size()) * ((snowflake1->size() + snowflake2->size()) - 1)) / 2;
+        return (gamma * intra) + multiplier * ((1.0 - gamma) * inter);
     }
     
     return -1.0;
