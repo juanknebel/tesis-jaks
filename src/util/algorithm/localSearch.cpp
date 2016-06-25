@@ -181,7 +181,7 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
         error<<"No existe centroide. Bundle num: "<<worstFlake.getIdentificator();
         throw Exception(__FILE__, __LINE__,error.str());
     }
-    DEBUG(DBG_DEBUG,"Centroide: "<<centroid);
+    //DEBUG(DBG_DEBUG,"Centroide: "<<centroid);
     return centroid;
 }
 
@@ -200,7 +200,7 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
             }
         }
     }
-    DEBUG(DBG_DEBUG,"Elemento lejano: "<<farAwayBundle);
+    //DEBUG(DBG_DEBUG,"Elemento lejano: "<<farAwayBundle);
     return farAwayBundle;
 }
 
@@ -219,6 +219,7 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
             if (canReplace) {
 		double similarity = theProblem.getCompat(centroid, element);
 		if (count < maxElements) {
+		    count++;
 		    elementsWithValue.push_back(std::pair<int,double>(element, similarity));
 		    nearElements.push_back(element);
 		}
