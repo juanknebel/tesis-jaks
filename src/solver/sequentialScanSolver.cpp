@@ -6,7 +6,6 @@
  */
 
 #include "sequentialScanSolver.h"
-#include <time.h>
 #include <cstdlib>
 
 SnowFlakeVector* SequentialScanSolver::solve(int numSnowflakes){

@@ -8,7 +8,7 @@
 #include "randomSOBOSolver.h"
 
 int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) {
-	srand((unsigned int) time(0));
+	srand(1);
 	int pivot = randomNode();
 	while (pivotsUsed.count(pivot) == 1 || possiblePivots.count(pivot) != 1) {
 		pivot = randomNode();

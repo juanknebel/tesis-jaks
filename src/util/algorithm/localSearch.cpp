@@ -73,9 +73,8 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
         }
         
         SnowFlakeVector tabuIterationSolution(visitSolution.begin(), visitSolution.end());
-        int TabubundleWithWorstInter = this->findWorstIntraBundle(tabuIterationSolution, setOfTabuBundles, true);
-	if (false && TabubundleWithWorstInter > -1)
-	{
+        int TabubundleWithWorstInter = bundleWithWorstInter;//this->findWorstIntraBundle(tabuIterationSolution, setOfTabuBundles, true);
+	if (true && TabubundleWithWorstInter > -1) {
 	  SnowFlake tabuWorstBundle = iterationSolution.at(TabubundleWithWorstInter);
 	  int tabuCentroidElement = this->findCentroid(tabuWorstBundle, theProblem);
 	  int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem);
@@ -84,7 +83,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
                                                                  setOfTabuElements, true);
 	  
 	  int tabuBetterElement = -1;
-	  double tabuItBestObjectiveFunction = itBestObjectiveFunction * 1.2;
+	  double tabuItBestObjectiveFunction = itBestObjectiveFunction * 1.1;
+	  double valueToTakeOffTabuList = itBestObjectiveFunction * 0.9;
+	  TabuElements elementsToTakeOffTabeList;
 	  for (int aNearestElem : nearestElements) {
 	      SnowFlake theNewBundle = this->createNewBunlde(tabuWorstBundle, tabuFarAwayElement, aNearestElem, theProblem);
 	      tabuIterationSolution[TabubundleWithWorstInter] = theNewBundle;
@@ -93,14 +94,23 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
 		  tabuItBestObjectiveFunction = newObjectiveFunction;
 		  tabuBetterElement = aNearestElem;
 	      }
+	      else {
+		  if (newObjectiveFunction > valueToTakeOffTabuList) {
+		      elementsToTakeOffTabeList.push_back(aNearestElem);
+		  }
+	      }
 	  }
 	  
 	  if (tabuBetterElement > -1){
-	    worstBundle = tabuWorstBundle;
-	    farAwayElement = tabuFarAwayElement;
-	    betterElement = tabuBetterElement;
+	      worstBundle = tabuWorstBundle;
+	      farAwayElement = tabuFarAwayElement;
+	      betterElement = tabuBetterElement;
 	    
-	  }	  	  
+	  }
+	  
+	  for (auto anElement : elementsToTakeOffTabeList) {
+	      setOfTabuElements[anElement] = 0;
+	  }
 	}
 	
 	SnowFlake theBundle = this->createNewBunlde(worstBundle, farAwayElement, betterElement, theProblem);
