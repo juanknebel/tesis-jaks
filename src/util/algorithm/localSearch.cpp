@@ -207,26 +207,41 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
 std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
                                               IntSet &allElements, std::set<int> &usedElements,
                                               ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu) {
+    int maxElements = 10;
     std::vector<int> nearElements;
-    double edgeSimilarity = -1;
-    double edgeSimilarityTwo = -1;
-    int c=0;
+    double edgeSimilarityMin = -1;
+    std::vector<std::pair<int,double>> elementsWithValue;
+    int count=0;
     for (auto element : allElements) {
         if ((takeTabu ) || 
 	   (!takeTabu && (usedElements.count(element) == 0) && (tabuElements.at(element) == 0))) {
             bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
             if (canReplace) {
-		c++;
-                double similarity = theProblem.getCompat(centroid, element);
-                if (similarity > edgeSimilarity) {
-                    /*if (similarity > edgeSimilarityTwo) {
-                        edgeSimilarityTwo = similarity;
-                    }
-                    else {
-                        edgeSimilarity = similarity;
-                    }*/
-                    nearElements.push_back(element);
-                }
+		double similarity = theProblem.getCompat(centroid, element);
+		if (count < maxElements) {
+		    elementsWithValue.push_back(std::pair<int,double>(element, similarity));
+		    nearElements.push_back(element);
+		}
+		else {
+		    if (similarity > edgeSimilarityMin) {
+			std::vector<std::pair<int,double>> elementsWithValueTemp(elementsWithValue.begin(), elementsWithValue.end());
+			elementsWithValue.clear();
+			nearElements.clear();
+			nearElements.push_back(element);
+			elementsWithValue.push_back(std::pair<int,double>(element, similarity));
+			double tempMin = std::numeric_limits<double>::max();
+			for (auto pairOfElemValue : elementsWithValueTemp) {
+			    int elem = std::get<0>(pairOfElemValue);
+			    double value = std::get<1>(pairOfElemValue);
+			    if (value > edgeSimilarityMin) {
+				nearElements.push_back(element);
+				elementsWithValue.push_back(std::pair<int,double>(elem, value));
+				tempMin = (value < tempMin) ? value : tempMin;
+			    }
+			}
+			edgeSimilarityMin = tempMin;
+		    }
+		}
             }
         }
     }
