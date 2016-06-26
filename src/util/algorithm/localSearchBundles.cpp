@@ -89,7 +89,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
 		}
 	    }
 	    
-	    if (tabuBetterBundle.getIdentificator() == -1) {
+	    if (tabuBetterBundle.getIdentificator() != -1) {
 		bestBundle = tabuBetterBundle;
 	    }
 	    
