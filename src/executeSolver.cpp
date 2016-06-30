@@ -47,7 +47,7 @@ void execute(ConfigurationJaks& configFile) {
     std::stringstream fileName;
     fileName << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
     fileName << theConfigurator->getTheStrategyName();
-    fileName << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << "Tabu.csv";
+    fileName << "TabuToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv";
     writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
     std::stringstream fileNameOrg;
     fileNameOrg << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
