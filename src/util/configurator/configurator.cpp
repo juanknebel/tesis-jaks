@@ -61,3 +61,24 @@ Configurator::~Configurator() {
     delete this->theWriter_;
     delete this->theNodeName_;
 }
+
+string Configurator::getTheStrategyName() const {
+    switch(this->theStrategy_) {
+      case (RANK_BY_INTRA):
+	  return "ByIntra";
+	  break;
+      case (RANK_BY_INTRA_INTER):
+	  return "ByIntraInter";
+	  break;
+      case (RANK_BY_DENSEST_SUBGRAPH):
+	  return "BySubgraph";
+	  break;
+      case (RANK_BY_INTRA_INTER_TUPLE):
+	  return "ByIntraInterTuple";
+	  break;
+      case (RANK_BY_INTRA_INTER_PROPORTIONAL):
+	  return "ByIntraInterProportional";
+	  break;
+    }
+}
+

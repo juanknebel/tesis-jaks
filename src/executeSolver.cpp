@@ -45,14 +45,14 @@ void execute(ConfigurationJaks& configFile) {
 
     showSolution(newSolution, *theConfigurator);
     std::stringstream fileName;
-    fileName << theConfigurator->getDirectoryOfWork() << "SolverWithLocal-";
-    fileName << theConfigurator->getSolverName();
-    fileName << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
+    fileName << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
+    fileName << theConfigurator->getTheStrategyName();
+    fileName << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << "Tabu.csv";
     writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
     std::stringstream fileNameOrg;
-    fileNameOrg << theConfigurator->getDirectoryOfWork() << "Solver";
-    fileNameOrg << theConfigurator->getSolverName();
-    fileNameOrg << "_ToProduce-" << theConfigurator->getNumToProduce() << "_Gamma-" << gamma << ".csv";
+    fileNameOrg << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
+    fileNameOrg << theConfigurator->getTheStrategyName();
+    fileNameOrg << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv";
     writeSolution(*solution, *theConfigurator, fileNameOrg.str(), interSimilarityWeight);
     int i=0;
     for (auto& bundle : *solution) {
