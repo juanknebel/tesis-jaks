@@ -2,7 +2,7 @@
 #include "../system/exception.h"
 #include "../logger/logger.h"
 
-SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight) {
+SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight) {
     /*
      * Tomo un bundle:
      * tomo un elemento y lo intento cambiar por algun otro de los demas bundles
@@ -11,6 +11,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
      * esto lo repito tantas veces como el parametro de maximas iteraciones
     */
     SnowFlakeVector bestSolution(solution.begin(), solution.end());
+    //return bestSolution;
     SnowFlakeVector visitSolution(solution.begin(), solution.end());
     double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
     
@@ -20,7 +21,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
 
     TabuElements setOfTabuElements;
     TabuBundles setOfTabuBundles;
-    TabuElements countTabuElementos;
 
     std::set<int> usedIds;
     for (auto& snowFlake : visitSolution) {
@@ -34,7 +34,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, SnowFlakeVector& solution, Pro
 
     for (auto i = 0; i< theProblem.getIds().size(); ++i) {
         setOfTabuElements.push_back(0);
-	countTabuElementos.push_back(0);
     }
 
     maxIter = 1000;
@@ -205,7 +204,6 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 
 int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem) {
     int farAwayBundle = -1;
-    // TODO: REEMPLAZAR URGENTE este tres por el numero total de categorias que exista? o simplemente mejorar esto para que no apareca de esta manera
     if (true) {
         double minSimilarity = std::numeric_limits<double>::max();
         for (auto element : worstFlake.ids()) {
@@ -227,38 +225,36 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
                                               ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu) {
     int maxElements = 10;
     std::vector<int> nearElements;
-    double edgeSimilarityMin = -1;
-    std::vector<std::pair<int,double>> elementsWithValue;
+    std::vector<double> similarities;
+    double minSim = std::numeric_limits<double>::max();
+    int minSimPos = -1;
+    
     int count=0;
     for (auto element : allElements) {
-        if ((takeTabu ) || 
-	   (!takeTabu && (usedElements.count(element) == 0) && (tabuElements.at(element) == 0))) {
+        if (usedElements.count(element) == 0 && (takeTabu || tabuElements.at(element) == 0)) {
             bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
             if (canReplace) {
 		double similarity = theProblem.getCompat(centroid, element);
 		if (count < maxElements) {
-		    count++;
-		    elementsWithValue.push_back(std::pair<int,double>(element, similarity));
 		    nearElements.push_back(element);
+		    similarities.push_back(similarity);
+		    if(minSim > similarity){
+		      minSim = similarity;
+		      minSimPos = count;
+		    }
+		    count++;
 		}
 		else {
-		    if (similarity > edgeSimilarityMin) {
-			std::vector<std::pair<int,double>> elementsWithValueTemp(elementsWithValue.begin(), elementsWithValue.end());
-			elementsWithValue.clear();
-			nearElements.clear();
-			nearElements.push_back(element);
-			elementsWithValue.push_back(std::pair<int,double>(element, similarity));
-			double tempMin = std::numeric_limits<double>::max();
-			for (auto pairOfElemValue : elementsWithValueTemp) {
-			    int elem = std::get<0>(pairOfElemValue);
-			    double value = std::get<1>(pairOfElemValue);
-			    if (value > edgeSimilarityMin) {
-				nearElements.push_back(element);
-				elementsWithValue.push_back(std::pair<int,double>(elem, value));
-				tempMin = (value < tempMin) ? value : tempMin;
-			    }
+		    if (similarity > minSim) {
+		      nearElements[minSimPos] = element;
+		      similarities[minSimPos] = similarity;
+		      minSim = similarity;
+		      for(int i = 0; i<similarities.size(); i++) {
+			if(minSim > similarities[i]) {
+			  minSim = similarities[i];
+			  minSimPos = i;
 			}
-			edgeSimilarityMin = tempMin;
+		      }
 		    }
 		}
             }

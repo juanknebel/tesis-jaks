@@ -30,7 +30,7 @@ private:
 
 public:
     LocalSearch() {}
-    SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
+    SnowFlakeVector execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
 };
 
 #endif // LOCALSEARCH_H

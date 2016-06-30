@@ -251,6 +251,11 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntraInterProportional
         //Agrego el elemento a la solucion
         selected->push_back(bestCandidate);
     }
+    //return selected;
+    LocalSearchBundles localSearchBundles;
+    SnowFlakeVector theFlakes = localSearchBundles.execute(1000,*selected, available, *this->problem_, this->interSimilarityWeight_);
+    selected->clear();
+    *selected = theFlakes;
     return selected;
 }
 
