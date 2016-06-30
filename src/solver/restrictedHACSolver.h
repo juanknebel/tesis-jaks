@@ -20,12 +20,10 @@ public:
 
     SnowFlakeVector* produceManySnowflakes(int numToProduce);
     SnowFlakeVector* produceManySnowflakes1(int numToProduce);
-    SnowFlakeVector* produceManySnowflakes2(int numToProduce);
 protected:
 	bool tryMerge(MapIntIntSet* clustering);
 
 private:
-    double sim(IntSet* snowflake1, IntSet* snowflake2);
     typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
 };
 

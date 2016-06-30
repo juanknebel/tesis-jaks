@@ -65,11 +65,19 @@ Solver* FactorySolver::getTheSolver(ConfigurationJaks& configFile, ProblemInstan
                 dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
             break;
-        case LocalSolver:
+        case AllGreedySolver:
             theSolver = new GreedySolver(theProblem);
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<GreedySolver *> (theSolver)->setRankingStrategy(theStrategy);
                 dynamic_cast<GreedySolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+            }
+            break;
+	case EfficientHAC:
+	    theSolver = new RestrictedEfficientHACSolver(theProblem);
+	    if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
+                dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setRankingStrategy(theStrategy);
+                dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setInterSimilarityWeight(interSimilarityWeight);
+                dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
             break;
         default:
@@ -106,9 +114,12 @@ std::string FactorySolver::getTheSolverName(ConfigurationJaks& configFile) {
         case ExSumSimSOBO:
             return "ExSumSimSOBO";
             break;
-        case LocalSolver:
-            return "LocalSolver";
+        case AllGreedySolver:
+            return "GreedySolver";
             break;
+	case EfficientHAC:
+	    return "RestrictedEfficientHAC";
+	    break;
     }
 }
 

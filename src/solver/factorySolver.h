@@ -4,6 +4,7 @@
 #include "../problem/problemInstance.h"
 #include "clusterAndPickSolver.h"
 #include "restrictedHACSolver.h"
+#include "restrictedEfficientHACSolver.h"
 #include "randomSOBOSolver.h"
 #include "randomBOBOSolver.h"
 #include "exhaustiveGreedyAnySimSOBOSolver.h"
@@ -21,8 +22,8 @@ private:
 
 public:
     enum SolverAlgorithm {
-        ClusterAndPick, RestrictedHAC, RestrictedHACSpecific, RandomBOBO,
-        RandomSOBO, ExAnySimSOBO, ExSumSimSOBO, SeqScan, LocalSolver
+        EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
+	RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
     };
 
     static std::string getTheSolverName(ConfigurationJaks& configFile);

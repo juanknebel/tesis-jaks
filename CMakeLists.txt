@@ -56,6 +56,7 @@ set(tesis-jaks_source_files
         src/solver/randomBOBOSolver.cpp
         src/solver/randomSOBOSolver.cpp
         src/solver/restrictedHACSolver.cpp
+        src/solver/restrictedEfficientHACSolver.cpp
         src/solver/sequentialScanSolver.cpp
         src/solver/snowflakesOneByOneSolver.cpp
         src/solver/solver.cpp

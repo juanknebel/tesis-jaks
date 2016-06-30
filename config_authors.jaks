@@ -41,16 +41,17 @@ BUDGET	5
 TO_PRODUCE	1
 
 #Algoritmo que se va a ejecutar, las opciones son:
-#ClusterAndPickSolver = 0
-#RestrictedHACSolver = 1
-#RestrictedHACSpecificSolver = 2
-#RandomBOBOSolver = 3
-#RandomSOBOSolver = 4
-#ExhaustiveGreedyAnySimSolver = 5
-#ExhaustiveGreedySumSimSolver = 6
-#SequentialScanSolver = 7
-#LocalSearchSolver = 8
-SOLVER	3
+#EfficientHAC = 0
+#RestrictedHAC = 1
+#RandomBOBO = 2
+#AllGreedySolver = 3
+#ExSumSimSOBO = 4
+#ExAnySimSOBO = 5
+#RandomSOBO = 6
+#SeqScan = 7
+#ClusterAndPick = 8
+#RestrictedHACSpecific = 9
+SOLVER	2
 
 #Bundles de que tipo se van a traer, puede ser:
 #ARTICLE para traer articulos
