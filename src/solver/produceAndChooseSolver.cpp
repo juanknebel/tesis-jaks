@@ -224,7 +224,7 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByIntraInterProportional
                 beta = 1.0;
             }
             else {
-                beta = alpha * (Double) ((numRequested - 1) / (theSize - 1));
+                beta = alpha * ((Double) (numRequested - 1) / (Double) (theSize - 1));
             }
             SnowFlake candidate = available[candidateId];
             Double score = scoreSetIntraInter(selected, candidate, currentSumIntra, currentSumOneMinusInter, alpha, beta);
