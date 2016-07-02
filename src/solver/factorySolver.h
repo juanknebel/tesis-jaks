@@ -18,17 +18,17 @@
 
 class FactorySolver {
 private:
-    FactorySolver();
+	FactorySolver();
 
 public:
-    enum SolverAlgorithm {
-        EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
-	RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
-    };
+	enum SolverAlgorithm {
+	    EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
+	    RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
+	};
 
-    static std::string getTheSolverName(ConfigurationJaks& configFile);
-    static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem);
-    static ProduceAndChooseSolver::RankingStrategy getTheStrategy(ConfigurationJaks& configFile);
+	static std::string getTheSolverName(ConfigurationJaks& configFile);
+	static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem);
+	static ProduceAndChooseSolver::RankingStrategy getTheStrategy(ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYSOLVER_H

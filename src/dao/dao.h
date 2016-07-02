@@ -37,15 +37,15 @@ public:
 		this->init(database, user, password, server);
 	};
 	virtual ~Dao() {};
-	
+
 	bool isConnected() const;
 	String showConnection() const;
 	String getError() const;
 	int getNumberOfFields() const;
-	
+
 	virtual bool connect() = 0;
 	virtual bool disconnect() = 0;
-	
+
 	virtual bool executeCustomConsultativeQuery(String query) = 0;
 	virtual bool executeCustomModifiableQuery(String query) = 0;
 	virtual bool fetch() = 0;

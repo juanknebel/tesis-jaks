@@ -9,9 +9,9 @@
 
 class FactoryIdentificationGenerator {
 private:
-    FactoryIdentificationGenerator();
+	FactoryIdentificationGenerator();
 public:
-    static IdentificationGeneretor* getTheIdentificator(Dao* dao, ConfigurationJaks& configFile);
+	static IdentificationGeneretor* getTheIdentificator(Dao* dao, ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYIDENTIFICATIONGENERATOR_H

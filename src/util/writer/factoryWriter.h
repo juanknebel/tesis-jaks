@@ -9,9 +9,9 @@
 
 class FactoryWriter {
 private:
-    FactoryWriter();
+	FactoryWriter();
 public:
-    static WriterSolution* getTheWriter(ConfigurationJaks& configFile);
+	static WriterSolution* getTheWriter(ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYWRITER_H

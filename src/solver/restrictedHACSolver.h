@@ -18,13 +18,13 @@ public:
 	}
 	virtual ~RestrictedHACSolver();
 
-    SnowFlakeVector* produceManySnowflakes(int numToProduce);
-    SnowFlakeVector* produceManySnowflakes1(int numToProduce);
+	SnowFlakeVector* produceManySnowflakes(int numToProduce);
+	SnowFlakeVector* produceManySnowflakes1(int numToProduce);
 protected:
 	bool tryMerge(MapIntIntSet* clustering);
 
 private:
-    typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
+	typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
 };
 
 #endif /* RESTRICTEDHACSOLVER_H_ */

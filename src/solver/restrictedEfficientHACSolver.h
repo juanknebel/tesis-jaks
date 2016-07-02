@@ -18,11 +18,11 @@ public:
 	}
 	virtual ~RestrictedEfficientHACSolver();
 
-    SnowFlakeVector* produceManySnowflakes(int numToProduce);
+	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 
 private:
-    double sim(IntSet* snowflake1, IntSet* snowflake2);
-    typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
+	double sim(IntSet* snowflake1, IntSet* snowflake2);
+	typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
 };
 
 #endif /* RESTRICTEDEFFICIENTHACSOLVER_H_ */

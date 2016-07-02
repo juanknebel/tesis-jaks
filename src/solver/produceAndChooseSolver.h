@@ -13,28 +13,28 @@
 class ProduceAndChooseSolver : public Solver {
 public:
 	enum RankingStrategy {
-			/**
-			* Sort in decreasing order by intra similarity, then pick the top elements.
-			*/
-			RANK_BY_INTRA = 0,
-			/**
-			* Apply a greedy heuristic to add the element that increases the most ( gamma * intra + ( 1
-			* - gamma ) * inter )
-			*/
-			RANK_BY_INTRA_INTER,
-			/**
-			* Apply a densest-subgraph heuristic.
-			*/
-            RANK_BY_DENSEST_SUBGRAPH,
-            /**
-            * Hace lo mismo que el INTRA_INTER pero genera tuplas para la seleccion
-            */
-            RANK_BY_INTRA_INTER_TUPLE,
-            /**
-             * Aplica una seleccion similiar al RANK_BY_INTRA_INTER pero compensa la primer parte
-             */
-            RANK_BY_INTRA_INTER_PROPORTIONAL
-		};
+	    /**
+	    * Sort in decreasing order by intra similarity, then pick the top elements.
+	    */
+	    RANK_BY_INTRA = 0,
+	    /**
+	    * Apply a greedy heuristic to add the element that increases the most ( gamma * intra + ( 1
+	    * - gamma ) * inter )
+	    */
+	    RANK_BY_INTRA_INTER,
+	    /**
+	    * Apply a densest-subgraph heuristic.
+	    */
+	    RANK_BY_DENSEST_SUBGRAPH,
+	    /**
+	    * Hace lo mismo que el INTRA_INTER pero genera tuplas para la seleccion
+	    */
+	    RANK_BY_INTRA_INTER_TUPLE,
+	    /**
+	     * Aplica una seleccion similiar al RANK_BY_INTRA_INTER pero compensa la primer parte
+	     */
+	    RANK_BY_INTRA_INTER_PROPORTIONAL
+	};
 
 	ProduceAndChooseSolver(ProblemInstance* problem) : Solver(problem) {
 		this->rankingStrategy_ = ProduceAndChooseSolver::getDefault();
@@ -58,8 +58,8 @@ protected:
 	static ProduceAndChooseSolver::RankingStrategy getDefault();
 	SnowFlakeVector* getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested);
 	SnowFlakeVector* getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested);
-    SnowFlakeVector* getTopSolutionsByInterIntraByTuples(SnowFlakeVector* produced, int numRequested);
-    SnowFlakeVector* getTopSolutionsByIntraInterProportional(SnowFlakeVector* produced, int numRequested);
+	SnowFlakeVector* getTopSolutionsByInterIntraByTuples(SnowFlakeVector* produced, int numRequested);
+	SnowFlakeVector* getTopSolutionsByIntraInterProportional(SnowFlakeVector* produced, int numRequested);
 
 	/**
 	* Score a set of snowflakes composed of all the elements in 'selected' plus the element
@@ -78,11 +78,11 @@ protected:
 	*/
 	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+	Double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
+	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
 
-    Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter, Double alpha, Double beta);
+	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter, Double alpha, Double beta);
 
 	/**
 	*

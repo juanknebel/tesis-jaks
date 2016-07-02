@@ -33,12 +33,12 @@ protected:
 	MapIntIntSet *nodeCover_;
 	/**
 	 * Compatibility between two nodes.
-	 */	
+	 */
 	SparseDoubleMatrix2D *nodeCompat_;
-    /**
-     * Compatibility with specific profile
-     */
-    MapIntDouble *nodeSpecificCompat_;
+	/**
+	 * Compatibility with specific profile
+	 */
+	MapIntDouble *nodeSpecificCompat_;
 	/**
 	 * Identifiers of nodes.
 	 */
@@ -59,13 +59,13 @@ public:
 	Double getbudget();
 	virtual const IntSet* getCover(int id);
 	virtual Double getCompat(int id1, int id2);
-    virtual Double getCompatWithSpecificProfile(int id1, int id2);
+	virtual Double getCompatWithSpecificProfile(int id1, int id2);
 	virtual SparseDoubleMatrix2D* getCompat();
 	virtual void normalizeNodeCompat();
 	virtual String getNode(int id);
 	int getId(String);
 	Double maxPairwiseCompatibility(const IntSet& aSet, const IntSet& otherSet);
-    Double maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet);
+	Double maxPairwiseCompatibilityWithSpecificProfile(const IntSet& aSet, const IntSet& otherSet);
 	//Double maxPairwiseCompatibility(const SnowFlake& aSnow, const SnowFlake& otherSnow);
 	void createIdNodeMappings(StrVector nodes);
 

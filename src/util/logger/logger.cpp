@@ -19,8 +19,8 @@ inline void Logger::unlock()
 	pthread_mutex_unlock(&lock_);
 }
 #else
-void Logger::lock(){}
-void Logger::unlock(){}
+void Logger::lock() {}
+void Logger::unlock() {}
 #endif
 
 
@@ -36,7 +36,7 @@ void Logger::unlock(){}
 Logger::Logger(): configured_(false)
 {
 
-    gettimeofday(&initialTime_, NULL);
+	gettimeofday(&initialTime_, NULL);
 }
 
 /**
@@ -53,39 +53,39 @@ void Logger::configure (const std::string&	outputFile,
                         const int		fileVerbosityLevel,
                         const int		screenVerbosityLevel)
 {
-    Logger::lock();
+	Logger::lock();
 
-    fileVerbosityLevel_ = fileVerbosityLevel;
-    screenVerbosityLevel_ = screenVerbosityLevel;
+	fileVerbosityLevel_ = fileVerbosityLevel;
+	screenVerbosityLevel_ = screenVerbosityLevel;
 
-    // Close the old stream, if needed
-    if (configuration_&file_on)
-        out_.close();
+	// Close the old stream, if needed
+	if (configuration_&file_on)
+		out_.close();
 
-    // Compute a new file name, if needed
-    if (outputFile != logFile_){
-        std::ostringstream oss;
-        time_t currTime;
-        time(&currTime);
-        struct tm *currTm = localtime(&currTime);
-        oss << outputFile << "_" <<
-        currTm->tm_mday << "_" <<
-        currTm->tm_mon << "_" <<
-        (1900 + currTm->tm_year) << "_" <<
-        currTm->tm_hour << "-" <<
-        currTm->tm_min << "-" <<
-        currTm->tm_sec << ".log";
-        logFile_ = oss.str().c_str();
-    }
+	// Compute a new file name, if needed
+	if (outputFile != logFile_) {
+		std::ostringstream oss;
+		time_t currTime;
+		time(&currTime);
+		struct tm *currTm = localtime(&currTime);
+		oss << outputFile << "_" <<
+		    currTm->tm_mday << "_" <<
+		    currTm->tm_mon << "_" <<
+		    (1900 + currTm->tm_year) << "_" <<
+		    currTm->tm_hour << "-" <<
+		    currTm->tm_min << "-" <<
+		    currTm->tm_sec << ".log";
+		logFile_ = oss.str().c_str();
+	}
 
-    // Open a new stream, if needed
-    if (configuration&file_on)
-        out_.open(logFile_.c_str(), std::ios::app);
+	// Open a new stream, if needed
+	if (configuration&file_on)
+		out_.open(logFile_.c_str(), std::ios::app);
 
-    configuration_ = configuration;
-    configured_ = true;
+	configuration_ = configuration;
+	configured_ = true;
 
-    Logger::unlock();
+	Logger::unlock();
 }
 
 /**
@@ -95,11 +95,13 @@ void Logger::configure (const std::string&	outputFile,
 
 Logger::~Logger()
 {
-    Logger::lock();
-    if (configuration_&file_on)
-        out_.close();
-    delete m_;
-    Logger::unlock();
+	Logger::lock();
+
+	if (configuration_&file_on)
+		out_.close();
+
+	delete m_;
+	Logger::unlock();
 
 }
 
@@ -110,11 +112,13 @@ Logger::~Logger()
  */
 Logger& Logger::getInstance()
 {
-    Logger::lock();
-    if (m_ == 0)
-        m_ = new Logger;
-    Logger::unlock();
-    return *m_;
+	Logger::lock();
+
+	if (m_ == 0)
+		m_ = new Logger;
+
+	Logger::unlock();
+	return *m_;
 }
 
 
@@ -133,24 +137,28 @@ void Logger::print(const unsigned int verbosityLevel,
                    const int line,
                    const std::string& message)
 {
-    if (!configured_) {
-        //std::cerr << "ERROR: Logger not configured!" << std::endl;
-        return;
-    }
-    struct timeval currentTime;
-    gettimeofday(&currentTime, NULL);
-    Logger::lock();
+	if (!configured_) {
+		//std::cerr << "ERROR: Logger not configured!" << std::endl;
+		return;
+	}
 
-    if ((configuration_&file_on) && (verbosityLevel <= fileVerbosityLevel_))
-        out_ << "DEBUG [" << file << ":" << line << "] @ " <<
-        (currentTime.tv_sec - initialTime_.tv_sec) <<
-        ":" << message << std::endl;
+	struct timeval currentTime;
 
-    if ((configuration_&screen_on) && (verbosityLevel <= screenVerbosityLevel_))
-        std::cerr << "DEBUG [" << file << ":" << line << "] @ " <<
-        (currentTime.tv_sec - initialTime_.tv_sec) <<
-        ":" << message << std::endl;
-    Logger::unlock();
+	gettimeofday(&currentTime, NULL);
+
+	Logger::lock();
+
+	if ((configuration_&file_on) && (verbosityLevel <= fileVerbosityLevel_))
+		out_ << "DEBUG [" << file << ":" << line << "] @ " <<
+		     (currentTime.tv_sec - initialTime_.tv_sec) <<
+		     ":" << message << std::endl;
+
+	if ((configuration_&screen_on) && (verbosityLevel <= screenVerbosityLevel_))
+		std::cerr << "DEBUG [" << file << ":" << line << "] @ " <<
+		          (currentTime.tv_sec - initialTime_.tv_sec) <<
+		          ":" << message << std::endl;
+
+	Logger::unlock();
 }
 
 void Logger::printWithNoError(const unsigned int verbosityLevel,
@@ -158,21 +166,25 @@ void Logger::printWithNoError(const unsigned int verbosityLevel,
                               const int line,
                               const std::string& message)
 {
-    if (!configured_) {
-        return;
-    }
-    struct timeval currentTime;
-    gettimeofday(&currentTime, NULL);
-    Logger::lock();
+	if (!configured_) {
+		return;
+	}
 
-    if ((configuration_&file_on) && (verbosityLevel <= fileVerbosityLevel_))
-        out_ << "DEBUG [" << file << ":" << line << "] @ " <<
-        (currentTime.tv_sec - initialTime_.tv_sec) <<
-        ":" << message << std::endl;
+	struct timeval currentTime;
 
-    if ((configuration_&screen_on) && (verbosityLevel <= screenVerbosityLevel_))
-        std::cerr << "DEBUG [" << file << ":" << line << "] @ " <<
-        (currentTime.tv_sec - initialTime_.tv_sec) <<
-        ":" << message << std::endl;
-    Logger::unlock();
+	gettimeofday(&currentTime, NULL);
+
+	Logger::lock();
+
+	if ((configuration_&file_on) && (verbosityLevel <= fileVerbosityLevel_))
+		out_ << "DEBUG [" << file << ":" << line << "] @ " <<
+		     (currentTime.tv_sec - initialTime_.tv_sec) <<
+		     ":" << message << std::endl;
+
+	if ((configuration_&screen_on) && (verbosityLevel <= screenVerbosityLevel_))
+		std::cerr << "DEBUG [" << file << ":" << line << "] @ " <<
+		          (currentTime.tv_sec - initialTime_.tv_sec) <<
+		          ":" << message << std::endl;
+
+	Logger::unlock();
 }

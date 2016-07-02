@@ -5,13 +5,13 @@
 
 class IdentificationGeneretorAuthor : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAuthor(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
-        this->query_ = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
-    }
+	IdentificationGeneretorAuthor(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+		this->query_ = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
+	}
 
-    void fillTheMapping(MapStringString *node2name);
+	void fillTheMapping(MapStringString *node2name);
 
-    ~IdentificationGeneretorAuthor();
+	~IdentificationGeneretorAuthor();
 };
 
 #endif // IDENTIFICATIONGENERETORAUTHOR_H

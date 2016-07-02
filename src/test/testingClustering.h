@@ -28,7 +28,7 @@ class TestingClustering {
 public:
 	TestingClustering();
 	~TestingClustering();
-    
+
 	void testCluster(const MatrixWrapper& graph, int numClusters);
 	void testSymmetrizeCluster(MatrixWrapper& graph, int numClusters);
 };

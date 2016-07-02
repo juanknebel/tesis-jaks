@@ -20,7 +20,8 @@
 
 #include "dao.h"
 
-void Dao::init(String database, String user, String password, String server) {
+void Dao::init(String database, String user, String password, String server)
+{
 	this->database_ = database;
 	this->password_ = password;
 	this->user_ = user;
@@ -30,19 +31,23 @@ void Dao::init(String database, String user, String password, String server) {
 	this->fields_ = -1;
 }
 
-bool Dao::isConnected() const {
+bool Dao::isConnected() const
+{
 	return this->isConnected_;
 }
 
-String Dao::showConnection() const {
+String Dao::showConnection() const
+{
 	String result = "Server: " + this->server_ + ".\nDatabase: " + this->database_ + ".\nUser: " + this->user_ + ".\nPassword: *******.\n";
 	return result;
 }
 
-String Dao::getError() const {
+String Dao::getError() const
+{
 	return this->error_;
 }
 
-int Dao::getNumberOfFields() const {
+int Dao::getNumberOfFields() const
+{
 	return this->fields_;
 }

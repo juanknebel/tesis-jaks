@@ -7,12 +7,14 @@
 
 #include "testingProblemInstanceFromFiles.h"
 
-TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(String directory) {
+TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(String directory)
+{
 	this->init(directory);
 	this->theProblem_ = new ProblemInstanceFromFiles(this->fileNodeCost_, this->fileNodeCompatibility_, this->fileNodeCover_, 1000.00);
 }
 
-TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(const TestingProblemInstanceFromFiles& testingProblem) {
+TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(const TestingProblemInstanceFromFiles& testingProblem)
+{
 	this->directory_ = testingProblem.directory_;
 	this->fileNodeCompatibility_ = testingProblem.fileNodeCompatibility_;
 	this->fileNodeCost_ = testingProblem.fileNodeCost_;
@@ -22,11 +24,13 @@ TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(const TestingPr
 	this->theProblem_ = testingProblem.theProblem_;
 }
 
-TestingProblemInstanceFromFiles::~TestingProblemInstanceFromFiles() {
+TestingProblemInstanceFromFiles::~TestingProblemInstanceFromFiles()
+{
 	delete this->theProblem_;
 }
 
-void TestingProblemInstanceFromFiles::init(String directory) {
+void TestingProblemInstanceFromFiles::init(String directory)
+{
 	this->directory_ = directory;
 	this->fileNodeCompatibility_ = this->directory_ + "node_compatibility.csv";
 	this->fileNodeCost_ = this->directory_ + "node_cost.csv";

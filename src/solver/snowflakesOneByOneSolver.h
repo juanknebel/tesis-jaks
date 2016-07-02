@@ -27,7 +27,7 @@ protected:
 
 private:
 	SnowFlakeVector* produceManySnowflakesSimple(int numSnowflakes);
-    SnowFlakeVector* produceManySnowflakesWithSpecificItem(int numSnowflakes);
+	SnowFlakeVector* produceManySnowflakesWithSpecificItem(int numSnowflakes);
 };
 
 #endif /* SNOWFLAKESONEBYONESOLVER_H_ */

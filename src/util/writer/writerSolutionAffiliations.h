@@ -5,11 +5,11 @@
 
 class WriterSolutionAffiliations : public WriterSolution {
 public:
-    WriterSolutionAffiliations(String separator) : WriterSolution(separator) {}
+	WriterSolutionAffiliations(String separator) : WriterSolution(separator) {}
 
-    void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
+	void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
 
-    ~WriterSolutionAffiliations();
+	~WriterSolutionAffiliations();
 };
 
 #endif // WRITERSOLUTIONAFFILIATIONS_H

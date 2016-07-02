@@ -30,11 +30,11 @@ private:
 	std::map<std::string, std::string> *keyValues_;
 	void parseFile(char* fileName);
 public:
-    ConfigurationJaks(char* fileName);
-    ~ConfigurationJaks();
-    
-    std::string giveMeValue(std::string key);
-    std::string operator[](std::string key);
+	ConfigurationJaks(char* fileName);
+	~ConfigurationJaks();
+
+	std::string giveMeValue(std::string key);
+	std::string operator[](std::string key);
 };
 
 #endif // CONFIGURATIONJAKS_H

@@ -5,8 +5,8 @@
 
 class IdentificationGeneretorArticle : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorArticle(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
-        this->query_ = "SELECT \
+	IdentificationGeneretorArticle(Dao* dao, String separator) : IdentificationGeneretor(dao, separator) {
+		this->query_ = "SELECT \
                 a.ArticleId as ArticleId \
                 ,a.title as Title \
                 ,b.name as VenueName \
@@ -14,11 +14,11 @@ public:
                 FROM ARTICLES a, VENUES b, AUTHORS c, Article_Author d \
                 WHERE a.venue_VenueId=b.VenueId and a.ArticleId=d.ARTICLES_ArticleId and \
                 d.authors_AuthorId=c.AuthorId";
-    }
+	}
 
-    void fillTheMapping(MapStringString *node2name);
+	void fillTheMapping(MapStringString *node2name);
 
-    ~IdentificationGeneretorArticle();
+	~IdentificationGeneretorArticle();
 };
 
 #endif // IDENTIFICATIONGENERETORARTICLE_H

@@ -8,7 +8,8 @@
 #include "exhaustiveSOBOSolver.h"
 #include <limits>
 
-int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots){
+int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots)
+{
 	int minPivot = std::numeric_limits<int>::max();
 
 	for (IntSet::iterator possiblePivot = possiblePivots.begin(); possiblePivot != possiblePivots.end(); ++possiblePivot) {
@@ -26,7 +27,8 @@ int ExhaustiveSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots){
 	return minPivot;
 }
 
-int ExhaustiveSOBOSolver::numToProduce(int requestedSnowflakes){
+int ExhaustiveSOBOSolver::numToProduce(int requestedSnowflakes)
+{
 	return this->problem_->numNodes();
 }
 

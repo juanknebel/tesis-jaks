@@ -21,24 +21,30 @@
 #include "testingClusterAndPickSolver.h"
 #include <iostream>
 
-TestingClusterAndPickSolver::TestingClusterAndPickSolver(ProblemInstance& problem) {
+TestingClusterAndPickSolver::TestingClusterAndPickSolver(ProblemInstance& problem)
+{
 	this->clusterSovler_ = new ClusterAndPickSolver(&problem);
 }
 
-TestingClusterAndPickSolver::TestingClusterAndPickSolver ( const TestingClusterAndPickSolver& other ) {
+TestingClusterAndPickSolver::TestingClusterAndPickSolver ( const TestingClusterAndPickSolver& other )
+{
 }
 
-TestingClusterAndPickSolver::~TestingClusterAndPickSolver() {
+TestingClusterAndPickSolver::~TestingClusterAndPickSolver()
+{
 }
 
-void TestingClusterAndPickSolver::testingSolve ( int numFlakes ) {
+void TestingClusterAndPickSolver::testingSolve ( int numFlakes )
+{
 	SnowFlakeVector* result = this->clusterSovler_->solve(numFlakes);
 	int i=1;
+
 	for(SnowFlakeVector::iterator it = result->begin(); it != result->end(); ++it) {
 		std::cout<<"Bundle numero "<<i<<std::endl;
 		std::cout<<it->toString(NULL);
 		++i;
 	}
+
 	//std::cout<<SnowFlake::showSolution(*result);
 }
 

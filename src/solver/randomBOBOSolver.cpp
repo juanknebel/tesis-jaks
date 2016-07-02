@@ -10,7 +10,8 @@
 
 int RandomBOBOSolver::INITIAL_TRIALS_FOR_MU = 5;
 
-Double RandomBOBOSolver::chooseMu() {
+Double RandomBOBOSolver::chooseMu()
+{
 	DblVector listOfSumIntra = DblVector((unsigned long) this->INITIAL_TRIALS_FOR_MU);
 	IntSet allIds = IntSet(this->problem_->getIds());
 	int pivot;
@@ -20,12 +21,14 @@ Double RandomBOBOSolver::chooseMu() {
 		pivot = this->randomNode();
 		listOfSumIntra.push_back(this->pickFlake(pivot, allIds)->getSumIntraCompat());
 	}
+
 	std::sort(listOfSumIntra.begin(), listOfSumIntra.end());
 	int middle = (int) listOfSumIntra[this->INITIAL_TRIALS_FOR_MU / 2];
 
 	if (this->INITIAL_TRIALS_FOR_MU % 2 == 0) {
 		median = (listOfSumIntra[middle] + listOfSumIntra[middle - 1])/2;
 	}
+
 	else {
 		median = listOfSumIntra[middle];
 	}
@@ -33,6 +36,7 @@ Double RandomBOBOSolver::chooseMu() {
 	return median;
 }
 
-bool RandomBOBOSolver::candidateAcceptable(SnowFlake& candidate) {
+bool RandomBOBOSolver::candidateAcceptable(SnowFlake& candidate)
+{
 	return candidate.getSumIntraCompat() >= this->mu_;
 }

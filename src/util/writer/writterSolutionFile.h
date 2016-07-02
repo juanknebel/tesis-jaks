@@ -8,13 +8,13 @@
 #include "writerSolution.h"
 
 
-class WritterSolutionFile : public WriterSolution{
+class WritterSolutionFile : public WriterSolution {
 public:
-    WritterSolutionFile(String separator) : WriterSolution(separator) {}
+	WritterSolutionFile(String separator) : WriterSolution(separator) {}
 
-    void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
+	void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
 
-    ~WritterSolutionFile();
+	~WritterSolutionFile();
 };
 
 

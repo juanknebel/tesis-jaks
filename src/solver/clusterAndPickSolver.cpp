@@ -8,15 +8,18 @@
 #include "clusterAndPickSolver.h"
 #include "../cluster/clustering.h"
 
-ClusterAndPickSolver::~ClusterAndPickSolver() {
+ClusterAndPickSolver::~ClusterAndPickSolver()
+{
 }
 
-SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
+SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes)
+{
 
 	IntVector* clustering;
 	clustering = Clustering::symmetrizeAndCluster(*this->problem_->getCompat(), numSnowflakes);
+
 	if (clustering->size()!= this->problem_->numNodes()) {
-        //TODO: hacer log
+		//TODO: hacer log
 	}
 
 	IntSet clusterIds = IntSet();
@@ -28,8 +31,10 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 
 	SnowFlakeVector* solution;
 	solution = new SnowFlakeVector();
+
 	for (IntSet::iterator clusterId = clusterIds.begin(); clusterId != clusterIds.end(); ++clusterId) {
 		IntSet clusterMembers = IntSet();
+
 		for (int node = 0; node < clustering->size(); ++node) {
 			if ((*clustering)[node] == *clusterId) {
 				clusterMembers.insert(node);
@@ -40,21 +45,25 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes){
 
 		solution->push_back(*bestFlake);
 	}
+
 	return solution;
 }
 
-SnowFlake* ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers){
+SnowFlake* ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers)
+{
 	double bestScore = -1.0;
 	SnowFlake* bestSnowflake;
 
 	for (IntSet::iterator center = clusterMembers.begin(); center != clusterMembers.end(); ++center) {
 		SnowFlake* snowflake = this->pickFlake(*center, clusterMembers);
 		double score = snowflake->getSumIntraCompat();
+
 		if (score > bestScore) {
 			bestScore = score;
 			bestSnowflake = snowflake;
 		}
-		else{
+
+		else {
 			delete snowflake;
 		}
 	}

@@ -7,20 +7,20 @@
 
 class WriterSolution {
 protected:
-    String separator_;
-    String endOfLIne_;
+	String separator_;
+	String endOfLIne_;
 public:
-    WriterSolution(String separator);
+	WriterSolution(String separator);
 
-    virtual String showInScreen(std::vector<SnowFlake>& solution,const Id2Str* node2name);
+	virtual String showInScreen(std::vector<SnowFlake>& solution,const Id2Str* node2name);
 
-    virtual void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) = 0;
+	virtual void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight) = 0;
 
-    static void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName);
+	static void writeInterAndIntraValues(std::vector<SnowFlake>& solution, String fileName);
 
-    static void writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName);
+	static void writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName);
 
-    virtual ~WriterSolution();
+	virtual ~WriterSolution();
 };
 
 #endif // WRITERSOLUTION_H

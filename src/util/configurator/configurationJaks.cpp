@@ -28,40 +28,49 @@
 char ConfigurationJaks::COMMENT = '#';
 std::string ConfigurationJaks::SEPARATOR = "\t";
 
-ConfigurationJaks::ConfigurationJaks(char* fileName) {
+ConfigurationJaks::ConfigurationJaks(char* fileName)
+{
 	this->keyValues_ = new std::map<std::string, std::string>();
 	this->parseFile(fileName);
 }
 
-ConfigurationJaks::~ConfigurationJaks() {
+ConfigurationJaks::~ConfigurationJaks()
+{
 	delete this->keyValues_;
 }
 
-std::string ConfigurationJaks::giveMeValue(std::string key) {
+std::string ConfigurationJaks::giveMeValue(std::string key)
+{
 	std::transform(key.begin(), key.end(),key.begin(), ::toupper);
 	std::string result;
+
 	try {
 		result = this->keyValues_->at(key);
 	}
+
 	catch (const std::out_of_range& oor) {
 		result = "Error: Clave no encontrada.";
 	}
-	
+
 	return result;
 }
 
-std::string ConfigurationJaks::operator[](std::string key) {
+std::string ConfigurationJaks::operator[](std::string key)
+{
 	return this->giveMeValue(key);
 }
 
-void ConfigurationJaks::parseFile(char* fileName) {
+void ConfigurationJaks::parseFile(char* fileName)
+{
 	std::ifstream file;
 	file.open(fileName);
 	std::string line;
+
 	while(getline(file, line, '\n')) {
 		if (line[0] == ConfigurationJaks::COMMENT || line.empty()) {
 			continue;
 		}
+
 		std::vector<std::string> tokens;
 		stringToVectorSplit(line, ConfigurationJaks::SEPARATOR, tokens);
 		std::string key = tokens[0];
@@ -71,5 +80,6 @@ void ConfigurationJaks::parseFile(char* fileName) {
 		std::transform(key.begin(), key.end(),key.begin(), ::toupper);
 		(*(this->keyValues_))[key] = value;
 	}
+
 	file.close();
 }

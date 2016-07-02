@@ -19,7 +19,7 @@ private:
 public:
 	Id2Str();
 	Id2Str(String fileName);
-    Id2Str(IdentificationGeneretor* theIdentificator);
+	Id2Str(IdentificationGeneretor* theIdentificator);
 	~Id2Str();
 
 	String getNodebyName(String node) const;

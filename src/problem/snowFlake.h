@@ -24,7 +24,7 @@ private:
 
 	Double getMinCompat();
 
-    Uint identificator_;
+	Uint identificator_;
 
 public:
 	SnowFlake();
@@ -40,14 +40,14 @@ public:
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids() const;
-    String getProblemNode(int aNode) const;
+	String getProblemNode(int aNode) const;
 	static Double objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-    Uint getIdentificator() const;
-    void setIdentificator(Uint theIdentificator);
-    static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
-    static Double getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-    static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-    Double getSumIntraCompatWithSpecificProfile() const;
+	Uint getIdentificator() const;
+	void setIdentificator(Uint theIdentificator);
+	static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
+	static Double getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
+	static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
+	Double getSumIntraCompatWithSpecificProfile() const;
 };
 
 #endif /* SNOWFLAKE_H_ */

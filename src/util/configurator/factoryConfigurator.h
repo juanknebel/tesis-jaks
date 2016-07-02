@@ -10,10 +10,10 @@
 #include "../identificator/factoryIdentificationGenerator.h"
 
 class FactoryConfigurator {
-private:    
-    FactoryConfigurator();
+private:
+	FactoryConfigurator();
 public:
-    static Configurator* getTheConfigurator(ConfigurationJaks& configFile);
+	static Configurator* getTheConfigurator(ConfigurationJaks& configFile);
 };
 
 #endif // FACTORYCONFIGURATOR_H

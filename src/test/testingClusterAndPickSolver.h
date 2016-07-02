@@ -30,7 +30,7 @@ public:
 	TestingClusterAndPickSolver(ProblemInstance& ProblemInstance);
 	TestingClusterAndPickSolver ( const TestingClusterAndPickSolver& other );
 	~TestingClusterAndPickSolver();
-	
+
 	void testingSolve(int numFlakes);
 };
 

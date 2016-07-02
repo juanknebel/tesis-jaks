@@ -22,7 +22,8 @@
 #define db_password "tesis"
 #define db_server "localhost"
 
-MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
+MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d)
+{
 	MatrixConcrete matrix(2,2);
 	matrix.set(0,0,a);
 	matrix.set(0,1,b);
@@ -31,7 +32,8 @@ MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d) {
 	return matrix;
 }
 
-MatrixConcrete giveMeMatrix2x2() {
+MatrixConcrete giveMeMatrix2x2()
+{
 	MatrixConcrete matrix(2,2);
 	matrix.set(0,0,1.0);
 	matrix.set(0,1,2.0);
@@ -40,7 +42,8 @@ MatrixConcrete giveMeMatrix2x2() {
 	return matrix;
 }
 
-MatrixConcrete giveMeSymetricMatrix2x2() {
+MatrixConcrete giveMeSymetricMatrix2x2()
+{
 	MatrixConcrete matrix(2,2);
 	matrix.set(0,0,1.0);
 	matrix.set(0,1,2.0);
@@ -49,7 +52,8 @@ MatrixConcrete giveMeSymetricMatrix2x2() {
 	return matrix;
 }
 
-MatrixConcrete giveMeSymetricMatrix2x2With0InDiagonal() {
+MatrixConcrete giveMeSymetricMatrix2x2With0InDiagonal()
+{
 	MatrixConcrete matrix(2,2);
 	matrix.set(0,0,0.0);
 	matrix.set(0,1,2.0);
@@ -58,7 +62,8 @@ MatrixConcrete giveMeSymetricMatrix2x2With0InDiagonal() {
 	return matrix;
 }
 
-MatrixConcrete giveMeMatrix3x3() {
+MatrixConcrete giveMeMatrix3x3()
+{
 	MatrixConcrete matrix(3,3);
 	matrix.set(0,0,1.0);
 	matrix.set(0,1,2.0);
@@ -72,7 +77,8 @@ MatrixConcrete giveMeMatrix3x3() {
 	return matrix;
 }
 
-MatrixConcrete giveMeSymetricMatrix3x3() {
+MatrixConcrete giveMeSymetricMatrix3x3()
+{
 	MatrixConcrete matrix(3,3);
 	matrix.set(0,0,1.0);
 	matrix.set(0,1,2.0);
@@ -86,7 +92,8 @@ MatrixConcrete giveMeSymetricMatrix3x3() {
 	return matrix;
 }
 
-MatrixConcrete giveMeMatrix3x3With0InDiagonal() {
+MatrixConcrete giveMeMatrix3x3With0InDiagonal()
+{
 	MatrixConcrete matrix(3,3);
 	matrix.set(0,0,0.0);
 	matrix.set(0,1,2.0);
@@ -100,7 +107,8 @@ MatrixConcrete giveMeMatrix3x3With0InDiagonal() {
 	return matrix;
 }
 
-MatrixConcrete giveMeSymetricMatrix3x3With0InDiagonal() {
+MatrixConcrete giveMeSymetricMatrix3x3With0InDiagonal()
+{
 	MatrixConcrete matrix(3,3);
 	matrix.set(0,0,0.0);
 	matrix.set(0,1,2.0);
@@ -114,7 +122,8 @@ MatrixConcrete giveMeSymetricMatrix3x3With0InDiagonal() {
 	return matrix;
 }
 
-ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory) {
+ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory)
+{
 	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
 	std::string fileNodeCost = directory + "node_cost.csv";
 	std::string fileNodeCover = directory + "node_cover.csv";
@@ -124,7 +133,8 @@ ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory) {
 	return result;
 }
 
-ProblemInstance* giveMeAnotherProblemInstance(std::string directory) {
+ProblemInstance* giveMeAnotherProblemInstance(std::string directory)
+{
 	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
 	std::string fileNodeCost = directory + "node_cost.csv";
 	std::string fileNodeCover = directory + "node_cover.csv";
@@ -134,57 +144,72 @@ ProblemInstance* giveMeAnotherProblemInstance(std::string directory) {
 	return result;
 }
 
-void configureFile(char* fileName) {
+void configureFile(char* fileName)
+{
 	String value;
 	ConfigurationJaks configFiles = ConfigurationJaks(fileName);
+
 	while(true) {
 		std::cout<<"Ingresar la clave a consultar (X para salir) ";
 		std::cin>>value;
+
 		if (value == "X") {
 			break;
 		}
-	std::cout<<"EL valor de la clave es: "<<configFiles.giveMeValue(value)<<std::endl;
+
+		std::cout<<"EL valor de la clave es: "<<configFiles.giveMeValue(value)<<std::endl;
 	}
 }
 
-void testDBGeneric(Dao& dao, String tableName) {
+void testDBGeneric(Dao& dao, String tableName)
+{
 	if (dao.isConnected()) {
 		bool hasresult = dao.executeCustomConsultativeQuery("select * from " + tableName);
+
 		if (hasresult) {
 			int numOffields = dao.getNumberOfFields();
+
 			while(dao.fetch()) {
-				for (int i=0;i<numOffields;++i) {
+				for (int i=0; i<numOffields; ++i) {
 					if (!(dao.getField(i)).empty()) {
 						std::cout<<dao.getField(i);
 					}
+
 					else {
 						std::cout<<"NULL";
 					}
+
 					if (i!=numOffields-1) {
 						std::cout<<"|";
 					}
 				}
+
 				std::cout<<std::endl;
 			}
 		}
+
 		else {
 			std::cerr<<"Error al obtener resutlados"<<std::endl;
 			std::cerr<<dao.getError()<<std::endl;
 		}
 	}
+
 	else {
 		std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 	}
 }
 
-void testDB1() {
+void testDB1()
+{
 	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 	std::cout<<dao->showConnection();
+
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
 		std::cerr<<dao->getError()<<std::endl;
 	}
+
 	else {
 		if (dao->executeCustomConsultativeQuery("select count(*) from ARTICLES")) {
 			if (dao->fetch()) {
@@ -192,99 +217,129 @@ void testDB1() {
 				std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
 			}
 		}
+
 		testDBGeneric(*dao,"ARTICLES");
 	}
+
 	delete dao;
 }
 
-void testDBCustomQuery() {
+void testDBCustomQuery()
+{
 	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
+
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
 		std::cerr<<dao->getError()<<std::endl;
 	}
+
 	else {
 		std::cout<<dao->showConnection();
+
 		if (dao->isConnected()) {
 			bool wasOk = dao->executeCustomConsultativeQuery("select * from ARTICLES");
+
 			if (wasOk) {
 				std::cout<<"Ejecuto bien"<<std::endl;
 				int numOffields = dao->getNumberOfFields();
 				bool hasresult = false;
+
 				while(dao->fetch()) {
 					hasresult = true;
-					for (int i=1;i<=numOffields;++i) {
+
+					for (int i=1; i<=numOffields; ++i) {
 						if (!(dao->getField(i)).empty()) {
 							std::cout<<dao->getField(i);
 						}
+
 						else {
 							std::cout<<"NULL";
 						}
+
 						if (i!=numOffields-1) {
 							std::cout<<"|";
 						}
 					}
+
 					std::cout<<std::endl;
 				}
+
 				if (hasresult) {
 					std::cout<<"Encontró alguna fila que cumple con la condición"<<std::endl;
 				}
+
 				else {
 					std::cout<<"No encontró ninguna fila que cumple con la condición"<<std::endl;
 				}
 			}
+
 			else {
 				std::cerr<<"Error al obtener resutlados"<<std::endl;
 				std::cerr<<dao->getError()<<std::endl;
 			}
+
 			delete dao;
 		}
+
 		else {
 			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 		}
 	}
 }
 
-void testDBInsertCustom() {
+void testDBInsertCustom()
+{
 	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
+
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
 		std::cerr<<dao->getError()<<std::endl;
 	}
+
 	else {
 		std::cout<<dao->showConnection();
+
 		if (dao->isConnected()) {
 			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba values (3,5,\'prueba tres\')");
+
 			if (!isOk) {
 				std::cerr<<dao->getError()<<std::endl;
 			}
 		}
 	}
+
 	delete dao;
 }
 
-void testDBInsertPartial() {
+void testDBInsertPartial()
+{
 	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
+
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
 		std::cerr<<dao->getError()<<std::endl;
 	}
+
 	else {
 		std::cout<<dao->showConnection();
+
 		if (dao->isConnected()) {
 			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba set id=6, descripcion=\'prueba tesis\',valor=3");
+
 			if (!isOk) {
 				std::cerr<<dao->getError()<<std::endl;
 			}
 		}
 	}
+
 	delete dao;
 }
 
-void testOverLoadFunction() {
+void testOverLoadFunction()
+{
 	Dao *dao = new DaoMySql(db_database, db_user, db_password,db_server);
 	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab", "tab","tab","tab", "tab", 5);
 	std::cout<<problem->getCompat(1,1)<<std::endl;
@@ -292,11 +347,13 @@ void testOverLoadFunction() {
 	delete problem;
 }
 
-void testDB() {
+void testDB()
+{
 	testDBCustomQuery();
 }
 
-void testMatrix() {
+void testMatrix()
+{
 	std::cout << "Test MatrixWrapper y MatrixConcrete" << std::endl;
 	MatrixConcrete matrix = giveMeMatrix2x2(1.0,2.0,3.0,4.0);
 
@@ -336,7 +393,8 @@ void testMatrix() {
 	testMatrix.testCountNonZeros(2);
 }
 
-void testProblemInstance() {
+void testProblemInstance()
+{
 	std::cout << "Test ProblemInstance" << std::endl;
 	ProblemInstance* problem = new ProblemInstance(6.66);
 	TestingProblemInstance testProblem = TestingProblemInstance();
@@ -345,18 +403,21 @@ void testProblemInstance() {
 	delete problem;
 }
 
-void testProblemInstanceFromFiles(std::string directory) {
+void testProblemInstanceFromFiles(std::string directory)
+{
 	std::cout << "Test ProblemInstanceFromFiles" << std::endl;
 	TestingProblemInstanceFromFiles testProblemFiles(directory);
 }
 
-void testMetisWrapper() {
+void testMetisWrapper()
+{
 	TestingMetisWrapper metis;
 	MatrixConcrete graph = giveMeSymetricMatrix3x3With0InDiagonal();
 	metis.testCluster(graph, 2);
 }
 
-void testClustering() {
+void testClustering()
+{
 	TestingClustering clustering;
 	MatrixConcrete graphNoSymetric = giveMeMatrix3x3With0InDiagonal();
 	MatrixConcrete graphSymetric = giveMeSymetricMatrix3x3With0InDiagonal();
@@ -364,33 +425,40 @@ void testClustering() {
 	clustering.testSymmetrizeCluster(graphNoSymetric, 2);
 }
 
-void testClusterAndPickSolver ( std::string directory) {
+void testClusterAndPickSolver ( std::string directory)
+{
 	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
 	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
 	anotherClusterPickSolver.testingSolve(4);
 }
 
-void testConfiguration(int argc, char *argv[]) {
+void testConfiguration(int argc, char *argv[])
+{
 	if (argc <= 1) {
 		std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
 	}
+
 	else {
 		if (argv[1][0] != '-') {
 			std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
 		}
+
 		else {
 			char option = argv[1][1];
+
 			switch(option) {
-				case 'f':
-					std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
-					configureFile(argv[2]);
-					break;
-				case 't':
-					std::cout<<"Usando los tests internos ..."<<std::endl;
-					break;
-				default:
-					std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
-					break;
+			case 'f':
+				std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
+				configureFile(argv[2]);
+				break;
+
+			case 't':
+				std::cout<<"Usando los tests internos ..."<<std::endl;
+				break;
+
+			default:
+				std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
+				break;
 			}
 		}
 	}

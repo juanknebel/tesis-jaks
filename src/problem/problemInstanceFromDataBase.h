@@ -40,14 +40,14 @@ private:
 	String itemCompat1_;
 	String itemCompat2_;
 	Dao *dao_;
-	
+
 	void init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2);
 	int getPrimaryId(int id);
 public:
 	ProblemInstanceFromDataBase();
 	ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2, Double budget);
 	~ProblemInstanceFromDataBase();
-	
+
 	IntSet& getIds();
 	int numNodes();
 	Double getCost(int id);

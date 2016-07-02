@@ -11,13 +11,13 @@
 #include "exhaustiveSOBOSolver.h"
 
 class ExhaustiveGreedyAnySimSOBOSolver : public ExhaustiveSOBOSolver {
-	public:
+public:
 	ExhaustiveGreedyAnySimSOBOSolver(ProblemInstance* problem) : ExhaustiveSOBOSolver(problem) {
 
 	}
 	~ExhaustiveGreedyAnySimSOBOSolver() {};
 
-	protected:
+protected:
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
 };
 

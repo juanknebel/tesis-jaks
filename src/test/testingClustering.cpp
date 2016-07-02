@@ -21,24 +21,32 @@
 #include <iostream>
 #include "testingClustering.h"
 
-TestingClustering::TestingClustering() {
+TestingClustering::TestingClustering()
+{
 }
 
-TestingClustering::~TestingClustering() {
+TestingClustering::~TestingClustering()
+{
 }
 
-void TestingClustering::testCluster ( const MatrixWrapper& graph, int numClusters ) {
+void TestingClustering::testCluster ( const MatrixWrapper& graph, int numClusters )
+{
 	IntVector* result = Clustering::cluster(graph, numClusters);
+
 	for (int node = 0; node < result->size(); ++node) {
 		std::cout<<"El nodo: "<<node<<" pertence a la particion: "<<(*result)[node]<<std::endl;
 	}
+
 	delete result;
 }
 
-void TestingClustering::testSymmetrizeCluster ( MatrixWrapper& graph, int numClusters ) {
+void TestingClustering::testSymmetrizeCluster ( MatrixWrapper& graph, int numClusters )
+{
 	IntVector* result = Clustering::symmetrizeAndCluster(graph, numClusters);
+
 	for (int node = 0; node < result->size(); ++node) {
 		std::cout<<"El nodo: "<<node<<" pertence a la particion: "<<(*result)[node]<<std::endl;
 	}
+
 	delete result;
 }

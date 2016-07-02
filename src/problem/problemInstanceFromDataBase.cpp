@@ -22,8 +22,9 @@
 #include "../util/system/stringUtilities.h"
 #include "../util/system/exception.h"
 
-void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2) {
-    //TODO: hay que mejorar esta porqueria!!!!!!!!!!!
+void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2)
+{
+	//TODO: hay que mejorar esta porqueria!!!!!!!!!!!
 	this->dao_ = dao;
 	this->tableCosts_ = tableCosts;//ARTICLES
 	this->tableCompat_ = tableCompat;//SIMILARITY
@@ -39,70 +40,86 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 	this->itemCompat2_ = itemCompat2;//item2
 	this->getIds();
 	this->nodeCompat_ = new SparseDoubleMatrix2DImplementation(this->numNodes(), this->numNodes());
-    std::stringstream query, query1;
+	std::stringstream query, query1;
 	query<<"select "<<this->itemCompat1_<<","<<this->itemCompat2_<<","<<this->compatField_<<" from "<<this->tableCompat_;
-    if (this->dao_->executeCustomConsultativeQuery(query.str())) {
+
+	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
-            this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
+			this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
 		}
-    }
-    this->nodeSpecificCompat_ = new MapIntDouble;
-    query1<<"select * from SIMILARITY_AUX";
-    if (this->dao_->executeCustomConsultativeQuery(query1.str())) {
-        while(this->dao_->fetch()) {
-            (*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(1))] = convertToDouble(this->dao_->getField(2));
-        }
-    }
+	}
+
+	this->nodeSpecificCompat_ = new MapIntDouble;
+	query1<<"select * from SIMILARITY_AUX";
+
+	if (this->dao_->executeCustomConsultativeQuery(query1.str())) {
+		while(this->dao_->fetch()) {
+			(*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(1))] = convertToDouble(this->dao_->getField(2));
+		}
+	}
 }
 
-int ProblemInstanceFromDataBase::getPrimaryId(int id) {
+int ProblemInstanceFromDataBase::getPrimaryId(int id)
+{
 	int theId = -1;
 	std::stringstream query;
 	query<<"select "<<this->primaryField_<<" from "<<this->tableConvertElementItem_<<" where "<<this->item_<<" = "<<id;
+
 	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		if (this->dao_->fetch()) {
 			theId = convertToInt(this->dao_->getField(1));
 		}
 	}
+
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
 	}
+
 	return theId;
 }
 
-ProblemInstanceFromDataBase::ProblemInstanceFromDataBase() : ProblemInstance() {
+ProblemInstanceFromDataBase::ProblemInstanceFromDataBase() : ProblemInstance()
+{
 	this->init(NULL, "", "", "", "", "", "", "", "", "", "", "", "");
 }
 
-ProblemInstanceFromDataBase::ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2, Double budget) : ProblemInstance(budget) {
+ProblemInstanceFromDataBase::ProblemInstanceFromDataBase(Dao *dao, String tableCosts, String tableCompat, String tableCover, String tableConvertElementItem, String costField, String compatField, String coverField, String primaryField, String primaryDescription, String item, String itemCompat1, String itemCompat2, Double budget) : ProblemInstance(budget)
+{
 	this->init(dao, tableCosts, tableCompat, tableCover, tableConvertElementItem, costField, compatField, coverField, primaryField, primaryDescription, item, itemCompat1, itemCompat2);
 }
 
-ProblemInstanceFromDataBase::~ProblemInstanceFromDataBase() {
+ProblemInstanceFromDataBase::~ProblemInstanceFromDataBase()
+{
 	delete this->dao_;
 }
 
-IntSet& ProblemInstanceFromDataBase::getIds() {
+IntSet& ProblemInstanceFromDataBase::getIds()
+{
 	if (this->ids_->empty()) {
-	  std::stringstream query;
-	query<<"select "<<this->item_<<" from "<<this->tableConvertElementItem_;
+		std::stringstream query;
+		query<<"select "<<this->item_<<" from "<<this->tableConvertElementItem_;
+
 		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 			while(this->dao_->fetch()) {
 				this->ids_->insert(convertToInt(this->dao_->getField(1)));
 			}
 		}
+
 		else {
 			throw Exception(__FILE__, __LINE__, this->dao_->getError());
 		}
 	}
+
 	return *(this->ids_);
 }
 
-int ProblemInstanceFromDataBase::numNodes() {
+int ProblemInstanceFromDataBase::numNodes()
+{
 	return this->ids_->size();
 }
 
-Double ProblemInstanceFromDataBase::getCost(int id) {
+Double ProblemInstanceFromDataBase::getCost(int id)
+{
 	return 1.0;
 	/*Double cost = -1.0;
 	int primaryId = this->getPrimaryId(id);
@@ -114,22 +131,27 @@ Double ProblemInstanceFromDataBase::getCost(int id) {
 	else {
 		throw Exception(__FILE__, __LINE__, this->dao_->getError());
 	}
-	
+
 	return cost;*/
 }
 
-const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
+const IntSet* ProblemInstanceFromDataBase::getCover(int id)
+{
 	if (this->nodeCover_->count(id) == 0) {
 		int primaryId = this->getPrimaryId(id);
 		std::stringstream query;
 		query<<"select "<<this->coverField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
+
 		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 			IntSet *aSet = new IntSet();
+
 			while(this->dao_->fetch()) {
 				aSet->insert(convertToInt(this->dao_->getField(1)));
 			}
+
 			(*(*this).nodeCover_)[id] = aSet;
 		}
+
 		else {
 			throw Exception(__FILE__, __LINE__, this->dao_->getError());
 		}
@@ -166,23 +188,28 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id) {
         return compat;
 }*/
 
-Double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
+Double ProblemInstanceFromDataBase::getCompat(int id1, int id2)
+{
 	if (id1 > id2) {
 		std::swap(id1, id2);
-    }
+	}
+
 	return ProblemInstance::getCompat(id1, id2);
 }
 
 
-SparseDoubleMatrix2D* ProblemInstanceFromDataBase::getCompat() {
+SparseDoubleMatrix2D* ProblemInstanceFromDataBase::getCompat()
+{
 	throw Exception(__FILE__, __LINE__, "Imposible to retrieve so many registers");
 	return 0;
 }
 
-void ProblemInstanceFromDataBase::normalizeNodeCompat() {
+void ProblemInstanceFromDataBase::normalizeNodeCompat()
+{
 	throw Exception(__FILE__, __LINE__, "The compatibility is already normalize");
 }
 
-String ProblemInstanceFromDataBase::getNode(int id) {
+String ProblemInstanceFromDataBase::getNode(int id)
+{
 	return convertToString(this->getPrimaryId(id));
 }

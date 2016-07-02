@@ -7,15 +7,19 @@
 
 #include "randomSOBOSolver.h"
 
-int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) {
+int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots)
+{
 	srand(1);
 	int pivot = randomNode();
+
 	while (pivotsUsed.count(pivot) == 1 || possiblePivots.count(pivot) != 1) {
 		pivot = randomNode();
 	}
+
 	return pivot;
 }
 
-int RandomSOBOSolver::randomNode() {
+int RandomSOBOSolver::randomNode()
+{
 	return (rand() % this->problem_->numNodes());
 }

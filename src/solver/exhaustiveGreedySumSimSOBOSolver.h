@@ -17,7 +17,7 @@ public:
 	}
 	~ExhaustiveGreedySumSimSOBOSolver() {};
 
-	protected:
+protected:
 	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
 };
 

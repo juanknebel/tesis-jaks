@@ -3,14 +3,13 @@
 
 #include "writerSolution.h"
 
-class WriterSolutionAuthors : public WriterSolution
-{
+class WriterSolutionAuthors : public WriterSolution {
 public:
-    WriterSolutionAuthors(String separator) : WriterSolution(separator) {}
+	WriterSolutionAuthors(String separator) : WriterSolution(separator) {}
 
-    void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
+	void writeSolution(const std::vector<SnowFlake>& solution, String fileName, const Id2Str* node2name, Double interSimilarityWeight);
 
-    ~WriterSolutionAuthors();
+	~WriterSolutionAuthors();
 };
 
 #endif // WRITERSOLUTIONAUTHORS_H

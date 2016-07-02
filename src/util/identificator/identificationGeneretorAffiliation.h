@@ -5,13 +5,13 @@
 
 class IdentificationGeneretorAffiliation : public IdentificationGeneretor {
 public:
-    IdentificationGeneretorAffiliation(Dao *dao, String separator) : IdentificationGeneretor(dao, separator) {
-        this->query_ = "SELECT affiliationId, title, location FROM AFFILIATIONS";
-    }
+	IdentificationGeneretorAffiliation(Dao *dao, String separator) : IdentificationGeneretor(dao, separator) {
+		this->query_ = "SELECT affiliationId, title, location FROM AFFILIATIONS";
+	}
 
-    void fillTheMapping(MapStringString *node2name);
+	void fillTheMapping(MapStringString *node2name);
 
-    ~IdentificationGeneretorAffiliation();
+	~IdentificationGeneretorAffiliation();
 };
 
 #endif // IDENTIFICATIONGENERETORAFFILIATION_H

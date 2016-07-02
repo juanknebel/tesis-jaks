@@ -8,10 +8,10 @@
 
 class FactoryProblem {
 private:
-    FactoryProblem();
+	FactoryProblem();
 public:
-    static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile);
-    static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao);
+	static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile);
+	static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao);
 };
 
 #endif // FACTORYPROBLEM_H
