@@ -20,10 +20,11 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 	int id = 0;
 	int tabuBundleCount = 10;
-	int tabuElementCount = 10;
+	int tabuElementCount = 100;
 
 	TabuElements setOfTabuElements;
 	TabuBundles setOfTabuBundles;
+	std::map<int, std::set<int>> mapOfTabus;
 
 	std::set<int> usedIds;
 
@@ -41,13 +42,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		setOfTabuElements.push_back(0);
 	}
 
-	maxIter = 100;
+	maxIter = 101;
 	int iteration = 0;
 	DEBUG(DBG_DEBUG,"max iter: "<<maxIter);
-	//WritterSolutionFile writterInitial("\t");
-	WriterSolutionArticles writterInitial("\t");
-
-	writterInitial.writeSolution(solution, "SolucionInicial.csv", nullptr, interSimilarityWeight);
 
 	while (iteration < maxIter) {
 		++iteration;
@@ -75,11 +72,11 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		int farAwayElement = this->findFarAwayElement(centroidElement, worstBundle, theProblem);
 		std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, worstBundle,
 		                                   theProblem.getIds(), usedIds, theProblem,
-		                                   setOfTabuElements, false);
+		                                   setOfTabuElements, false, mapOfTabus);
 
 		std::vector<int> nearestElementsNotReplace = this->nearestElements(centroidElement, -1, worstBundle,
 		        theProblem.getIds(), usedIds, theProblem,
-		        setOfTabuElements, false);
+		        setOfTabuElements, false, mapOfTabus);
 
 
 
@@ -126,11 +123,11 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 			int tabuCentroidElement = this->findCentroid(tabuWorstBundle, theProblem);
 			int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem);
 			nearestElements = this->nearestElements(tabuCentroidElement, tabuFarAwayElement, tabuWorstBundle,
-			                                        theProblem.getIds(), usedIds, theProblem, setOfTabuElements, true);
+			                                        theProblem.getIds(), usedIds, theProblem, setOfTabuElements, true, mapOfTabus);
 
 			int tabuBetterElement = -1;
 			double tabuItBestObjectiveFunction = itBestObjectiveFunction * 1.2;
-			double valueToTakeOffTabuList = itBestObjectiveFunction * 0.9;
+			double valueToTakeOffTabuList = itBestObjectiveFunction * 1.1;
 			TabuElements elementsToTakeOffTabeList;
 
 			for (int aNearestElem : nearestElements) {
@@ -178,8 +175,9 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		usedIds.insert(betterElement);
 		setOfTabuElements[farAwayElement] = tabuElementCount;
 		setOfTabuBundles[bundleWithWorstInter] = tabuBundleCount;
-
-
+		std::set<int> theSet = mapOfTabus[farAwayElement];
+		theSet.insert(betterElement);
+		mapOfTabus[farAwayElement] = theSet;
 	}
 
 	return bestSolution;
@@ -272,7 +270,7 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
 
 std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
         IntSet &allElements, std::set<int> &usedElements,
-        ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu)
+        ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus)
 {
 	int maxElements = 10;
 	std::vector<int> nearElements;
@@ -285,8 +283,9 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
 	for (auto element : allElements) {
 		if (usedElements.count(element) == 0 && (takeTabu || tabuElements.at(element) == 0)) {
 			bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
-
-			if (canReplace) {
+			std::set<int> theSet = mapOfTabus[elementToReplace];
+			bool isInTabuMovement = theSet.count(element) != 0;
+			if (canReplace && !isInTabuMovement) {
 				double similarity = theProblem.getCompat(centroid, element);
 
 				if (count < maxElements) {
