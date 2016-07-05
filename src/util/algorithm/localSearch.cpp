@@ -19,12 +19,13 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 	double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
 
 	int id = 0;
-	int tabuBundleCount = 10;
-	int tabuElementCount = 100;
+	int tabuBundleCount = solution.size();
+	int tabuElementCount = maxIter/tabuBundleCount;
 
 	TabuElements setOfTabuElements;
 	TabuBundles setOfTabuBundles;
 	std::map<int, std::set<int>> mapOfTabus;
+	std::map<int, int> recentlyAdded;
 
 	std::set<int> usedIds;
 
@@ -69,7 +70,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 		SnowFlake worstBundle = iterationSolution.at(bundleWithWorstInter);
 		int centroidElement = this->findCentroid(worstBundle, theProblem);
-		int farAwayElement = this->findFarAwayElement(centroidElement, worstBundle, theProblem);
+		int farAwayElement = this->findFarAwayElement(centroidElement, worstBundle, theProblem, recentlyAdded);
 		std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, worstBundle,
 		                                   theProblem.getIds(), usedIds, theProblem,
 		                                   setOfTabuElements, false, mapOfTabus);
@@ -121,7 +122,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		if (false && tabubundleWithWorstInter > -1) {
 			SnowFlake tabuWorstBundle = iterationSolution.at(tabubundleWithWorstInter);
 			int tabuCentroidElement = this->findCentroid(tabuWorstBundle, theProblem);
-			int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem);
+			int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem, recentlyAdded);
 			nearestElements = this->nearestElements(tabuCentroidElement, tabuFarAwayElement, tabuWorstBundle,
 			                                        theProblem.getIds(), usedIds, theProblem, setOfTabuElements, true, mapOfTabus);
 
@@ -178,6 +179,12 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		std::set<int> theSet = mapOfTabus[farAwayElement];
 		theSet.insert(betterElement);
 		mapOfTabus[farAwayElement] = theSet;
+		for (auto element : worstBundle.ids()) {
+			if (recentlyAdded.find(element) != recentlyAdded.end() && recentlyAdded[element] > 0) {
+				recentlyAdded[element]--;
+			}
+		}
+		recentlyAdded[betterElement] = 3;
 	}
 
 	return bestSolution;
@@ -246,26 +253,40 @@ int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 	return centroid;
 }
 
-int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem)
+int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem, std::map<int,int> recentlyAdded)
 {
 	int farAwayBundle = -1;
+	int farAwayBundleNotTabu = -1;
 
 	if (true) {
 		double minSimilarity = std::numeric_limits<double>::max();
+		double minSimilarityNotTabu = std::numeric_limits<double>::max();
 
 		for (auto element : worstFlake.ids()) {
 			if (element != centroid) {
 				double similarity = theProblem.getCompat(centroid, element);
-
-				if (similarity < minSimilarity) {
-					farAwayBundle = element;
-					minSimilarity = similarity;
+				if(recentlyAdded.find(element) != recentlyAdded.end() && recentlyAdded[element]>0){
+					if (similarity < minSimilarityNotTabu) {
+						farAwayBundleNotTabu = element;
+						minSimilarityNotTabu = similarity;
+					}
+				}
+				else{
+					if (similarity < minSimilarity) {
+						farAwayBundle = element;
+						minSimilarity = similarity;
+					}
 				}
 			}
 		}
 	}
 
-	return farAwayBundle;
+	if (farAwayBundleNotTabu > -1){
+		return farAwayBundleNotTabu;
+	}
+	else{
+		return farAwayBundle;
+	}
 }
 
 std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,

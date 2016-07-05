@@ -14,7 +14,7 @@ private:
 
 	int findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem);
 
-	int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem);
+	int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem, std::map<int,int> recentlyAdded);
 
 	std::vector<int> nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
 	                                 IntSet &allElements, std::set<int> &usedElements,
