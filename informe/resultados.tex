@@ -28,7 +28,7 @@ Por lo tanto para los $\gamma \in (0.1, 0.3, 0.5, 0.7, 0.9)$ los resultados de l
 \end{table}
 Estas cotas son de utilidad para comparar los resultados obtenidos con el valor de una solución óptima si es que exisitiese.
 
-De los algoritmos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de paquetes se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heurísticas \texttt{Selección de paquetes} y \texttt{Selección de paquetes proporcional}. Una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución. En \texttt{PAC} se realiza la búsqueda tabú \texttt{Inter-Bundle} luego de la etapa de producción y la \texttt{Intra-Bundle} luego de la selección. En la \texttt{Búsqueda Golosa} de la solución obtenida se realiza la búsqueda tabú \texttt{Intra-Bundle}.\\
+De los algoritmos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de paquetes se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heurísticas \texttt{Selección de paquetes} y \texttt{Selección de paquetes proporcional}. Una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución. En \texttt{PAC} se realiza la búsqueda tabú \texttt{Inter-Paquete} luego de la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} de la solución obtenida se realiza la búsqueda tabú \texttt{Intra-Paquete}.\\
 
 \Solucion
 {}

@@ -38,7 +38,7 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
-\ENSURE Conjunto válido de $k$ bundles
+\ENSURE Conjunto válido de $k$ paquetes
 \STATE $cand \leftarrow ProduceBundle(I,\alpha,f,\beta)$
 \STATE $G \leftarrow BuildBundleGraph(cand)$
 \RETURN $ChooseBundles(k,\gamma,G)$
@@ -67,12 +67,12 @@ Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entr
 En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ grupos del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos. Con \texttt{BOBO-k} pueden quedar ítems excluidos de los paquetes generados, por lo tanto se desarrolló una variante del método que es el \texttt{BOBO-Ex} (Ex de \textit{exhaustive}) en el cual todos los items pertenecen a un paquete. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío.\\
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos. Con \texttt{BOBO-k} pueden quedar ítems excluidos de los paquetes generados, por lo tanto se desarrolló una variante del método que es el \texttt{BOBO-Ex} (Ex de \textit{exhaustive}) en el cual todos los items pertenecen a un paquete. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío.\\
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$I,\alpha,f,\beta,\mu,\text{ cantidad de bundles }c$}
-\ENSURE Conjunto válido de bundles
+\REQUIRE {$I,\alpha,f,\beta,\mu,\text{ cantidad de paquetes }c$}
+\ENSURE Conjunto válido de paquetes
 \STATE $pivots \leftarrow I$
 \STATE $cand \leftarrow \emptyset$
 \WHILE {$ \left|C\right| < c\ and\ P \neq \emptyset$}
@@ -111,8 +111,8 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$I,\alpha,f,\beta,\gamma,\text{ cantidad de bundles }c$}
-\ENSURE Conjunto válido de bundles
+\REQUIRE {$I,\alpha,f,\beta,\gamma,\text{ cantidad de paquetes }c$}
+\ENSURE Conjunto válido de paquetes
 \STATE $cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$
 \WHILE {$ \left|cand\right| > c$}
 	\STATE $bestScore \leftarrow -\infty$
@@ -165,7 +165,7 @@ Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios d
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$I,\alpha,f,\beta,\gamma$}
-\ENSURE Conjunto válido de bundles
+\ENSURE Conjunto válido de paquetes
 \FOR{$\text{each}\ S_i\in I$}
 	\FOR{$\text{each}\ S_j\in I$}
 		\IF {$validMerge(S_i,S_j,\alpha,f,\beta)$} 
@@ -276,7 +276,7 @@ El algoritmo goloso que se propone comienza con con los $k$ paquetes de la soluc
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
-\ENSURE Conjunto válido de bundles
+\ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $cand \leftarrow \bigcup_{1 \ldots k}\emptyset$
 \STATE $isComplete \leftarrow False$
@@ -319,9 +319,9 @@ que relaja la primer regla de las búsquedas locales tradicionales y permite mov
 
 Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.
 
-Se implementaron las búsquedas tabú Inter-Bundle e Intra-Bundle. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
+Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
-\subsection{Inter-Bundle}
+\subsection{Inter-Paquete}
 La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
 
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
@@ -337,8 +337,8 @@ $$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus 
 El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el paquete $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S\text{ solucion},cand\text{ conjunto valido de bundles},\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
-\ENSURE Conjunto válido de bundles
+\REQUIRE {$S\text{ solucion},cand\text{ conjunto válido de paquetes},\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
 \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
@@ -372,8 +372,8 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
 \end{algorithm}
 
-\subsection{Intra-Bundle}
-En Intra-Bundle explora soluciones con paquetes más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
+\subsection{Intra-Paquete}
+En Intra-Paquete explora soluciones con paquetes más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
 \begin{enumerate}
 	\item Obtener el paquete menos cohesivos de la solución.
 	\item Determinar el centroide del ppaquete.
@@ -386,8 +386,8 @@ Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el p
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S\text{ solucion},cand\text{ conjunto valido de bundles},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
-\ENSURE Conjunto válido de bundles
+\REQUIRE {$S\text{ solucion},cand\text{ conjunto válido de paquetes},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$
