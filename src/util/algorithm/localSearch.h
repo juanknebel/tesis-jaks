@@ -18,7 +18,7 @@ private:
 
 	std::vector<int> nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
 	                                 IntSet &allElements, std::set<int> &usedElements,
-	                                 ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus);
+	                                 ProblemInstance &theProblem, std::vector<int> &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus);
 
 	SnowFlake createNewBunlde(SnowFlake worstFlake, int excludeElement, int newElement,
 	                          ProblemInstance &theProblem);

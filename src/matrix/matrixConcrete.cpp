@@ -61,11 +61,11 @@ void MatrixConcrete::set(int row, int col, Double value)
 
 	(*(this->theMatrix_))(row, col) = value;
 
-	if (isnan(this->maxValue_)) {
+	if (std::isnan(this->maxValue_)) {
 		this->maxValue_ = value;
 	}
 
-	if (isnan(this->minValue_)) {
+	if (std::isnan(this->minValue_)) {
 		this->minValue_ = value;
 	}
 

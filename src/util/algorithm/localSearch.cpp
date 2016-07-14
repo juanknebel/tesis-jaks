@@ -22,12 +22,11 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 	int tabuBundleCount = solution.size();
 	int tabuElementCount = maxIter/tabuBundleCount;
 
-	TabuElements setOfTabuElements;
 	TabuBundles setOfTabuBundles;
 	std::map<int, std::set<int>> mapOfTabus;
 	std::map<int, int> recentlyAdded;
-
 	std::set<int> usedIds;
+	TabuElements setOfTabuElements;
 
 	for (auto& snowFlake : visitSolution) {
 		snowFlake.setIdentificator(id);
@@ -71,13 +70,16 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		SnowFlake worstBundle = iterationSolution.at(bundleWithWorstInter);
 		int centroidElement = this->findCentroid(worstBundle, theProblem);
 		int farAwayElement = this->findFarAwayElement(centroidElement, worstBundle, theProblem, recentlyAdded);
+		if (farAwayElement == -1) {
+			continue;
+		}
 		std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, worstBundle,
 		                                   theProblem.getIds(), usedIds, theProblem,
 		                                   setOfTabuElements, false, mapOfTabus);
 
-		std::vector<int> nearestElementsNotReplace = this->nearestElements(centroidElement, -1, worstBundle,
+		/*std::vector<int> nearestElementsNotReplace = this->nearestElements(centroidElement, -1, worstBundle,
 		        theProblem.getIds(), usedIds, theProblem,
-		        setOfTabuElements, false, mapOfTabus);
+		        setOfTabuElements, false, mapOfTabus);*/
 
 
 
@@ -119,7 +121,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		SnowFlakeVector tabuIterationSolution(visitSolution.begin(), visitSolution.end());
 		int tabubundleWithWorstInter = bundleWithWorstInter;
 
-		if (false && tabubundleWithWorstInter > -1) {
+		if (false && tabubundleWithWorstInter > -1) {/*
 			SnowFlake tabuWorstBundle = iterationSolution.at(tabubundleWithWorstInter);
 			int tabuCentroidElement = this->findCentroid(tabuWorstBundle, theProblem);
 			int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem, recentlyAdded);
@@ -158,7 +160,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 			for (auto anElement : elementsToTakeOffTabeList) {
 				setOfTabuElements[anElement] = 0;
-			}
+			}*/
 		}
 
 		SnowFlake theBundle = this->createNewBunlde(worstBundle, farAwayElement, betterElement, theProblem);
@@ -167,7 +169,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 		//Actualizo la mejor solucion global
 		if (tempObjectiveFunction > theBestObjectiveSolution) {
-			bestSolution.clear();
+			bestSolution = SnowFlakeVector();
 			bestSolution = visitSolution;
 			theBestObjectiveSolution = tempObjectiveFunction;
 		}
@@ -176,7 +178,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 		usedIds.insert(betterElement);
 		setOfTabuElements[farAwayElement] = tabuElementCount;
 		setOfTabuBundles[bundleWithWorstInter] = tabuBundleCount;
-		std::set<int> theSet = mapOfTabus[farAwayElement];
+		std::set<int> theSet(mapOfTabus[farAwayElement]);
 		theSet.insert(betterElement);
 		mapOfTabus[farAwayElement] = theSet;
 		for (auto element : worstBundle.ids()) {
@@ -226,13 +228,14 @@ int LocalSearch::findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabu
 int LocalSearch::findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem)
 {
 	int centroid = -1;
-	std::set<int> theIds = worstFlake.ids();
+	std::set<int> theIds(worstFlake.ids());
+	std::set<int> theIds2(worstFlake.ids());
 	double maxSumEdges = -1;
 
-	for (auto element : theIds) {
+	for (int element : theIds) {
 		double sumEdges = 0.0;
 
-		for (auto otherElement : theIds) {
+		for (int otherElement : theIds2) {
 			if (element != otherElement) {
 				sumEdges += theProblem.getCompat(element, otherElement);
 			}
@@ -291,7 +294,7 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
 
 std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
         IntSet &allElements, std::set<int> &usedElements,
-        ProblemInstance &theProblem, TabuElements &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus)
+        ProblemInstance &theProblem, std::vector<int> &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus)
 {
 	int maxElements = 10;
 	std::vector<int> nearElements;
@@ -304,7 +307,7 @@ std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace
 	for (auto element : allElements) {
 		if (usedElements.count(element) == 0 && (takeTabu || tabuElements.at(element) == 0)) {
 			bool canReplace = this->checkCoverageConstraint(worstFlake, elementToReplace, element, theProblem);
-			std::set<int> theSet = mapOfTabus[elementToReplace];
+			std::set<int> theSet(mapOfTabus[elementToReplace]);
 			bool isInTabuMovement = theSet.count(element) != 0;
 			if (canReplace && !isInTabuMovement) {
 				double similarity = theProblem.getCompat(centroid, element);
@@ -409,9 +412,9 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
 
 void LocalSearch::updateTabuElements(std::vector<int> &tabuSet)
 {
-	for (auto& tabuElement : tabuSet) {
-		if (tabuElement > 0) {
-			tabuElement--;
+	for (int i = 0; i < tabuSet.size(); ++i) {
+		if (tabuSet[i] > 0) {
+			tabuSet[i] = tabuSet[i] - 1;
 		}
 	}
 }
