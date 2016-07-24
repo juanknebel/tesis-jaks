@@ -28,9 +28,36 @@ private:
 
 	void updateTabuElements(std::vector<int> &tabuSet);
 
+    struct SnowFlakeWithChooseElement {
+        SnowFlake theSnowflake;
+        int theIdOfTheChoosenElement;
+		double objetiveFunction;
+		bool operator < (const SnowFlakeWithChooseElement& s1) const {
+			return this->objetiveFunction < s1.objetiveFunction;
+		}
+    };
+
+    SnowFlakeWithChooseElement
+    addOneRandomElementToBundle(SnowFlake bundle, ProblemInstance &theProblem, std::set<int> setOfUsedElements,
+                                    TabuElements setOfTabuBundles, SnowFlakeVector visitedSolution,
+                                    Double interSimilarityWeight, int centroid);
+
+    SnowFlakeWithChooseElement
+    replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, IntSet &setOfElements,
+                                      std::set<int> setOfUsedElements, ProblemInstance &theProblem,
+                                      TabuElements setOfTabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus,
+                                      int bundleWithWorstInter, SnowFlakeVector iterationSolution, Double interSimilarityWeight,
+                                      SnowFlakeVector visitedSolution);
+
+    SnowFlakeWithChooseElement
+	removeFarAwayElement(SnowFlake bundle, int farAwayElement, ProblemInstance &theProblem, SnowFlakeVector visitedSolution,
+                             Double interSimilarityWeight);
+
 public:
 	LocalSearch() {}
 	SnowFlakeVector execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
+
+
 };
 
 #endif // LOCALSEARCH_H

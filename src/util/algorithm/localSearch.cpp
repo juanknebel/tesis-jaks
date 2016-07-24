@@ -1,8 +1,8 @@
 #include "localSearch.h"
 #include "../system/exception.h"
-#include "../logger/logger.h"
+/*#include "../logger/logger.h"
 #include "../writer/writterSolutionFile.h"
-#include "../writer/writerSolutionArticles.h"
+#include "../writer/writerSolutionArticles.h"*/
 
 SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight)
 {
@@ -14,7 +14,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 	* esto lo repito tantas veces como el parametro de maximas iteraciones
 	*/
 	SnowFlakeVector bestSolution(solution.begin(), solution.end());
-	//return bestSolution;
 	SnowFlakeVector visitSolution(solution.begin(), solution.end());
 	double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
 
@@ -44,60 +43,48 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 	maxIter = 101;
 	int iteration = 0;
-	DEBUG(DBG_DEBUG,"max iter: "<<maxIter);
 
 	while (iteration < maxIter) {
 		++iteration;
-
 		this->updateTabuElements(setOfTabuElements);
 		this->updateTabuElements(setOfTabuBundles);
-
 		SnowFlakeVector iterationSolution(visitSolution.begin(), visitSolution.end());
-		std::stringstream fileName;
-		fileName<<"SolucionIteracion"<<iteration<<".csv";
-		//WritterSolutionFile writterViitedSolution("\t");
-		WriterSolutionArticles writterViitedSolution("\t");
-		writterViitedSolution.writeSolution(visitSolution, fileName.str(), nullptr, interSimilarityWeight);
-
 		int bundleWithWorstInter = this->findWorstIntraBundle(iterationSolution, setOfTabuBundles, false);
-
 		if (bundleWithWorstInter == -1) {
 			continue;
 		}
-
-		DEBUG(DBG_DEBUG,"iter num: "<<iteration);
-
 		SnowFlake worstBundle = iterationSolution.at(bundleWithWorstInter);
 		int centroidElement = this->findCentroid(worstBundle, theProblem);
 		int farAwayElement = this->findFarAwayElement(centroidElement, worstBundle, theProblem, recentlyAdded);
-		if (farAwayElement == -1) {
-			continue;
-		}
-		std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, worstBundle,
-		                                   theProblem.getIds(), usedIds, theProblem,
-		                                   setOfTabuElements, false, mapOfTabus);
-
-		/*std::vector<int> nearestElementsNotReplace = this->nearestElements(centroidElement, -1, worstBundle,
+        SnowFlakeWithChooseElement bundleWithOneRandomMoreElement = this->addOneRandomElementToBundle(worstBundle,
+                                                                                                      theProblem,
+                                                                                                      usedIds,
+                                                                                                      setOfTabuElements,
+                                                                                                      visitSolution,
+                                                                                                      interSimilarityWeight,
+                                                                                                      centroidElement);
+        SnowFlakeWithChooseElement bundleWithFarAwayElementReplace = this->replaceFarAwayElementInBundle(worstBundle,
+                                                                                                         centroidElement,
+                                                                                                         farAwayElement,
+                                                                                                         theProblem.getIds(),
+                                                                                                         usedIds,
+                                                                                                         theProblem,
+                                                                                                         setOfTabuElements,
+                                                                                                         false,
+                                                                                                         mapOfTabus,
+                                                                                                         bundleWithWorstInter,
+                                                                                                         iterationSolution,
+                                                                                                         interSimilarityWeight,
+                                                                                                         visitSolution);
+        SnowFlakeWithChooseElement bundleWithoutFarAwayElement = this->removeFarAwayElement(worstBundle, farAwayElement,
+                                                                                            theProblem, visitSolution,
+                                                                                            interSimilarityWeight);
+/*--------------
+ * Esta es la parte de la aspiracion
+		 std::vector<int> nearestElementsNotReplace = this->nearestElements(centroidElement, -1, worstBundle,
 		        theProblem.getIds(), usedIds, theProblem,
-		        setOfTabuElements, false, mapOfTabus);*/
+		        setOfTabuElements, false, mapOfTabus);
 
-
-
-		int betterElement;
-		double itBestObjectiveFunction = -1;
-
-		for (int aNearestElem : nearestElements) {
-			SnowFlake theNewBundle = this->createNewBunlde(worstBundle, farAwayElement, aNearestElem, theProblem);
-			iterationSolution[bundleWithWorstInter] = theNewBundle;
-			double newObjectiveFunction = SnowFlake::objetiveFunction(iterationSolution, interSimilarityWeight);
-
-			if (newObjectiveFunction > itBestObjectiveFunction) {
-				itBestObjectiveFunction = newObjectiveFunction;
-				betterElement = aNearestElem;
-			}
-		}
-
-		/*
 		  for (int aNearestElem : nearestElementsNotReplace) {
 			  SnowFlake theNewBundle = this->createNewBunlde(worstBundle, -1, aNearestElem, theProblem);
 		    iterationSolution[bundleWithWorstInter] = theNewBundle;
@@ -107,21 +94,11 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 				  betterElement = aNearestElem;
 			  }
 		}
-		*/
-		DEBUG(DBG_DEBUG, "Elemento lejano: "<<farAwayElement);
-		DEBUG(DBG_DEBUG, "Elementos cercanos");
-
-		for (auto near : nearestElements) {
-			DEBUG(DBG_DEBUG, near);
-		}
-
-		DEBUG(DBG_DEBUG, "Agrego elemento: "<<betterElement);
-		DEBUG(DBG_DEBUG, "Fin iteracion");
 
 		SnowFlakeVector tabuIterationSolution(visitSolution.begin(), visitSolution.end());
 		int tabubundleWithWorstInter = bundleWithWorstInter;
 
-		if (false && tabubundleWithWorstInter > -1) {/*
+		if (false && tabubundleWithWorstInter > -1) {
 			SnowFlake tabuWorstBundle = iterationSolution.at(tabubundleWithWorstInter);
 			int tabuCentroidElement = this->findCentroid(tabuWorstBundle, theProblem);
 			int tabuFarAwayElement = this->findFarAwayElement(tabuCentroidElement, tabuWorstBundle, theProblem, recentlyAdded);
@@ -160,35 +137,36 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
 
 			for (auto anElement : elementsToTakeOffTabeList) {
 				setOfTabuElements[anElement] = 0;
-			}*/
+			}
 		}
-
-		SnowFlake theBundle = this->createNewBunlde(worstBundle, farAwayElement, betterElement, theProblem);
-		visitSolution[bundleWithWorstInter] = theBundle;
-		double tempObjectiveFunction = SnowFlake::objetiveFunction(visitSolution, interSimilarityWeight);
-
-		//Actualizo la mejor solucion global
-		if (tempObjectiveFunction > theBestObjectiveSolution) {
+*/
+        LocalSearch::SnowFlakeWithChooseElement bundleAndElement =
+                std::max(bundleWithoutFarAwayElement, std::max(bundleWithOneRandomMoreElement, bundleWithFarAwayElementReplace));
+        //Actualizo la mejor solucion global
+		if (bundleAndElement.objetiveFunction > theBestObjectiveSolution) {
 			bestSolution = SnowFlakeVector();
 			bestSolution = visitSolution;
-			theBestObjectiveSolution = tempObjectiveFunction;
+            bestSolution[bundleWithWorstInter] = bundleAndElement.theSnowflake;
+			theBestObjectiveSolution = bundleAndElement.objetiveFunction;
 		}
-
-		usedIds.erase(farAwayElement);
-		usedIds.insert(betterElement);
-		setOfTabuElements[farAwayElement] = tabuElementCount;
+		if (farAwayElement != -1) {
+            usedIds.erase(farAwayElement);
+            setOfTabuElements[farAwayElement] = tabuElementCount;
+            std::set<int> theSet(mapOfTabus[farAwayElement]);
+            mapOfTabus[farAwayElement] = theSet;
+            //theSet.insert(betterElement);
+        }
+        if (bundleAndElement.theIdOfTheChoosenElement != -1) {
+            usedIds.insert(bundleAndElement.theIdOfTheChoosenElement);
+            recentlyAdded[bundleAndElement.theIdOfTheChoosenElement] = 3;
+        }
 		setOfTabuBundles[bundleWithWorstInter] = tabuBundleCount;
-		std::set<int> theSet(mapOfTabus[farAwayElement]);
-		theSet.insert(betterElement);
-		mapOfTabus[farAwayElement] = theSet;
 		for (auto element : worstBundle.ids()) {
 			if (recentlyAdded.find(element) != recentlyAdded.end() && recentlyAdded[element] > 0) {
 				recentlyAdded[element]--;
 			}
 		}
-		recentlyAdded[betterElement] = 3;
 	}
-
 	return bestSolution;
 }
 
@@ -417,4 +395,105 @@ void LocalSearch::updateTabuElements(std::vector<int> &tabuSet)
 			tabuSet[i] = tabuSet[i] - 1;
 		}
 	}
+}
+
+LocalSearch::SnowFlakeWithChooseElement LocalSearch::addOneRandomElementToBundle(SnowFlake bundle, ProblemInstance &theProblem, std::set<int> setOfUsedElements,
+                                                                    TabuElements setOfTabuElements, SnowFlakeVector visitedSolution,
+                                                                    Double interSimilarityWeight, int centroid) {
+    srand(1);
+    int randomElement = -1;
+    double maxSimilarity = -1;
+    for (int anElement : theProblem.getIds()) {
+        bool findOne = setOfTabuElements[anElement] == 0 && setOfUsedElements.count(anElement) == 0 &&
+                this->checkCoverageConstraint(bundle, -1, anElement, theProblem);
+        if (findOne) {
+            double similarity = theProblem.getCompat(centroid, anElement);
+            if (similarity > maxSimilarity) {
+                randomElement = anElement;
+                maxSimilarity = similarity;
+            }
+        }
+    }
+
+    LocalSearch::SnowFlakeWithChooseElement bundleAndElement;
+    if (randomElement == -1) {
+        bundleAndElement.theSnowflake = bundle;
+        bundleAndElement.theIdOfTheChoosenElement = -1;
+        bundleAndElement.objetiveFunction = -1;
+    }
+    else {
+        bundleAndElement.theSnowflake = this->createNewBunlde(bundle, -1, randomElement, theProblem);
+        visitedSolution[bundle.getIdentificator()] = bundleAndElement.theSnowflake;
+        bundleAndElement.theIdOfTheChoosenElement = randomElement;
+        bundleAndElement.objetiveFunction = SnowFlake::objetiveFunction(visitedSolution, interSimilarityWeight);
+    }
+
+    return bundleAndElement;
+}
+
+LocalSearch::SnowFlakeWithChooseElement
+LocalSearch::replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, IntSet &setOfElements,
+                                           std::set<int> setOfUsedElements, ProblemInstance &theProblem,
+                                           TabuElements setOfTabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus,
+                                           int bundleWithWorstInter, SnowFlakeVector iterationSolution, Double interSimilarityWeight,
+                                           SnowFlakeVector visitedSolution) {
+    LocalSearch::SnowFlakeWithChooseElement bundleAndElement;
+    if (farAwayElement == -1) {
+        bundleAndElement.theIdOfTheChoosenElement = -1;
+        bundleAndElement.theSnowflake = bundle;
+        bundleAndElement.objetiveFunction = -1;
+    }
+    else {
+
+        std::vector<int> nearestElements = this->nearestElements(centroidElement, farAwayElement, bundle,
+                                                                 theProblem.getIds(), setOfUsedElements, theProblem,
+                                                                 setOfTabuElements, takeTabu, mapOfTabus);
+
+        int betterElement;
+        double itBestObjectiveFunction = -1;
+
+        for (int aNearestElem : nearestElements) {
+            SnowFlake theNewBundle = this->createNewBunlde(bundle, farAwayElement, aNearestElem, theProblem);
+            iterationSolution[bundleWithWorstInter] = theNewBundle;
+            double newObjectiveFunction = SnowFlake::objetiveFunction(iterationSolution, interSimilarityWeight);
+
+            if (newObjectiveFunction > itBestObjectiveFunction) {
+                itBestObjectiveFunction = newObjectiveFunction;
+                betterElement = aNearestElem;
+            }
+        }
+        SnowFlake theBundle = this->createNewBunlde(bundle, farAwayElement, betterElement, theProblem);
+        visitedSolution[bundle.getIdentificator()] = theBundle;
+        bundleAndElement.theIdOfTheChoosenElement = betterElement;
+        bundleAndElement.theSnowflake = theBundle;
+        bundleAndElement.objetiveFunction = SnowFlake::objetiveFunction(visitedSolution, interSimilarityWeight);
+    }
+    return bundleAndElement;
+}
+
+LocalSearch::SnowFlakeWithChooseElement
+LocalSearch::removeFarAwayElement(SnowFlake bundle, int farAwayElement, ProblemInstance &theProblem, SnowFlakeVector visitedSolution,
+                                  Double interSimilarityWeight) {
+    LocalSearch::SnowFlakeWithChooseElement bundleAndElement;
+    if (farAwayElement == -1) {
+        bundleAndElement.theSnowflake = bundle;
+        bundleAndElement.theIdOfTheChoosenElement = -1;
+        bundleAndElement.objetiveFunction = -1;
+    }
+    else {
+        std::set<int> theNewsId;
+        for (auto element : bundle.ids()) {
+            if (element != farAwayElement) {
+                theNewsId.insert(element);
+            }
+        }
+
+        SnowFlake newSnowFlake(theNewsId, &theProblem);
+        newSnowFlake.setIdentificator(bundle.getIdentificator());
+        visitedSolution[bundle.getIdentificator()] = newSnowFlake;
+        bundleAndElement.theSnowflake = newSnowFlake;
+        bundleAndElement.theIdOfTheChoosenElement = farAwayElement;
+        bundleAndElement.objetiveFunction = SnowFlake::objetiveFunction(visitedSolution, interSimilarityWeight);
+    }
+    return bundleAndElement;
 }
