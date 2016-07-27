@@ -47,7 +47,7 @@ private:
                                       std::set<int> setOfUsedElements, ProblemInstance &theProblem,
                                       TabuElements setOfTabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus,
                                       int bundleWithWorstInter, SnowFlakeVector iterationSolution, Double interSimilarityWeight,
-                                      SnowFlakeVector visitedSolution);
+                                      SnowFlakeVector visitedSolution, double theBestObjectiveSolution);
 
     SnowFlakeWithChooseElement
 	removeFarAwayElement(SnowFlake bundle, int farAwayElement, ProblemInstance &theProblem, SnowFlakeVector visitedSolution,
