@@ -373,7 +373,9 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \end{algorithm}
 
 \subsection{Intra-Paquete}
-El objetivo de la búsqueda Intra-Paquete es explorar soluciones con paquetes más cohesivos para si hallar una solución con mejor función objetivo. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica el paquete de $S$ con menor Intra. La modificación del paquete puede consistir en: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución, siempre y cuando el nuevo paquete generado sea válido.
+El objetivo de la búsqueda Intra-Paquete es explorar soluciones con paquetes más cohesivos para si hallar una solución con mejor función objetivo. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica el paquete de $S$ con menor Intra. La modificación del paquete puede consistir en: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución, siempre y cuando el nuevo paquete generado sea válido. En esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene los elementos que se intercambiaron de la solución $S$ a  $S'$ para que esos elementos no se vuelvan a intercambiar.
+
+Para evitar ciclar entre las soluciones, por ejemplo si las soluciones visitadas son $S, S_1, \ldots, S_n, S$ para que la próxima no sea $S_1$ es que se agregó la lista tabú de movimientos.
 
 De la solución actual se realiza el movimiento a una nueva solución con los pasos:
 \begin{enumerate}
