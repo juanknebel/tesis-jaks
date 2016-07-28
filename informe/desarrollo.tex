@@ -311,13 +311,9 @@ El algoritmo goloso que se propone comienza con con los $k$ paquetes de la soluc
 \section{Búsquedas Tabú}
 Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueve a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
 
-\textbf{Tabú search} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales. 
+\textbf{Tabú search} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
 
-Las implementaciones de las búsquedas tabú 
-El vecindario de soluciones de la solución $x$ esta dada por Las soluciones admitidas en {\displaystyle N^{*}(x)} 
-Se utiliza una estructura flexible de memoria, 
-
-que  Otras de las modificaciones que se agregan es que, cuando una solución determinada es visitada se marca como tabú el movimiento que la generó por una determinada cantidad de iteraciones. Se guarda el movimiento y no la solución ya que en cada iteración sería muy costoso chequear si la nueva generación es tabú o no. Por otro al incluir el movimiento se están prohibiendo soluciones no exploradas que podrían ser mejores. Por este motivo surge el criterio de aspiración. El más conocido consiste en permitir un movimiento prohibido solo si supera en valor de su función objetivo a la mejor solución conocida hasta ahora. De esta manera lo que se busca es evitar caer en ciclos y mínimos o máximos locales.
+Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como listas tabú, que determinan cuáles son las soluciones vecinas permitidas de una solución. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, visitar una solución que se encuentra en la lista tabú.
 
 Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.
 
@@ -325,6 +321,8 @@ Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera 
 
 \subsection{Inter-Paquete}
 La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
+
+Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que que no contienen el paquete con menor valor Inter de $S$ e incluye un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante $n$ iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
 Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
 \begin{enumerate}
@@ -375,13 +373,15 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \end{algorithm}
 
 \subsection{Intra-Paquete}
-En Intra-Paquete explora soluciones con paquetes más cohesivos. De la solución actual se realiza el movimiento a una nueva solución con los pasos:
+El objetivo de la búsqueda Intra-Paquete es explorar soluciones con paquetes más cohesivos para si hallar una solución con mejor función objetivo. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica el paquete de $S$ con menor Intra. La modificación del paquete puede consistir en: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución, siempre y cuando el nuevo paquete generado sea válido.
+
+De la solución actual se realiza el movimiento a una nueva solución con los pasos:
 \begin{enumerate}
-	\item Obtener el paquete menos cohesivos de la solución.
-	\item Determinar el centroide del ppaquete.
-	\item Hallar el ítem más alejado del centroide.
-	\item Calcular el inter del paquete agregando uno de los $K$ items más cercano del centroide.
-	\item Generar un nuevo paquete en la solución con el item que maximiza el inter.
+	\item Obtener el paquete, $p$, menos cohesivos de la solución $S$.
+	\item Crear el paquete $p'$ válido agregando un elemento que no pertenezca a la solución a $p$.
+	\item Crear el paquete $p''$ válido quitando de $p$ el elemento más alejado del centroide.
+	\item Crear el paquete $p'''$ válido quitando de $p$ el elemento más alejado del centroide y agregando el elemento que no pertenece a la solución $S$
+	\item La solución $S' = \max{S\setminus\{p\}\cup\{p'\}, S\setminus\{p\}\cup\{p''\}, S\setminus\{p\}\cup\{p'''\}}$.
 \end{enumerate}
 
 Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
