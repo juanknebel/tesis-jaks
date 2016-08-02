@@ -14,7 +14,7 @@ En C-HAC inicialmente cada ítem forma un {\em cluster} unitario y luego sucesiv
 
 El método \texttt{BOBO-c}, está inspirado en k-means. En términos simples, consiste en generar $c*k$ {\em clusters} del conjunto de $n$ items. El algoritmo comienza con todos los items del conjunto $I$ como posibles \emph{pivotes} $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un {\em cluster} válido ``alrededor" de éste. En caso que el {\em cluster} generado sea suficientemente bueno (su valor intra supera un parámetro $\mu$) se agrega al conjunto de paquetes candidatos y los items del {\em cluster} se eliminan de $P$. La generación de {\em clusters} continúa hasta que se cumpla el criterio de parada que es la generación de $c*k$ {\em clusters}. Con BOBO-c pueden quedar items excluidos de los paquetes generados, por lo que se desarrolló una variante del método, llamado BOBO-E' (por Exhaustivo) que logra que todos los items pertenezcan a un paquete. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío. Para grandes bases de datos los tiempos de ejecución de esta variante BOBO-E' resulta impracticable.
 
-Al finalizar la producción de paquetes comienza la etapa de selección, en la cual se deben seleccionar los $k$ paquetes que formarán la solución (Selección simple). El problema de seleccionar los paquetes que maximizan la función objetivo se traduce en encontrar en un grafo completo $G$ cuyos vértices representan los paquetes (con pesos asociados dados por sus valores intra) y cuyas aristas tienen como peso los valores inter, el subgrafo de $k$ vértices de mayor peso (considerando los pesos de los vértices y aristas). Para ello se implementó un algoritmo goloso, en el cual se selecciona iterativamente del conjunto de paquetes aquél que maximiza la función objetivo evaluada en los paquetes hasta el momento seleccionados. Notemos que en las primeras iteraciones de esta selección el valor inter-paquetes es despreciable con respecto a la suma de los valores intra-paquete. Esto hace que cuando se quiere privilegiar la diversidad de paquetes en la solución (valores bajos de $\gamma$) ésta no sea una buena estrategia.
+Al finalizar la producción de paquetes comienza la etapa de selección, en la cual se deben seleccionar los $k$ paquetes que formarán la solución (Selección simple). El problema de seleccionar los paquetes que maximizan la función objetivo se traduce en encontrar en un grafo completo $G$ cuyos vértices representan los paquetes (con pesos asociados dados por sus valores intra) y cuyas aristas tienen como peso los valores inter, el subgrafo de $k$ vértices de mayor peso (considerando los pesos de los vértices y aristas). Para ello se implementó un algoritmo goloso, en el cual se selecciona iterativamente del conjunto de paquetes aquél que maximiza la función objetivo evaluada en los paquetes hasta el momento seleccionados. Al notar que en las primeras iteraciones de esta selección el valor inter-paquetes es despreciable con respecto a la suma de los valores intra-paquete. Esto hace que cuando se quiere privilegiar la diversidad de paquetes en la solución (valores bajos de $\gamma$) ésta no sea una buena estrategia.
 
 Como consecuencia de la forma en que las soluciones son generadas en las heurísticas del tipo {\em Produce and choose} (construir una cantidad suficiente de paquetes y luego seleccionar un subconjunto de éstos), es de esperar que las soluciones generadas se enfoquen más en valorar la parte intra-paquete que la inter-paquetes.
 
@@ -337,8 +337,7 @@ $$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus 
 El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el paquete $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S, cand, \gamma, MAX\_SOL, MAX\_BUND, ITER\_TABU$}
-%\COMMENT{$S\text{: solucion},cand\text{: conjunto válido de paquetes},\gamma, MAX\_SOL\text{: cantidad de soluciones vecinas visitadas},MAX\_BUND\text{: cantidad bundles para probar}, ITER\_TABU\text{: iteraciones en tabú}$}
+\REQUIRE {$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
 \ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
@@ -351,17 +350,14 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \WHILE {$iteration < MAX\_ITER$}
   \STATE $worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$
 	\STATE $centroidBundle \leftarrow getCentroid(visitSolution)$
-	\STATE $bestBundles \leftarrow \text{fetch first MAX\_BUND} \max_{b \in cand \setminus tabuBundles}{Dist(b, centroidBundle)}$
-	\STATE $visitSolution \leftarrow \emptyset$
-	\FOR {$\text{each}\ aBundle \in bestBundles$}
-    \STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{aBundle\right\}$
-    \IF {$inter(iterationSolution) > inter(nextVisit)$}
-			\STATE $visitSolution \leftarrow iterationSolution$
-    \ENDIF
-  \ENDFOR
-	
-  \IF {$\omega(visitSolution) > \omega(bestSolution)$}
+	\STATE $visitSolution_a \leftarrow \max_{b \in cand}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$
+	\STATE $visitSolution \leftarrow \max_{b \in cand \setminus tabuBundles}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$
+	\IF {$\omega(visitSolution) > \omega(bestSolution)$}
     \STATE $bestSolution \leftarrow visitSolution$
+  \ENDIF
+	\IF {$\omega(visitSolution_a) > \omega(bestSolution)$}
+    \STATE $bestSolution \leftarrow visitSolution_a$
+		\STATE $visitSolution \leftarrow visitSolution_a$
   \ENDIF
   \STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
 	\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$
@@ -374,9 +370,11 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \end{algorithm}
 
 \subsection{Intra-Paquete}
-El objetivo de la búsqueda Intra-Paquete es explorar soluciones con paquetes más cohesivos para si hallar una solución con mejor función objetivo. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica el paquete de $S$ con menor Intra. La modificación del paquete puede consistir en: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución, siempre y cuando el nuevo paquete generado sea válido. En esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene los elementos que se intercambiaron de la solución $S$ a  $S'$ para que esos elementos no se vuelvan a intercambiar.
+El objetivo de la búsqueda Intra-Paquete es buscar una solución más óptima a través de generar soluciones con paquetes más. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
 
-Para evitar ciclar entre las soluciones, por ejemplo si las soluciones visitadas son $S, S_1, \ldots, S_n, S$ para que la próxima no sea $S_1$ es que se agregó la lista tabú de movimientos.
+La lista de los movimientos se utiliza para evitar ciclar entre las soluciones, por ejemplo si las soluciones visitadas son $S, S_1, \ldots, S_n, S$ prohibiendo que se vuelvan a intercambiar el mismo par de elementos, se asegura que la próxima no sea $S_1$.
+
+El criterio de aspiración que se utiliza es permitir utilizar un elemento de la lista tabú para intercambiar con un elemento de la solución actual, si el valor de la función objetivo es mayor del de la mejor solución encontrada hasta al momento.
 
 De la solución actual se realiza el movimiento a una nueva solución con los pasos:
 \begin{enumerate}
@@ -391,8 +389,7 @@ Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el p
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S, cand, I, \alpha, f, \beta, k, \gamma,  MAX\_SOL, MAX\_BUND, ITER\_TABU$}
-%\COMMENT{$S\text{ solucion},cand\text{ conjunto válido de paquetes},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\REQUIRE {$S, cand, I, \alpha, f, \beta, k, \gamma, MAX\_ITER, ITER\_TABU$}
 \ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
@@ -402,21 +399,22 @@ Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el p
 \STATE $tabuBundles \leftarrow \emptyset$
 \STATE $tabuElements \leftarrow \emptyset$
 \STATE $bestSolution \leftarrow S$
+\STATE $visitSolution \leftarrow S$
 \WHILE {$iteration < MAX\_ITER$}
   \STATE $worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$
   \STATE $centroid \leftarrow GetCentroid(worstBunlde)$
-  \STATE $faraway \leftarrow GetFarawayElement(worstBunlde,centroid)$
-  \STATE $bestElements \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
-	\STATE $visitSolution \leftarrow \emptyset$
-  \FOR {$anElement \in bestElements$}
-		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{anElement\right\}$
-		\STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
-		\IF {$\omega(iterationSolution) > \omega(visitSolution)$}
-			\STATE $visitSolution \leftarrow iterationSolution$
-		\ENDIF
-  \ENDFOR
-  \IF {$\omega(visitSolution) > \omega(bestSolution)$}
+  \STATE $fe \leftarrow GetFarawayElement(worstBunlde,centroid)$
+	\STATE $visitSolution_1 \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{worstBunlde \setminus \left\{faraway\right\}\right\}$
+	\STATE $visitSolution_2 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde\cup\left\{b\right\}\right\}}$
+	\STATE $visitSolution_3 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$
+	\STATE $visitSolution_a \leftarrow \max_{b \in I}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$
+	\STATE $visitSolution \leftarrow \max{visitSolution_1,visitSolution_2,visitSolution_3}$
+	\IF {$\omega(visitSolution) > \omega(bestSolution)$}
 		\STATE $bestSolution \leftarrow visitSolution$
+  \ENDIF
+	\IF {$\omega(visitSolution_a) > \omega(bestSolution)$}
+		\STATE $bestSolution \leftarrow visitSolution$
+		\STATE $visitSolution \leftarrow visitSolution_a$
   \ENDIF
 	\STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
 	\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$
