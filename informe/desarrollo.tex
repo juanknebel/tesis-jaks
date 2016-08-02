@@ -16,9 +16,9 @@ El método \texttt{BOBO-c}, está inspirado en k-means. En términos simples, co
 
 Al finalizar la producción de paquetes comienza la etapa de selección, en la cual se deben seleccionar los $k$ paquetes que formarán la solución (Selección simple). El problema de seleccionar los paquetes que maximizan la función objetivo se traduce en encontrar en un grafo completo $G$ cuyos vértices representan los paquetes (con pesos asociados dados por sus valores intra) y cuyas aristas tienen como peso los valores inter, el subgrafo de $k$ vértices de mayor peso (considerando los pesos de los vértices y aristas). Para ello se implementó un algoritmo goloso, en el cual se selecciona iterativamente del conjunto de paquetes aquél que maximiza la función objetivo evaluada en los paquetes hasta el momento seleccionados. Notemos que en las primeras iteraciones de esta selección el valor inter-paquetes es despreciable con respecto a la suma de los valores intra-paquete. Esto hace que cuando se quiere privilegiar la diversidad de paquetes en la solución (valores bajos de $\gamma$) ésta no sea una buena estrategia.
 
-Por la forma de generar la solución que tienen las heurísticas tipo {\em Produce and choose} (construir una cantidad suficiente de paquetes y luego seleccionar un subconjunto de éstos), es de esperar que las soluciones generadas se enfoquen más en valorar la parte intra-paquete que la inter-paquetes.
+Como consecuencia de la forma en que las soluciones son generadas en las heurísticas del tipo {\em Produce and choose} (construir una cantidad suficiente de paquetes y luego seleccionar un subconjunto de éstos), es de esperar que las soluciones generadas se enfoquen más en valorar la parte intra-paquete que la inter-paquetes.
 
-\item {\em Cluster and Pick} (CAP): También sigue un esquema de dos fases. En la primera se busca un $k$-{\em clustering} (un {\em cluster} no es necesariamente un paquete válido) y luego en la segunda se selecciona un paquete válido dentro de cada uno de los {\em clusters} generados en la primera etapa.
+\item {\em Cluster and Pick} (CAP): Sigue un esquema de dos fases. En la primera se busca un $k$-{\em clustering} (un {\em cluster} no es necesariamente un paquete válido) y luego en la segunda se selecciona un paquete válido dentro de cada uno de los {\em clusters} generados en la primera etapa.
 
 \item Método IP: Se presenta un modelo de programación lineal entera que resuelve el problema de forma exacta. Los tiempos de ejecución de este enfoque lo hacen prohibitivo para grandes instancias.
 
@@ -160,7 +160,7 @@ $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
 El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.\\
 
-Por el orden de complejidad del algoritmo \texttt{Simple C-HAC}  en escenarios donde la agrupación se tenga que hacer entre miles de objetos el tiempo de ejecución será tan elevado que el algoritmo es improductivo. Para contemplar estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC} que la complejidad es $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
+Debido al orden de complejidad del algoritmo \texttt{Simple C-HAC}, en escenarios donde la agrupación se realizara entre miles de objetos, el tiempo de ejecución sería tan elevado que resultaría en un algoritmo improductivo. Contemplando estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -337,7 +337,8 @@ $$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus 
 El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el paquete $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S\text{ solucion},cand\text{ conjunto válido de paquetes},\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\REQUIRE {$S, cand, \gamma, MAX\_SOL, MAX\_BUND, ITER\_TABU$}
+%\COMMENT{$S\text{: solucion},cand\text{: conjunto válido de paquetes},\gamma, MAX\_SOL\text{: cantidad de soluciones vecinas visitadas},MAX\_BUND\text{: cantidad bundles para probar}, ITER\_TABU\text{: iteraciones en tabú}$}
 \ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
@@ -383,14 +384,15 @@ De la solución actual se realiza el movimiento a una nueva solución con los pa
 	\item Crear el paquete $p'$ válido agregando un elemento que no pertenezca a la solución a $p$.
 	\item Crear el paquete $p''$ válido quitando de $p$ el elemento más alejado del centroide.
 	\item Crear el paquete $p'''$ válido quitando de $p$ el elemento más alejado del centroide y agregando el elemento que no pertenece a la solución $S$
-	\item La solución $S' = \max{S\setminus\{p\}\cup\{p'\}, S\setminus\{p\}\cup\{p''\}, S\setminus\{p\}\cup\{p'''\}}$.
+	\item Sea $S_{i} = S\setminus \{p\}$, entonces la solución $S' = \max{S_{i}\cup\{p'\}, S_{i}\cup\{p''\}, S_{i}\cup\{p'''\}}$.
 \end{enumerate}
 
 Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-\REQUIRE {$S\text{ solucion},cand\text{ conjunto válido de paquetes},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
+\REQUIRE {$S, cand, I, \alpha, f, \beta, k, \gamma,  MAX\_SOL, MAX\_BUND, ITER\_TABU$}
+%\COMMENT{$S\text{ solucion},cand\text{ conjunto válido de paquetes},I,\alpha,f,\beta,k,\gamma, MAX\_SOL\text{ cantidad de soluciones vecinas visitadas},MAX\_BUND\text{ cantidad bundles para probar}, ITER\_TABU\text{ iteraciones en tabú}$}
 \ENSURE Conjunto válido de paquetes
 \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
 \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
@@ -407,7 +409,7 @@ Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el p
   \STATE $bestElements \leftarrow \text{fetch first MAX\_BUND} \max_{b \in I \setminus tabuElements}{Dist(b, centroidBundle)}$
 	\STATE $visitSolution \leftarrow \emptyset$
   \FOR {$anElement \in bestElements$}
-		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{near\right\}$
+		\STATE $newBundle \leftarrow (worstBunlde \setminus \left\{faraway\right\})\cup\left\{anElement\right\}$
 		\STATE $iterationSolution \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{newBundle\right\}$
 		\IF {$\omega(iterationSolution) > \omega(visitSolution)$}
 			\STATE $visitSolution \leftarrow iterationSolution$
