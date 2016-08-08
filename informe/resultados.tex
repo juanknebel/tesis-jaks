@@ -1,49 +1,63 @@
-En esta sección se analizan los resultados obtenidos de las ejecuciones de los algoritmos discutidos en la sección de desarrollo sobre las consultas realizadas en la base de datos de artículos y de las atracciones turísticas. El análisis que se realiza es comparando la calidad de los resultados y el tiempo de ejecución de cada implementación en diferentes condiciones.
+El análisis que se realiza de los resultados obtenidos es comparando la calidad de los resultados de los algoritmos discutidos en la sección desarrollo, sobre las bases de datos de la sección búsqueda. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos:
 
-Para optimizar el tiempo de consulta de la similitud entre dos objetos, se tiene en memoria una matriz con todos los valores de la función similitud. En consecuencia aumenta la complejidad espacial, en las consultas que se realizaron en este trabajo la instancia utilizada no contiene más de $7000$ elementos por lo que la matriz de similitud no supera los $2$ GB de memoria. Por lo tanto, en este caso, es favorable utilizar la matriz.
+\begin{itemize}
+\item{$alg1$} PAC(C-HAC / selección simple)
+\item{$alg2$} PAC(BOBO-10 / selección simple)
+\item{$alg3$} PAC(Intra-Inter C-HAC / selección proporcional)
+\item{$alg4$} PAC(Intra-Inter C-HAC / selección proporcional) + tabú
+\item{$alg5$} PAC(BOBO-10 / selección proporcional)
+\item{$alg6$} PAC(BOBO-10 / selección proporcional) + tabú
+\item{$alg7$} Construcción golosa
+\item{$alg8$} Construcción golosa + tabú
+\end{itemize}
+
+Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
+
+Tanto $alg1$ como $alg2$ corresponden a metodologías propuestas en \cite{compositeRetrival}. Los otros algoritmos involucran las mejoras propuestas en este trabajo, para PAC es Intra-Inter C-HAC en la etapa de producción y la selección proporcional en la etapa de selección. En los casos que se agregá la búsqueda tabú, En \texttt{PAC} se realiza la búsqueda tabú \texttt{Inter-Paquete} luego de la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} de la solución obtenida se realiza la búsqueda tabú \texttt{Intra-Paquete}. Cabe señalar que no se tienen en consideración BOBO-Ex y CAP ya que para el tamaño de la instancia los tiempos de ejecución de esos algoritmos resultaron prohibitivos. A partir de experimentación preliminar con BOBO para valores $c=1, 5$ y $10$, resultó $c=10$ la opción más competitiva.  Para la búsquedas tabú se definió que la cantidad de iteraciones de permanencia de un elemento en la lista tabú sea el promedio de elementos que tiene un paquete en la solución inicial.
+
+Para realizar una comparación entre la calidad de las soluciones obtenidas por los diferentes algoritmos, se ha evaluado para los $\gamma \in \left\{0,1; 0,3; 0,4; 0,5; 0,6; 0,7; 0,8; 0,9\right\} $el deterioro de cada solución respecto de la mejor solución obtenida por alguno de los ocho algoritmos.
+
 \section{Base de datos de artículos}
+Para optimizar el tiempo de consulta de la similitud entre dos objetos, se tiene en memoria una matriz con todos los valores de la función similitud. En consecuencia aumenta la complejidad espacial, en las consultas que se realizaron en este trabajo la instancia utilizada no contiene más de $7000$ elementos por lo que la matriz de similitud no supera los $2$ GB de memoria. Por lo tanto, en este caso, es favorable utilizar la matriz.
+
 Dada la función a maximizar $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma s(u,v)\ +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v \in S_{j}} s(u,v))$$ es posible calcular la distancia entre el valor obtenido de una solución y la cota máxima de la función según el $\gamma$.
 
 Para las siguientes cotas se suponen escenarios ideales en el cuál la soluciones contiene paquetes donde todos sus elementos tienen una similitud máxima (igual a 1) y los paquetes entre si son completamente diferentes, o sea, la similitud entre cada paquete es 0. Al reemplazar la función similitud:
 $$\displaystyle\sum_{1 \leq i \leq k} \displaystyle\sum_{u,v \in S_{i}} \gamma 1\ +\ \displaystyle\sum_{1 \leq i \leq j \leq k} (1-\gamma) (1 - \displaystyle\max_{u \in S_{1}, v \in S_{j}} 0)$$ 
 
 Dado que para esta instancia del problema la cantidad de paquetes es 10 y la cantidad de ítems por paquete es 5 entonces  $$\displaystyle\gamma\ 100\ +\ (1-\gamma)\ 45$$
-Por lo tanto para los $\gamma \in (0.1, 0.3, 0.5, 0.7, 0.9)$ los resultados de la función son los siguientes:
-\begin{table}[H]
-  \centering
-  \resizebox{0.5\textwidth}{!} {
-    \begin{tabular}{|lc|}
-    \hline
-    $\gamma$ & Valor función objetivo \\
-    \hline
-    $0.1$  & $50.5$ \\
-    $0.3$  & $61.5$ \\
-    $0.5$  & $72.5$ \\
-    $0.7$  & $83.5$ \\
-    $0.9$  & $94.5$ \\
-    \hline
-    \end{tabular}
-  }
-    \caption {Cota superior de la función para cada $\gamma$}
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+$\gamma$ &$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$&$óptimo$ \\
+\hline
+0,1 & -2,38		&	-34,92 &		-1,65 &		0,00  &		-35,18    &	-9,55 \\
+0,2 & -4,77		&	-41,71 &		-0,86	&		0,00	&		-39,89		&	-6,23 \\
+0,3 & -3,94		&	-44,66 &		-0,54	&		0,00	&		-45,20		&	-7,31 \\
+0,4 & -2,55		&	-49,36 &		-0,63	&		0,00	&		-48,25		&	-12,10\\
+0,5 & -1,71		&	-52,90 &		-1,49	&		0,00	&		-55,02		&	-9,17 \\
+0,7 & 0,00		&	-52,31 &		-0,25	&		-0,11	&		-53,97		&	-4,60 \\
+0,8 & 0,00		&	-56,20 &		-0,76	&		-0,32	&		-54,58		&	-6,22 \\
+0,9 & 0,00		&	-56,47 &		-0,53	&		-0,41	&		-57,47		&	-8,90 \\ \hline 
+\end{tabular}
+\caption{Comparaci\'on de calidad de soluciones entre algoritmos y solución óptima} 
+\label{tabla:comp}
+\end{center}
 \end{table}
+
+
+
+
+
+
 Estas cotas son de utilidad para comparar los resultados obtenidos con el valor de una solución óptima si es que exisitiese.
 
-De los algoritmos descriptos en la sección Desarrollo se ejecutaron pruebas con \texttt{PAC} y \texttt{Búsqueda Golosa}. Con el algoritmo \texttt{PAC} en la etapa de generación de paquetes se utilizaron las estrategias \texttt{BOBO-k} y \texttt{Efficient C-HAC} y en la etapa de selección las heurísticas \texttt{Selección de paquetes} y \texttt{Selección de paquetes proporcional}. Una vez obtenida la solución se aplicaron las búsquedas Tabú para intentar mejorar la solución. En \texttt{PAC} se realiza la búsqueda tabú \texttt{Inter-Paquete} luego de la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} de la solución obtenida se realiza la búsqueda tabú \texttt{Intra-Paquete}.\\
 
-\Solucion
-{}
-{
-\begin{description}
-	\item[alg\_1] \texttt{Búsqueda Golosa}
-	\item[alg\_2] \texttt{PAC(BOBO-100/Selección de paquetes proporcional)}
-	\item[alg\_3] \texttt{PAC(BOBO-100/Selección de paquetes)}
-	\item[alg\_4] \texttt{PAC(Efficient C-HAC/Selección de paquetes proporcional)}
-	\item[alg\_5] \texttt{PAC(Efficient C-HAC/Selección de paquetes)}
-\end{description}
-}
-{$(0,1; 0,3; 0,5; 0,7; 0,9)$}
-{10}
-{5}
+
+
 Para comprender el comportamiento de los resultados de las búsquedas se diseñaron dos tipos de gráficos que permiten visualizar de la solución la cohesión de los paquetes y la distancia entre ellos. De esta forma se podrá analizar la calidad del resultado obtenido más allá del valor de la función objetivo.
 
 Los gráficos del estilo de \ref{res:img-explain-bars} permiten concluir la distribución de los tópicos de una solución a nivel de paquete y de la relación con otros. En los que se visualiza a través del tamaño del círculo la proporción del artículo con el tópico y el color hace referencia al paquete que el artículo pertenece. Por lo tanto si para un paquete se tiene que la distribución entre los tópicos y el tamaño de los círculos es similar para cada artículo se puede deducir que ese paquete es cohesivo. Por otro lado si el tamaño de los círculos de un paquete no coinciden con los de otro paquete indica que el resultado es diverso.
