@@ -9,6 +9,7 @@
 #include "../util/system/stringUtilities.h"
 #include "../util/logger/logger.h"
 #include <float.h>
+#include <memory>
 #include "../util/algorithm/localSearchBundles.h"
 
 void ProduceAndChooseSolver::setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy)
@@ -176,10 +177,10 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByInterIntraByTuples(Sno
 	SnowFlake::sortByDecresingSumCompat(*produced);
 	SnowFlakeVector available(*produced);
 	Uint sizeOfBundles = produced->size();
-	bool *canUseSnowFlake = new bool[sizeOfBundles];
+    std::vector<bool> canUseSnowFlake;
 
 	for (Uint i = 0; i < sizeOfBundles; ++i) {
-		canUseSnowFlake[i] = true;
+		canUseSnowFlake.push_back(true);
 	}
 
 	SnowFlakeVector *selected = new SnowFlakeVector();
@@ -370,8 +371,9 @@ SnowFlakeVector* ProduceAndChooseSolver::getTopSolutionsByDensestSubgraph(SnowFl
 {
 	auto numProduced = produced->size();
 	Double gamma = 1.0 - this->interSimilarityWeight_;
-	MatrixWrapper* w;
-	w = new MatrixConcrete(numProduced, numProduced);
+
+    unique_ptr<MatrixWrapper> myPtr(new MatrixConcrete(numProduced, numProduced));
+    MatrixWrapper* w = myPtr.get();
 
 	for (int ui = 0; ui < numProduced; ++ui) {
 		SnowFlake& u = (*produced)[ui];

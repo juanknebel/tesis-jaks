@@ -26,7 +26,7 @@ private:
 	 * @param clusterMembers the members of a cluster
 	 * @return the snowflake picked
 	 */
-	SnowFlake* bestSnowFlake(const IntSet& clusterMembers);
+	SnowFlake bestSnowFlake(const IntSet& clusterMembers);
 };
 
 #endif /* CLUSTERANDPICKSOLVER_H_ */

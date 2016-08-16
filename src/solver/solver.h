@@ -32,12 +32,12 @@ protected:
 	bool checkCoverageConstraint(const IntSet& currentSnowflake, int newNode, int excludeNode);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2);
 	bool checkCoverageConstraint(const IntSet& snowflake1, const IntSet& snowflake2, int excludeNode);
-	SnowFlake* pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
-	SnowFlake* pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
-	SnowFlake* pickFlake(int pivot, const IntSet& clusterMembers);
-	SnowFlake* pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
-	SnowFlake* pickFlakeSpecificProfile(int pivot, const IntSet& clusterMembers);
-	SnowFlake* pickFlakeSpecificProfile(int specificItem, int pivot, const IntSet& clusterMembers);
+	SnowFlake pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted);
+	SnowFlake pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted);
+	SnowFlake pickFlake(int pivot, const IntSet& clusterMembers);
+	SnowFlake pickFlake(int specificItem, int pivot, const IntSet& clusterMembers);
+	SnowFlake pickFlakeSpecificProfile(int pivot, const IntSet& clusterMembers);
+	SnowFlake pickFlakeSpecificProfile(int specificItem, int pivot, const IntSet& clusterMembers);
 
 private:
 	struct compatCompare {

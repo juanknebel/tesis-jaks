@@ -41,32 +41,27 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes)
 			}
 		}
 
-		SnowFlake *bestFlake = bestSnowFlake(clusterMembers);
+		SnowFlake bestFlake = bestSnowFlake(clusterMembers);
 
-		solution->push_back(*bestFlake);
+		solution->push_back(bestFlake);
 	}
 
 	return solution;
 }
 
-SnowFlake* ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers)
+SnowFlake ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers)
 {
 	double bestScore = -1.0;
-	SnowFlake* bestSnowflake;
+	SnowFlake bestSnowflake;
 
 	for (IntSet::iterator center = clusterMembers.begin(); center != clusterMembers.end(); ++center) {
-		SnowFlake* snowflake = this->pickFlake(*center, clusterMembers);
-		double score = snowflake->getSumIntraCompat();
+		SnowFlake snowflake = this->pickFlake(*center, clusterMembers);
+		double score = snowflake.getSumIntraCompat();
 
 		if (score > bestScore) {
 			bestScore = score;
 			bestSnowflake = snowflake;
 		}
-
-		else {
-			delete snowflake;
-		}
 	}
-
 	return bestSnowflake;
 }

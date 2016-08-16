@@ -76,8 +76,7 @@ bool Solver::checkBudgetConstraint(const IntSet& snowflake1,
 
 bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode)
 {
-	IntSet* coverageCovered;
-	coverageCovered = new IntSet();
+	IntSet coverageCovered;
 	bool ret = true;
 
 	for (IntSet::iterator node = currentSnowflake.begin(); node != currentSnowflake.end(); ++node) {
@@ -88,34 +87,32 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 		}
 
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 				//currentSnowflake is not valid
 				ret = false;
 			}
 
-			coverageCovered->insert(*cover);
+			coverageCovered.insert(*cover);
 		}
 	}
 
 	const IntSet* covers = this->problem_->getCover(newNode);
 
 	for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-		if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+		if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 			// adding this newNode is not valid
 			ret = false;
 		}
 
-		coverageCovered->insert(*cover);
+		coverageCovered.insert(*cover);
 	}
 
-	delete coverageCovered;
 	return ret;
 }
 
 bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode, int excludeNode)
 {
-	IntSet* coverageCovered;
-	coverageCovered = new IntSet();
+	IntSet coverageCovered;
 	bool ret = true;
 
 	for (IntSet::iterator node = currentSnowflake.begin(); node != currentSnowflake.end(); ++node) {
@@ -127,12 +124,12 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 			}
 
 			for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-				if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+				if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 					//currentSnowflake is not valid
 					ret = false;
 				}
 
-				coverageCovered->insert(*cover);
+				coverageCovered.insert(*cover);
 			}
 		}
 	}
@@ -140,23 +137,21 @@ bool Solver::checkCoverageConstraint(const IntSet& currentSnowflake, int newNode
 	const IntSet* covers = this->problem_->getCover(newNode);
 
 	for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-		if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+		if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 			// adding this newNode is not valid
 			ret = false;
 		}
 
-		coverageCovered->insert(*cover);
+		coverageCovered.insert(*cover);
 	}
 
-	delete coverageCovered;
 	return ret;
 }
 
 bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
                                      const IntSet& snowflake2)
 {
-	IntSet* coverageCovered;
-	coverageCovered = new IntSet();
+	IntSet coverageCovered;
 	bool ret = true;
 
 	for (IntSet::iterator node = snowflake1.begin(); node != snowflake1.end(); ++node) {
@@ -167,11 +162,11 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 				ret =  false;
 			}
 
-			coverageCovered->insert(*cover);
+			coverageCovered.insert(*cover);
 		}
 	}
 
@@ -183,23 +178,21 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 				ret =  false;
 			}
 
-			coverageCovered->insert(*cover);
+			coverageCovered.insert(*cover);
 		}
 	}
 
-	delete coverageCovered;
 	return ret;
 }
 
 bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
                                      const IntSet& snowflake2, int excludeNode)
 {
-	IntSet* coverageCovered;
-	coverageCovered = new IntSet();
+	IntSet coverageCovered;
 	bool ret = true;
 
 	for (IntSet::iterator node = snowflake1.begin(); node != snowflake1.end(); ++node) {
@@ -214,12 +207,12 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 				ret =  false;
 			}
 
 			if (excludeNode != *cover) {
-				coverageCovered->insert(*cover);
+				coverageCovered.insert(*cover);
 			}
 		}
 	}
@@ -236,21 +229,20 @@ bool Solver::checkCoverageConstraint(const IntSet& snowflake1,
 		}
 
 		for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
-			if (coverageCovered->find(*cover)!=coverageCovered->end()) {
+			if (coverageCovered.find(*cover)!=coverageCovered.end()) {
 				ret =  false;
 			}
 
 			if (excludeNode != *cover) {
-				coverageCovered->insert(*cover);
+				coverageCovered.insert(*cover);
 			}
 		}
 	}
 
-	delete coverageCovered;
 	return ret;
 }
 
-SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted)
+SnowFlake Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMembersPermuted)
 {
 	IntSet picked;
 	picked.insert(pivot);
@@ -261,7 +253,7 @@ SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMember
 		}
 	}
 
-	SnowFlake* ret = new SnowFlake(picked, this->problem_);
+	SnowFlake ret = SnowFlake(picked, this->problem_);
 	return ret;
 }
 
@@ -272,7 +264,7 @@ SnowFlake* Solver::pickFlakeGivenPermutation(int pivot, IntVector& clusterMember
  * @param clusterMembers possible other elements in the cluster
  * @return a good snowflake containing the central element
  */
-SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers)
+SnowFlake Solver::pickFlake(int pivot, const IntSet& clusterMembers)
 {
 	IntVector membersSorted(clusterMembers.begin(), clusterMembers.end());
 	this->pivot_ = pivot;
@@ -281,7 +273,7 @@ SnowFlake* Solver::pickFlake(int pivot, const IntSet& clusterMembers)
 	return pickFlakeGivenPermutation(pivot, membersSorted);
 }
 
-SnowFlake* Solver::pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted)
+SnowFlake Solver::pickFlakeGivenPermutation(int specificItem, int pivot, IntVector& clusterMembersPermuted)
 {
 	IntSet picked;
 	picked.insert(specificItem);
@@ -293,11 +285,11 @@ SnowFlake* Solver::pickFlakeGivenPermutation(int specificItem, int pivot, IntVec
 		}
 	}
 
-	SnowFlake* ret = new SnowFlake(picked, this->problem_);
+	SnowFlake ret = SnowFlake(picked, this->problem_);
 	return ret;
 }
 
-SnowFlake* Solver::pickFlake(int specificItem, int pivot, const IntSet& clusterMembers)
+SnowFlake Solver::pickFlake(int specificItem, int pivot, const IntSet& clusterMembers)
 {
 	IntVector membersSorted(clusterMembers.begin(), clusterMembers.end());
 	this->pivot_ = pivot;

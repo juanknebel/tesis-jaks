@@ -45,9 +45,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSn
 		pivotsUsed.insert(pivot);
 		possiblePivots.erase(pivot);
 
-		SnowFlake* refToFlake = this->pickFlake(pivot, allIds);
-		SnowFlake snowflake(*refToFlake);
-		delete refToFlake;
+		SnowFlake snowflake = this->pickFlake(pivot, allIds);
 
 		if (this->candidateAcceptable(snowflake)) {
 			candidates->push_back(snowflake);
@@ -92,9 +90,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesWithSpecificItem
 		pivotsUsed.insert(pivot);
 		possiblePivots.erase(pivot);
 
-		SnowFlake* refToFlake = this->pickFlake(this->problem_->getSpecificItem(), pivot, allIds);
-		SnowFlake snowflake(*refToFlake);
-		delete refToFlake;
+		SnowFlake snowflake = this->pickFlake(this->problem_->getSpecificItem(), pivot, allIds);
 
 		if (this->candidateAcceptable(snowflake)) {
 			candidates->push_back(snowflake);

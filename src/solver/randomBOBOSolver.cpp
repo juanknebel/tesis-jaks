@@ -19,7 +19,7 @@ Double RandomBOBOSolver::chooseMu()
 
 	for (Uint i = 0; i < this->INITIAL_TRIALS_FOR_MU; ++i) {
 		pivot = this->randomNode();
-		listOfSumIntra.push_back(this->pickFlake(pivot, allIds)->getSumIntraCompat());
+		listOfSumIntra.push_back(this->pickFlake(pivot, allIds).getSumIntraCompat());
 	}
 
 	std::sort(listOfSumIntra.begin(), listOfSumIntra.end());
