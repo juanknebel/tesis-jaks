@@ -7,7 +7,6 @@
 
 #include "produceAndChooseSolver.h"
 #include "../util/system/stringUtilities.h"
-#include "../util/logger/logger.h"
 #include <float.h>
 #include <memory>
 #include "../util/algorithm/localSearchBundles.h"

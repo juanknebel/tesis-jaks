@@ -8,7 +8,6 @@
 #include "snowFlake.h"
 #include "../util/system/stringUtilities.h"
 #include <float.h>
-#include "../util/logger/logger.h"
 
 Double SnowFlake::getMinCompat()
 {

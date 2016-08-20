@@ -4,7 +4,6 @@
 
 #include "localSearchBundles.h"
 #include "../system/exception.h"
-#include "../logger/logger.h"
 
 SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &solution,
         SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem,

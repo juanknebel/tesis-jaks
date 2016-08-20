@@ -1,7 +1,6 @@
 #include "localSearch.h"
 #include "../system/exception.h"
-/*#include "../logger/logger.h"
-#include "../writer/writterSolutionFile.h"
+/*#include "../writer/writterSolutionFile.h"
 #include "../writer/writerSolutionArticles.h"*/
 
 SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight)

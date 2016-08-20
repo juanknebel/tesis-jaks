@@ -24,7 +24,7 @@
 #include "executeSolver.h"
 #include "test/testSuites.h"
 #include "util/algorithm/vectornorm.h"
-#include "util/logger/logger.h"
+#include "util/logger/simpleLogger.h"
 
 const std::string useMode = "tesis-jaks -f <configuration_file_name> [-l]\t(to use a configuration file)\ntesis-jaks -t [-l]\t\t\t\t(for use with the internal test)\ntesis-jaks -s [-l]\t\t\t\t(to calculate the similarity)\ntesis-jaks -h\t\t\t\t\t(to see this help)\nThe Argument -l initialize the logger.\nArguments in [] are optional.";
 std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
@@ -52,36 +52,6 @@ void usingTestFiles(char *configFileName)
 	else {
 		ConfigurationJaks configFile = ConfigurationJaks(configFileName);
 		execute(configFile);
-	}
-}
-
-void initializeLogger(std::string filename, Logger::loggerConf aConf, int fileVerbosityLevel, int screenVerbosityLevel)
-{
-	DEBUG_CONF(filename, aConf, fileVerbosityLevel, screenVerbosityLevel);
-}
-
-void initializeDefaultLogger(char *log)
-{
-	if (log == nullptr) {
-		return;
-	}
-
-	else {
-		if (log[0] != '-') {
-			std::cerr<<errorMsg<<std::endl;
-		}
-
-		else {
-
-			if (log[1] == 'l') {
-				std::cout<<"Starting the logger ..."<<std::endl;
-				initializeLogger("jaks_output", Logger::file_on|Logger::screen_on, DBG_DEBUG, DBG_ERROR);
-			}
-
-			else {
-				std::cerr<<errorMsg<<std::endl;
-			}
-		}
 	}
 }
 
@@ -117,28 +87,24 @@ int main(int argc, char *argv[])
 			switch(option) {
 			case 'f': {
 				std::cout<<"Using the configuration file ..."<<std::endl;
-				initializeDefaultLogger(argv[3]);
 				usingTestFiles(argv[2]);
 				break;
 			}
 
 			case 't': {
 				std::cout<<"Using internal tests ..."<<std::endl;
-				initializeDefaultLogger(argv[2]);
 				usingTestHardcode(argc, argv);
 				break;
 			}
 
 			case 's': {
 				std::cout<<"Calculating the similarity ..."<<std::endl;
-				initializeDefaultLogger(argv[2]);
 				insertSimilarity();
 				break;
 			}
 
 			case 'p': {
 				std::cout<<"Calculating the similarity of the specific profile ..."<<std::endl;
-				initializeDefaultLogger(argv[4]);
 				std::vector<float> specificProfile = generateVector(argv[2], convertToInt(argv[3]));
 
 				if (!specificProfile.empty()) {
