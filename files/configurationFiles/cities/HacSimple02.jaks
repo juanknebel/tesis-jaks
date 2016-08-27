@@ -1,0 +1,28 @@
+TO_PRODUCE	100
+WITH_SPECIFIC_ITEM	0
+FILE_TYPE_NAME	type_name.csv
+FILE_COMPAT	node_compatibility.csv
+FIELD_COMPAT	
+FILE_COSTS	node_cost.csv
+BUDGET	50
+PRINT_TO_SCREEN	0
+MAX_TRIALS	100
+WRITE_FILE	1
+NUM_FLAKES	10
+DIRECTORY_WORK	/home/zero/Projects/tesis-jaks/files/euro_cities/
+FILE_NODE_NAME	node_name.csv
+USE_DATA_FROM_DB	0
+FILE_COVER	node_cover.csv
+
+#Algoritmo que se va a ejecutar, las opciones son:
+#EfficientHAC = 0
+#RestrictedHAC = 1
+#RandomBOBO = 2
+#AllGreedySolver = 3
+SOLVER	1
+
+#Estrategia del solver, las opciones son
+#RANK_BY_DENSEST_SUBGRAPH = 2
+#RANK_BY_INTRA_INTER_PROPORTIONAL = 4
+RANKING_STRATEGY	2
+INTER_SIMILARITY_WEIGHT	0.8
