@@ -18,7 +18,7 @@ Al finalizar la producción de paquetes comienza la etapa de selección, en la c
 
 Como consecuencia de la forma en que las soluciones son generadas en las heurísticas del tipo {\em Produce and choose} (construir una cantidad suficiente de paquetes y luego seleccionar un subconjunto de éstos), es de esperar que las soluciones generadas se enfoquen más en valorar la parte intra-paquete que la inter-paquetes.
 
-\item {\em Cluster and Pick} (CAP): Sigue un esquema de dos fases. En la primera se busca un $k$-{\em clustering} (un {\em cluster} no es necesariamente un paquete válido) y luego en la segunda se selecciona un paquete válido dentro de cada uno de los {\em clusters} generados en la primera etapa.
+\item {\em Cluster and Pick} (CAP): Sigue un esquema de dos fases. En la primera se busca un $k$-{\em clustering} (un {\em cluster} no es necesariamente un paquete válido) y luego en la segunda se selecciona un paquete válido de los {\em clusters} generados en la primera etapa.
 
 \item Método IP: Se presenta un modelo de programación lineal entera que resuelve el problema de forma exacta. Los tiempos de ejecución de este enfoque lo hacen prohibitivo para grandes instancias.
 
@@ -31,7 +31,7 @@ De la experimentación presentada en \cite{compositeRetrival}, se concluye que l
 A continuación se presentan alternativas a los algoritmos descriptos recientemente, así como también procedimientos de búsqueda tabú que mejoren la calidad de las soluciones obtenidas.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de paquetes y luego seleccionar los que pertenecerán a la solución.
+El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de paquetes y luego se seleccionan los que pertenecerán a la solución.
 
 Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $\alpha$ el atributo complementario, $f: 2^{I} \rightarrow \rm I \!R$ la función de presupuesto, $\beta$ el limite del presupuesto, $\gamma$ para ponderar si se quiere paquetes más cohesivos o no y $k$ la cantidad de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
 
@@ -46,13 +46,13 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas, también se analizan distintas estrategias. Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.\\
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas (también se analizan distintas estrategias). Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.\\
 
 La estructura de estos algoritmos permiten introducir mejoras en sus dos fases: generación y selección de paquetes.
 \subsection{Generación de paquetes}
-La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento, que consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre ellos (inter) el agrupamiento será mejor.
+La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre conjuntos el agrupamiento será mejor.
 
-No existe una definición formal de que es un grupo correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas. Si se permite que los grupos estén acoplados, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Entonces la mejor definición depende del tipo de dato y del resultado esperado.
+No existe una definición formal de que es un grupo correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
 
 \begin{figure}[H]
   \centering
@@ -60,14 +60,14 @@ No existe una definición formal de que es un grupo correctamente constituido po
    \caption{}
    \label{res:img-howToCluster}
 \end{figure}
-En este trabajo el agrupamiento esta definida para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecido posible y así obtener paquetes coehsivos.
+En este trabajo el agrupamiento esta definido para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecido posible y así obtener paquetes cohesivos.
 
-Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales re ubican iterativamente los objetos moviéndolos de un grupo a otro. Generalmente, estos métodos, requieren que la cantidad de grupos a generar sea preestablecido. Los métodos jerárquicos construyen los grupos mediante la partición recursiva de los grupos de objetos y no requieren preestablecer una cantidad pre definica anteriormente.
+Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales re ubican iterativamente los objetos moviéndolos de un grupo a otro. Generalmente, estos métodos, requieren que la cantidad de grupos a generar sea preestablecido. Los métodos jerárquicos construyen los grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir la cantidad de grupos a generar.
 
-En este trabajo se implementó un algoritmo de cada categoría. Del método jerárquico se desarrolló el algoritmo \textit{constrained hierarchical agglomerative clustering}, mientras que para el método de partición el algoritmo \textit{Bundles One-By-One}.
+Del algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} se plantean dos mejoras: (1) La función que se utiliza para decidir que \textit{clusters} se unen. (2) El segundo punto radica en su complejidad algorítmica. Mientras que el BOBO se mantuvo cómo en la literatura.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos. Con \texttt{BOBO-k} pueden quedar ítems excluidos de los paquetes generados, por lo tanto se desarrolló una variante del método que es el \texttt{BOBO-Ex} (Ex de \textit{exhaustive}) en el cual todos los items pertenecen a un paquete. Para esta producción se modificó el criterio de parada hasta que el conjunto de pivotes $P$ sea vacío.\\
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos.\\
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -91,7 +91,8 @@ El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar 
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
 
-La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra $f$ y que cumple con las restricciones de la complementaridad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
 El agrupamiento jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un grupo unitario y luego sucesivamente se unen un par de grupos hasta que todos se hayan unido en un único gran grupo que contenga a todos los objetos, este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único grupo al que todos los objetos pertenecen y recursivamente se realiza una división del grupo hasta obtener grupos unitarios.
@@ -107,7 +108,7 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
   \label{des:Dendrogram}
 \end{figure}
 
-\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las restricciones de similitud o el costo del paquete supera el presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las reglas de complementaridad o de presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -138,11 +139,9 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 \caption{Simple C-HAC}\label{alg:SimpleC-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos donde se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
+El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
 
-Para salvar estas debilidades aquí se propone la siguiente alternativa inspirada en una propuesta de \cite{MRS}.\\
-
-Con el fin de incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
+La propuesta de este trabajo para incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
 
 $$A(C_i,C_j) = \sum_{u \in C_i, v \in C_j}{s(u,v)},$$
 
@@ -160,7 +159,7 @@ $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
 El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.\\
 
-Debido al orden de complejidad del algoritmo \texttt{Simple C-HAC}, en escenarios donde la agrupación se realizara entre miles de objetos, el tiempo de ejecución sería tan elevado que resultaría en un algoritmo improductivo. Contemplando estos escenarios se implemento el algoritmo \texttt{Efficient C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es invalida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
+Debido al orden de complejidad del algoritmo \texttt{Simple C-HAC}, en escenarios donde la agrupación se realizara entre miles de objetos, el tiempo de ejecución sería tan elevado que resultaría en un algoritmo improductivo. Para mejorar la complejidad del algoritmo, aquí se propone el algoritmo \texttt{Efficient C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -267,9 +266,9 @@ Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paqu
 \end{algorithm}
 
 \section{Algoritmo goloso}
-Un algoritmos goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución óptima al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
+Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
 
-Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} de construir una cantidad suficiente paquetes y luego seleccionar un conjunto se puede suponer que las soluciones se enfocan más en la parte intra que inter, esto motivo a realizar a implementar una heurística.
+Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} (construir una cantidad suficiente paquetes y luego seleccionar un conjunto) supone que las soluciones se enfocan más en la parte intra que inter. Lo que motivo a diseñar otro tipo de heurística.
 
 El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos e iterativamente se agrega un item, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de ítems posibles.
 
@@ -309,32 +308,69 @@ El algoritmo goloso que se propone comienza con con los $k$ paquetes de la soluc
 \end{algorithm}
 
 \section{Búsquedas Tabú}
-Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueve a una solución vecina, esto es posible solo si se pude definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
+Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueven a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
 
 \textbf{Tabú search} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
 
 Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como listas tabú, que determinan cuáles son las soluciones vecinas permitidas de una solución. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, visitar una solución que se encuentra en la lista tabú.
 
-Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución orginal con el fin de intentar mejorarla.
+Para alcanzar mejores soluciones se introduce el concepto de criterios de aspiración. Estos determinan cuándo se pueden reemplazar las restricciones tabú, eliminando así la clasificación tabú aplicada a un movimiento. 
+
+Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución original con el fin de intentar mejorarla.
 
 Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
 \subsection{Inter-Paquete}
 La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
 
-Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que que no contienen el paquete con menor valor Inter de $S$ e incluye un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante $n$ iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
+Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que no contienen el paquete con menor valor Inter de $S$ e incluye un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de
+ iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
-Los movimientos de la solución $S$ a la solución $S'$ consiste de los siguientes  pasos:
+ El esquema del proceso para construir una nueva soluci\'on es el siguiente:
+
 \begin{enumerate}
-	\item Quitar de la solución el paquete con menor Inter.
-	\item Determinar el paquete centroide de la solución.
-	\item Calcular la función objetivo agregando uno de los $K$ paquetes generados más lejos del centroide.
-	\item Quedarse con la solución con mayor función objetivo. 
+\item $S^* = S$, $ \bar{S}= S$, $LT = \emptyset$
+
+\item Mientras no se cumpla criterio de parada hacer:
+
+\begin{enumerate}
+      	
+\item Se identifica el paquete $b_r$ en $\bar{S}$ con menor inter:
+
+$$b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
+
+\item Se determina el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
+
+\item Se determina el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
+
+$$C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))$$
+
+\item Se determina el mejor paquete de $C$ no prohibido en la lista tabú $LT$ según el criterio:
+
+$$b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
+
+\item Se evalúa el criterio de aspiración para los paquetes en $C \cap LT$
+
+$$b_{tabu} = \argmax_{\scriptscriptstyle b_s \in C \cap LT} w(\bar{S} \setminus \{b_r\} \cup \{b_s\})$$
+
+\item Si $\max(w(S^*),w(\bar{S} \setminus \{b_r\} \cup \{b\})) < \qquad \qquad$ $\qquad \qquad w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ entonces
+
+%\item Si $\max(w(S^*) < w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ y $w(\bar{S} \setminus \{b_r\} \cup \{b\})) < w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ entonces
+
+$$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b_{tabu}\}$$ 
+
+Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
+
+\item Actualizar $LT$
+
+\item Si $w(\bar{S})>w(S^*)$ entonces $S^*=\bar{S}$
+
 \end{enumerate}
 
-Sea $S$ el conjunto de paquetes de la solucion y B el conjunto de todos los paquetes producidos. El paquete (1) es el más acoplado al de la solución $b_r = \min_{b_1 \in S}{\sum_{b_2 \in S}{\psi(b_1,b_2)}}$. El centroide de (2) es el paquete que tiene mayor similitud entre los restantes de la solución, sin tener en cuenta al indicado a reemplazar, entonces el centroide es:
-$$b_c = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\sum_{b_2 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_2)}}$$
-El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\right\}}{\psi(b_1,b_c)}$. Por lo tanto la nueva solución es $S' = (S \setminus \left\{b_r\right\}) \cup \left\{b_n\right\}$. Mientras que el paquete $b_r$ se marca para que no sea seleccionado para las próximas soluciones generadas.
+\item Retornar $S^*$
+
+\end{enumerate}
+
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
 \REQUIRE {$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
@@ -370,7 +406,7 @@ El paquete de (3) se obtiene de $b_n = \min_{b_1 \in S \setminus \left\{b_r\righ
 \end{algorithm}
 
 \subsection{Intra-Paquete}
-El objetivo de la búsqueda Intra-Paquete es buscar una solución más óptima a través de generar soluciones con paquetes más. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
+El objetivo de la búsqueda Intra-Paquete es buscar una mejor solución a través de generar soluciones con paquetes más cohesivos. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
 
 La lista de los movimientos se utiliza para evitar ciclar entre las soluciones, por ejemplo si las soluciones visitadas son $S, S_1, \ldots, S_n, S$ prohibiendo que se vuelvan a intercambiar el mismo par de elementos, se asegura que la próxima no sea $S_1$.
 
