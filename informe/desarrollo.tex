@@ -328,9 +328,9 @@ Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera 
 La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
 
 Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que no contienen el paquete con menor valor Inter de $S$ e incluye un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de
- iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
+iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
- El esquema del proceso para construir una nueva soluci\'on es el siguiente:
+El esquema del proceso para construir una nueva soluci\'on es el siguiente:
 
 \begin{enumerate}
 \item $S^* = S$, $ \bar{S}= S$, $LT = \emptyset$
