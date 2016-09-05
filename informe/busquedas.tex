@@ -1,7 +1,7 @@
 En esta sección se presentan las consultas que se utilizaron para experimentar lo propuesto en este trabajo. Las consultas se hicieron sobre dos bases de datos. Una de ellas corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La otra base de datos corresponde a atracciones turísticas de Europa. A continuación se describe para cada consulta de cada base da datos la función de similitud, el atributo de complementariedad y el presupuesto. 
 
 \section{Base de datos de artículos}
-La base de datos utilizada es la proporcionada por el artículo \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la ingeniería de software presentados en diferentes conferencias entre los años 1975 y 2011 catalogados por autores, tópicos, venues y afiliaciones. Además los artículos están clasificados en tópicos, conocido como \texttt{topicProfile}, que se expresa en porcentajes para cada uno de los tópicos que son tratados. De los $9800$ autores se tiene la información de la universidad a la que pertenecen y de las universidades en que región se encuentran.
+La base de datos utilizada es la proporcionada por el artículo \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la ingeniería de software presentados en diferentes conferencias entre los años 1975 y 2011 catalogados por autores, tópicos, venues y afiliaciones. Además los artículos están clasificados en tópicos, conocido como \texttt{topicProfile}, que se expresa en porcentajes para cada uno de los tópicos que son tratados. La base considera 38 tópicos para definir el \texttt{topicProfile}. De los $9800$ autores se tiene la información de la universidad a la que pertenecen y de las universidades en que región se encuentran.
 
 El \texttt{topicProfile} es lo que permitirá definir la similitud, no sólo entre los artículos, sino también entre los autores y las universidades de la base de datos de una manera prácticamente directa.
 
@@ -80,7 +80,7 @@ Entonces se define la función de similitud $S(V_i, V_j)$ para los vectores $V_i
 \cos(\theta) =  \dfrac{\overrightarrow{U} . \overrightarrow{V}}{\overrightarrow{\lVert V\lVert}.\overrightarrow{\lVert U\lVert}}
 \end{equation}
 
-Para esta instancia los objetos (ahora artículos, autores o universidades) son representados por vectores, donde cada dimensión corresponde a un tópico y el valor se corresponde con el valor del tópico del objeto según la base de datos \cite{dataDrive}. Por lo tanto el objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_n]$, donde $n$ es la cantidad de tópicos y cumple con las siguientes propiedades:
+Para esta instancia los objetos (ahora artículos, autores o universidades) son representados por vectores, donde cada dimensión corresponde a un tópico y el valor se corresponde con el valor del tópico del objeto según la base de datos \cite{dataDrive}. Por lo tanto el objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_38]$ que cumple con las siguientes propiedades:
 \begin{enumerate}
  \item $v_i \geq 0$
  \item $\sum{v_i} = 1$
