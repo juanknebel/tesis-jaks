@@ -112,7 +112,7 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
   \label{des:Dendrogram}
 \end{figure}
 
-\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las reglas de complementaridad o de presupuesto. El algoritmo C-HAC que se presenta a continuación, en este trabajo se denomina \texttt{Simple C-HAC}, es el que se propone en \cite{compositeRetrival}.
+\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las reglas de complementaridad o de presupuesto. El algoritmo C-HAC que se presenta a continuación.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -140,10 +140,10 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 \ENDWHILE
 \RETURN $cand$
 \end{algorithmic}
-\caption{Simple C-HAC}\label{alg:SimpleC-HAC}
+\caption{C-HAC}\label{alg:C-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{Simple C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
+El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
 
 La propuesta de este trabajo para incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
 
@@ -163,7 +163,7 @@ $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
 El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.\\
 
-Debido al orden de complejidad del algoritmo \texttt{Simple C-HAC}, en escenarios donde la agrupación se realizara entre miles de objetos, el tiempo de ejecución sería tan elevado que resultaría en un algoritmo improductivo. Para mejorar la complejidad del algoritmo, aquí se propone el algoritmo \texttt{Efficient C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
+Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -211,7 +211,7 @@ Debido al orden de complejidad del algoritmo \texttt{Simple C-HAC}, en escenario
 
 \RETURN $A$
 \end{algorithmic}
-\caption{Efficient C-HAC}\label{alg:Efficient C-HAC}
+\caption{Intra-Inter C-HAC}\label{alg:Intra-Inter C-HAC}
 \end{algorithm}
 
 \subsection{Selección de paquetes}
