@@ -161,6 +161,10 @@ std::string FactorySolver::getTheSolverName(ConfigurationJaks& configFile)
 	case EfficientHAC:
 		return "RestrictedEfficientHAC";
 		break;
+
+	default:
+		return "ERROR";
+		break;
 	}
 }
 

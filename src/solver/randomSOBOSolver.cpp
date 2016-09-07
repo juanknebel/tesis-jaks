@@ -9,7 +9,6 @@
 
 int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots)
 {
-	srand(1);
 	int pivot = randomNode();
 
 	while (pivotsUsed.count(pivot) == 1 || possiblePivots.count(pivot) != 1) {

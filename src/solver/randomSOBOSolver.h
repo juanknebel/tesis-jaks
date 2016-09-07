@@ -13,6 +13,7 @@ class RandomSOBOSolver : public SnowflakesOneByOneSolver {
 public:
 	RandomSOBOSolver(ProblemInstance *problem) : SnowflakesOneByOneSolver(problem) {
 		this->SNOWFLAKE_MEMBERS_CAN_BE_PIVOTS = false;
+		srand(57);
 	}
 	~RandomSOBOSolver() {};
 
