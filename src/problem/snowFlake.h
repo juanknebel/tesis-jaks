@@ -48,6 +48,7 @@ public:
 	static Double getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
 	static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
 	Double getSumIntraCompatWithSpecificProfile() const;
+	friend std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake);
 };
 
 #endif /* SNOWFLAKE_H_ */
