@@ -234,9 +234,14 @@ Double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const Sn
 
 std::ostream& operator<< (std::ostream& stream, const SnowFlake& snowFlake)
 {
+    int i = 1, count = snowFlake.ids().size();
 	for (auto anElement : snowFlake.ids()) {
-		stream << anElement << "\t";
+        if (i == count) {
+            stream << anElement;
+        } else {
+        stream << anElement << ",";
+        }
+        i++;
 	}
-	stream << "\n";
 	return stream;
 }

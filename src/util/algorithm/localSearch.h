@@ -12,7 +12,7 @@ class LocalSearch {
 private:
 	int findWorstIntraBundle(SnowFlakeVector &vector, TabuBundles &tabuBundles, bool takeTabu);
 
-	int findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem);
+	int findCentroid(SnowFlake worstFlake, ProblemInstance &theProblem, std::vector<int> &centroidTimes);
 
 	int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem, std::map<int,int> recentlyAdded);
 
