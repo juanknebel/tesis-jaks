@@ -4,8 +4,8 @@
 #include "configurationJaks.h"
 #include "configurator.h"
 #include "configuratorToDataBase.h"
-#include "../../solver/factorySolver.h"
-#include "../../problem/factoryProblem.h"
+#include "../../solver/factorySolverOLD.h"
+#include "../../problem/factoryProblemOLD.h"
 #include "../writer/factoryWriter.h"
 #include "../identificator/factoryIdentificationGenerator.h"
 

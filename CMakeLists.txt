@@ -37,14 +37,14 @@ set(tesis-jaks_source_files
         src/dao/dao.cpp
         src/executeSolver.cpp
         src/main.cpp
-        src/problem/factoryProblem.cpp
+        src/problem/factoryProblemOLD.cpp
         src/problem/problemInstanceFromDataBase.cpp
         src/problem/problemInstance.cpp
         src/problem/problemInstanceFromFiles.cpp
         src/problem/snowFlake.cpp
         src/queue/priorityQueue.cpp
         src/matrix/matrixConcrete.cpp
-        src/solver/factorySolver.cpp
+        src/solver/factorySolverOLD.cpp
         src/solver/greedySolver.cpp
         src/solver/restrictedHACWithSpecificItemSolver.cpp
         src/solver/clusterAndPickSolver.cpp
@@ -69,6 +69,6 @@ set(tesis-jaks_source_files
         src/test/testingProblemInstance.cpp
         src/test/testingProblemInstanceFromFiles.cpp
         src/test/testSuites.cpp
-        src/util/writer/writterSolutionFile.cpp)
+        src/util/writer/writterSolutionFile.cpp src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h)
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks boost_log mysqlcppconn)

@@ -1,6 +1,10 @@
-#ifndef FACTORYSOLVER_H
-#define FACTORYSOLVER_H
+//
+// Created by zero on 11/09/16.
+//
 
+#ifndef TESIS_JAKS_EXE_FACTORYSOLVER_H
+#define TESIS_JAKS_EXE_FACTORYSOLVER_H
+#include <memory>
 #include "../problem/problemInstance.h"
 #include "clusterAndPickSolver.h"
 #include "restrictedHACSolver.h"
@@ -12,23 +16,18 @@
 #include "sequentialScanSolver.h"
 #include "restrictedHACWithSpecificItemSolver.h"
 #include "greedySolver.h"
-#include "../util/configurator/configurationJaks.h"
-
-
 
 class FactorySolver {
 private:
-	FactorySolver();
+    FactorySolver();
 
 public:
-	enum SolverAlgorithm {
-	    EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
-	    RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
-	};
-
-	static std::string getTheSolverName(ConfigurationJaks& configFile);
-	static Solver* getTheSolver(ConfigurationJaks& configFile, ProblemInstance* theProblem);
-	static ProduceAndChooseSolver::RankingStrategy getTheStrategy(ConfigurationJaks& configFile);
+    enum SolverAlgorithm {
+        EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
+        RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
+    };
+    static std::unique_ptr<Solver> getTheSolver(ProblemInstance* theProblem, std::string algorithm, std::string strategy, int multiplier, double gamma);
 };
 
-#endif // FACTORYSOLVER_H
+
+#endif //TESIS_JAKS_EXE_FACTORYSOLVER_H

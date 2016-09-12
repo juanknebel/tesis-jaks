@@ -43,7 +43,7 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
 		/*
 		 * Instancio el problema y los identificadores de los elementos
 		 */
-		ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile, theDao);
+		ProblemInstance* theProblem = FactoryProblemOLD::getTheProblemInstance(configFile, theDao);
 		IdentificationGeneretor *theIdentificator =
 		    FactoryIdentificationGenerator::getTheIdentificator(theDao, configFile);
 		Id2Str* theNodeName = new Id2Str(theIdentificator);
@@ -51,9 +51,9 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
 		/*
 		 * Instanciacion del solver y la estrategia
 		 */
-		Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
-		std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-		ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+		Solver *theSolver = FactorySolverOLD::getTheSolver(configFile, theProblem);
+		std::string theSolverName = FactorySolverOLD::getTheSolverName(configFile);
+		ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolverOLD::getTheStrategy(configFile);
 
 		/*
 		 * Instanciacion del configurador
@@ -67,16 +67,16 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
 		/*
 		 * Instancio el problema y los identificadores de los elementos
 		 */
-		ProblemInstance* theProblem = FactoryProblem::getTheProblemInstance(configFile);
+		ProblemInstance* theProblem = FactoryProblemOLD::getTheProblemInstance(configFile);
 		std::string nodeName = configFile["file_node_name"];
 		Id2Str* theNodeName = new Id2Str(directoryOfWork + nodeName);
 
 		/*
 		 * Instanciacion del solver y la estrategia
 		 */
-		Solver *theSolver = FactorySolver::getTheSolver(configFile, theProblem);
-		std::string theSolverName = FactorySolver::getTheSolverName(configFile);
-		ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getTheStrategy(configFile);
+		Solver *theSolver = FactorySolverOLD::getTheSolver(configFile, theProblem);
+		std::string theSolverName = FactorySolverOLD::getTheSolverName(configFile);
+		ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolverOLD::getTheStrategy(configFile);
 
 		theConfigurator = new Configurator(theSolver, theWriter, theNodeName,
 		                                   theStrategy, theSolverName, numberOfSnowFlakes, printToScreen,

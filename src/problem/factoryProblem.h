@@ -1,17 +1,22 @@
-#ifndef FACTORYPROBLEM_H
-#define FACTORYPROBLEM_H
+//
+// Created by zero on 11/09/16.
+//
 
+#ifndef TESIS_JAKS_EXE_FACTORYPROBLEM_H
+#define TESIS_JAKS_EXE_FACTORYPROBLEM_H
+#include <memory>
+#include "problemInstance.h"
 #include "problemInstanceFromDataBase.h"
 #include "problemInstanceFromFiles.h"
-#include "../util/configurator/configurationJaks.h"
-#include "../dao/dao.h"
 
 class FactoryProblem {
 private:
-	FactoryProblem();
+    FactoryProblem();
+
 public:
-	static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile);
-	static ProblemInstance* getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao);
+    static std::unique_ptr<ProblemInstance> getTheProblem(std::string element, double budget);
+
 };
 
-#endif // FACTORYPROBLEM_H
+
+#endif //TESIS_JAKS_EXE_FACTORYPROBLEM_H

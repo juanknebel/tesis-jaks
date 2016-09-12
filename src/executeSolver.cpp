@@ -1,8 +1,12 @@
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 #include "executeSolver.h"
 #include "util/configurator/factoryConfigurator.h"
 #include "util/algorithm/localSearch.h"
+
+#include "problem/factoryProblem.h"
+#include "solver/factorySolver.h"
 
 using namespace std;
 
@@ -71,4 +75,58 @@ void execute(ConfigurationJaks& configFile)
 	std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, interSimilarityWeight)<<std::endl;
 	delete solution;
 	delete theConfigurator;
+}
+
+void executeNew(char * elementChar, char * algorithmChar, char * strategyChar, char * budgetChar, char * gammaChar,
+                char * numFlakesChar, char * maxIterChar, char * toProduceChar, char * writeToFileChar, char * printToScreenChar)
+{
+    std::string element;
+    std::string algorithm;
+    std::string strategy;
+    double budget;
+    double gamma;
+    int numFlakes;
+    int maxIter;
+    int toProduce;
+    bool writeToFile;
+    bool printToScreen;
+
+    std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(element, budget));
+    std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(theProblem.get(), algorithm, strategy, numFlakes, gamma));
+
+    SnowFlakeVector* solution = 0;
+    SnowFlakeVector newSolution;
+
+    try {
+        solution = theSolver->solve(toProduce);
+        LocalSearch localSearch;
+        newSolution = localSearch.execute(maxIter,*solution, *(theSolver->getTheProblem()), gamma);
+    }
+
+    catch (Exception& e) {
+        std::cerr<<e.what()<<std::endl;
+        exit(0);
+    }
+
+    //showSolution(newSolution);
+    std::stringstream fileName;
+    //fileName << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
+    //fileName << theConfigurator->getTheStrategyName();
+    //fileName << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv-Tabu";
+    //writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
+    std::stringstream fileNameOrg;
+    //fileNameOrg << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
+    //fileNameOrg << theConfigurator->getTheStrategyName();
+    //fileNameOrg << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv";
+    //writeSolution(*solution, *theConfigurator, fileNameOrg.str(), interSimilarityWeight);
+    int i=0;
+
+    for (auto& bundle : *solution) {
+        bundle.setIdentificator(i);
+        i++;
+    }
+
+    std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
+    std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;
+    delete solution;
 }

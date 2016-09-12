@@ -1,50 +1,61 @@
+//
+// Created by zero on 11/09/16.
+//
+
 #include "factoryProblem.h"
+#include "elementFile.h"
+#include "elementAffiliation.h"
+#include "elementArticle.h"
+#include "elementAuthor.h"
+#include "../dao/daoMySql.h"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 FactoryProblem::FactoryProblem()
 {
+
 }
 
-ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks& configFile)
+std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblem(std::string element, double budget)
 {
-	std::string directoryOfWork = configFile["directory_work"];
-	std::string fileOfCosts = configFile["file_costs"];
-	std::string fileOfCompatibility = configFile["file_compat"];
-	std::string fileOfCover = configFile["file_cover"];
-	double budget = atof(configFile["budget"].c_str());
+    boost::property_tree::ptree pt;
+    boost::property_tree::ini_parser::read_ini("Tesis.ini", pt);
 
-	bool withSpecificItem = configFile["with_specific_item"] == "1";
-	int specificItem = atoi(configFile["specific_item"].c_str());
+    if (element.compare("FILE")) {
+        std::string directoryOfWork = pt.get<std::string>("SectionFile.directoryOfWork");
+        ElementFile anElement;
+        std::unique_ptr<ProblemInstance> theUniqueProblemFile(new ProblemInstanceFromFiles(directoryOfWork + anElement.getFileCosts(),
+                                                        directoryOfWork + anElement.getFileCompat(),
+                                                        directoryOfWork + anElement.getFileCover(), budget));
+        return std::move(theUniqueProblemFile);
+    }
+    else {
+        std::string database = pt.get<std::string>("SectionDatabase.server");
+        std::string user = pt.get<std::string>("SectionDatabase.user");
+        std::string password = pt.get<std::string>("SectionDatabase.password");
+        std::string server = pt.get<std::string>("SectionDatabase.database");
+        Dao* theDao = new DaoMySql(database, user, password, server);
+        theDao->connect();
+        Element * anElementFromDb;
 
-	ProblemInstanceFromFiles* theProblem = new ProblemInstanceFromFiles(
-	    directoryOfWork+fileOfCosts, directoryOfWork+fileOfCompatibility,
-	    directoryOfWork+fileOfCover, budget);
+        if (element.compare("AUTHOR")) {
+            anElementFromDb = new ElementAuthor();
+        }
 
-	if (withSpecificItem) {
-		theProblem->setSpecificItem(specificItem);
-	}
+        if (element.compare("ARTICLE")) {
+            anElementFromDb = new ElementArticle();
+        }
 
-	return theProblem;
-}
-
-ProblemInstance* FactoryProblem::getTheProblemInstance(ConfigurationJaks &configFile, Dao* dao)
-{
-	std::string tableOfCosts = configFile["table_costs"];
-	std::string tableOfCompatibility = configFile["table_compat"];
-	std::string tableOfCover = configFile["table_cover"];
-	std::string tableOfMappingIds = configFile["table_convertion_element_item"];
-	std::string fieldForCost = configFile["field_cost"];
-	std::string fieldForCompatibility = configFile["field_compat"];
-	std::string fieldForCover = configFile["field_cover"];
-	std::string fieldPrimary = configFile["field_primary"];
-	std::string fieldPrimaryDescription = configFile["field_primary_description"];
-	std::string fieldItem = configFile["field_item"];
-	std::string fieldItemCompat1 = configFile["field_item_compat1"];
-	std::string fieldItemCompat2 = configFile["field_item_compat2"];
-	double budget = atof(configFile["budget"].c_str());
-
-	ProblemInstanceFromDataBase *theProblem = new ProblemInstanceFromDataBase(
-	    dao, tableOfCosts, tableOfCompatibility, tableOfCover, tableOfMappingIds,
-	    fieldForCost, fieldForCompatibility, fieldForCover, fieldPrimary,
-	    fieldPrimaryDescription, fieldItem, fieldItemCompat1, fieldItemCompat2, budget);
-	return theProblem;
+        if (element.compare("AFFILIATION")) {
+            anElementFromDb = new ElementAffiliation();
+        }
+        std::unique_ptr<ProblemInstance> theUniqueProblemDb(new ProblemInstanceFromDataBase(theDao, anElementFromDb->getTableCost(), anElementFromDb->getTableCompat(),
+                                                            anElementFromDb->getTableCover(), anElementFromDb->getTableConvertionElementToItem(),
+                                                            anElementFromDb->getFieldCost(), anElementFromDb->getFieldCompat(),
+                                                            anElementFromDb->getFieldCover(), anElementFromDb->getFieldPrimary(),
+                                                            anElementFromDb->getFieldPrimaryDescription(), anElementFromDb->getFieldItem(),
+                                                            anElementFromDb->getFieldItemCompat1(), anElementFromDb->getFieldItemCompat2(), budget));
+        delete anElementFromDb;
+        return std::move(theUniqueProblemDb);
+    }
 }
