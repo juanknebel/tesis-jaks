@@ -39,78 +39,126 @@ Los gráficos de tipo burbuja de la figura \ref{res:img-explain-bubbles} son út
   \label{res:img-explain-bubbles}
 \end{figure}
 
-
 \subsection{Búsqueda de artículos}
-Para la búsqueda de artículos con tópicos similares en la tabla \ref{tabla:comp1} se observa los porcentajes de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los ocho algoritmos. Una primera observación es que los algoritmos  Intra-Inter C-HAC reflejan el efecto buscado: a menores valores de $\gamma$ donde el valor inter tiene mayor peso, se obtienen mejores soluciones. Es decir, haber considerado en el proceso de generación de paquetes la funcion Intra-Inter benefició a la calidad de las soluciones obtenidas. Claramente, a medida que $\gamma$ crece y la función intra adquiere mayor preponderancia, la función $Score$ tiene mejor performance. Los algoritmos BOBO, no obtienen soluciones de la calidad de los algoritmos C-HAC y el proceso de selección proporcional no logra una mejora consistente para todos los valores de $\gamma$. Las soluciones obtenidas con el algoritmo de construcción golosa, no alcanzaron a mejorar las soluciones de C-HAC pero fueron ampliamente mejores que las de BOBO. En promedio el porcentaje de deterioro de BOBO fue de un $50\%$ mientras que el goloso fue de un $12\%$. 
+Para la búsqueda de artículos con tópicos similares en la tabla \ref{tabla:comp1} se observa los porcentajes de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los ocho algoritmos. Una primera observación es que los algoritmos  Intra-Inter C-HAC reflejan el efecto buscado: a menores valores de $\gamma$ donde el valor inter tiene mayor peso, se obtienen mejores soluciones. Es decir, haber considerado en el proceso de generación de paquetes la funcion Intra-Inter benefició a la calidad de las soluciones obtenidas. Los algoritmos BOBO, no obtienen soluciones de la calidad de los algoritmos C-HAC y el proceso de selección proporcional no logra una mejora consistente para todos los valores de $\gamma$. Las soluciones obtenidas con el algoritmo de construcción golosa, no alcanzaron a mejorar las soluciones de C-HAC pero fueron ampliamente mejores que las de BOBO. En promedio el porcentaje de deterioro de BOBO fue de un $50\%$ mientras que el goloso fue de un $12\%$. 
 Cabe resaltar el muy buen rendimiento de la búsqueda tabú, tanto en escenarios donde la solución inicial no es de buena calidad (algoritmo BOBO) así como también considerando soluciones de mejor calidad (algoritmo Intra-Inter C-HAC). En el primer caso, se obtienen porcentajes de mejora por encima del $70\%$. En el segundo caso, para varios valores de $\gamma$ la solución obtenida por la búsqueda tabú resultó ser la mejor opción y en otros con deterioros inferiores al $0.5\%$.
-\begin{table}
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
 $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
-0.1 & -2.34	& -35.06 & -37.11 & -13.48 & -0.72 &  0.00 &  -4.82 &  -4.38 \\
-0.2 & -2.45	& -40.01 & -40.05 & -6.28 & -0.35 &  0.00 &  -5.25 &  -4.46 \\
-0.3 & -3.39	& -44.54 & -44.50 & -11.63 & -1.10 &  0.00 & -10.16 &  -9.09 \\
-0.4 & -0.45	& -48.85 & -50.16 & -3.00 & -0.31 &  0.00 & -10.68 &  -9.95 \\
-0.5 & 0.00  & -52.32 & -52.62 & -7.38 & -0.31 & -0.02 & -12.97 & -12.07 \\
-0.6 & -0.19 & -55.57 & -54.98 & -6.83 & -0.24 &  0.00 & -14.94 & -13.97 \\
-0.7 & 0.00  & -57.11 & -56.52 & -9.36 & -0.41 & -0.21 & -16.21 & -15.19 \\
-0.8 & 0.00  & -57.90 & -57.83 & -6.08 & -0.56 & -0.41 & -18.10 & -16.99 \\
-0.9 & 0.00  & -58.51 & -58.44 & -6.41 & -0.48 & -0.23 & -20.47 & -19.31 \\ \hline 
+0.1 & -2.05 & -32.70 & -36.18 & -7.45 & -0.42 & 0.00 & -4.53 & -3.53 \\
+0.2 & -2.11 & -38.06 & -41.19 & -8.23 & 0.00 & 0.00 & -4.92 & -3.85 \\
+0.3 & -2.31 & -45.21 & -47.35 & -8.01 & 0.00 & 0.00 & -9.17 & -7.66 \\
+0.4 & -0.14 & -49.08 & -51.22 & -15.51 & 0.00 & 0.00 & -10.40 & -9.35 \\
+0.5 & 0.00 & -52.35 & -54.23 & -17.87 & -0.31 & -0.31 & -12.97 & -10.38 \\
+0.6 & 0.00 & -55.16 & -56.04 & -14.43 & -0.05 & -0.05 & -14.78 & -13.69 \\
+0.7 & 0.00 & -56.88 & -56.57 & -17.02 & -0.41 & -0.41 & -16.21 & -15.08 \\
+0.8 & 0.00 & -57.86 & -57.86 & -16.11 & -0.56 & -0.30 & -18.10 & -17.60 \\
+0.9 & 0.00 & -58.92 & -58.92 & -15.91 & -0.48 & -0.35 & -20.47 & -17.61 \\ \hline 
 \end{tabular}
 \caption{Comparación de calidad de soluciones entre algoritmos} 
-\label{tabla:comp1}
+\label{tabla:comp2}
 \end{center}
 \end{table}
 
-Como se señaló previamente, la búsqueda tabú tiene su mayor impacto cuando es aplicada a la solución brindada por el algoritmo $alg5$ y en este contexto resulta una buena alternativa por su bajo costo computacional. 
+Al comparar las soluciones con mayor y menor función objetivo para los $\gamma = 0,1$ y $\gamma = 0,9$ se observa, en la figura \ref{fig:comp1}, que para $\gamma = 0,1$ los tópicos (representados por burbujas) para la solución de \textit{alg 3} están presentes en varios paquetes (representados por círculos de colores) mientras que para el $alg6$ la mayoría de las burbujas contiene círculos de un solo color. De esta manera se visualiza que la solución de $alg6$ es más diversa. En $\gamma = 0,9$ el resultado obtenido con $alg3$ no se visualiza que cada burbuja contenga cinco circulos del mismo color, en cambio para la solución de $alg1$ si. Eso significa que los paquetes de la solución de $alg1$ son más cohesivos, ya que los cinco elementos de cada paquete tienen los mismos tópicos.
 
-Para $\gamma=0.1$, la Figura~\ref{res:bobo} muestra que la solución dada por el $alg5$ tiene artículos de distintos paquetes con patrones muy similares, indicando un bajo valor inter-paquete. Por el contrario, luego de aplicar la búsqueda tabú los patrones de los artículos más similares entre distintos paquetes se volvieron más dispares, demostrando el aumento de la diversidad entre paquetes. Para $\gamma=0.9$, como puede observarse en la misma Figura~\ref{res:bobo}, en la solución brindada por el $alg5$ todos los paquetes tienen al menos un artículo cuyo patrón consiste en muchos pequeños círculos distribuídos en la mayoría de los tópicos en contraposición al resto de los artículos del mismo paquete con pocos círculos de gran tamaño. Esto muestra bajo valor intra-paquete. Mientras que los paquetes obtenidos luego de aplicar la búsqueda tabú son mucho más cohesivos ya que los círculos de los artículos dentro de un mismo paquete siguen patrones mucho más parecidos. Esto demuestra que la búsqueda tabú fue capaz de mejorar las características de la solución en función del parámetro $\gamma$.
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{cc}
+		$alg3$ & $alg6$\\
+		\multicolumn{2}{c}{$\gamma=0.1$}\\ 
+			\includegraphics[width=0.5\linewidth]{img/gamma-01-burbujas-alg-3.png}&
+			\includegraphics[width=0.5\linewidth]{img/gamma-01-burbujas-alg-6.png} 		\vspace{1cm}\\
+			$alg3$ & $alg1$\\
+		\multicolumn{2}{c}{$\gamma=0.9$}\\
+			\includegraphics[width=0.5\linewidth]{img/gamma-09-burbujas-alg-3.png}&
+			\includegraphics[width=0.5\linewidth]{img/gamma-09-burbujas-alg-1.png}\\
+	\end{tabular}
+	\caption{Comparación entre las soluciones con menor(izq) y mayor(der) función objetivos  para $\gamma 0,1 y 0,9$}
+	\label{res:comp1}
+\end{figure}
 
-Como se mencionó anteriormente, el algoritmo $C-HAC$ de \cite{compositeRetrival} ($alg1$) utiliza la función $Score$ para la decisión del par de {\em clusters} a unir en la etapa de producción de paquetes y la selección simple en la segunda fase. Estos dos criterios omiten la diversidad de los paquetes. De acuerdo a los resultados de la tabla \ref{tabla:comp}, se pudo concluir que haber considerado la función Intra-Inter y la selección proporcional benefició a la calidad de las soluciones cuando la misma es medida a partir de la función objetivo $w(S)$. Con el fin de evaluar que el $alg4$ es capaz de captar efectivamente la diversidad en la solución, se analiza las soluciones para $\gamma=0.5$. En este caso el $alg1$ obtuvo un valor de $intra=93.82$ y de $inter=35.49$, mientras que el $alg4$ logró valores de $intra=93.86$ y de $inter=37.69$. Estos valores demuestran que el $alg4$ es capaz de encontrar soluciones con mayor valor $inter$ sin causar un deterioro en el valor $intra$. Observando la Figura~\ref{res:chac} se puede ver que la cohesión intra-paquete de ambas soluciones es equivalente. Sin embargo, la diversidad en la segunda solución es mayor, ya que los patrones entre los artículos más similares de distintos paquetes son más heterogéneos. 
+La búsqueda tabú tiene su mayor impacto cuando es aplicada a la solución brindada por el algoritmo $alg3$ y en este contexto resulta una buena alternativa por su bajo costo computacional.En la Figura~\ref{res:bobo} muestra que para Para $\gamma=0.1$, la solución dada por el $alg3$ tiene artículos de distintos paquetes con patrones muy similares, indicando un bajo valor inter-paquete. Por el contrario, luego de aplicar la búsqueda tabú los patrones de los artículos más similares entre distintos paquetes se volvieron más dispares, demostrando el aumento de la diversidad entre paquetes. Para $\gamma=0.9$, como puede observarse en la misma Figura~\ref{res:bobo}, en la solución brindada por el $alg4$ todos los paquetes tienen al menos un artículo cuyo patrón consiste en muchos pequeños círculos distribuidos en la mayoría de los tópicos en contraposición al resto de los artículos del mismo paquete con pocos círculos de gran tamaño. Esto muestra bajo valor intra-paquete. Mientras que los paquetes obtenidos luego de aplicar la búsqueda tabú son mucho más cohesivos ya que los círculos de los artículos dentro de un mismo paquete siguen patrones mucho más parecidos. Esto demuestra que la búsqueda tabú fue capaz de mejorar las características de la solución en función del parámetro $\gamma$.
+
+Como se mencionó anteriormente, el algoritmo $C-HAC$ de \cite{compositeRetrival} ($alg1$) utiliza la función $Score$ para la decisión del par de {\em clusters} a unir en la etapa de producción de paquetes y la selección simple en la segunda fase. Estos dos criterios omiten la diversidad de los paquetes. De acuerdo a los resultados de la tabla \ref{tabla:comp1}, se pudo concluir que haber considerado la función Intra-Inter y la selección proporcional benefició a la calidad de las soluciones cuando la misma es medida a partir de la función objetivo $w(S)$. Con el fin de evaluar que el $alg5$ es capaz de captar efectivamente la diversidad en la solución, se analiza las soluciones para $\gamma=0.5$. En este caso el $alg1$ obtuvo un valor de $intra=93,82$ y de $inter=35,49$, mientras que el $alg5$ logró valores de $intra=92,94$ y de $inter=35,96$. A pesar de que la solución de $alg1$ es levemente superior, la solución del $alg5$ aumentó el valor $inter$ el $1,32\%$ con un deterioro del valor $intra$ del $0,93\%$. Observando la Figura~\ref{res:chac} se puede ver que la cohesión intra-paquete de ambas soluciones es equivalente. Sin embargo, la diversidad en la segunda solución es mayor, ya que los patrones entre los artículos más similares de distintos paquetes son más heterogéneos. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{cc}
+		$alg3$ & $alg4$\\
+		\multicolumn{2}{c}{$\gamma=0.1$}\\
+			\includegraphics[width=0.5\linewidth]{img/gamma-01-alg-3.png}&
+			\includegraphics[width=0.5\linewidth]{img/gamma-01-alg-4.png} 		\vspace{1cm}\\
+		\multicolumn{2}{c}{$\gamma=0.9$}\\
+			\includegraphics[width=0.5\linewidth]{img/gamma-09-alg-3.png}&
+			\includegraphics[width=0.5\linewidth]{img/gamma-09-alg-4.png}\\
+	\end{tabular}
+	\caption{Comparación de soluciones para BOBO-10 con y sin heurística de mejoramiento}
+	\label{res:bobo}
+\end{figure}
+
+La decisión acerca del valor de $\gamma$ para priorizar un objetivo sobre el otro es realizada por el usuario. Una curva de frontera eficiente podría ayudar para examinar el balance (trade-off) entre los dos objetivos. La intención es que el usuario pueda analizar si una mejora significativa en el valor intra-paquete implica una degradación sustancial en el valor inter-paquetes y viceversa. Para ilustrar este análisis se presenta la Figura \ref{res:inter_intra}  que al comprar las soluciones obtenidas por los algoritmos $alg1$ y $alg5$ variando en pasos de $0,1$. Se observa que las soluciones provistas por $alg5$ no superan en todos los casos el inter en las soluciones obtenidas con $alg1$. En promedio el inter de las soluciones de $alg1$ superan a las de $alg5$ en un $0,65\%$. 
+
+En la misma figura se compara las soluciones obtenidas por el algoritmo goloso $alg7$, que en promedio supera a las soluciones provistas por $alg2$ en $76\%$. De la comparación, se destaca que el valor de $\gamma$ impacta más en las soluciones de $alg2$.  
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{cc}
+			\includegraphics[width=0.5\linewidth]{img/alg1_vs_alg5.png}&
+			\includegraphics[width=0.5\linewidth]{img/alg2_vs_alg7.png}\\
+			$alg1$ vs $alg5$ & $alg2$ vs $alg7$\\
+	\end{tabular}
+	\caption{}
+	\label{res:inter_intra}
+\end{figure}
 
 \subsection{Búsqueda de autores}
+En la tabla \ref{tabla:comp2} se tiene los porcentajes de deterioro de cada solución para la búsqueda de autores que escribieron artículos de tópicos similares que están afiliados a distintas universidades. Se observa que en este caso, a diferencia de la búsqueda de artículos, el algoritmo tabú no halló una mejor solución.\\
+En PAC no hubo una diferencia considerable entre las estrategias de producción $C-HAC$ e $Inter-Intra$ $C-HAC$. Igualmente estos algoritmos jerárquicos siguen demostrando que obtienen una mejor solución que $BOBO$. En cuanto a la etapa de selección, cuando la producción de paquetes se realizó con $BOBO$ no se detecto una mejoría con la estrategia propuesta en este trabajo de la selección proporcional.\\
+Al igual que en la búsqueda de artículos, el algoritmo goloso generó para todos los gammas una solución mejor que $BOBO$.\\
+En cuanto a la búsqueda tabú, 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
+0.1 & -0.21 & -28.58 & -29.10 & -26.41 & -0.01 & 0.00 & -5.11 & -4.96 \\
+0.2 & -0.27 & -32.99 & -33.80 & -30.09 & 0.00 & 0.00 & -6.18 & -5.71 \\
+0.3 & 0.00 & -37.06 & -36.18 & -32.35 & -0.10 & -0.10 & -7.43 & -6.79 \\
+0.4 & 0.00 & -38.66 & -38.22 & -34.48 & 0.00 & 0.00 & -8.58 & -7.78 \\
+0.5 & -0.22 & -40.18 & -39.58 & -35.78 & 0.00 & 0.00 & -12.47 & -11.65 \\
+0.6 & -0.18 & -40.62 & -40.28 & -36.44 & 0.00 & 0.00 & -12.64 & -11.72 \\
+0.7 & 0.00 & -40.85 & -40.85 & -37.04 & -0.12 & -0.12 & -12.20 & -11.49 \\
+0.8 & 0.00 & -41.35 & -41.35 & -37.58 & -0.08 & -0.08 & -10.96 & -10.47 \\
+0.9 & 0.00 & -41.33 & -41.33 & -37.58 & -0.07 & -0.07 & -11.18 & -10.72 \\ \hline 
+\end{tabular}
+\caption{Comparación de calidad de soluciones entre algoritmos} 
+\label{tabla:comp2}
+\end{center}
+\end{table}
+
+\subsection{Búsqueda de universidades}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
+0.1 & 0.00 & -30.89 & -31.26 & -15.05 & -1.39 & -1.33 & -10.97 & -9.73 \\
+0.2 & 0.00 & -40.35 & -40.16 & -22.09 & -1.72 & -1.07 & -22.83 & -20.42 \\
+0.3 & -2.22 & -50.85 & -49.98 & -27.01 & -2.37 & 0.00 & -36.06 & -28.55 \\
+0.4 & -5.72 & -60.65 & -58.96 & -33.76 & -1.36 & 0.00 & -48.44 & -30.38 \\
+0.5 & -8.59 & -69.76 & -67.66 & -31.46 & -1.92 & 0.00 & -60.18 & -34.32 \\
+0.6 & -12.09 & -77.50 & -74.71 & -33.85 & -2.53 & 0.00 & -70.16 & -35.80 \\
+0.7 & -12.59 & -82.97 & -80.09 & -31.52 & 0.00 & 0.00 & -78.04 & -29.36 \\
+0.8 & -15.52 & -88.12 & -84.93 & -32.90 & 0.00 & 0.00 & -85.63 & -36.34 \\
+0.9 & -17.46 & -88.10 & -87.79 & -31.16 & 0.00 & 0.00 & -92.13 & -28.26 \\
+ \hline 
+\end{tabular}
+\caption{Comparación de calidad de soluciones entre algoritmos} 
+\label{tabla:comp2}
+\end{center}
+\end{table}
+
 \section{Búsqueda de atracciones turísticas}\label{res:busAtracciones}
-Los resultados son conjuntos de paquetes que cada uno contiene atracciones turísticas de distinta temática, que son similares con respecto a la distancia geográfica y la suma del precio de las atracciones no supera el presupuesto.
-\begin{itemize}
-  \item \textbf{Similitud}: Cercanía geográfica de las atracciones.
-  \item \textbf{Complementariedad}: Tipo de atracción turística.
-  \item \textbf{presupuesto}: Cantidad de dinero que tiene el usuario para utilizar.
-\end{itemize}
-Se generaron soluciones con las siguientes características:\\
-
-\SolucionBudget
-{}
-{
-\begin{description}
-	\item[alg\_1] \texttt{Búsqueda Golosa}
-	\item[alg\_2] \texttt{PAC(BOBO-100/Selección de paquetes proporcional)}
-	\item[alg\_3] \texttt{PAC(BOBO-100/Selección de paquetes)}
-	\item[alg\_4] \texttt{PAC(Efficient C-HAC/Selección de paquetes proporcional)}
-	\item[alg\_5] \texttt{PAC(Efficient C-HAC/Selección de paquetes)}
-\end{description}
-}
-{$(0,1; 0,3; 0,5; 0,7; 0,9)$}
-{10}
-{3}
-{7}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.8\textwidth]{resultados/cities/Graficos_agrupados/gamma01-cities.png}
-  \caption{Función Objetivo $\gamma$ = $0.1$ vs Algoritmos de resolución}
-  \label{res:img-cities-agr-gamma01}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.8\textwidth]{resultados/cities/Graficos_agrupados/gamma09-cities.png}
-  \caption{Función Objetivo $\gamma$ = $0.9$ vs Algoritmos de resolución}
-  \label{res:img-cities-agr-gamma09}
-\end{figure}
-
-En esta instancia se repite el comportamiento de los resultados obtenidos en las consultas realizadas sobre la base de datos de artículos. La solución del algoritmo goloso supera al de PAC cuando la estrategia de producción es con BOBO pero con HAC valor de la función objetivo es similar. También, en esta instancia, se obtuvieron mejores valores con la selección proporcional.
-
-Al aplicar la búsqueda tabú se mejora sustancialmente la solución obtenida con PAC con la estrategia BOBO, obteniendo una solución tan optima como con el resto de los algoritmos. Con el resto de los algoritmos no se obtiene una mejora sustancial de la solución al aplicar la búsqueda tabú.
-
-Solo se muestran los gráficos y comportamientos para las pruebas realizadas con un solo presupuesto, pero los mismos tuvieron el mismo efecto a medida que se cambiaba ese valor.
