@@ -154,6 +154,11 @@ En la figura \ref{res:aut_alg1_vs_alg5_vs_alg7} de la izquierda se visualiza que
 En esta búsqueda se destaca la búsqueda tabú, principalmente aplicada a la solución obtenida a partir de $alg5$, ya que la solución que se genera para todos los gammas es con el valor máximo posible de la función objetivo con ese presupuesto.
 
 \subsection{Búsqueda de universidades}
+En este escenario lo que más se destaca de la tabla \ref{tabla:comp3} es el comportamiento del algoritmo $alg1$ que generó una mejor solución para los valores de $\gamma$ $0.1$ y $0.2$ y para el resto de los valores mayores la solución provista empeora en comparación al algoritmo $alg5$ y la brecha aumenta a medida que aumenta el $\gamma$. 
+
+Por otro lado la función objetivo de las soluciones provista por los algoritmos $alg2$, $alg3$ y $alg7$ se encuentran muy alejadas de las soluciones provistas por los jerárquicos. En el caso del algoritmo goloso $alg7$ las soluciones mejoran con respecto a los algoritmos $alg2$ y $alg3$ cuando el valor de $\gamma$ disminuye.
+
+En este escenario la búsqueda tabú mejoró las soluciones iniciales del BOBO y del algoritmo goloso considerablemente, pero no así con los algoritmos jerárquicos. 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -176,6 +181,7 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{table}
 
 \section{Búsqueda de atracciones turísticas}\label{res:busAtracciones}
+En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas a partir de las modificaciones propuestas en este trabajo de los algoritmos PAC mejoran a los originales en todos. Es para destacar que en en este escenario el algoritmo goloso supera a $alg1$. La búsqueda tabú consiguió mejores resultados para los algoritmos PAC, pero no así para el algoritmo goloso.
 
 \begin{table}[H]
 \begin{center}
@@ -197,3 +203,12 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \label{tabla:comp4}
 \end{center}
 \end{table}
+
+En la figura \ref{res:cit_bobo_diff} se visualiza el porcentaje de mejora del algoritmo $alg3$ para cada valor de $\gamma$ con respecto a $alg2$. En promedio el porcentaje de mejora es de $3.5\%$ y la mayor diferencia se da para los valores de $\gamma$ $0.3$, $0.4$ y $0.5$
+y en los extremos la diferencia disminuye.
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1\textwidth]{img/cit_bobo_diff.png}
+  \caption{}
+  \label{res:cit_bobo_diff}
+\end{figure}
