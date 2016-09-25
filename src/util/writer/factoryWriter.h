@@ -1,17 +1,22 @@
-#ifndef FACTORYWRITER_H
-#define FACTORYWRITER_H
+//
+// Created by zero on 25/09/16.
+//
+
+#ifndef TESIS_JAKS_EXE_FACTORYWRITER_H
+#define TESIS_JAKS_EXE_FACTORYWRITER_H
 
 #include "writerSolutionAffiliations.h"
 #include "writerSolutionArticles.h"
 #include "writerSolutionAuthors.h"
 #include "writterSolutionFile.h"
-#include "../configurator/configurationJaks.h"
+#include <memory>
 
 class FactoryWriter {
 private:
-	FactoryWriter();
+    FactoryWriter();
 public:
-	static WriterSolution* getTheWriter(ConfigurationJaks& configFile);
+    static std::unique_ptr<WriterSolution> getTheWriter(std::string element);
 };
 
-#endif // FACTORYWRITER_H
+
+#endif //TESIS_JAKS_EXE_FACTORYWRITER_H

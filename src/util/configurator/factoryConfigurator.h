@@ -6,7 +6,7 @@
 #include "configuratorToDataBase.h"
 #include "../../solver/factorySolverOLD.h"
 #include "../../problem/factoryProblemOLD.h"
-#include "../writer/factoryWriter.h"
+#include "../writer/factoryWriterOLD.h"
 #include "../identificator/factoryIdentificationGenerator.h"
 
 class FactoryConfigurator {

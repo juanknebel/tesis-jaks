@@ -18,15 +18,18 @@
 #include "greedySolver.h"
 
 class FactorySolver {
-private:
-    FactorySolver();
-
 public:
-    enum SolverAlgorithm {
+    enum SolverAlgorithmNew {
         EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO,
         RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
     };
+
     static std::unique_ptr<Solver> getTheSolver(ProblemInstance* theProblem, std::string algorithm, std::string strategy, int multiplier, double gamma);
+
+private:
+    FactorySolver();
+    static FactorySolver::SolverAlgorithmNew getSolverByName(std::string algorithm);
+    static ProduceAndChooseSolver::RankingStrategy getStrategyByName(std::string strategy);
 };
 
 

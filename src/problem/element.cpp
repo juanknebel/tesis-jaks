@@ -27,7 +27,6 @@ Element::Element()
     this->fileCover_ = "";
 
     this->elementType_ = "ERROR";
-
 }
 
 Element::~Element()

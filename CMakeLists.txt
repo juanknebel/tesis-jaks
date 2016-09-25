@@ -4,7 +4,7 @@ SET(Boost_USE_STATIC_LIBS ON)
 #set(Boost_USE_MULTITHREADED ON)
 #find_package( Threads )
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
-find_package( Boost 1.54.0 COMPONENTS log log_setup thread system REQUIRED )
+find_package( Boost 1.54.0 COMPONENTS log log_setup thread program_options system REQUIRED )
 link_libraries(${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES} ${Boost_LIBRARIES})
 find_package(Qt5Sql)
 set(CMAKE_BUILD_TYPE DEBUG)
@@ -16,7 +16,7 @@ set(tesis-jaks_source_files
         src/util/configurator/configurator.cpp
         src/util/configurator/factoryConfigurator.cpp
         src/util/configurator/configurationJaks.cpp
-        src/util/writer/factoryWriter.cpp
+        src/util/writer/factoryWriterOLD.cpp
         src/util/writer/writerSolution.cpp
         src/util/writer/writerSolutionAffiliations.cpp
         src/util/writer/writerSolutionAuthors.cpp
@@ -70,7 +70,7 @@ set(tesis-jaks_source_files
         src/test/testingProblemInstance.cpp
         src/test/testingProblemInstanceFromFiles.cpp
         src/test/testSuites.cpp
-        src/util/writer/writterSolutionFile.cpp src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h src/dao/daoQt.cpp src/dao/daoQt.h)
+        src/util/writer/writterSolutionFile.cpp src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h src/dao/daoQt.cpp src/dao/daoQt.h src/util/writer/factoryWriter.cpp src/util/writer/factoryWriter.h)
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 #target_link_libraries(tesis-jaks boost_log mysqlcppconn)
 target_link_libraries(tesis-jaks boost_log Qt5::Sql mysqlcppconn)

@@ -2,5 +2,5 @@
 
 void execute(ConfigurationJaks& configFileName);
 
-void executeNew(char * element, char * algorithm, char * strategy, char * budget, char * gamma,
-                char * numFlakes, char * maxIter, char * toProduce, char * writeToFile, char * printToScreen);
+void executeNew(std::string element, std::string algorithm, std::string strategy, double budget, double gamma,
+                int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen);

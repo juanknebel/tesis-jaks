@@ -11,9 +11,8 @@ FactorySolver::FactorySolver()
 
 std::unique_ptr<Solver> FactorySolver::getTheSolver(ProblemInstance* theProblem, std::string algorithm, std::string strategy, int multiplier, double gamma)
 {
-    int theStrategyId;
-    int solverId;
-    ProduceAndChooseSolver::RankingStrategy theStrategy = static_cast<ProduceAndChooseSolver::RankingStrategy> (theStrategyId);
+    int solverId = FactorySolver::getSolverByName(algorithm);
+    ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getStrategyByName(strategy);
     Solver *theSolver;
 
     switch(solverId) {
@@ -117,4 +116,68 @@ std::unique_ptr<Solver> FactorySolver::getTheSolver(ProblemInstance* theProblem,
     }
     std::unique_ptr<Solver> theUniqueSolver (theSolver);
     return  theUniqueSolver;
+}
+
+FactorySolver::SolverAlgorithmNew FactorySolver::getSolverByName(std::string algorithm) {
+    if (algorithm.compare("EfficientHAC") == 0) {
+        return FactorySolver::EfficientHAC;
+    }
+
+    if (algorithm.compare("RestrictedHAC") == 0) {
+        return FactorySolver::RestrictedHAC;
+    }
+
+    if (algorithm.compare("RandomBOBO") == 0) {
+        return FactorySolver::RandomBOBO;
+    }
+
+    if (algorithm.compare("AllGreedySolver") == 0) {
+        return FactorySolver::AllGreedySolver;
+    }
+
+    if (algorithm.compare("ExSumSimSOBO") == 0) {
+        return FactorySolver::ExSumSimSOBO;
+    }
+
+    if (algorithm.compare("ExAnySimSOBO") == 0) {
+        return FactorySolver::ExAnySimSOBO;
+    }
+
+    if (algorithm.compare("RandomSOBO") == 0) {
+        return FactorySolver::RandomSOBO;
+    }
+
+    if (algorithm.compare("SeqScan") == 0) {
+        return FactorySolver::SeqScan;
+    }
+
+    if (algorithm.compare("ClusterAndPick") == 0) {
+        return FactorySolver::ClusterAndPick;
+    }
+
+    if (algorithm.compare("RestrictedHACSpecific") == 0) {
+        return FactorySolver::RestrictedHACSpecific;
+    }
+}
+
+ProduceAndChooseSolver::RankingStrategy FactorySolver::getStrategyByName(std::string strategy) {
+    if (strategy.compare("RANK_BY_INTRA") == 0) {
+        return ProduceAndChooseSolver::RANK_BY_INTRA;
+    }
+
+    if (strategy.compare("RANK_BY_INTRA_INTER") == 0) {
+        return ProduceAndChooseSolver::RANK_BY_INTRA_INTER;
+    }
+
+    if (strategy.compare("RANK_BY_DENSEST_SUBGRAPH") == 0) {
+        return ProduceAndChooseSolver::RANK_BY_DENSEST_SUBGRAPH;
+    }
+
+    if (strategy.compare("RANK_BY_INTRA_INTER_TUPLE") == 0) {
+        return ProduceAndChooseSolver::RANK_BY_INTRA_INTER_TUPLE;
+    }
+
+    if (strategy.compare("RANK_BY_INTRA_INTER_PROPORTIONAL") == 0) {
+        return ProduceAndChooseSolver::RANK_BY_INTRA_INTER_PROPORTIONAL;
+    }
 }

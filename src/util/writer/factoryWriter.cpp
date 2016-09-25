@@ -1,23 +1,27 @@
+//
+// Created by zero on 25/09/16.
+//
+
 #include "factoryWriter.h"
-FactoryWriter::FactoryWriter()
-{
-}
 
-WriterSolution* FactoryWriter::getTheWriter(ConfigurationJaks& configFile)
-{
-	if (configFile["element"] == "ARTICLE") {
-		return new WriterSolutionArticles("\t");
-	}
+std::unique_ptr<WriterSolution> FactoryWriter::getTheWriter(std::string element) {
+    WriterSolution* theWriter;
+    if (element.compare("ARTICLE") == 0) {
+        theWriter = new WriterSolutionArticles("\t");
+    }
 
-	if (configFile["element"] == "AUTHOR") {
-		return new WriterSolutionAuthors("\t");
-	}
+    if (element.compare("AUTHOR") == 0) {
+        theWriter = new WriterSolutionAuthors("\t");
+    }
 
-	if (configFile["element"] == "AFFILIATION") {
-		return new WriterSolutionAffiliations("\t");
-	}
+    if (element.compare("AFFILIATION") == 0) {
+        theWriter = new WriterSolutionAffiliations("\t");
+    }
 
-	if (configFile["use_data_from_db"] == "0") {
-		return new WritterSolutionFile("\t");
-	}
+    if (element.compare("FILE") == 0) {
+        theWriter = new WritterSolutionFile("\t");
+    }
+
+    std::unique_ptr<WriterSolution> theUniqueWriter (theWriter);
+    return theUniqueWriter;
 }

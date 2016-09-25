@@ -24,7 +24,7 @@ Configurator* FactoryConfigurator::getTheConfigurator(ConfigurationJaks& configF
 	/*
 	 * Instanciacion del writter
 	 */
-	WriterSolution* theWriter = FactoryWriter::getTheWriter(configFile);
+	WriterSolution* theWriter = FactoryWriterOLD::getTheWriter(configFile);
 
 	Configurator* theConfigurator = 0;
 

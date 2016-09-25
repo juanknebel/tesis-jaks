@@ -2,11 +2,13 @@
 #include <iostream>
 #include <memory>
 #include "executeSolver.h"
-#include "util/configurator/factoryConfigurator.h"
 #include "util/algorithm/localSearch.h"
 
 #include "problem/factoryProblem.h"
 #include "solver/factorySolver.h"
+#include "util/writer/factoryWriter.h"
+
+#include "util/configurator/factoryConfigurator.h"
 
 using namespace std;
 
@@ -77,22 +79,12 @@ void execute(ConfigurationJaks& configFile)
 	delete theConfigurator;
 }
 
-void executeNew(char * elementChar, char * algorithmChar, char * strategyChar, char * budgetChar, char * gammaChar,
-                char * numFlakesChar, char * maxIterChar, char * toProduceChar, char * writeToFileChar, char * printToScreenChar)
+void executeNew(std::string element, std::string algorithm, std::string strategy, double budget, double gamma,
+                int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen)
 {
-    std::string element;
-    std::string algorithm;
-    std::string strategy;
-    double budget;
-    double gamma;
-    int numFlakes;
-    int maxIter;
-    int toProduce;
-    bool writeToFile;
-    bool printToScreen;
-
     std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(element, budget));
     std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(theProblem.get(), algorithm, strategy, numFlakes, gamma));
+    std::unique_ptr<WriterSolution> thwWriter = std::move(FactoryWriter::getTheWriter(element));
 
     SnowFlakeVector* solution = 0;
     SnowFlakeVector newSolution;

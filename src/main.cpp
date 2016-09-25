@@ -23,12 +23,14 @@
 #include <iostream>
 #include "executeSolver.h"
 #include "test/testSuites.h"
+#include <boost/program_options.hpp>
 #include "util/algorithm/vectornorm.h"
 
-const std::string useMode = "tesis-jaks -n <configurations> [-l]\t(to use a configuration file)\ntesis-jaks -t [-l]\t\t\t\t(for use with the internal test)\ntesis-jaks -s [-l]\t\t\t\t(to calculate the similarity)\ntesis-jaks -h\t\t\t\t\t(to see this help)\nThe Argument -l initialize the logger.\nArguments in [] are optional.";
-std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
+std::string version = "0.4-beta";
 
-void usingTestHardcode(int argc, char **argv)
+namespace po = boost::program_options;
+
+void usingTestHardcode()
 {
 	//testOverLoadFunction();
 	testDB();
@@ -37,7 +39,60 @@ void usingTestHardcode(int argc, char **argv)
 	//testMetisWrapper();
 	//testClustering();
 	//testClusterAndPickSolver("../files/");
-	//testConfiguration(argc, argv);
+	//testConfiguration();
+}
+
+/*
+ *
+ */
+
+bool processCommandLine(int argc, char ** argv, int& option, std::string& element, std::string& algorithm, std::string& strategy,
+                        double& budget, double& gamma, int& numFlakes, int& maxIter, int& toProduce, bool& writeToFile, bool& printToScreen)
+{
+    std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
+
+    try {
+        po::options_description desc("tesis-jaks use");
+        desc.add_options()
+                ("help,h", "produce help message")
+                ("version,v", "muestra la version")
+                ("option,o", po::value<int>(&option)->required(), "option to execute")
+                ("element,e", po::value<std::string>(&element)->required(), "elemento")
+                ("algorithm,a", po::value<std::string>(&algorithm)->required(), "algoritmo")
+                ("strategy,s", po::value<std::string>(&strategy)->required(), "estrategia")
+                ("budget,b", po::value<double>(&budget)->required(), "presupuesto")
+                ("gamma,g", po::value<double>(&gamma)->required(), "gamma")
+                ("bundles,b", po::value<int>(&numFlakes)->required(), "cantidad de bundles")
+                ("iteration,i", po::value<int>(&maxIter)->required(), "cantidad de iteraciones")
+                ("produce,p", po::value<int>(&toProduce)->required(), "cantidad a producir solo para bobo")
+                ("write,w", po::value<bool>(&writeToFile)->required(), "escribir en archivo")
+                ("print,r", po::value<bool>(&printToScreen)->required(), "escribir por salida")
+                ;
+
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if (vm.count("help")) {
+            std::cout << desc << std::endl;
+            return false;
+        }
+        if (vm.count("version")) {
+            std::cout<< version << std::endl;
+            return false;
+        }
+        po::notify(vm);
+    }
+    catch(std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << errorMsg << std::endl;
+        return false;
+    }
+    catch(...) {
+        std::cerr << "Unknown error!" << std::endl;
+        std::cerr << errorMsg << std::endl;
+        return false;
+    }
+    return true;
 }
 
 std::vector<float> generateVector(char *theVector, int dimension)
@@ -55,8 +110,57 @@ std::vector<float> generateVector(char *theVector, int dimension)
 	return vectorProfile;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
+    int option;
+    std::string element;
+    std::string algorithm;
+    std::string strategy;
+    double budget;
+    double gamma;
+    int numFlakes;
+    int maxIter;
+    int toProduce;
+    bool writeToFile;
+    bool printToScreen;
+
+    bool result = processCommandLine(argc, argv, option, element, algorithm, strategy, budget, gamma,
+                                     numFlakes, maxIter, toProduce, writeToFile, printToScreen);
+
+    if (!result) {
+        exit(EXIT_FAILURE);
+    }
+    else {
+        switch (option) {
+            case 1:
+            {
+                std::cout<<"Executing solver ..."<<std::endl;
+                std::cout<<element<<std::endl<<algorithm<<std::endl<<strategy<<std::endl<<budget<<std::endl<<gamma<<std::endl<<numFlakes<<std::endl<<maxIter<<std::endl<<toProduce<<std::endl<<writeToFile<<std::endl<<printToScreen<<std::endl;
+                executeNew(element, algorithm, strategy, budget, gamma,
+                           numFlakes, maxIter, toProduce, writeToFile, printToScreen);
+                break;
+            }
+            case 2:
+            {
+                std::cout<<"Using internal tests ..."<<std::endl;
+                usingTestHardcode();
+                break;
+            }
+            case 3:
+            {
+                std::cout<<"Calculating the similarity ..."<<std::endl;
+                insertSimilarity();
+                break;
+            }
+        }
+        exit(EXIT_SUCCESS);
+    }
+
+
+
+
+
+    /*
 	if (argc <= 1) {
 		std::cerr<<errorMsg<<std::endl;
 	}
@@ -78,7 +182,7 @@ int main(int argc, char *argv[])
 
 			case 't': {
 				std::cout<<"Using internal tests ..."<<std::endl;
-				usingTestHardcode(argc, argv);
+				usingTestHardcode();
 				break;
 			}
 
@@ -115,6 +219,5 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-	exit(EXIT_SUCCESS);
+     */
 }
