@@ -38,10 +38,10 @@ public:
 	};
 	virtual ~Dao() {};
 
-	bool isConnected() const;
+	virtual bool isConnected() const;
 	String showConnection() const;
-	String getError() const;
-	int getNumberOfFields() const;
+	virtual String getError() const;
+	virtual int getNumberOfFields() const;
 
 	virtual bool connect() = 0;
 	virtual bool disconnect() = 0;

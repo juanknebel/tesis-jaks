@@ -31,7 +31,7 @@ std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
 void usingTestHardcode(int argc, char **argv)
 {
 	//testOverLoadFunction();
-	//testDB();
+	testDB();
 	//testMatrix();
 	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();

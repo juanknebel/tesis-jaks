@@ -6,6 +6,7 @@ SET(Boost_USE_STATIC_LIBS ON)
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
 find_package( Boost 1.54.0 COMPONENTS log log_setup thread system REQUIRED )
 link_libraries(${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES} ${Boost_LIBRARIES})
+find_package(Qt5Sql)
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
@@ -69,6 +70,7 @@ set(tesis-jaks_source_files
         src/test/testingProblemInstance.cpp
         src/test/testingProblemInstanceFromFiles.cpp
         src/test/testSuites.cpp
-        src/util/writer/writterSolutionFile.cpp src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h)
+        src/util/writer/writterSolutionFile.cpp src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h src/dao/daoQt.cpp src/dao/daoQt.h)
 add_executable(tesis-jaks ${tesis-jaks_source_files})
-target_link_libraries(tesis-jaks boost_log mysqlcppconn)
+#target_link_libraries(tesis-jaks boost_log mysqlcppconn)
+target_link_libraries(tesis-jaks boost_log Qt5::Sql mysqlcppconn)

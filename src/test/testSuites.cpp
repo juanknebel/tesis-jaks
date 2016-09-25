@@ -15,7 +15,7 @@
 #include "testingClusterAndPickSolver.h"
 #include "../problem/problemInstanceFromDataBase.h"
 #include "../util/configurator/configurationJaks.h"
-#include "../dao/daoMySql.h"
+#include "../dao/daoQt.h"
 
 #define db_database "tesis"
 #define db_user "tesis"
@@ -201,7 +201,7 @@ void testDBGeneric(Dao& dao, String tableName)
 
 void testDB1()
 {
-	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 	std::cout<<dao->showConnection();
 
@@ -226,7 +226,7 @@ void testDB1()
 
 void testDBCustomQuery()
 {
-	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	Dao *dao = new DaoQt(db_database,db_user,db_password,db_server);
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -238,7 +238,7 @@ void testDBCustomQuery()
 		std::cout<<dao->showConnection();
 
 		if (dao->isConnected()) {
-			bool wasOk = dao->executeCustomConsultativeQuery("select * from ARTICLES");
+			bool wasOk = dao->executeCustomConsultativeQuery("SELECT * from AUTHORS");
 
 			if (wasOk) {
 				std::cout<<"Ejecuto bien"<<std::endl;
@@ -248,7 +248,7 @@ void testDBCustomQuery()
 				while(dao->fetch()) {
 					hasresult = true;
 
-					for (int i=1; i<=numOffields; ++i) {
+					for (int i=0; i<numOffields; ++i) {
 						if (!(dao->getField(i)).empty()) {
 							std::cout<<dao->getField(i);
 						}
@@ -278,19 +278,17 @@ void testDBCustomQuery()
 				std::cerr<<"Error al obtener resutlados"<<std::endl;
 				std::cerr<<dao->getError()<<std::endl;
 			}
-
-			delete dao;
 		}
-
 		else {
 			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 		}
+		delete dao;
 	}
 }
 
 void testDBInsertCustom()
 {
-	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -315,7 +313,7 @@ void testDBInsertCustom()
 
 void testDBInsertPartial()
 {
-	Dao *dao = new DaoMySql("test",db_user,db_password,db_server);
+	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -340,7 +338,7 @@ void testDBInsertPartial()
 
 void testOverLoadFunction()
 {
-	Dao *dao = new DaoMySql(db_database, db_user, db_password,db_server);
+	Dao *dao = new DaoQt(db_database, db_user, db_password,db_server);
 	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab", "tab","tab","tab", "tab", 5);
 	std::cout<<problem->getCompat(1,1)<<std::endl;
 	delete dao;
