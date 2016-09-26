@@ -8,7 +8,7 @@
 #ifndef SNOWFLAKE_H_
 #define SNOWFLAKE_H_
 
-#include "../util/identificator/id2Str.h"
+//#include "../util/identificator/id2Str.h"
 #include "problemInstance.h"
 
 class SnowFlake {
@@ -36,7 +36,7 @@ public:
 
 	Double getCost();
 	int getCoverSize();
-	String toString(const Id2Str* node2name);
+	//String toString(const Id2Str* node2name);
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids() const;

@@ -8,13 +8,14 @@
 #include "problemInstance.h"
 #include "problemInstanceFromDataBase.h"
 #include "problemInstanceFromFiles.h"
+#include "element.h"
 
 class FactoryProblem {
 private:
     FactoryProblem();
 
 public:
-    static std::unique_ptr<ProblemInstance> getTheProblem(std::string element, double budget);
+    static std::unique_ptr<ProblemInstance> getTheProblem(const Element *element, double budget);
 
 };
 

@@ -41,7 +41,6 @@ void TestingClusterAndPickSolver::testingSolve ( int numFlakes )
 
 	for(SnowFlakeVector::iterator it = result->begin(); it != result->end(); ++it) {
 		std::cout<<"Bundle numero "<<i<<std::endl;
-		std::cout<<it->toString(NULL);
 		++i;
 	}
 

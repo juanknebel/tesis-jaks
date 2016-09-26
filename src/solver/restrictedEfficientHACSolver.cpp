@@ -6,7 +6,6 @@
  */
 
 #include "restrictedEfficientHACSolver.h"
-#include "../util/writer/writerSolution.h"
 
 RestrictedEfficientHACSolver::~RestrictedEfficientHACSolver()
 {

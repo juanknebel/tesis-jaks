@@ -21,7 +21,7 @@ String WriterSolution::showInScreen(std::vector<SnowFlake> &solution, const Id2S
 		avgCover += it->getCoverSize();
 		avgSize += it->ids().size();
 		avgSumIntraCompat += it->getSumIntraCompat();
-		result.append(it->toString(node2name));
+		//result.append(it->toString(node2name));
 	}
 
 	result.append("-------------------------------------------------" + this->endOfLIne_);

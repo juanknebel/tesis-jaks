@@ -90,6 +90,7 @@ int SnowFlake::getCoverSize()
 	return covered.size();
 }
 
+/*
 String SnowFlake::toString(const Id2Str* node2name)
 {
 	String result = "";
@@ -110,6 +111,7 @@ String SnowFlake::toString(const Id2Str* node2name)
 	result.append("SUM_INTRA_COMPAT = " + convertToString(this->getSumIntraCompat()) + "\n\n");
 	return result;
 }
+*/
 
 Double SnowFlake::getSumIntraCompat() const
 {

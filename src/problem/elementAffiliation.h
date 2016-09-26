@@ -6,6 +6,7 @@
 #define TESIS_JAKS_EXE_ELEMENTAFFILIATION_H
 #include "element.h"
 #include "../dao/dao.h"
+#include "snowFlake.h"
 
 class ElementAffiliation : public Element {
 public:
@@ -25,7 +26,8 @@ public:
         this->fieldCompat_ = "Similarity";
         this->elementType_ = "AFFILIATION";
     }
-    void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const;
+    void completeMapping(Dao *dao) const;
+    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
     ~ElementAffiliation();
 };
 

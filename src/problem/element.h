@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include "../dao/dao.h"
+#include "snowFlake.h"
 
 class Element {
 protected:
@@ -32,6 +33,9 @@ protected:
     std::string fileCover_;
 
     std::string elementType_;
+    std::string separator_;
+
+    std::unique_ptr<std::map<std::string, std::string>> node2name_;
 public:
     Element();
 
@@ -73,7 +77,8 @@ public:
 
     const std::string &getElementType() const;
 
-    virtual void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const = 0;
+    virtual void completeMapping(Dao *dao) const = 0;
+    virtual void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const = 0;
 
     virtual ~Element();
 };

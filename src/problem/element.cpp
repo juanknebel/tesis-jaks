@@ -27,6 +27,9 @@ Element::Element()
     this->fileCover_ = "";
 
     this->elementType_ = "ERROR";
+    this->separator_ = "\t";
+
+    this->node2name_ = std::unique_ptr<std::map<std::string, std::string>> (new std::map<std::string, std::string>);
 }
 
 Element::~Element()

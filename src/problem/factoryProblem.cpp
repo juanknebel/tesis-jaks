@@ -16,17 +16,16 @@ FactoryProblem::FactoryProblem()
 
 }
 
-std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblem(std::string element, double budget)
+std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblem(const Element *element, double budget)
 {
     boost::property_tree::ptree pt;
     boost::property_tree::ini_parser::read_ini("Tesis.ini", pt);
 
-    if (element.compare("FILE") == 0) {
+    if (element->getElementType().compare("FILE") == 0) {
         std::string directoryOfWork = pt.get<std::string>("SectionFile.directoryOfWork");
-        ElementFile anElement;
-        std::unique_ptr<ProblemInstance> theUniqueProblemFile(new ProblemInstanceFromFiles(directoryOfWork + anElement.getFileCosts(),
-                                                        directoryOfWork + anElement.getFileCompat(),
-                                                        directoryOfWork + anElement.getFileCover(), budget));
+        std::unique_ptr<ProblemInstance> theUniqueProblemFile(new ProblemInstanceFromFiles(directoryOfWork + element->getFileCosts(),
+                                                        directoryOfWork + element->getFileCompat(),
+                                                        directoryOfWork + element->getFileCover(), budget));
         return std::move(theUniqueProblemFile);
     }
     else {
@@ -36,26 +35,12 @@ std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblem(std::string eleme
         std::string server = pt.get<std::string>("SectionDatabase.server");
         Dao* theDao = new DaoQt(database, user, password, server);
         theDao->connect();
-        Element * anElementFromDb;
-
-        if (element.compare("AUTHOR") == 0) {
-            anElementFromDb = new ElementAuthor();
-        }
-
-        if (element.compare("ARTICLE") == 0) {
-            anElementFromDb = new ElementArticle();
-        }
-
-        if (element.compare("AFFILIATION") == 0) {
-            anElementFromDb = new ElementAffiliation();
-        }
-        std::unique_ptr<ProblemInstance> theUniqueProblemDb(new ProblemInstanceFromDataBase(theDao, anElementFromDb->getTableCost(), anElementFromDb->getTableCompat(),
-                                                            anElementFromDb->getTableCover(), anElementFromDb->getTableConvertionElementToItem(),
-                                                            anElementFromDb->getFieldCost(), anElementFromDb->getFieldCompat(),
-                                                            anElementFromDb->getFieldCover(), anElementFromDb->getFieldPrimary(),
-                                                            anElementFromDb->getFieldPrimaryDescription(), anElementFromDb->getFieldItem(),
-                                                            anElementFromDb->getFieldItemCompat1(), anElementFromDb->getFieldItemCompat2(), budget));
-        delete anElementFromDb;
+        std::unique_ptr<ProblemInstance> theUniqueProblemDb(new ProblemInstanceFromDataBase(theDao, element->getTableCost(), element->getTableCompat(),
+                                                                                            element->getTableCover(), element->getTableConvertionElementToItem(),
+                                                                                            element->getFieldCost(), element->getFieldCompat(),
+                                                                                            element->getFieldCover(), element->getFieldPrimary(),
+                                                                                            element->getFieldPrimaryDescription(), element->getFieldItem(),
+                                                                                            element->getFieldItemCompat1(), element->getFieldItemCompat2(), budget));
         return std::move(theUniqueProblemDb);
     }
 }
