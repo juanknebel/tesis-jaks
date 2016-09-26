@@ -5,6 +5,7 @@
 #ifndef TESIS_JAKS_EXE_ELEMENTAUTHOR_H
 #define TESIS_JAKS_EXE_ELEMENTAUTHOR_H
 #include "element.h"
+#include "../dao/dao.h"
 
 class ElementAuthor  : public Element {
 public:
@@ -24,7 +25,7 @@ public:
         this->fieldCompat_ = "Similarity";
         this->elementType_ = "AUTHOR";
     }
-
+    void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const;
     ~ElementAuthor();
 };
 

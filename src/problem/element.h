@@ -6,6 +6,8 @@
 #define TESIS_JAKS_EXE_ELEMENT_H
 
 #include <string>
+#include <map>
+#include "../dao/dao.h"
 
 class Element {
 protected:
@@ -70,6 +72,8 @@ public:
     const std::string &getFileCover() const;
 
     const std::string &getElementType() const;
+
+    virtual void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const = 0;
 
     virtual ~Element();
 };

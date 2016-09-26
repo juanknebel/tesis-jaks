@@ -6,6 +6,7 @@
 #define TESIS_JAKS_EXE_ELEMENTARTICLE_H
 
 #include "element.h"
+#include "../dao/dao.h"
 
 class ElementArticle : public Element {
 public:
@@ -25,7 +26,7 @@ public:
         this->fieldCompat_ = "Similarity";
         this->elementType_ = "ARTICLE";
     }
-
+    void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const;
     ~ElementArticle();
 };
 

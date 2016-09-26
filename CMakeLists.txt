@@ -12,20 +12,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
 set(tesis-jaks_source_files
         src/util/logger/simpleLogger.cpp
-        src/util/configurator/configuratorToDataBase.cpp
-        src/util/configurator/configurator.cpp
-        src/util/configurator/factoryConfigurator.cpp
-        src/util/configurator/configurationJaks.cpp
-        src/util/writer/factoryWriterOLD.cpp
         src/util/writer/writerSolution.cpp
         src/util/writer/writerSolutionAffiliations.cpp
         src/util/writer/writerSolutionAuthors.cpp
         src/util/writer/writerSolutionArticles.cpp
-        src/util/identificator/factoryIdentificationGenerator.cpp
-        src/util/identificator/identificationGeneretor.cpp
-        src/util/identificator/identificationGeneretorAffiliation.cpp
-        src/util/identificator/identificationGeneretorAuthor.cpp
-        src/util/identificator/identificationGeneretorArticle.cpp
         src/util/identificator/id2Str.cpp
         src/util/algorithm/vectornorm.cpp
         src/util/algorithm/pairsToJaccardSimilarity.cpp
@@ -38,14 +28,12 @@ set(tesis-jaks_source_files
         src/dao/dao.cpp
         src/executeSolver.cpp
         src/main.cpp
-        src/problem/factoryProblemOLD.cpp
         src/problem/problemInstanceFromDataBase.cpp
         src/problem/problemInstance.cpp
         src/problem/problemInstanceFromFiles.cpp
         src/problem/snowFlake.cpp
         src/queue/priorityQueue.cpp
         src/matrix/matrixConcrete.cpp
-        src/solver/factorySolverOLD.cpp
         src/solver/greedySolver.cpp
         src/solver/restrictedHACWithSpecificItemSolver.cpp
         src/solver/clusterAndPickSolver.cpp

@@ -5,6 +5,7 @@
 #ifndef TESIS_JAKS_EXE_ELEMENTFILE_H
 #define TESIS_JAKS_EXE_ELEMENTFILE_H
 #include "element.h"
+#include "../dao/dao.h"
 
 class ElementFile : public Element {
 public:
@@ -16,6 +17,7 @@ public:
         this->fileCover_ = "node_cover.csv";
         this->elementType_ = "FILE";
     }
+    void completeMapping(std::map<std::string, std::string> &id2str, Dao *dao) const;
     ~ElementFile();
 };
 

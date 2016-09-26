@@ -115,7 +115,7 @@ std::unique_ptr<Solver> FactorySolver::getTheSolver(ProblemInstance* theProblem,
             throw Exception(__FILE__, __LINE__, "Algoritmo de busqueda inexistente");
     }
     std::unique_ptr<Solver> theUniqueSolver (theSolver);
-    return  theUniqueSolver;
+    return  std::move(theUniqueSolver);
 }
 
 FactorySolver::SolverAlgorithmNew FactorySolver::getSolverByName(std::string algorithm) {

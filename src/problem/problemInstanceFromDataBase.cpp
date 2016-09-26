@@ -45,7 +45,7 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 
 	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		while(this->dao_->fetch()) {
-			this->nodeCompat_->set(convertToInt(this->dao_->getField(1)), convertToInt(this->dao_->getField(2)), convertToDouble(this->dao_->getField(3)));
+			this->nodeCompat_->set(convertToInt(this->dao_->getField(0)), convertToInt(this->dao_->getField(1)), convertToDouble(this->dao_->getField(2)));
 		}
 	}
 
@@ -54,7 +54,7 @@ void ProblemInstanceFromDataBase::init(Dao *dao, String tableCosts, String table
 
 	if (this->dao_->executeCustomConsultativeQuery(query1.str())) {
 		while(this->dao_->fetch()) {
-			(*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(1))] = convertToDouble(this->dao_->getField(2));
+			(*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(0))] = convertToDouble(this->dao_->getField(1));
 		}
 	}
 }
@@ -67,7 +67,7 @@ int ProblemInstanceFromDataBase::getPrimaryId(int id)
 
 	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 		if (this->dao_->fetch()) {
-			theId = convertToInt(this->dao_->getField(1));
+			theId = convertToInt(this->dao_->getField(0));
 		}
 	}
 
@@ -101,7 +101,7 @@ IntSet& ProblemInstanceFromDataBase::getIds()
 
 		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
 			while(this->dao_->fetch()) {
-				this->ids_->insert(convertToInt(this->dao_->getField(1)));
+				this->ids_->insert(convertToInt(this->dao_->getField(0)));
 			}
 		}
 
@@ -146,7 +146,7 @@ const IntSet* ProblemInstanceFromDataBase::getCover(int id)
 			IntSet *aSet = new IntSet();
 
 			while(this->dao_->fetch()) {
-				aSet->insert(convertToInt(this->dao_->getField(1)));
+				aSet->insert(convertToInt(this->dao_->getField(0)));
 			}
 
 			(*(*this).nodeCover_)[id] = aSet;

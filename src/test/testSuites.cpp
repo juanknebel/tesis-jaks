@@ -144,23 +144,6 @@ ProblemInstance* giveMeAnotherProblemInstance(std::string directory)
 	return result;
 }
 
-void configureFile(char* fileName)
-{
-	String value;
-	ConfigurationJaks configFiles = ConfigurationJaks(fileName);
-
-	while(true) {
-		std::cout<<"Ingresar la clave a consultar (X para salir) ";
-		std::cin>>value;
-
-		if (value == "X") {
-			break;
-		}
-
-		std::cout<<"EL valor de la clave es: "<<configFiles.giveMeValue(value)<<std::endl;
-	}
-}
-
 void testDBGeneric(Dao& dao, String tableName)
 {
 	if (dao.isConnected()) {
@@ -428,36 +411,4 @@ void testClusterAndPickSolver ( std::string directory)
 	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
 	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
 	anotherClusterPickSolver.testingSolve(4);
-}
-
-void testConfiguration(int argc, char *argv[])
-{
-	if (argc <= 1) {
-		std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
-	}
-
-	else {
-		if (argv[1][0] != '-') {
-			std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
-		}
-
-		else {
-			char option = argv[1][1];
-
-			switch(option) {
-			case 'f':
-				std::cout<<"Usando el archivo de configuracion ..."<<std::endl;
-				configureFile(argv[2]);
-				break;
-
-			case 't':
-				std::cout<<"Usando los tests internos ..."<<std::endl;
-				break;
-
-			default:
-				std::cerr<<"Error. Modo de uso:\ntesis-jaks -f <nombre_archivo_configuracion>"<<std::endl;
-				break;
-			}
-		}
-	}
 }
