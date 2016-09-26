@@ -136,58 +136,45 @@ std::string SnowFlake::getProblemNode(int aNode) const
 	return this->problem_->getNode(aNode);
 }
 
-double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, double interSimilarityWeight)
+double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, double gamma)
 {
-	double sumIntraCompat = 0.00;
-	double sumOneMinusInter = 0.00;
+	double sumIntraCompat = SnowFlake::getIntra(solution);
+	double sumOneMinusInter = SnowFlake::getInter(solution);
 
-	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
-		if (it->ids().size() > 0) {
-			sumIntraCompat += it->getSumIntraCompat();
-		}
-	}
-
-	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
-		if (it->ids().size() > 0) {
-			for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
-				if (it2->ids().size() > 0) {
-					double temp = 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
-					int id1 = it->getIdentificator();
-					int id2 = it2->getIdentificator();
-					sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
-				}
-			}
-		}
-	}
-
-	return ((1.0 - interSimilarityWeight) * sumIntraCompat) + (interSimilarityWeight * sumOneMinusInter);
+	return ((1.0 - gamma) * sumIntraCompat) + (gamma * sumOneMinusInter);
 }
 
-double SnowFlake::getIntra(const std::vector<SnowFlake>& solution, double interSimilarityWeight)
+double SnowFlake::getIntra(const std::vector<SnowFlake> &solution)
 {
 	double sumIntraCompat = 0.00;
 
-	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
-		if (it->ids().size() > 0) {
-			sumIntraCompat += it->getSumIntraCompat();
-		}
+	for (auto aFlake : solution) {
+		sumIntraCompat += (aFlake.ids() > 0) ? aFlake.getSumIntraCompat() : 0;
 	}
 
 	return sumIntraCompat;
 }
 
-double SnowFlake::getInter(const std::vector<SnowFlake>& solution, double interSimilarityWeight)
+double SnowFlake::getInter(const std::vector<SnowFlake> &solution)
 {
 	double sumOneMinusInter = 0.00;
 
-	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
+	/*for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
 		if (it->ids().size() > 0) {
 			for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
 				if (it2->ids().size() > 0) {
-					double temp = 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
-					int id1 = it->getIdentificator();
-					int id2 = it2->getIdentificator();
 					sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
+				}
+			}
+		}
+	}*/
+
+	for (auto aFlake : solution) {
+		if (aFlake.ids().size() > 0) {
+			for (auto otherFlake : solution) {
+				if (aFlake.getIdentificator() > otherFlake.getIdentificator()) {
+					sumOneMinusInter +=
+							1.0 - (aFlake.ids() > 0) ? aFlake.maxPairwiseCompatibility(aFlake, otherFlake) : 0;
 				}
 			}
 		}

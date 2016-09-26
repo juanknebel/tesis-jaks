@@ -39,12 +39,12 @@ public:
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	std::set<int>& ids() const;
 	std::string getProblemNode(int aNode) const;
-	static double objetiveFunction(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
+	static double objetiveFunction(const std::vector<SnowFlake>& solution, double gamma);
 	int getIdentificator() const;
 	void setIdentificator(int theIdentificator);
 	static double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
-	static double getInter(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
-	static double getIntra(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
+	static double getInter(const std::vector<SnowFlake> &solution);
+	static double getIntra(const std::vector<SnowFlake> &solution);
 	double getSumIntraCompatWithSpecificProfile() const;
 	friend std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake);
 	double getMinCompat() const;

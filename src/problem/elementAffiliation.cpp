@@ -44,7 +44,7 @@ ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::s
     }
 
     file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma)<<"\n";
-    file << "Inter" << this->separator_ << SnowFlake::getInter(solution, gamma)<<"\n";
-    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, gamma);
+    file << "Inter" << this->separator_ << SnowFlake::getInter(solution) << "\n";
+    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
     file.close();
 }
