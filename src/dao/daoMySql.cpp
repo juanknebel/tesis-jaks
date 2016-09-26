@@ -20,7 +20,7 @@
 
 #include "daoMySql.h"
 
-bool DaoMySql::executeConsultativeQuery(String query)
+bool DaoMySql::executeConsultativeQuery(std::string query)
 {
 	if (this->res_) {
 		delete this->res_;
@@ -46,7 +46,7 @@ bool DaoMySql::executeConsultativeQuery(String query)
 	return result;
 }
 
-bool DaoMySql::executeModifiableQuery(String query)
+bool DaoMySql::executeModifiableQuery(std::string query)
 {
 	if (this->res_) {
 		delete this->res_;
@@ -124,12 +124,12 @@ bool DaoMySql::disconnect()
 	return result;
 }
 
-bool DaoMySql::executeCustomConsultativeQuery(String query)
+bool DaoMySql::executeCustomConsultativeQuery(std::string query)
 {
 	return this->executeConsultativeQuery(query);
 }
 
-bool DaoMySql::executeCustomModifiableQuery(String query)
+bool DaoMySql::executeCustomModifiableQuery(std::string query)
 {
 	return this->executeModifiableQuery(query);
 }
@@ -139,12 +139,12 @@ bool DaoMySql::fetch()
 	return this->res_->next();
 }
 
-String DaoMySql::getField(int index)
+std::string DaoMySql::getField(int index)
 {
 	return this->res_->getString(index);
 }
 
-String DaoMySql::getField(String fieldName)
+std::string DaoMySql::getField(std::string fieldName)
 {
 	return this->res_->getString(fieldName);
 }

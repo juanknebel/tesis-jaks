@@ -15,17 +15,17 @@ class LocalSearchBundles {
 private:
 	void updateTabuElements(std::vector<int> &tabuSet);
 	SnowFlake getWorstBundle(SnowFlakeVector &solution, TabuBundles setOfTabuBundles, ProblemInstance &theProblem,
-	                         Double intersimilarityWeight);
+	                         double intersimilarityWeight);
 
 	SnowFlake getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
-	                            ProblemInstance &theProblem, Double interSimilarityWeight);
+	                            ProblemInstance &theProblem, double interSimilarityWeight);
 
 	SnowFlakeVector getBetterFlakes(SnowFlake centroid, TabuBundles setOfTabuBundles,
 	                                SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem, bool takeTabu);
 public:
 	LocalSearchBundles() {}
 	SnowFlakeVector execute(int maxIter, SnowFlakeVector& solution, SnowFlakeVector& remainingFlakes
-	                        , ProblemInstance& theProblem, Double interSimilarityWeight);
+	                        , ProblemInstance& theProblem, double interSimilarityWeight);
 };
 
 

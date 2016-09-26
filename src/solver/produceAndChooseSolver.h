@@ -44,7 +44,7 @@ public:
 
 	void setRankingStrategy(ProduceAndChooseSolver::RankingStrategy strategy);
 	ProduceAndChooseSolver::RankingStrategy getRankingStrategy();
-	void setInterSimilarityWeight(Double interSimilarityWeight);
+	void setInterSimilarityWeight(double interSimilarityWeight);
 	SnowFlakeVector* solve(int numSnowFlakes);
 	SnowFlakeVector* getTopSolutionByRankingStrategy(SnowFlakeVector* produced, int numRequested );
 	virtual int numToProduce(int numRequested) = 0;
@@ -54,7 +54,7 @@ protected:
 	/**
 	* To be used with {@link RankingStrategy#RANK_BY_INTRA_INTER}
 	*/
-	Double interSimilarityWeight_;
+	double interSimilarityWeight_;
 	static ProduceAndChooseSolver::RankingStrategy getDefault();
 	SnowFlakeVector* getTopSolutionsByIntra(SnowFlakeVector* produced, int numRequested);
 	SnowFlakeVector* getTopSolutionsByInterIntra(SnowFlakeVector* produced, int numRequested);
@@ -76,13 +76,13 @@ protected:
 	*            selected
 	* @return the score of the union
 	*/
-	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+	double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter);
 
-	Double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter);
+	double scoreSetIntraInterWithSpecificProfile(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter);
 
-	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, Double selectedSumIntra, Double selectedSumOneMinusInter);
+	double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, SnowFlake& candidateTwo, double selectedSumIntra, double selectedSumOneMinusInter);
 
-	Double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, Double selectedSumIntra, Double selectedSumOneMinusInter, Double alpha, Double beta);
+	double scoreSetIntraInter(SnowFlakeVector* selected, SnowFlake& candidate, double selectedSumIntra, double selectedSumOneMinusInter, double alpha, double beta);
 
 	/**
 	*

@@ -15,25 +15,25 @@ ClusterAndPickSolver::~ClusterAndPickSolver()
 SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes)
 {
 
-	IntVector* clustering;
+	std::vector<int>* clustering;
 	clustering = Clustering::symmetrizeAndCluster(*this->problem_->getCompat(), numSnowflakes);
 
 	if (clustering->size()!= this->problem_->numNodes()) {
 		//TODO: hacer log
 	}
 
-	IntSet clusterIds = IntSet();
+	std::set<int> clusterIds = std::set<int>();
 
 
-	for (IntVector::iterator clusterNum = clustering->begin(); clusterNum != clustering->end(); ++clusterNum) {
+	for (std::vector<int>::iterator clusterNum = clustering->begin(); clusterNum != clustering->end(); ++clusterNum) {
 		clusterIds.insert(*clusterNum);
 	}
 
 	SnowFlakeVector* solution;
 	solution = new SnowFlakeVector();
 
-	for (IntSet::iterator clusterId = clusterIds.begin(); clusterId != clusterIds.end(); ++clusterId) {
-		IntSet clusterMembers = IntSet();
+	for (std::set<int>::iterator clusterId = clusterIds.begin(); clusterId != clusterIds.end(); ++clusterId) {
+		std::set<int> clusterMembers = std::set<int>();
 
 		for (int node = 0; node < clustering->size(); ++node) {
 			if ((*clustering)[node] == *clusterId) {
@@ -49,12 +49,12 @@ SnowFlakeVector* ClusterAndPickSolver::solve(int numSnowflakes)
 	return solution;
 }
 
-SnowFlake ClusterAndPickSolver::bestSnowFlake(const IntSet& clusterMembers)
+SnowFlake ClusterAndPickSolver::bestSnowFlake(const std::set<int>& clusterMembers)
 {
 	double bestScore = -1.0;
 	SnowFlake bestSnowflake;
 
-	for (IntSet::iterator center = clusterMembers.begin(); center != clusterMembers.end(); ++center) {
+	for (std::set<int>::iterator center = clusterMembers.begin(); center != clusterMembers.end(); ++center) {
 		SnowFlake snowflake = this->pickFlake(*center, clusterMembers);
 		double score = snowflake.getSumIntraCompat();
 

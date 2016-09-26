@@ -7,7 +7,7 @@
 
 #include "testingProblemInstanceFromFiles.h"
 
-TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(String directory)
+TestingProblemInstanceFromFiles::TestingProblemInstanceFromFiles(std::string directory)
 {
 	this->init(directory);
 	this->theProblem_ = new ProblemInstanceFromFiles(this->fileNodeCost_, this->fileNodeCompatibility_, this->fileNodeCover_, 1000.00);
@@ -29,7 +29,7 @@ TestingProblemInstanceFromFiles::~TestingProblemInstanceFromFiles()
 	delete this->theProblem_;
 }
 
-void TestingProblemInstanceFromFiles::init(String directory)
+void TestingProblemInstanceFromFiles::init(std::string directory)
 {
 	this->directory_ = directory;
 	this->fileNodeCompatibility_ = this->directory_ + "node_compatibility.csv";

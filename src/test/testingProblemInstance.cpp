@@ -39,7 +39,7 @@ void TestingProblemInstance::testNumNodes(int numNodes)
 	}
 }
 
-void TestingProblemInstance::testGetCost(int id, Double cost)
+void TestingProblemInstance::testGetCost(int id, double cost)
 {
 	if (this->theProblem_->getCost(id) == cost) {
 		std::cout<<"Costo funciono"<<std::endl;
@@ -50,7 +50,7 @@ void TestingProblemInstance::testGetCost(int id, Double cost)
 	}
 }
 
-void TestingProblemInstance::testGetBudget(Double budget)
+void TestingProblemInstance::testGetBudget(double budget)
 {
 	if (this->theProblem_->getbudget() == budget) {
 		std::cout<<"Presupuesto funciono"<<std::endl;
@@ -61,7 +61,7 @@ void TestingProblemInstance::testGetBudget(Double budget)
 	}
 }
 
-void TestingProblemInstance::testGetCompat(int id1, int id2, Double value)
+void TestingProblemInstance::testGetCompat(int id1, int id2, double value)
 {
 	if (this->theProblem_->getCompat(id1,id2) == value) {
 		std::cout<<"Obtencion de un elemento funciono"<<std::endl;
@@ -77,7 +77,7 @@ void TestingProblemInstance::testNormalizeNodeCompat(ProblemInstance* problem)
 
 }
 
-void TestingProblemInstance::testGetNode(int id, String node)
+void TestingProblemInstance::testGetNode(int id, std::string node)
 {
 	if (this->theProblem_->getNode(id) == node) {
 		std::cout<<"Obtencion del nodo funciono"<<std::endl;
@@ -88,7 +88,7 @@ void TestingProblemInstance::testGetNode(int id, String node)
 	}
 }
 
-void TestingProblemInstance::testGetId(String node, int id)
+void TestingProblemInstance::testGetId(std::string node, int id)
 {
 	if (this->theProblem_->getId(node) == id) {
 		std::cout<<"Obtencion del id funciono"<<std::endl;
@@ -99,7 +99,7 @@ void TestingProblemInstance::testGetId(String node, int id)
 	}
 }
 
-void TestingProblemInstance::testMaxPairwiseCompatibility(IntSet* aSet, IntSet* otherSet, Double result)
+void TestingProblemInstance::testMaxPairwiseCompatibility(std::set<int>* aSet, std::set<int>* otherSet, double result)
 {
 	if (this->theProblem_->maxPairwiseCompatibility(*aSet, *otherSet) == result) {
 		std::cout<<"Mayor compatibilidad funciono"<<std::endl;
@@ -110,15 +110,15 @@ void TestingProblemInstance::testMaxPairwiseCompatibility(IntSet* aSet, IntSet* 
 	}
 }
 
-void TestingProblemInstance::testCreateIdNodeMappings(StrVector* nodes, ProblemInstance* problem)
+void TestingProblemInstance::testCreateIdNodeMappings(std::vector<std::string>* nodes, ProblemInstance* problem)
 {
 	bool notFail = true;
 
-	for (StrVector::iterator it = nodes->begin(); it != nodes->end(); ++it) {
+	for (std::vector<std::string>::iterator it = nodes->begin(); it != nodes->end(); ++it) {
 		int id1 = this->theProblem_->getId(*it);
 		int id2 = problem->getId(*it);
-		String str1 = this->theProblem_->getNode(id1);
-		String str2 = problem->getNode(id2);
+		std::string str1 = this->theProblem_->getNode(id1);
+		std::string str2 = problem->getNode(id2);
 		notFail = notFail && (id1 == id2) && (str1 == str2) && (str1 == *it);
 	}
 

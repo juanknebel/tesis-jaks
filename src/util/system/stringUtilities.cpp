@@ -7,19 +7,18 @@
 
 #include "stringUtilities.h"
 #include <sstream>
-#define BOOST_LEXICAL_CAST_ASSUME_C_LOCALE 1
 #include <boost/lexical_cast.hpp>
 
 
-void stringToVectorSplit(String aLine, String aSeparator, StrVector& outVector)
+void stringToVectorSplit(std::string aLine, std::string aSeparator, std::vector<std::string>& outVector)
 {
-	String::size_type pos;
-	String element;
+	std::string::size_type pos;
+	std::string element;
 	pos=aLine.find(aSeparator);
 	element = aLine.substr(0,pos);
 	outVector.push_back(element);
 
-	while(pos!=String::npos) {
+	while(pos!=std::string::npos) {
 		aLine=aLine.substr(pos+1,aLine.size());
 		pos=aLine.find(aSeparator);
 		element = aLine.substr(0,pos);
@@ -27,16 +26,16 @@ void stringToVectorSplit(String aLine, String aSeparator, StrVector& outVector)
 	}
 }
 
-void trim(String& str)
+void trim(std::string& str)
 {
-	String trim_chars = "\t ";
-	String::size_type pos = str.find_last_not_of(trim_chars);
+	std::string trim_chars = "\t ";
+	std::string::size_type pos = str.find_last_not_of(trim_chars);
 
-	if(pos != String::npos) {
+	if(pos != std::string::npos) {
 		str.erase(pos + 1);
 		pos = str.find_first_not_of(trim_chars);
 
-		if(pos != String::npos) {
+		if(pos != std::string::npos) {
 			str.erase(0, pos);
 		}
 	}
@@ -46,42 +45,42 @@ void trim(String& str)
 	}
 }
 
-String convertToString(int aNumber)
+std::string convertToString(int aNumber)
 {
-	String s;
+	std::string s;
 	std::stringstream out;
 	out << aNumber;
 	return out.str();
 }
 
-String convertToString(Double aNumber)
+std::string convertToString(double aNumber)
 {
-	String s;
+	std::string s;
 	std::stringstream out;
 	out << aNumber;
 	return out.str();
 }
 
-int convertToInt(const String& aNumber)
+int convertToInt(const std::string& aNumber)
 {
 	return boost::lexical_cast<int>(aNumber);
 }
 
-Double convertToDouble(const String& aNumber)
+double convertToDouble(const std::string& aNumber)
 {
-	return boost::lexical_cast<Double>(aNumber);
+	return boost::lexical_cast<double>(aNumber);
 }
 
-/*void removeString(String& str, const String& strToRemove) {
-    String::size_type pos = str.find_last_not_of(strToRemove);
+/*void removeString(std::string& str, const std::string& strToRemove) {
+    std::string::size_type pos = str.find_last_not_of(strToRemove);
     str.find_first_not_of(strToRemove);
 
 
 
-    if(pos != String::npos) {
+    if(pos != std::string::npos) {
         str.erase(pos + 1);
         pos = str.find_first_not_of(strToRemove);
-        if(pos != String::npos) {
+        if(pos != std::string::npos) {
             str.erase(0, pos);
         }
     }

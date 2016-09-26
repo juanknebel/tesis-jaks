@@ -7,21 +7,21 @@
 
 #include "exhaustiveGreedyAnySimSOBOSolver.h"
 
-SnowFlake ExhaustiveGreedyAnySimSOBOSolver::pickFlake(int pivot, const IntSet& clusterMembers)
+SnowFlake ExhaustiveGreedyAnySimSOBOSolver::pickFlake(int pivot, const std::set<int>& clusterMembers)
 {
-	Uint n = clusterMembers.size();
-	IntSet membersSortedSelected;
-	IntVector membersUnsorted (clusterMembers.begin(), clusterMembers.end());
-	IntVector membersSorted(n, -1);
+	int n = clusterMembers.size();
+	std::set<int> membersSortedSelected;
+	std::vector<int> membersUnsorted (clusterMembers.begin(), clusterMembers.end());
+	std::vector<int> membersSorted(n, -1);
 	int mostSimilarElement, elem, elem2;
-	Double mostSimilarElementSimilarity;
+	double mostSimilarElementSimilarity;
 
-	for(Uint i = 0; i < n; ++i) {
+	for(int i = 0; i < n; ++i) {
 		mostSimilarElement = -1;
 		mostSimilarElementSimilarity = -1.00;
 
 		// Choose which element has a larger similarity to any element in the partial bundle
-		for (Uint j = 0; j < n; ++j) {
+		for (int j = 0; j < n; ++j) {
 			elem = membersUnsorted[j];
 
 			if (membersSortedSelected.count(elem) ==  0) {
@@ -32,7 +32,7 @@ SnowFlake ExhaustiveGreedyAnySimSOBOSolver::pickFlake(int pivot, const IntSet& c
 				}
 
 				// Then check if it is closest to any element
-				for( Uint k=0; k<i; k++ ) {
+				for( int k=0; k<i; k++ ) {
 					elem2 = membersSorted[k];
 
 					if (this->problem_->getCompat(elem2, elem) > mostSimilarElementSimilarity) {

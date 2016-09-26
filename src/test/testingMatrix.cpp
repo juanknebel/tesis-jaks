@@ -76,7 +76,7 @@ void TestingMatrix::testMinValue(int minValue)
 	}
 }
 
-void TestingMatrix::testGet(int row, int col, Double value)
+void TestingMatrix::testGet(int row, int col, double value)
 {
 	if (this->theMatrix_->get(row, col) == value) {
 		std::cout<<"Obtener un elemento funciono"<<std::endl;
@@ -87,7 +87,7 @@ void TestingMatrix::testGet(int row, int col, Double value)
 	}
 }
 
-void TestingMatrix::testSet(int row, int col, Double value, Double realValue)
+void TestingMatrix::testSet(int row, int col, double value, double realValue)
 {
 	this->theMatrix_->set(row, col, value);
 
@@ -100,7 +100,7 @@ void TestingMatrix::testSet(int row, int col, Double value, Double realValue)
 	}
 }
 
-void TestingMatrix::testScalarMultiply(Double scalar, MatrixWrapper* theMatrix)
+void TestingMatrix::testScalarMultiply(double scalar, MatrixWrapper* theMatrix)
 {
 	this->theMatrix_->scalarMultiply(scalar);
 	bool notFail = true;

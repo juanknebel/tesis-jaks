@@ -8,9 +8,9 @@
 #include "multiplicativeEffortProduceAndChooseSolver.h"
 #include <algorithm>
 
-Double MultiplicativeEffortProduceAndChooseSolver::DEFAULT_NUMCANDIDATES_MULTIPLIER = 2.0;
+double MultiplicativeEffortProduceAndChooseSolver::DEFAULT_NUMCANDIDATES_MULTIPLIER = 2.0;
 
-void MultiplicativeEffortProduceAndChooseSolver::setNumCandidatesMultiplier(Double numCandidatesMultiplier)
+void MultiplicativeEffortProduceAndChooseSolver::setNumCandidatesMultiplier(double numCandidatesMultiplier)
 {
 	this->numCandidatesMultiplier_ = numCandidatesMultiplier;
 }

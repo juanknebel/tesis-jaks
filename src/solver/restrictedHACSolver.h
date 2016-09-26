@@ -21,7 +21,7 @@ public:
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 	SnowFlakeVector* produceManySnowflakes1(int numToProduce);
 protected:
-	bool tryMerge(MapIntIntSet* clustering);
+	bool tryMerge(std::map<int, std::set<int>*>* clustering);
 
 private:
 	typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;

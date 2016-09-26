@@ -19,7 +19,6 @@ set(tesis-jaks_source_files
         src/util/system/exception.cpp
         src/util/system/stringUtilities.cpp
         src/util/system/systemUtilities.cpp
-        src/dao/daoMySql.cpp
         src/dao/dao.cpp
         src/executeSolver.cpp
         src/main.cpp
@@ -55,4 +54,4 @@ set(tesis-jaks_source_files
         src/test/testSuites.cpp
         src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h src/dao/daoQt.cpp src/dao/daoQt.h src/problem/factoryElement.cpp src/problem/factoryElement.h)
 add_executable(tesis-jaks ${tesis-jaks_source_files})
-target_link_libraries(tesis-jaks boost_log Qt5::Sql mysqlcppconn)
+target_link_libraries(tesis-jaks boost_log Qt5::Sql)

@@ -21,7 +21,7 @@
 #define db_password "tesis"
 #define db_server "localhost"
 
-MatrixConcrete giveMeMatrix2x2(Double a, Double b, Double c, Double d)
+MatrixConcrete giveMeMatrix2x2(double a, double b, double c, double d)
 {
 	MatrixConcrete matrix(2,2);
 	matrix.set(0,0,a);
@@ -143,7 +143,7 @@ ProblemInstance* giveMeAnotherProblemInstance(std::string directory)
 	return result;
 }
 
-void testDBGeneric(Dao& dao, String tableName)
+void testDBGeneric(Dao& dao, std::string tableName)
 {
 	if (dao.isConnected()) {
 		bool hasresult = dao.executeCustomConsultativeQuery("select * from " + tableName);

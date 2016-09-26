@@ -31,7 +31,7 @@ TestingClustering::~TestingClustering()
 
 void TestingClustering::testCluster ( const MatrixWrapper& graph, int numClusters )
 {
-	IntVector* result = Clustering::cluster(graph, numClusters);
+	std::vector<int>* result = Clustering::cluster(graph, numClusters);
 
 	for (int node = 0; node < result->size(); ++node) {
 		std::cout<<"El nodo: "<<node<<" pertence a la particion: "<<(*result)[node]<<std::endl;
@@ -42,7 +42,7 @@ void TestingClustering::testCluster ( const MatrixWrapper& graph, int numCluster
 
 void TestingClustering::testSymmetrizeCluster ( MatrixWrapper& graph, int numClusters )
 {
-	IntVector* result = Clustering::symmetrizeAndCluster(graph, numClusters);
+	std::vector<int>* result = Clustering::symmetrizeAndCluster(graph, numClusters);
 
 	for (int node = 0; node < result->size(); ++node) {
 		std::cout<<"El nodo: "<<node<<" pertence a la particion: "<<(*result)[node]<<std::endl;

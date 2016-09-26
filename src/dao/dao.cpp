@@ -20,7 +20,7 @@
 
 #include "dao.h"
 
-void Dao::init(String database, String user, String password, String server)
+void Dao::init(std::string database, std::string user, std::string password, std::string server)
 {
 	this->database_ = database;
 	this->password_ = password;
@@ -36,13 +36,13 @@ bool Dao::isConnected() const
 	return this->isConnected_;
 }
 
-String Dao::showConnection() const
+std::string Dao::showConnection() const
 {
-	String result = "Server: " + this->server_ + ".\nDatabase: " + this->database_ + ".\nUser: " + this->user_ + ".\nPassword: *******.\n";
+	std::string result = "Server: " + this->server_ + ".\nDatabase: " + this->database_ + ".\nUser: " + this->user_ + ".\nPassword: *******.\n";
 	return result;
 }
 
-String Dao::getError() const
+std::string Dao::getError() const
 {
 	return this->error_;
 }

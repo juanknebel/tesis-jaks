@@ -37,23 +37,23 @@ private:
 	sql::PreparedStatement *pstmt_;
 	sql::ResultSet *res_;
 	sql::ResultSetMetaData *res_meta_;
-	String lastQueryExecute_;
-	bool executeConsultativeQuery(String query);
-	bool executeModifiableQuery(String query);
+	std::string lastQueryExecute_;
+	bool executeConsultativeQuery(std::string query);
+	bool executeModifiableQuery(std::string query);
 	void manageException(sql::SQLException& e);
 public:
-	DaoMySql(String database, String user, String password, String server) : Dao(database, user, password, server) {}
+	DaoMySql(std::string database, std::string user, std::string password, std::string server) : Dao(database, user, password, server) {}
 	DaoMySql(const DaoMySql& dao) : Dao(dao.database_, dao.user_, dao.password_, dao.server_) {}
 	~DaoMySql();
 
 	bool connect();
 	bool disconnect();
 
-	bool executeCustomConsultativeQuery(String query);
-	bool executeCustomModifiableQuery(String query);
+	bool executeCustomConsultativeQuery(std::string query);
+	bool executeCustomModifiableQuery(std::string query);
 	bool fetch();
-	String getField(int index);
-	String getField(String fieldName);
+	std::string getField(int index);
+	std::string getField(std::string fieldName);
 };
 
 #endif // DAOMYSQL_H

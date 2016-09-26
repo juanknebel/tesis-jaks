@@ -17,7 +17,7 @@ private:
 	int findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemInstance &theProblem, std::map<int,int> recentlyAdded);
 
 	std::vector<int> nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
-	                                 IntSet &allElements, std::set<int> &usedElements,
+	                                 std::set<int> &allElements, std::set<int> &usedElements,
 	                                 ProblemInstance &theProblem, std::vector<int> &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus);
 
 	SnowFlake createNewBunlde(SnowFlake worstFlake, int excludeElement, int newElement,
@@ -40,22 +40,22 @@ private:
     SnowFlakeWithChooseElement
     addOneRandomElementToBundle(SnowFlake bundle, ProblemInstance &theProblem, std::set<int> setOfUsedElements,
                                     TabuElements setOfTabuBundles, SnowFlakeVector visitedSolution,
-                                    Double interSimilarityWeight, int centroid);
+                                    double interSimilarityWeight, int centroid);
 
     SnowFlakeWithChooseElement
-    replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, IntSet &setOfElements,
+    replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, std::set<int> &setOfElements,
                                       std::set<int> setOfUsedElements, ProblemInstance &theProblem,
                                       TabuElements setOfTabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus,
-                                      int bundleWithWorstInter, SnowFlakeVector iterationSolution, Double interSimilarityWeight,
+                                      int bundleWithWorstInter, SnowFlakeVector iterationSolution, double interSimilarityWeight,
                                       SnowFlakeVector visitedSolution, double theBestObjectiveSolution);
 
     SnowFlakeWithChooseElement
 	removeFarAwayElement(SnowFlake bundle, int farAwayElement, ProblemInstance &theProblem, SnowFlakeVector visitedSolution,
-                             Double interSimilarityWeight);
+                             double interSimilarityWeight);
 
 public:
 	LocalSearch() {}
-	SnowFlakeVector execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight);
+	SnowFlakeVector execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, double interSimilarityWeight);
 
 
 };

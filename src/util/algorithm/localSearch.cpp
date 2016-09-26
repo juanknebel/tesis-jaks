@@ -9,7 +9,7 @@ void logToFile(int iteration, int bundleWithWorstInter, int centroidElement, int
     LOG_DEBUG<<iteration<<"\t"<<bundleWithWorstInter<<"\t"<<centroidElement<<"\t"<<farAwayElement<<"\t"<<theIdOfTheChoosenElement<<"\t"<<objetiveFunction<<"\t"<<theSnowflake;
 }
 
-SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, Double interSimilarityWeight)
+SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solution, ProblemInstance& theProblem, double interSimilarityWeight)
 {
 	/*
 	* Tomo un bundle:
@@ -283,7 +283,7 @@ int LocalSearch::findFarAwayElement(int centroid, SnowFlake worstFlake, ProblemI
 }
 
 std::vector<int> LocalSearch::nearestElements(int centroid, int elementToReplace, SnowFlake worstFlake,
-        IntSet &allElements, std::set<int> &usedElements,
+        std::set<int> &allElements, std::set<int> &usedElements,
         ProblemInstance &theProblem, std::vector<int> &tabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus)
 {
 	int maxElements = 10;
@@ -363,9 +363,9 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
 
 	for (auto element : worstFlake.ids()) {
 		if (element != elementToReplace) {
-			const IntSet *covers = theProblem.getCover(element);
+			const std::set<int> *covers = theProblem.getCover(element);
 
-			for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+			for (std::set<int>::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 				if (coverageCovered.count(*cover) != 0) {
 					ret = false;
 				}
@@ -375,9 +375,9 @@ bool LocalSearch::checkCoverageConstraint(SnowFlake worstFlake, int elementToRep
 		}
 	}
 
-	const IntSet *covers = theProblem.getCover(newElement);
+	const std::set<int> *covers = theProblem.getCover(newElement);
 
-	for (IntSet::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
+	for (std::set<int>::iterator cover = covers->begin(); cover != covers->end(); ++cover) {
 		if (coverageCovered.count(*cover) != 0) {
 			ret = false;
 		}
@@ -411,7 +411,7 @@ void LocalSearch::updateTabuElements(std::vector<int> &tabuSet)
 
 LocalSearch::SnowFlakeWithChooseElement LocalSearch::addOneRandomElementToBundle(SnowFlake bundle, ProblemInstance &theProblem, std::set<int> setOfUsedElements,
                                                                     TabuElements setOfTabuElements, SnowFlakeVector visitedSolution,
-                                                                    Double interSimilarityWeight, int centroid) {
+                                                                    double interSimilarityWeight, int centroid) {
     srand(1);
     int randomElement = -1;
     double maxSimilarity = -1;
@@ -444,10 +444,10 @@ LocalSearch::SnowFlakeWithChooseElement LocalSearch::addOneRandomElementToBundle
 }
 
 LocalSearch::SnowFlakeWithChooseElement
-LocalSearch::replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, IntSet &setOfElements,
+LocalSearch::replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement, int farAwayElement, std::set<int> &setOfElements,
                                            std::set<int> setOfUsedElements, ProblemInstance &theProblem,
                                            TabuElements setOfTabuElements, bool takeTabu, std::map<int, std::set<int>> mapOfTabus,
-                                           int bundleWithWorstInter, SnowFlakeVector iterationSolution, Double interSimilarityWeight,
+                                           int bundleWithWorstInter, SnowFlakeVector iterationSolution, double interSimilarityWeight,
                                            SnowFlakeVector visitedSolution, double theBestObjectiveSolution) {
     LocalSearch::SnowFlakeWithChooseElement bundleAndElement;
     if (farAwayElement == -1) {
@@ -527,7 +527,7 @@ LocalSearch::replaceFarAwayElementInBundle(SnowFlake bundle, int centroidElement
 }
 
 LocalSearch::SnowFlakeWithChooseElement LocalSearch::removeFarAwayElement(SnowFlake bundle, int farAwayElement, ProblemInstance &theProblem,
-															 SnowFlakeVector visitedSolution, Double interSimilarityWeight) {
+															 SnowFlakeVector visitedSolution, double interSimilarityWeight) {
     LocalSearch::SnowFlakeWithChooseElement bundleAndElement;
     if (farAwayElement == -1) {
         bundleAndElement.theSnowflake = bundle;

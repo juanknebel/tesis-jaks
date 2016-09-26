@@ -13,16 +13,16 @@
 class TestingProblemInstanceFromFiles {
 private:
 	ProblemInstanceFromFiles *theProblem_;
-	String directory_;
-	String fileNodeCompatibility_;
-	String fileNodeCost_;
-	String fileNodeCover_;
-	String fileNodeName_;
-	String fileTypeName_;
+	std::string directory_;
+	std::string fileNodeCompatibility_;
+	std::string fileNodeCost_;
+	std::string fileNodeCover_;
+	std::string fileNodeName_;
+	std::string fileTypeName_;
 
-	void init(String directory);
+	void init(std::string directory);
 public:
-	TestingProblemInstanceFromFiles(String directory="/home/$USER/");
+	TestingProblemInstanceFromFiles(std::string directory="/home/$USER/");
 	TestingProblemInstanceFromFiles(const TestingProblemInstanceFromFiles& );
 	~TestingProblemInstanceFromFiles();
 };

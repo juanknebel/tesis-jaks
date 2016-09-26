@@ -1,27 +1,28 @@
 #ifndef PRIORITYQQUEUE_H
 #define PRIORITYQQUEUE_H
-#include "../util/redefinitions.h"
 #include <queue>
+#include <tuple>
+#include <map>
 
 class PriorityQueue {
 private:
 	struct compareTupleIntDouble {
-		bool operator() (const KeyTupleIntDouble& aTuple, const KeyTupleIntDouble& anotherTuple) const {
-			TupleIntDouble tuple1 = std::get<1>(aTuple);
-			TupleIntDouble tuple2 = std::get<1>(anotherTuple);
+		bool operator() (const std::pair<int,std::pair<int, double>>& aTuple, const std::pair<int,std::pair<int, double>>& anotherTuple) const {
+			std::pair<int, double> tuple1 = std::get<1>(aTuple);
+			std::pair<int, double> tuple2 = std::get<1>(anotherTuple);
 
 			return std::get<1>(tuple1) < std::get<1>(tuple2);
 		}
 	};
-	typedef std::priority_queue<KeyTupleIntDouble, KeyVectorTupleIntDouble, compareTupleIntDouble> PrtyQueueTupleIntDouble;
+	typedef std::priority_queue<std::pair<int,std::pair<int, double>>, std::vector<std::pair<int,std::pair<int, double>>>, compareTupleIntDouble> PrtyQueueTupleIntDouble;
 
 	PrtyQueueTupleIntDouble *theQueue_;
 	std::map<int, bool> *blackListElements_;
 	int nextKey;
 public:
 	PriorityQueue();
-	int push(TupleIntDouble element);
-	TupleIntDouble top();
+	int push(std::pair<int, double> element);
+	std::pair<int, double> top();
 	void pop();
 	void erase(int key);
 	bool empty();

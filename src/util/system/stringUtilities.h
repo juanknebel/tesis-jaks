@@ -8,20 +8,20 @@
 #ifndef STRINGUTILITIES_H_
 #define STRINGUTILITIES_H_
 
-#include "../redefinitions.h"
+#include <string>
+#include <vector>
 
+void stringToVectorSplit(std::string aLine, std::string aSeparator, std::vector<std::string>& outVector);
 
-void stringToVectorSplit(String aLine, String aSeparator, StrVector& outVector);
+void trim(std::string& str);
 
-void trim(String& str);
+std::string convertToString(int aNumber);
 
-String convertToString(int aNumber);
+std::string convertToString(double aNumber);
 
-String convertToString(Double aNumber);
+int convertToInt(const std::string& aNumber);
 
-int convertToInt(const String& aNumber);
-
-Double convertToDouble(const String& aNumber);
+double convertToDouble(const std::string& aNumber);
 
 
 #endif /* STRINGUTILITIES_H_ */

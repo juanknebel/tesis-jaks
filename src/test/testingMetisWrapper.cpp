@@ -20,7 +20,7 @@ TestingMetisWrapper::~TestingMetisWrapper()
 
 void TestingMetisWrapper::testCluster(const MatrixWrapper& graph, int numClusters)
 {
-	IntVector* result = this->metis_->cluster(graph, numClusters);
+	std::vector<int>* result = this->metis_->cluster(graph, numClusters);
 
 	for (int node = 0; node < result->size(); ++node) {
 		std::cout<<"El nodo: "<<node<<" pertence a la particion: "<<(*result)[node]<<std::endl;

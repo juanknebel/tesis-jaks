@@ -7,7 +7,7 @@
 
 SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &solution,
         SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem,
-        Double interSimilarityWeight)
+        double interSimilarityWeight)
 {
 	TabuBundles setOfTabuBundles;
 	int tabuBundleCount = 10;
@@ -147,7 +147,7 @@ void LocalSearchBundles::updateTabuElements(std::vector<int> &tabuSet)
 }
 
 SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBundles setOfTabuBundles,
-        ProblemInstance &theProblem, Double intersimilarityWeight)
+        ProblemInstance &theProblem, double intersimilarityWeight)
 {
 	double worstValue = std::numeric_limits<double>::max();
 	SnowFlake worstSnowFlake;
@@ -173,7 +173,7 @@ SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBund
 }
 
 SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlakeVector &solution,
-        ProblemInstance &theProblem, Double interSimilarityWeight)
+        ProblemInstance &theProblem, double interSimilarityWeight)
 {
 	SnowFlake centroid;
 	double minPairwise = -1.0;

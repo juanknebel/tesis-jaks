@@ -18,7 +18,7 @@ public:
 	~ExhaustiveGreedySumSimSOBOSolver() {};
 
 protected:
-	SnowFlake pickFlake(int pivot, const IntSet& clusterMembers);
+	SnowFlake pickFlake(int pivot, const std::set<int>& clusterMembers);
 };
 
 

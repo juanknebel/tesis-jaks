@@ -16,38 +16,38 @@ private:
 	/**
 	 * The elements this snowflake is composed of.
 	 */
-	IntSet elements_;
+	std::set<int> elements_;
 	/**
 	 * The problem instance for which this snowflake was generated.
 	 */
 	ProblemInstance *problem_;
 
-	Uint identificator_;
+	int identificator_;
 
 public:
 	SnowFlake();
 	SnowFlake(const SnowFlake& snowflake);
-	SnowFlake(const IntSet& elements, ProblemInstance* problem);
+	SnowFlake(const std::set<int>& elements, ProblemInstance* problem);
 	SnowFlake& operator=(const SnowFlake& snowflake);
 	~SnowFlake();
 	bool operator<(const SnowFlake& snowflake) const;
 
-	Double getCost() const;
+	double getCost() const;
 	double getCostNode(int aNode) const;
 	int getCoverSize() const;
-	Double getSumIntraCompat() const;
+	double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
-	IntSet& ids() const;
-	String getProblemNode(int aNode) const;
-	static Double objetiveFunction(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-	Uint getIdentificator() const;
-	void setIdentificator(Uint theIdentificator);
-	static Double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
-	static Double getInter(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-	static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
-	Double getSumIntraCompatWithSpecificProfile() const;
+	std::set<int>& ids() const;
+	std::string getProblemNode(int aNode) const;
+	static double objetiveFunction(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
+	int getIdentificator() const;
+	void setIdentificator(int theIdentificator);
+	static double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
+	static double getInter(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
+	static double getIntra(const std::vector<SnowFlake>& solution, double interSimilarityWeight);
+	double getSumIntraCompatWithSpecificProfile() const;
 	friend std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake);
-	Double getMinCompat() const;
+	double getMinCompat() const;
 };
 
 #endif /* SNOWFLAKE_H_ */

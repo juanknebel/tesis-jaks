@@ -8,8 +8,8 @@
 #ifndef SYSTEMUTILITIES_H_
 #define SYSTEMUTILITIES_H_
 
-#include "../redefinitions.h"
+#include <string>
 
-String runExternalProgram(int argc, char *argv[]);
+std::string runExternalProgram(int argc, char *argv[]);
 
 #endif /* SYSTEMUTILITIES_H_ */

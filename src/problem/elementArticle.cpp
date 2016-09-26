@@ -3,7 +3,6 @@
 //
 
 #include "elementArticle.h"
-#include "../dao/dao.h"
 
 ElementArticle::~ElementArticle()
 {

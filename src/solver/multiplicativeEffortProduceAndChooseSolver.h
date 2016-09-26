@@ -12,14 +12,14 @@
 
 class MultiplicativeEffortProduceAndChooseSolver: public ProduceAndChooseSolver {
 protected:
-	static Double DEFAULT_NUMCANDIDATES_MULTIPLIER;
-	Double numCandidatesMultiplier_;
+	static double DEFAULT_NUMCANDIDATES_MULTIPLIER;
+	double numCandidatesMultiplier_;
 public:
 	MultiplicativeEffortProduceAndChooseSolver(ProblemInstance* problem) : ProduceAndChooseSolver (problem) {
 		this->numCandidatesMultiplier_ = this->DEFAULT_NUMCANDIDATES_MULTIPLIER;
 	}
 	~MultiplicativeEffortProduceAndChooseSolver() {};
-	void setNumCandidatesMultiplier(Double numCandidatesMultiplier);
+	void setNumCandidatesMultiplier(double numCandidatesMultiplier);
 	int numToProduce(int requestedSnowFlake);
 };
 

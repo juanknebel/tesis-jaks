@@ -161,14 +161,14 @@ std::string Element::showInScreen(const Element* element, const SnowFlake &snowF
 }
 
 /*
- * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, String fileName)
+ * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, std::string fileName)
 {
-	String separator = "\t";
-	String endOfLIne = "\n";
-	String fileNameIntra = fileName + "-nodes.csv";
+	std::string separator = "\t";
+	std::string endOfLIne = "\n";
+	std::string fileNameIntra = fileName + "-nodes.csv";
 	FileOutput fileIntra(fileNameIntra.c_str());
 	fileIntra << "id" << separator << "Label" << separator << "Intra" << endOfLIne;
-	Uint id = 1;
+	int id = 1;
 
 	for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
 		it->setIdentificator(id);
@@ -178,7 +178,7 @@ std::string Element::showInScreen(const Element* element, const SnowFlake &snowF
 
 	fileIntra.close();
 
-	String fileNameInter = fileName + "-edges.csv";
+	std::string fileNameInter = fileName + "-edges.csv";
 	FileOutput fileInter(fileNameInter.c_str());
 	fileInter << "Source" << separator << "Target" << separator << "Type" << separator << "id" << separator << "Weight" << endOfLIne;
 	id = 1;
@@ -195,16 +195,16 @@ std::string Element::showInScreen(const Element* element, const SnowFlake &snowF
 }
 
 
- void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName)
+ void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, std::string fileName)
 {
 	FileOutput file(fileName.c_str());
-	Uint id = 1;
+	int id = 1;
 
 	for (std::vector<SnowFlake>::iterator it = snowFlakeAll.begin(); it != snowFlakeAll.end(); ++it) {
 
-		IntSet idSet = it->ids();
+		std::set<int> idSet = it->ids();
 
-		for (IntSet::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
+		for (std::set<int>::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
 			file << id << "," << (*itSF) << "\n";
 		}
 

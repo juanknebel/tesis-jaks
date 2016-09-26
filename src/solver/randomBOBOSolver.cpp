@@ -10,14 +10,14 @@
 
 int RandomBOBOSolver::INITIAL_TRIALS_FOR_MU = 5;
 
-Double RandomBOBOSolver::chooseMu()
+double RandomBOBOSolver::chooseMu()
 {
-	DblVector listOfSumIntra = DblVector((unsigned long) this->INITIAL_TRIALS_FOR_MU);
-	IntSet allIds = IntSet(this->problem_->getIds());
+    std::vector<double> listOfSumIntra = std::vector<double>((unsigned long) this->INITIAL_TRIALS_FOR_MU);
+	std::set<int> allIds = std::set<int>(this->problem_->getIds());
 	int pivot;
-	Double median = 0.0;
+	double median = 0.0;
 
-	for (Uint i = 0; i < this->INITIAL_TRIALS_FOR_MU; ++i) {
+	for (int i = 0; i < this->INITIAL_TRIALS_FOR_MU; ++i) {
 		pivot = this->randomNode();
 		listOfSumIntra.push_back(this->pickFlake(pivot, allIds).getSumIntraCompat());
 	}

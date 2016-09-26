@@ -18,8 +18,8 @@ void showSolution(SnowFlakeVector& solution, Configurator& configurator)
 	}
 }
 
-void writeSolution(SnowFlakeVector &solution, Configurator &configurator, String fileName,
-                   Double interSimilarityWeight)
+void writeSolution(SnowFlakeVector &solution, Configurator &configurator, std::string fileName,
+                   double interSimilarityWeight)
 {
 	if(configurator.getWriteToFile()) {
 		WriterSolution* theWriter = configurator.getTheWrtiter();

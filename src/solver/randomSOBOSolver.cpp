@@ -7,7 +7,7 @@
 
 #include "randomSOBOSolver.h"
 
-int RandomSOBOSolver::getPivot(IntSet& pivotsUsed, IntSet& possiblePivots)
+int RandomSOBOSolver::getPivot(std::set<int>& pivotsUsed, std::set<int>& possiblePivots)
 {
 	int pivot = randomNode();
 

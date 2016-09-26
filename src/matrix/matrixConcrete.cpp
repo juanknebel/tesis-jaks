@@ -13,12 +13,12 @@
 
 MatrixConcrete::MatrixConcrete(int rows, int cols) : MatrixWrapper(rows, cols)
 {
-	this->theMatrix_ = new mapped_matrix<Double>(rows, cols);
+	this->theMatrix_ = new mapped_matrix<double>(rows, cols);
 }
 
 MatrixConcrete::MatrixConcrete(const MatrixConcrete& matrix)  : MatrixWrapper(matrix.getRows(), matrix.getCols())
 {
-	this->theMatrix_ = new mapped_matrix<Double>(*matrix.theMatrix_);
+	this->theMatrix_ = new mapped_matrix<double>(*matrix.theMatrix_);
 }
 
 MatrixConcrete::~MatrixConcrete()
@@ -36,7 +36,7 @@ int MatrixConcrete::getCols() const
 	return this->cols_;
 }
 
-Double MatrixConcrete::get(int row, int col) const
+double MatrixConcrete::get(int row, int col) const
 {
 	assert (row < this->rows_);
 	assert (col < this->cols_);
@@ -44,17 +44,17 @@ Double MatrixConcrete::get(int row, int col) const
 	return (*(this->theMatrix_))(row, col);
 }
 
-Double MatrixConcrete::getMaxValue() const
+double MatrixConcrete::getMaxValue() const
 {
 	return this->maxValue_;
 }
 
-Double MatrixConcrete::getMinValue() const
+double MatrixConcrete::getMinValue() const
 {
 	return this->minValue_;
 }
 
-void MatrixConcrete::set(int row, int col, Double value)
+void MatrixConcrete::set(int row, int col, double value)
 {
 	assert (row < this->rows_);
 	assert (col < this->cols_);
@@ -78,7 +78,7 @@ void MatrixConcrete::set(int row, int col, Double value)
 	}
 }
 
-void MatrixConcrete::scalarMultiply(Double scalar)
+void MatrixConcrete::scalarMultiply(double scalar)
 {
 	(*(this->theMatrix_)) *= scalar;
 }
@@ -124,7 +124,7 @@ void MatrixConcrete::ensureSymmetric()
 	}
 }
 
-Double MatrixConcrete::operator ()(int row, int col)
+double MatrixConcrete::operator ()(int row, int col)
 {
 	return this->get(row, col);
 }

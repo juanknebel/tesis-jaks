@@ -5,18 +5,17 @@
  *      Author: jknebel
  */
 
-#include <cstdlib>
-#include <cassert>
+
 #include "metisWrapper.h"
 #include "../util/system/stringUtilities.h"
 #include "../util/system/systemUtilities.h"
 
 int MetisWrapper::PRECISION_DOUBLE_TO_INTEGER = 1000;
-String MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis
-//String MetisWrapper::METIS_COMMAND = "kmetis"; //para la version 4.x o anterior de metis
-String MetisWrapper::TEMP_METIS_FILENAME = "metis-input.tmp";
+std::string MetisWrapper::METIS_COMMAND = "gpmetis"; //para la version 5.x de metis
+//std::string MetisWrapper::METIS_COMMAND = "kmetis"; //para la version 4.x o anterior de metis
+std::string MetisWrapper::TEMP_METIS_FILENAME = "metis-input.tmp";
 
-String MetisWrapper::run(int argc, char *argv[])
+std::string MetisWrapper::run(int argc, char *argv[])
 {
 	return runExternalProgram(argc, argv);
 }
@@ -31,7 +30,7 @@ MetisWrapper::~MetisWrapper()
 
 }
 
-IntVector* MetisWrapper::cluster(const MatrixWrapper& graph, int numClusters)
+std::vector<int>* MetisWrapper::cluster(const MatrixWrapper& graph, int numClusters)
 {
 	if (graph.getRows() != graph.getCols()) {
 		assert(graph.getRows() != graph.getCols());
@@ -39,7 +38,7 @@ IntVector* MetisWrapper::cluster(const MatrixWrapper& graph, int numClusters)
 
 	int nodes = graph.getRows();
 	int edges = graph.countNonZeros();
-	FileOutput tempFile(MetisWrapper::TEMP_METIS_FILENAME.c_str());
+	std::ofstream tempFile(MetisWrapper::TEMP_METIS_FILENAME.c_str());
 	tempFile<<nodes<<" "<<(int) (edges / 2)<<" "<<1<<"\n";
 
 	for (int node = 0; node < nodes; ++node) {
@@ -67,17 +66,17 @@ IntVector* MetisWrapper::cluster(const MatrixWrapper& graph, int numClusters)
 	}
 
 	tempFile.close();
-	String nclusters = convertToString(numClusters);
+	std::string nclusters = convertToString(numClusters);
 	char* command [3]= {&MetisWrapper::METIS_COMMAND[0], &MetisWrapper::TEMP_METIS_FILENAME[0], &nclusters[0]};
-	String output = MetisWrapper::run(3, command);
-	FileInput resultFile((MetisWrapper::TEMP_METIS_FILENAME + ".part." + convertToString(numClusters)).c_str());
+	std::string output = MetisWrapper::run(3, command);
+	std::ifstream resultFile((MetisWrapper::TEMP_METIS_FILENAME + ".part." + convertToString(numClusters)).c_str());
 	/*
 	 * if (resultFile no existe)
 	 * poner error de que no se genero el archivo de salida
 	 *
 	 */
-	IntVector *result = new IntVector(nodes);
-	String line;
+	std::vector<int> *result = new std::vector<int>(nodes);
+	std::string line;
 	int node = 0;
 
 	while(getline(resultFile, line, '\n')) {

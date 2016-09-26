@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <fstream>
 #include "../dao/dao.h"
 #include "snowFlake.h"
 

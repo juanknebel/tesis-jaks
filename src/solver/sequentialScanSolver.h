@@ -18,7 +18,7 @@ public:
 	~SequentialScanSolver() {};
 
 	SnowFlakeVector* solve(int numSnowflakes);
-	int pickRandom(const IntSet& set);
+	int pickRandom(const std::set<int>& set);
 };
 
 #endif /* SEQUENTIALSCANSOLVER_H_ */

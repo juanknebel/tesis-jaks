@@ -25,9 +25,9 @@ public:
 	void testCols(int cols);
 	void testMaxValue(int maxValue);
 	void testMinValue(int minValue);
-	void testGet(int row, int col, Double value);
-	void testSet(int row, int col, Double value, Double realValue);
-	void testScalarMultiply(Double scalar, MatrixWrapper* theMatrix);
+	void testGet(int row, int col, double value);
+	void testSet(int row, int col, double value, double realValue);
+	void testScalarMultiply(double scalar, MatrixWrapper* theMatrix);
 	void testCountNonZeros(int cantOfNonZero);
 };
 

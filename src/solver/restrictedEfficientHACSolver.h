@@ -21,7 +21,7 @@ public:
 	SnowFlakeVector* produceManySnowflakes(int numToProduce);
 
 private:
-	double sim(IntSet* snowflake1, IntSet* snowflake2);
+	double sim(std::set<int>* snowflake1, std::set<int>* snowflake2);
 	typedef std::vector<PriorityQueue*> VectorPrtyQueueTupleIntDouble;
 };
 

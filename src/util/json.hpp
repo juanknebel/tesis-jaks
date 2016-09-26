@@ -152,7 +152,7 @@ class basic_json
     /////////////////////////////////
 
     /// JSON value type enumeration
-    enum class value_t : uint8_t
+    enum class value_t : int8_t
     {
         null,           ///< null value
         object,         ///< object (unordered set of name/value pairs)
@@ -277,7 +277,7 @@ class basic_json
     //////////////////////////
 
     /// JSON callback event enumeration
-    enum class parse_event_t : uint8_t
+    enum class parse_event_t : int8_t
     {
         object_start,  ///< start an object scope (found a '{' token)
         object_end,    ///< end of an object scope (found '}' token)
@@ -300,7 +300,7 @@ class basic_json
     */
     friend bool operator<(const value_t lhs, const value_t rhs)
     {
-        std::array<uint8_t, 7> order = {{
+        std::array<int8_t, 7> order = {{
                 0, // null
                 3, // object
                 4, // array

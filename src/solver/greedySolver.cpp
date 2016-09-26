@@ -3,7 +3,7 @@
 // ESTA ES LA IMPLEMENTACION ORIGINAL
 SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 {
-	IntSet emptyIdSet;
+	std::set<int> emptyIdSet;
 	SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
 	SnowFlakeVector *solution = new SnowFlakeVector();
 
@@ -11,15 +11,15 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 		solution->push_back(emptySnowFlake);
 	}
 
-	IntSet theIds(this->problem_->getIds());
+	std::set<int> theIds(this->problem_->getIds());
 
 	int idBestBundle = -1;
 	int theBestId = -1;
-	Double bestFnObjective = -1.0;
+	double bestFnObjective = -1.0;
 
 	int idBestWorstBundle = -1;
 	int theBestWorstId = -1;
-	Double bestWorstFnObjetive = -1.0;
+	double bestWorstFnObjetive = -1.0;
 
 
 	bool hasBetterFlake = false;
@@ -28,20 +28,20 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 	int kk = 0;
 
 	while(isNotComplete) {
-		Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+		double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 		bestFnObjective = objective;
 		bestWorstFnObjetive = -1.0;
 
-		for(IntSet::iterator it = theIds.begin(); it != theIds.end(); ++it) {
+		for(std::set<int>::iterator it = theIds.begin(); it != theIds.end(); ++it) {
 			for (int i = 0; i < numSnowFlakes; ++i) {
 				SnowFlake theSnowAtiPosition = (*solution)[i];
 
 				if (this->checkBudgetAndCoverageConstraint(theSnowAtiPosition.ids(), *it)) {
-					IntSet tempIds(theSnowAtiPosition.ids());
+					std::set<int> tempIds(theSnowAtiPosition.ids());
 					tempIds.insert(*it);
 					SnowFlake theSnow(tempIds, this->problem_);
 					(*solution)[i] = theSnow;
-					Double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+					double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 
 					if (newFnObjective >= bestFnObjective) {
 						bestFnObjective = newFnObjective;
@@ -65,7 +65,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 		}
 
 		if (hasBetterFlake == true) {
-			IntSet theNewIdsForBundle((*solution)[idBestBundle].ids());
+			std::set<int> theNewIdsForBundle((*solution)[idBestBundle].ids());
 			theNewIdsForBundle.insert(theBestId);
 			SnowFlake theNewBestSnowFlake(theNewIdsForBundle, this->problem_);
 			(*solution)[idBestBundle] = theNewBestSnowFlake;
@@ -74,7 +74,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 
 		else {
 			if (hasBetterWorstFlake == true) {
-				IntSet theNewIdsForBundle((*solution)[idBestWorstBundle].ids());
+				std::set<int> theNewIdsForBundle((*solution)[idBestWorstBundle].ids());
 				theNewIdsForBundle.insert(theBestWorstId);
 				SnowFlake theNewBestWorstSnowFlake(theNewIdsForBundle, this->problem_);
 				(*solution)[idBestWorstBundle] = theNewBestWorstSnowFlake;
@@ -93,7 +93,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes(int numSnowFlakes)
 // ESTA ES LA VERSION QUE SOLO MAXIMIZA LA FUNCION OBJECTIVO
 SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes)
 {
-	IntSet emptyIdSet;
+	std::set<int> emptyIdSet;
 	SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
 	SnowFlakeVector *solution = new SnowFlakeVector();
 
@@ -101,27 +101,27 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes)
 		solution->push_back(emptySnowFlake);
 	}
 
-	IntSet theIds(this->problem_->getIds());
+	std::set<int> theIds(this->problem_->getIds());
 	int idBestBundle = -1;
 	int theBestId = -1;
-	Double bestFnObjective = -1.0;
+	double bestFnObjective = -1.0;
 	bool hasBetterFlake = false;
 	bool isNotComplete = true;
 
 	while(isNotComplete) {
-		Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+		double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 		bestFnObjective = objective;
 
-		for(IntSet::iterator it = theIds.begin(); it != theIds.end(); ++it) {
+		for(std::set<int>::iterator it = theIds.begin(); it != theIds.end(); ++it) {
 			for (int i = 0; i < numSnowFlakes; ++i) {
 				SnowFlake theSnowAtiPosition = (*solution)[i];
 
 				if (this->checkBudgetAndCoverageConstraint(theSnowAtiPosition.ids(), *it)) {
-					IntSet tempIds(theSnowAtiPosition.ids());
+					std::set<int> tempIds(theSnowAtiPosition.ids());
 					tempIds.insert(*it);
 					SnowFlake theSnow(tempIds, this->problem_);
 					(*solution)[i] = theSnow;
-					Double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+					double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 
 					if (newFnObjective >= bestFnObjective) {
 						bestFnObjective = newFnObjective;
@@ -136,7 +136,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes)
 		}
 
 		if (hasBetterFlake == true) {
-			IntSet theNewIdsForBundle((*solution)[idBestBundle].ids());
+			std::set<int> theNewIdsForBundle((*solution)[idBestBundle].ids());
 			theNewIdsForBundle.insert(theBestId);
 			SnowFlake theNewBestSnowFlake(theNewIdsForBundle, this->problem_);
 			(*solution)[idBestBundle] = theNewBestSnowFlake;
@@ -153,7 +153,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes1(int numSnowFlakes)
 // ESTA ES LA VERSION QUE ADMITE REPETIDOS
 SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes)
 {
-	IntSet emptyIdSet;
+	std::set<int> emptyIdSet;
 	SnowFlake emptySnowFlake(emptyIdSet, this->problem_);
 	SnowFlakeVector *solution = new SnowFlakeVector();
 	std::vector<int> hashValueBundles;
@@ -163,18 +163,18 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes)
 		hashValueBundles.push_back(0);
 	}
 
-	IntSet theIds(this->problem_->getIds());
+	std::set<int> theIds(this->problem_->getIds());
 	int idBestBundle = -1;
 	int theBestId = -1;
-	Double bestFnObjective = -1.0;
+	double bestFnObjective = -1.0;
 	bool hasBetterFlake = false;
 	bool isNotComplete = true;
 
 	while(isNotComplete) {
-		Double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+		double objective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 		bestFnObjective = objective;
 
-		for(IntSet::iterator it = theIds.begin(); it != theIds.end(); ++it) {
+		for(std::set<int>::iterator it = theIds.begin(); it != theIds.end(); ++it) {
 			for (int i = 0; i < numSnowFlakes; ++i) {
 				SnowFlake theSnowAtiPosition = (*solution)[i];
 				int newHashValue = hashValueBundles[i] + (*it) + 1;
@@ -186,11 +186,11 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes)
 
 				if (theSnowAtiPosition.ids().count(*it) == 0 && !existSameBundle) {
 					if (this->checkBudgetAndCoverageConstraint(theSnowAtiPosition.ids(), *it)) {
-						IntSet tempIds(theSnowAtiPosition.ids());
+						std::set<int> tempIds(theSnowAtiPosition.ids());
 						tempIds.insert(*it);
 						SnowFlake theSnow(tempIds, this->problem_);
 						(*solution)[i] = theSnow;
-						Double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
+						double newFnObjective = SnowFlake::objetiveFunction(*solution, this->interSimilarityWeight_);
 
 						if (newFnObjective >= bestFnObjective) {
 							bestFnObjective = newFnObjective;
@@ -206,7 +206,7 @@ SnowFlakeVector* GreedySolver::produceManySnowflakes2(int numSnowFlakes)
 		}
 
 		if (hasBetterFlake == true) {
-			IntSet theNewIdsForBundle((*solution)[idBestBundle].ids());
+			std::set<int> theNewIdsForBundle((*solution)[idBestBundle].ids());
 			theNewIdsForBundle.insert(theBestId);
 			SnowFlake theNewBestSnowFlake(theNewIdsForBundle, this->problem_);
 			(*solution)[idBestBundle] = theNewBestSnowFlake;

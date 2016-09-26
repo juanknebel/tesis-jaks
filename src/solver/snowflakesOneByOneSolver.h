@@ -18,7 +18,7 @@ public:
 	}
 	~SnowflakesOneByOneSolver() {};
 
-	virtual int getPivot(IntSet& pivotsUsed, IntSet& possiblePivots) = 0;
+	virtual int getPivot(std::set<int>& pivotsUsed, std::set<int>& possiblePivots) = 0;
 
 protected:
 	SnowFlakeVector* produceManySnowflakes(int numSnowflakes);

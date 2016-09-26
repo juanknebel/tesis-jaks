@@ -21,14 +21,14 @@ public:
 
 	void setProblem(ProblemInstance *theProblem);
 	void testNumNodes(int numNodes);
-	void testGetCost(int id, Double cost);
-	void testGetBudget(Double budget);
-	void testGetCompat(int id1, int id2, Double value);
+	void testGetCost(int id, double cost);
+	void testGetBudget(double budget);
+	void testGetCompat(int id1, int id2, double value);
 	void testNormalizeNodeCompat(ProblemInstance* problem);
-	void testGetNode(int id, String node);
-	void testGetId(String node, int id);
-	void testMaxPairwiseCompatibility(IntSet* aSet, IntSet* otherSet, Double result);
-	void testCreateIdNodeMappings(StrVector* nodes, ProblemInstance* problem);
+	void testGetNode(int id, std::string node);
+	void testGetId(std::string node, int id);
+	void testMaxPairwiseCompatibility(std::set<int>* aSet, std::set<int>* otherSet, double result);
+	void testCreateIdNodeMappings(std::vector<std::string>* nodes, ProblemInstance* problem);
 };
 
 
