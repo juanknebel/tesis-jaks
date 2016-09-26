@@ -51,7 +51,6 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
         exit(0);
     }
 
-    //showSolution(newSolution);
     std::stringstream fileName;
     //fileName << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
     //fileName << theConfigurator->getTheStrategyName();

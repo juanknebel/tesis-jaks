@@ -6,20 +6,6 @@
 // Description :
 //============================================================================
 
-/*
-* Forma de uso:
-* tesis-jaks -n <configuraciones> [-l]	(para usar con las configuraciones enviadas)
-* tesis-jaks -t [-l]					(para usar con los test internos)
-* tesis-jaks -s [-l]					(para calcular la similaridad)
-* tesis-jaks -h						(para ver el modo de uso)
-*
-* Use mode:
-* tesis-jaks -n <configurations> [-l]		(to use a configuration mode)
-* tesis-jaks -t [-l]					(for use with the internal test)
-* tesis-jaks -s [-l]					(to calculate the similarity)
-* tesis-jaks -h						(to see the use mode)
-*/
-
 #include <iostream>
 #include "executeSolver.h"
 #include "test/testSuites.h"
@@ -155,69 +141,14 @@ int main(int argc, char **argv)
         }
         exit(EXIT_SUCCESS);
     }
+/*
+std::cout<<"Calculating the similarity of the specific profile ..."<<std::endl;
+std::vector<float> specificProfile = generateVector(argv[2], convertToInt(argv[3]));
 
-
-
-
-
-    /*
-	if (argc <= 1) {
-		std::cerr<<errorMsg<<std::endl;
-	}
-
-	else {
-		if (argv[1][0] != '-') {
-			std::cerr<<errorMsg<<std::endl;
-		}
-
-		else {
-			char option = argv[1][1];
-
-			switch(option) {
-			case 'n': {
-				std::cout<<"Using the configuration file ..."<<std::endl;
-                executeNew(argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10], argv[11]);
-				break;
-			}
-
-			case 't': {
-				std::cout<<"Using internal tests ..."<<std::endl;
-				usingTestHardcode();
-				break;
-			}
-
-			case 's': {
-				std::cout<<"Calculating the similarity ..."<<std::endl;
-				insertSimilarity();
-				break;
-			}
-
-			case 'p': {
-				std::cout<<"Calculating the similarity of the specific profile ..."<<std::endl;
-				std::vector<float> specificProfile = generateVector(argv[2], convertToInt(argv[3]));
-
-				if (!specificProfile.empty()) {
-					insertSimilarity(specificProfile);
-				}
-
-				else {
-					std::cerr<<"Error el vector de entrada"<<std::endl;
-				}
-
-				break;
-			}
-
-			case 'h': {
-				std::cout<<"Use mode:"<<std::endl<<useMode<<std::endl;
-				break;
-			}
-
-			default: {
-				std::cerr<<errorMsg<<std::endl;
-				break;
-			}
-			}
-		}
-	}
-     */
+ if (!specificProfile.empty()) {
+    insertSimilarity(specificProfile);
+else {
+    std::cerr<<"Error el vector de entrada"<<std::endl;
+}
+*/
 }

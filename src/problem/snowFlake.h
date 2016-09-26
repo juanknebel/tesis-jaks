@@ -22,8 +22,6 @@ private:
 	 */
 	ProblemInstance *problem_;
 
-	Double getMinCompat();
-
 	Uint identificator_;
 
 public:
@@ -34,9 +32,9 @@ public:
 	~SnowFlake();
 	bool operator<(const SnowFlake& snowflake) const;
 
-	Double getCost();
-	int getCoverSize();
-	//String toString(const Id2Str* node2name);
+	Double getCost() const;
+	double getCostNode(int aNode) const;
+	int getCoverSize() const;
 	Double getSumIntraCompat() const;
 	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
 	IntSet& ids() const;
@@ -49,6 +47,7 @@ public:
 	static Double getIntra(const std::vector<SnowFlake>& solution, Double interSimilarityWeight);
 	Double getSumIntraCompatWithSpecificProfile() const;
 	friend std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake);
+	Double getMinCompat() const;
 };
 
 #endif /* SNOWFLAKE_H_ */

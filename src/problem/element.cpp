@@ -3,6 +3,7 @@
 //
 
 #include "element.h"
+#include "../util/system/stringUtilities.h"
 
 Element::Element()
 {
@@ -112,3 +113,104 @@ const std::string &Element::getFileCover() const {
 const std::string &Element::getElementType() const {
     return elementType_;
 }
+
+std::string Element::showInScreen(const Element* element, std::vector<SnowFlake> &solution)
+{
+    std::string result = "\n";
+    int avgCost = 0;
+    int avgCover = 0;
+    int avgSize = 0;
+    int avgSumIntraCompat = 0;
+    int solutionsSize = solution.size();
+
+    for (auto aFlake : solution) {
+        avgCost += aFlake.getCost();
+        avgCover += aFlake.getCoverSize();
+        avgSize += aFlake.ids().size();
+        avgSumIntraCompat += aFlake.getSumIntraCompat();
+        result.append(Element::showInScreen(element, aFlake));
+    }
+
+    result.append("-------------------------------------------------\n");
+    result.append("SOLUTION_SIZE = " + convertToString(solutionsSize) + "\n");
+    result.append("AVG_COST = " + convertToString(avgCost / (double) solutionsSize) + "\n");
+    result.append("AVG_COVER = " + convertToString(avgCover / (double) solutionsSize) + "\n");
+    result.append("AVG_SIZE = " + convertToString(avgSize / (double) solutionsSize) + "\n");
+    result.append("AVG_SUM_INTRA_COMPAT = " + convertToString(avgSumIntraCompat / (double) solutionsSize) + "\n");
+
+    return result;
+}
+
+std::string Element::showInScreen(const Element* element, const SnowFlake &snowFlake) {
+    std::string result = "";
+    for (auto anElement : snowFlake.ids()) {
+        double cost;
+        std::string node;
+        cost = snowFlake.getCostNode(anElement);
+        result.append(" * ");
+        result.append(node + " " + (*element->node2name_.get())[node]);
+        result.append(" (cost=" + convertToString(cost) + ")\n");
+    }
+
+    result.append("SIZE             = " + convertToString((int)snowFlake.ids().size()) + "\n");
+    result.append("COVERAGE         = " + convertToString(snowFlake.getCoverSize()) + "\n");
+    result.append("COST             = " + convertToString(snowFlake.getCost()) + "\n");
+    result.append("MIN_INTRA_COMPAT = " + convertToString(snowFlake.getMinCompat()) + "\n");
+    result.append("SUM_INTRA_COMPAT = " + convertToString(snowFlake.getSumIntraCompat()) + "\n\n");
+    return result;
+}
+
+/*
+ * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, String fileName)
+{
+	String separator = "\t";
+	String endOfLIne = "\n";
+	String fileNameIntra = fileName + "-nodes.csv";
+	FileOutput fileIntra(fileNameIntra.c_str());
+	fileIntra << "id" << separator << "Label" << separator << "Intra" << endOfLIne;
+	Uint id = 1;
+
+	for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
+		it->setIdentificator(id);
+		id++;
+		fileIntra << it->getIdentificator() << separator << "Bundle" << it->getIdentificator() << separator << it->getSumIntraCompat() << endOfLIne;
+	}
+
+	fileIntra.close();
+
+	String fileNameInter = fileName + "-edges.csv";
+	FileOutput fileInter(fileNameInter.c_str());
+	fileInter << "Source" << separator << "Target" << separator << "Type" << separator << "id" << separator << "Weight" << endOfLIne;
+	id = 1;
+
+	for (std::vector<SnowFlake>::iterator it = solution.begin(); it != solution.end(); ++it) {
+		for (std::vector<SnowFlake>::iterator it2 = it; it2 != solution.end(); ++it2) {
+			if (it->getIdentificator() == it2->getIdentificator()) {
+				continue;
+			}
+
+			fileInter << it->getIdentificator() << separator << it2->getIdentificator() << separator << "Undirected" << separator << id++ << separator << SnowFlake::maxPairwiseCompatibility(*it, *it2) << endOfLIne;
+		}
+	}
+}
+
+
+ void WriterSolution::writeSnowFlakeIds(std::vector<SnowFlake>& snowFlakeAll, String fileName)
+{
+	FileOutput file(fileName.c_str());
+	Uint id = 1;
+
+	for (std::vector<SnowFlake>::iterator it = snowFlakeAll.begin(); it != snowFlakeAll.end(); ++it) {
+
+		IntSet idSet = it->ids();
+
+		for (IntSet::iterator itSF = idSet.begin(); itSF != idSet.end(); ++itSF) {
+			file << id << "," << (*itSF) << "\n";
+		}
+
+		++id;
+	}
+
+	file.close();
+}
+ */

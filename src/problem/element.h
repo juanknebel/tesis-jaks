@@ -80,6 +80,8 @@ public:
     virtual void completeMapping(Dao *dao) const = 0;
     virtual void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const = 0;
 
+    static std::string showInScreen(const Element* element, std::vector<SnowFlake> &solution);
+    static std::string showInScreen(const Element* element, const SnowFlake& snowFlake);
     virtual ~Element();
 };
 
