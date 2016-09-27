@@ -33,6 +33,14 @@ void writeSolution(SnowFlakeVector &solution, Configurator &configurator, std::s
 void executeNew(std::string element, std::string algorithm, std::string strategy, double budget, double gamma,
                 int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen)
 {
+    std::cout << "Algoritmo para la resolución: " << algorithm << std::endl;
+    std::cout << "Estrategia de selección: " << strategy << std::endl;
+    std::cout << "Elemento usado: " << element << std::endl;
+    std::cout << "Cantidad de bundles: " << numFlakes << std::endl;
+    std::cout << "Presupuesto: " << budget << std::endl;
+    std::cout << "Valor del gamma: " << gamma << std::endl;
+    std::cout << "Bundles a producir solo para BOBO: " << toProduce << std::endl;
+
     std::unique_ptr<Element> theElement = std::move(FactoryElement::getTheElement(element));
     std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(theElement.get(), budget));
     std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(theProblem.get(), algorithm, strategy, numFlakes, gamma));
@@ -51,24 +59,30 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
         exit(0);
     }
 
-    std::stringstream fileName;
-    //fileName << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
-    //fileName << theConfigurator->getTheStrategyName();
-    //fileName << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv-Tabu";
-    //writeSolution(newSolution, *theConfigurator, fileName.str(), interSimilarityWeight);
-    std::stringstream fileNameOrg;
-    //fileNameOrg << theConfigurator->getDirectoryOfWork() << theConfigurator->getSolverName();
-    //fileNameOrg << theConfigurator->getTheStrategyName();
-    //fileNameOrg << "ToProduce-" << theConfigurator->getNumToProduce() << "Gamma-" << gamma << ".csv";
-    //writeSolution(*solution, *theConfigurator, fileNameOrg.str(), interSimilarityWeight);
     int i=0;
-
     for (auto& bundle : *solution) {
         bundle.setIdentificator(i);
         i++;
     }
 
-    std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
-    std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;
+    if (writeToFile) {
+        std::stringstream fileName;
+        std::stringstream fileNameTabu;
+        fileName << algorithm << strategy << "Gamma-" << gamma << ".csv";
+        fileNameTabu << algorithm << strategy << "Gamma-" << gamma << "-Tabu.csv";
+        std::cout << "Escribiendo la solución original en: " << fileName.str() << std::endl;
+        theElement.get()->writeSolution(*solution, fileName.str(), gamma);
+        std::cout << "Escribiendo la solución con tabu en: " << fileNameTabu.str() << std::endl;
+        theElement.get()->writeSolution(newSolution, fileNameTabu.str(), gamma);
+    }
+
+    if (printToScreen) {
+        Element::showInScreen(theElement.get(), *solution);
+        Element::showInScreen(theElement.get(), newSolution);
+
+        std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
+        std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;
+    }
+
     delete solution;
 }

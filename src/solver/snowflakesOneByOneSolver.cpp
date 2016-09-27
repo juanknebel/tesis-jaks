@@ -30,7 +30,7 @@ SnowFlakeVector* SnowflakesOneByOneSolver::produceManySnowflakesSimple(int numSn
 	std::set<int> possiblePivots = std::set<int>(this->problem_->getIds());
 	std::set<int> allIds = std::set<int>(this->problem_->getIds());
 
-	int maxTrials = numSnowflakes * 1000;
+	int maxTrials = numSnowflakes * 1;
 
 	int trials = 0;
 

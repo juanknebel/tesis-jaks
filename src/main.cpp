@@ -121,7 +121,6 @@ int main(int argc, char **argv)
             case 1:
             {
                 std::cout<<"Executing solver ..."<<std::endl;
-                std::cout<<element<<std::endl<<algorithm<<std::endl<<strategy<<std::endl<<budget<<std::endl<<gamma<<std::endl<<numFlakes<<std::endl<<maxIter<<std::endl<<toProduce<<std::endl<<writeToFile<<std::endl<<printToScreen<<std::endl;
                 executeNew(element, algorithm, strategy, budget, gamma,
                            numFlakes, maxIter, toProduce, writeToFile, printToScreen);
                 break;
