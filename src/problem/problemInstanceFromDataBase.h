@@ -39,13 +39,17 @@ private:
 	std::string item_;
 	std::string itemCompat1_;
 	std::string itemCompat2_;
-	Dao *dao_;
 
-	void init(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2);
+	void init(std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem,
+                  std::string costField, std::string compatField, std::string coverField, std::string primaryField,
+                  std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2);
 	int getPrimaryId(int id);
 public:
 	ProblemInstanceFromDataBase();
-	ProblemInstanceFromDataBase(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2, double budget);
+	ProblemInstanceFromDataBase(std::string tableCosts, std::string tableCompat, std::string tableCover,
+                                    std::string tableConvertElementItem, std::string costField, std::string compatField,
+                                    std::string coverField, std::string primaryField, std::string primaryDescription,
+                                    std::string item, std::string itemCompat1, std::string itemCompat2, double budget);
 	~ProblemInstanceFromDataBase();
 
 	std::set<int>& getIds();

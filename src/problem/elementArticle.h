@@ -10,6 +10,8 @@
 #include "snowFlake.h"
 
 class ElementArticle : public Element {
+private:
+    void completeMapping() const;
 public:
     ElementArticle() : Element() {
         this->tableCost_ = "ARTICLES";
@@ -26,8 +28,8 @@ public:
         this->fieldItemCompat2_ = "Item2";
         this->fieldCompat_ = "Similarity";
         this->elementType_ = "ARTICLE";
+        completeMapping();
     }
-    void completeMapping(Dao *dao) const;
     void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
     ~ElementArticle();
 };

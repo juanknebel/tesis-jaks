@@ -12,7 +12,7 @@ ElementFile::~ElementFile()
 
 }
 
-void ElementFile::completeMapping(Dao *dao) const
+void ElementFile::completeMapping() const
 {
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::ifstream file;

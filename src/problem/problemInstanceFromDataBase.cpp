@@ -21,11 +21,15 @@
 #include "problemInstanceFromDataBase.h"
 #include "../util/system/stringUtilities.h"
 #include "../util/system/exception.h"
+#include "../dao/factoryDao.h"
 
-void ProblemInstanceFromDataBase::init(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2)
+void ProblemInstanceFromDataBase::init(std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem,
+									   std::string costField, std::string compatField, std::string coverField, std::string primaryField,
+									   std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2)
 {
 	//TODO: hay que mejorar esta porqueria!!!!!!!!!!!
-	this->dao_ = dao;
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	this->tableCosts_ = tableCosts;//ARTICLES
 	this->tableCompat_ = tableCompat;//SIMILARITY
 	this->tableCover_ = tableCover;//ARTICLES
@@ -43,36 +47,38 @@ void ProblemInstanceFromDataBase::init(Dao *dao, std::string tableCosts, std::st
 	std::stringstream query, query1;
 	query<<"select "<<this->itemCompat1_<<","<<this->itemCompat2_<<","<<this->compatField_<<" from "<<this->tableCompat_;
 
-	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-		while(this->dao_->fetch()) {
-			this->nodeCompat_->set(convertToInt(this->dao_->getField(0)), convertToInt(this->dao_->getField(1)), convertToDouble(this->dao_->getField(2)));
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		while(dao->fetch()) {
+			this->nodeCompat_->set(convertToInt(dao->getField(0)), convertToInt(dao->getField(1)), convertToDouble(dao->getField(2)));
 		}
 	}
 
 	this->nodeSpecificCompat_ = new std::map<int, double>;
 	query1<<"select * from SIMILARITY_AUX";
 
-	if (this->dao_->executeCustomConsultativeQuery(query1.str())) {
-		while(this->dao_->fetch()) {
-			(*this->nodeSpecificCompat_)[convertToInt(this->dao_->getField(0))] = convertToDouble(this->dao_->getField(1));
+	if (dao->executeCustomConsultativeQuery(query1.str())) {
+		while(dao->fetch()) {
+			(*this->nodeSpecificCompat_)[convertToInt(dao->getField(0))] = convertToDouble(dao->getField(1));
 		}
 	}
 }
 
 int ProblemInstanceFromDataBase::getPrimaryId(int id)
 {
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	int theId = -1;
 	std::stringstream query;
 	query<<"select "<<this->primaryField_<<" from "<<this->tableConvertElementItem_<<" where "<<this->item_<<" = "<<id;
 
-	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-		if (this->dao_->fetch()) {
-			theId = convertToInt(this->dao_->getField(0));
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		if (dao->fetch()) {
+			theId = convertToInt(dao->getField(0));
 		}
 	}
 
 	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
+		throw Exception(__FILE__, __LINE__, dao->getError());
 	}
 
 	return theId;
@@ -80,33 +86,42 @@ int ProblemInstanceFromDataBase::getPrimaryId(int id)
 
 ProblemInstanceFromDataBase::ProblemInstanceFromDataBase() : ProblemInstance()
 {
-	this->init(NULL, "", "", "", "", "", "", "", "", "", "", "", "");
+	this->init("", "", "", "",
+			   "", "", "", "",
+			   "", "", "", "");
 }
 
-ProblemInstanceFromDataBase::ProblemInstanceFromDataBase(Dao *dao, std::string tableCosts, std::string tableCompat, std::string tableCover, std::string tableConvertElementItem, std::string costField, std::string compatField, std::string coverField, std::string primaryField, std::string primaryDescription, std::string item, std::string itemCompat1, std::string itemCompat2, double budget) : ProblemInstance(budget)
+ProblemInstanceFromDataBase::ProblemInstanceFromDataBase(std::string tableCosts, std::string tableCompat, std::string tableCover,
+                                                         std::string tableConvertElementItem, std::string costField, std::string compatField,
+                                                         std::string coverField, std::string primaryField, std::string primaryDescription,
+                                                         std::string item, std::string itemCompat1, std::string itemCompat2, double budget)
+        : ProblemInstance(budget)
 {
-	this->init(dao, tableCosts, tableCompat, tableCover, tableConvertElementItem, costField, compatField, coverField, primaryField, primaryDescription, item, itemCompat1, itemCompat2);
+	this->init(tableCosts, tableCompat, tableCover, tableConvertElementItem,
+			   costField, compatField, coverField, primaryField,
+			   primaryDescription, item, itemCompat1, itemCompat2);
 }
 
 ProblemInstanceFromDataBase::~ProblemInstanceFromDataBase()
 {
-	delete this->dao_;
 }
 
 std::set<int>& ProblemInstanceFromDataBase::getIds()
 {
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	if (this->ids_->empty()) {
 		std::stringstream query;
 		query<<"select "<<this->item_<<" from "<<this->tableConvertElementItem_;
 
-		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-			while(this->dao_->fetch()) {
-				this->ids_->insert(convertToInt(this->dao_->getField(0)));
+		if (dao->executeCustomConsultativeQuery(query.str())) {
+			while(dao->fetch()) {
+				this->ids_->insert(convertToInt(dao->getField(0)));
 			}
 		}
 
 		else {
-			throw Exception(__FILE__, __LINE__, this->dao_->getError());
+			throw Exception(__FILE__, __LINE__, dao->getError());
 		}
 	}
 
@@ -125,11 +140,11 @@ double ProblemInstanceFromDataBase::getCost(int id)
 	int primaryId = this->getPrimaryId(id);
 	std::stringstream query;
 	query<<"select "<<this->costField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
-	if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-		cost = atof(this->dao_->getNextRow()[0]);
+	if (dao->executeCustomConsultativeQuery(query.str())) {
+		cost = atof(dao->getNextRow()[0]);
 	}
 	else {
-		throw Exception(__FILE__, __LINE__, this->dao_->getError());
+		throw Exception(__FILE__, __LINE__, dao->getError());
 	}
 
 	return cost;*/
@@ -137,23 +152,25 @@ double ProblemInstanceFromDataBase::getCost(int id)
 
 const std::set<int>* ProblemInstanceFromDataBase::getCover(int id)
 {
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	if (this->nodeCover_->count(id) == 0) {
 		int primaryId = this->getPrimaryId(id);
 		std::stringstream query;
 		query<<"select "<<this->coverField_<<" from "<<this->tableCosts_<<" where "<<this->primaryField_<<" = "<<primaryId;
 
-		if (this->dao_->executeCustomConsultativeQuery(query.str())) {
+		if (dao->executeCustomConsultativeQuery(query.str())) {
 			std::set<int> *aSet = new std::set<int>();
 
-			while(this->dao_->fetch()) {
-				aSet->insert(convertToInt(this->dao_->getField(0)));
+			while(dao->fetch()) {
+				aSet->insert(convertToInt(dao->getField(0)));
 			}
 
 			(*(*this).nodeCover_)[id] = aSet;
 		}
 
 		else {
-			throw Exception(__FILE__, __LINE__, this->dao_->getError());
+			throw Exception(__FILE__, __LINE__, dao->getError());
 		}
 	}
 
@@ -162,7 +179,7 @@ const std::set<int>* ProblemInstanceFromDataBase::getCover(int id)
 
 /*double ProblemInstanceFromDataBase::getCompat(int id1, int id2) {
 	VectorToAngleSimilarity* similarity = VectorToAngleSimilarity::getInstance();
-	double compat = similarity->getAngleBetweenVectors(this->dao_, id1, id2);
+	double compat = similarity->getAngleBetweenVectors(dao, id1, id2);
 	return compat;
 }*/
 
@@ -178,12 +195,12 @@ const std::set<int>* ProblemInstanceFromDataBase::getCover(int id)
         }
 	std::stringstream query;
 	query<<"select "<<this->compatField_<<" from "<<this->tableCompat_<<" where "<<this->itemCompat1_<<" = "<<id1 << " and " << itemCompat2_<< " = "<<id2;
-        if (this->dao_->executeCustomConsultativeQuery(query.str())) {
-                const char** result = this->dao_->getNextRow();
+        if (dao->executeCustomConsultativeQuery(query.str())) {
+                const char** result = dao->getNextRow();
                 compat = (result != NULL) ? atof(result[0]) : 0.00;
         }
         else {
-                throw Exception(__FILE__, __LINE__, this->dao_->getError());
+                throw Exception(__FILE__, __LINE__, dao->getError());
         }
         return compat;
 }*/

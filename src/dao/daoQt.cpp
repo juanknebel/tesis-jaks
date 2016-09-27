@@ -20,10 +20,12 @@ bool DaoQt::fetch() {
 }
 
 bool DaoQt::executeCustomModifiableQuery(std::string query) {
+    this->query_.clear();
     return this->query_.exec(QString::fromStdString(query));
 }
 
 bool DaoQt::executeCustomConsultativeQuery(std::string query) {
+    this->query_.clear();
     return this->query_.exec(QString::fromStdString(query));
 }
 
@@ -33,7 +35,8 @@ bool DaoQt::disconnect() {
     this->db_.close();
     this->db_ = QSqlDatabase();
     this->db_.removeDatabase(connection);
-    return this->db_.isOpen();
+    this->isConnected_ = this->db_.isOpen();
+    return this->isConnected_;
 }
 
 bool DaoQt::connect() {
@@ -43,7 +46,8 @@ bool DaoQt::connect() {
     this->db_.setUserName(QString::fromStdString(this->user_));
     this->db_.setPassword(QString::fromStdString(this->password_));
     this->query_ = QSqlQuery(QSqlDatabase::database(this->db_.connectionName()));
-    return this->db_.open();
+    this->isConnected_ = this->db_.open();
+    return this->isConnected_;
 }
 
 DaoQt::~DaoQt() {

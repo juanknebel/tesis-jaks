@@ -3,11 +3,6 @@
 //
 
 #include "factoryProblem.h"
-#include "elementFile.h"
-#include "elementAffiliation.h"
-#include "elementArticle.h"
-#include "elementAuthor.h"
-#include "../dao/daoQt.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
@@ -29,18 +24,15 @@ std::unique_ptr<ProblemInstance> FactoryProblem::getTheProblem(const Element *el
         return std::move(theUniqueProblemFile);
     }
     else {
-        std::string database = pt.get<std::string>("SectionDatabase.database");
-        std::string user = pt.get<std::string>("SectionDatabase.user");
-        std::string password = pt.get<std::string>("SectionDatabase.password");
-        std::string server = pt.get<std::string>("SectionDatabase.server");
-        Dao* theDao = new DaoQt(database, user, password, server);
-        theDao->connect();
-        std::unique_ptr<ProblemInstance> theUniqueProblemDb(new ProblemInstanceFromDataBase(theDao, element->getTableCost(), element->getTableCompat(),
-                                                                                            element->getTableCover(), element->getTableConvertionElementToItem(),
-                                                                                            element->getFieldCost(), element->getFieldCompat(),
-                                                                                            element->getFieldCover(), element->getFieldPrimary(),
-                                                                                            element->getFieldPrimaryDescription(), element->getFieldItem(),
-                                                                                            element->getFieldItemCompat1(), element->getFieldItemCompat2(), budget));
+        std::unique_ptr<ProblemInstance> theUniqueProblemDb(
+                new ProblemInstanceFromDataBase(element->getTableCost(), element->getTableCompat(),
+                                                element->getTableCover(),
+                                                element->getTableConvertionElementToItem(), element->getFieldCost(),
+                                                element->getFieldCompat(),
+                                                element->getFieldCover(), element->getFieldPrimary(),
+                                                element->getFieldPrimaryDescription(),
+                                                element->getFieldItem(), element->getFieldItemCompat1(),
+                                                element->getFieldItemCompat2(), budget));
         return std::move(theUniqueProblemDb);
     }
 }

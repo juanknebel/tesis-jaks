@@ -9,6 +9,8 @@
 #include "snowFlake.h"
 
 class ElementAffiliation : public Element {
+private:
+    void completeMapping() const;
 public:
     ElementAffiliation() : Element() {
         this->tableCost_ = "AFFILIATIONS";
@@ -25,8 +27,8 @@ public:
         this->fieldItemCompat2_ = "Item2";
         this->fieldCompat_ = "Similarity";
         this->elementType_ = "AFFILIATION";
+        completeMapping();
     }
-    void completeMapping(Dao *dao) const;
     void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
     ~ElementAffiliation();
 };

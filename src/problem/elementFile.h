@@ -9,6 +9,8 @@
 #include "snowFlake.h"
 
 class ElementFile : public Element {
+private:
+    void completeMapping() const;
 public:
     ElementFile() : Element() {
         this->fileTypeName_ = "type_name.csv";
@@ -17,8 +19,8 @@ public:
         this->fileNodeName_ = "node_name.csv";
         this->fileCover_ = "node_cover.csv";
         this->elementType_ = "FILE";
+        completeMapping();
     }
-    void completeMapping(Dao *dao) const;
     void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
     ~ElementFile();
 };

@@ -37,48 +37,29 @@ protected:
     std::string separator_;
 
     std::unique_ptr<std::map<std::string, std::string>> node2name_;
+protected:
+    virtual void completeMapping() const = 0;
 public:
     Element();
-
     const std::string &getTableCost() const;
-
     const std::string &getTableCompat() const;
-
     const std::string &getTableCover() const;
-
     const std::string &getTableConvertionElementToItem() const;
-
     const std::string &getFieldCost() const;
-
     const std::string &getFieldCover() const;
-
     const std::string &getFieldPrimary() const;
-
     const std::string &getFieldPrimaryDescription() const;
-
     const std::string &getFieldElement() const;
-
     const std::string &getFieldItem() const;
-
     const std::string &getFieldItemCompat1() const;
-
     const std::string &getFieldItemCompat2() const;
-
     const std::string &getFieldCompat() const;
-
     const std::string &getFileTypeName() const;
-
     const std::string &getFileCompat() const;
-
     const std::string &getFileCosts() const;
-
     const std::string &getFileNodeName() const;
-
     const std::string &getFileCover() const;
-
     const std::string &getElementType() const;
-
-    virtual void completeMapping(Dao *dao) const = 0;
     virtual void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const = 0;
 
     static std::string showInScreen(const Element* element, std::vector<SnowFlake> &solution);

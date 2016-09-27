@@ -4,14 +4,17 @@
 
 #include "elementAffiliation.h"
 #include "../dao/dao.h"
+#include "../dao/factoryDao.h"
 
 ElementAffiliation::~ElementAffiliation()
 {
 
 }
 
-void ElementAffiliation::completeMapping(Dao *dao) const
+void ElementAffiliation::completeMapping() const
 {
+    std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+    Dao* dao = theFactoryDao.get()->getDaoInstance();
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::string query = "SELECT affiliationId, title, location FROM AFFILIATIONS";
     if (dao->executeCustomConsultativeQuery(query)) {

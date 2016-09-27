@@ -3,14 +3,17 @@
 //
 
 #include "elementArticle.h"
+#include "../dao/factoryDao.h"
 
 ElementArticle::~ElementArticle()
 {
 
 }
 
-void ElementArticle::completeMapping(Dao *dao) const
+void ElementArticle::completeMapping() const
 {
+    std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+    Dao* dao = theFactoryDao.get()->getDaoInstance();
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::string query = "SELECT \
                 a.ArticleId as ArticleId \

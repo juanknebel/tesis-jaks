@@ -4,14 +4,17 @@
 
 #include "elementAuthor.h"
 #include "../dao/dao.h"
+#include "../dao/factoryDao.h"
 
 ElementAuthor::~ElementAuthor()
 {
 
 }
 
-void ElementAuthor::completeMapping(Dao *dao) const
+void ElementAuthor::completeMapping() const
 {
+    std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+    Dao* dao = theFactoryDao.get()->getDaoInstance();
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::string query = "SELECT AuthorId, name, affiliation_title FROM AUTHORS";
 

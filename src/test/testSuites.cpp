@@ -14,12 +14,7 @@
 #include "testingClustering.h"
 #include "testingClusterAndPickSolver.h"
 #include "../problem/problemInstanceFromDataBase.h"
-#include "../dao/daoQt.h"
-
-#define db_database "tesis"
-#define db_user "tesis"
-#define db_password "tesis"
-#define db_server "localhost"
+#include "../dao/factoryDao.h"
 
 MatrixConcrete giveMeMatrix2x2(double a, double b, double c, double d)
 {
@@ -183,7 +178,8 @@ void testDBGeneric(Dao& dao, std::string tableName)
 
 void testDB1()
 {
-	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	bool connect = dao->connect();
 	std::cout<<dao->showConnection();
 
@@ -208,7 +204,8 @@ void testDB1()
 
 void testDBCustomQuery()
 {
-	Dao *dao = new DaoQt(db_database,db_user,db_password,db_server);
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -229,7 +226,6 @@ void testDBCustomQuery()
 
 				while(dao->fetch()) {
 					hasresult = true;
-
 					for (int i=0; i<numOffields; ++i) {
 						if (!(dao->getField(i)).empty()) {
 							std::cout<<dao->getField(i);
@@ -243,7 +239,6 @@ void testDBCustomQuery()
 							std::cout<<"|";
 						}
 					}
-
 					std::cout<<std::endl;
 				}
 
@@ -264,13 +259,13 @@ void testDBCustomQuery()
 		else {
 			std::cerr<<"Error no esta conectado a ninguna base de datos"<<std::endl;
 		}
-		delete dao;
 	}
 }
 
 void testDBInsertCustom()
 {
-	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -295,7 +290,8 @@ void testDBInsertCustom()
 
 void testDBInsertPartial()
 {
-	Dao *dao = new DaoQt("test",db_user,db_password,db_server);
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
 	bool connect = dao->connect();
 
 	if (!connect) {
@@ -320,8 +316,12 @@ void testDBInsertPartial()
 
 void testOverLoadFunction()
 {
-	Dao *dao = new DaoQt(db_database, db_user, db_password,db_server);
-	ProblemInstance *problem = new ProblemInstanceFromDataBase(dao,"tab","tab","tab","tab","tab","tab", "tab","tab", "tab","tab","tab", "tab", 5);
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
+	ProblemInstance *problem = new ProblemInstanceFromDataBase("tab", "tab", "tab",
+															   "tab", "tab", "tab",
+															   "tab", "tab", "tab",
+															   "tab", "tab", "tab", 5);
 	std::cout<<problem->getCompat(1,1)<<std::endl;
 	delete dao;
 	delete problem;
@@ -329,6 +329,14 @@ void testOverLoadFunction()
 
 void testDB()
 {
+	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
+	Dao* dao = theFactoryDao.get()->getDaoInstance();
+
+
+	std::shared_ptr<FactoryDao> theFactoryDao2 = FactoryDao::getInstance("TEST");
+	Dao* dao2 = theFactoryDao.get()->getDaoInstance();
+
+
 	testDBCustomQuery();
 }
 
