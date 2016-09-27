@@ -21,7 +21,7 @@ Como se mencionó anteriormente, en la base de datos cada artículo cuenta con s
 
 El modelo computacional del perfil de cada artículo es un vector que la dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.
 
-Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores, por lo tanto para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}.Para obtener el perfil de las universidades se aplicó el mismo criterio que para los autores, de hacer la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así generar el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
+Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores, por lo tanto para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}. Para obtener el perfil de las universidades se aplicó el mismo criterio que para los autores, de hacer la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así generar el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
 Ejemplo de los perfiles de los elementos:
 \begin{description}
@@ -69,10 +69,10 @@ Las consultas realizadas son:
 	\end{itemize}
 \end {enumerate}
 
-Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). 
+Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración, $5500$ artículos.  
 
 \paragraph{Función de similitud}
-La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. La similitud entre los objetos de la base de datos de artículos se es a través de la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos. El coseno para el ángulo cero es 1, es menor a 1 para cualquier otro ángulo y es 0 cuando los vectores son ortogonales. 
+La similitud se emplea para comparar dos objetos y determinar qué tan parecido son entre si. En este trabajo la similitud entre los objetos de la base de datos de artículos esta definida por la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos. El coseno para el ángulo cero es 1, es menor a 1 para cualquier otro ángulo y es 0 cuando los vectores son ortogonales. 
 
 Entonces se define la función de similitud $S(V_i, V_j)$ para los vectores $V_i$ y $V_j$ a partir del producto escalar\\
 
@@ -94,12 +94,18 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtiene q
 \label{bus:img-coseno}
 \end{figure}
 
-Dos vectores proporcionales tiene la misma dirección y el ángulo entre ellos es cero, entonces la función de similitud es 1. Lo que significa que esta medida de similitud no considera el peso de cada tópico, por lo tanto no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1.
+%Para \textbf{similitud coseno} dos vectores proporcionales con la misma dirección la similitud es 1 (ya que es 0 el ángulo que se forma). Por lo que esta similitud no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Por ejemplo si dos artículos que cubren un mismo y único tópico, pero para uno el valor del tópic Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1.
 
 El cálculo de similitud de los artículos, autores y universidades se realizó previamente a la ejecución de los algoritmos de búsquedas. El motivo por el cual se decidió hacer de esta manera fue para simplificar la ejecución ya que el costo de calcular el $\cos(\theta)$ de los vectores es alto.
-\section{Atracciones turísticas}
-Se utilizó una instancia de datos correspondiente a 200 atracciones turísticas de Europa \cite{turisticAtraction}. Ésta contiene la información del valor de la visita, que tipo de atracción es (parque, museo, edificio) y la similitud existente entre ellas. En contraste a lo trabajado con los datos de la instancia anterior, el presupuesto no define de antemano la cantidad de elementos que contendrán los paquetes sino que el mismo estará relacionado con el valor informado. La similitud entre los distintos elementos esta basada en la distancia geográfica que existe entre ellos. Como atributo para calcular la complementaridad se eligió el tipo de atracción turística a la que pertenece cada uno de los elementos.
 
-Las búsquedas que se hicieron en este caso tienen como propósito mostrar al usuario circuitos turísticos que puede realizar por día (cada paquete se puede interpretar como día). Al utilizar la distancia como similitud se está poniendo énfasis en que el turista pueda recorrer las atracciones de una manera ordenado sin tener que trasladarse de un extremo a otro de la ciudad o país. Con la elección de la complementariedad el viajante va a estar seguro que sea cual fuera su elección nunca visitará por ejemplo dos museos en un mismo día. Como todo turista cuenta con un presupuesto estimado por día para su viaje y para gastar en las visitas que desea realizar. Como las restricciones del armado de cada conjunto está restringido por el presupuesto máximo que se ingresa al comenzar las búsquedas, el usuario sabe que ningún circuito excede el valor que él calculo debe gastar por día. Así mismo tiene conocimiento de que no todos los circuitos tendrán la misma cantidad de atracciones ya que dependerá exclusivamente del presupuesto previo.
-\section{Restaurants}
-Con los datos de más de 38000 restaurants en 120 ciudades que se mencionan en \cite{compositeRetrival}
+\section{Atracciones turísticas}
+Se utilizó una instancia de datos correspondiente a 200 atracciones turísticas de Europa, con datos relevados del sitio \textit{TripAdvisor}. De cada atracción se tiene la información del precio, del tipo (parque, museo, edificio) y de la distancia geográfica con el resto de las atracciones.
+
+El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos, en el cual las atracciones de cada circuito se encuentran geográficamente cerca para evitar realizar largos traslados; de distinto tipo para que haya más variedad y que que todo el circuito este acotado al presupuesto del turista. Por lo tanto el modelo de la búsqueda quedo diseñada de la siguiente manera:
+
+\begin{itemize}
+	\item \textbf{Similitud}: La inversa de la distancia entre las atracciones. 
+	\item \textbf{Costo}: Precio de la atracción. 
+	\item \textbf{Presupuesto}: Presupuesto del turista. 
+	\item \textbf{Complementariedad}: Tipo de atracción.
+\end{itemize}

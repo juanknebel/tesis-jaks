@@ -153,7 +153,22 @@ En la figura \ref{res:aut_alg1_vs_alg5_vs_alg7} de la izquierda se visualiza que
 \end{figure}
 
 
-En esta búsqueda se destaca la búsqueda tabú, principalmente aplicada a la solución obtenida a partir de $alg5$, ya que la solución generada a partir de todos los gammas alcanzó la cota máxima (su función objetivo) para el presupueso encontrada en ...... \todo{poner la referencia}
+En la figura \ref{res:aut-alg-6} de la solución generada por el algoritmo $alg6$ para $\gamma = 0.1$, se tienen las siguientes observaciones:
+\begin{enumerate}
+	\item Todos los paquetes contienen autores que pertenecen a los mismos tópicos. 
+	\item No existe un tópico que este presente en más de un paquete.
+	\item Todos los paquetes utilizan el máximo del presupuesto.
+\end{enumerate}
+Por (1) y (2) la calidad intra e inter paquete es máxima respectivamente. Con (3) se cumple que la solución obtenida es la de máxima calidad para todo $\gamma$. Para todas las búsquedas realizadas, las soluciones que se obtuvieron cumplían con las observaciones mencionadas.
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1\textwidth]{img/aut-alg-6.png}
+  \caption{}
+  \label{res:aut-alg-6}
+\end{figure}
+
+
 
 \subsection{Búsqueda de universidades}
 En este escenario lo que más se destaca de la tabla \ref{tabla:comp3} es el comportamiento del algoritmo $alg1$ que generó una mejor solución para los valores de $\gamma$ $0.1$ y $0.2$ y para el resto de los valores mayores la solución provista empeora en comparación al algoritmo $alg5$ y la brecha aumenta a medida que aumenta el $\gamma$. 
