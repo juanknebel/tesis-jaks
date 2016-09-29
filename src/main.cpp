@@ -12,7 +12,7 @@
 #include <boost/program_options.hpp>
 #include "util/algorithm/vectornorm.h"
 
-std::string version = "0.4-beta";
+std::string version = "0.9-beta";
 
 namespace po = boost::program_options;
 
@@ -40,19 +40,19 @@ bool processCommandLine(int argc, char ** argv, int& option, std::string& elemen
     try {
         po::options_description desc("tesis-jaks use");
         desc.add_options()
-                ("help,h", "produce help message")
-                ("version,v", "muestra la version")
-                ("option,o", po::value<int>(&option)->required(), "option to execute")
-                ("element,e", po::value<std::string>(&element)->required(), "elemento")
-                ("algorithm,a", po::value<std::string>(&algorithm)->required(), "algoritmo")
-                ("strategy,s", po::value<std::string>(&strategy)->required(), "estrategia")
-                ("budget,b", po::value<double>(&budget)->required(), "presupuesto")
-                ("gamma,g", po::value<double>(&gamma)->required(), "gamma")
-                ("bundles,b", po::value<int>(&numFlakes)->required(), "cantidad de bundles")
-                ("iteration,i", po::value<int>(&maxIter)->required(), "cantidad de iteraciones")
-                ("produce,p", po::value<int>(&toProduce)->required(), "cantidad a producir solo para bobo")
-                ("write,w", po::value<bool>(&writeToFile)->required(), "escribir en archivo")
-                ("print,r", po::value<bool>(&printToScreen)->required(), "escribir por salida")
+                ("help,h", "Muestra el mensaje de ayuda")
+                ("version,v", "Muestra el número de version")
+                ("option,o", po::value<int>(&option)->required(), "Opciones de ejecución")
+                ("element,e", po::value<std::string>(&element)->required(), "Elemento: AUTHOR, ARTICLE, AFFILIATION, FILE")
+                ("algorithm,a", po::value<std::string>(&algorithm)->required(), "Algoritmos: EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO, RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific")
+                ("strategy,s", po::value<std::string>(&strategy)->required(), "Estrategias: RANK_BY_INTRA, RANK_BY_INTRA_INTER, RANK_BY_DENSEST_SUBGRAPH, RANK_BY_INTRA_INTER_TUPLE, RANK_BY_INTRA_INTER_PROPORTIONAL")
+                ("budget,b", po::value<double>(&budget)->required(), "Presupuesto > 0")
+                ("gamma,g", po::value<double>(&gamma)->required(), "Valor del gamma (0 <= gamma <= 1")
+                ("bundles,b", po::value<int>(&numFlakes)->required(), "Cantidad de bundles")
+                ("iteration,i", po::value<int>(&maxIter)->required(), "Cantidad máxima de iteraciones")
+                ("produce,p", po::value<int>(&toProduce)->required(), "Cantidad de bundles que se produciran antes de la selección (solo para BOBO)")
+                ("write,w", po::value<bool>(&writeToFile)->required(), "Escribir las soluciones en archivos")
+                ("print,r", po::value<bool>(&printToScreen)->required(), "Mostrar por pantalla las soluciones")
                 ;
 
         po::variables_map vm;

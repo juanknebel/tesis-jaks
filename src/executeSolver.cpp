@@ -77,8 +77,8 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     }
 
     if (printToScreen) {
-        Element::showInScreen(theElement.get(), *solution);
-        Element::showInScreen(theElement.get(), newSolution);
+        std::cout << Element::showInScreen(theElement.get(), *solution) << std::endl;
+        std::cout << Element::showInScreen(theElement.get(), newSolution) << std::endl;
 
         std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
         std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;

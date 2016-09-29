@@ -202,5 +202,5 @@ std::ostream& operator<< (std::ostream& stream, const SnowFlake& snowFlake)
 }
 
 double SnowFlake::getCostNode(int aNode) const {
-	this->problem_->getCost(aNode);
+	return this->problem_->getCost(aNode);
 }

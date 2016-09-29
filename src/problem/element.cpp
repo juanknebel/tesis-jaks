@@ -142,13 +142,13 @@ std::string Element::showInScreen(const Element* element, std::vector<SnowFlake>
 }
 
 std::string Element::showInScreen(const Element* element, const SnowFlake &snowFlake) {
+    std::map<std::string, std::string> *node2name = element->node2name_.get();
     std::string result = "";
     for (auto anElement : snowFlake.ids()) {
-        double cost;
-        std::string node;
-        cost = snowFlake.getCostNode(anElement);
+        std::string node = snowFlake.getProblemNode(anElement);;
+        double cost = snowFlake.getCostNode(anElement);
         result.append(" * ");
-        result.append(node + " " + (*element->node2name_.get())[node]);
+        result.append(node + " " + (*node2name)[node]);
         result.append(" (cost=" + convertToString(cost) + ")\n");
     }
 
