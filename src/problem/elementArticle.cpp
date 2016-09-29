@@ -29,11 +29,11 @@ void ElementArticle::completeMapping() const
             std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(1));
 
             if (it == id2str->end()) {
-                (*id2str)[dao->getField(0)] = dao->getField(0) + "," + dao->getField(1) + "," + dao->getField(2) + ","  + dao->getField(3);
+                (*id2str)[dao->getField(0)] = dao->getField(0) + this->separator_ + dao->getField(1) + this->separator_ + dao->getField(2) + this->separator_  + dao->getField(3);
             }
 
             else {
-                it->second.append(", " + dao->getField(3));
+                it->second.append(this->separator_ + dao->getField(3));
             }
         }
     }

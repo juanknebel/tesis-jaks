@@ -22,7 +22,7 @@ void ElementAffiliation::completeMapping() const
             std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(1));
 
             if (it == id2str->end()) {
-                (*id2str)[dao->getField(0)] = dao->getField(1) + "," + dao->getField(2);
+                (*id2str)[dao->getField(0)] = dao->getField(1) + this->separator_ + dao->getField(2);
             }
 
             else {

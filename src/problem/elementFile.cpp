@@ -21,9 +21,9 @@ void ElementFile::completeMapping() const
 
     while(getline(file, line, '\n')) {
         std::vector<std::string> tokens;
-        stringToVectorSplit(line, "\t", tokens);
+        stringToVectorSplit(line, this->separator_, tokens);
         std::stringstream name;
-        name<<tokens[0]<<"\t"<<tokens[1];
+        name<<tokens[0]<<this->separator_<<tokens[1];
         (*id2str)[tokens[0]] = name.str();
     }
 
