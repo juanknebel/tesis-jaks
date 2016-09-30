@@ -64,7 +64,7 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
         bundle.setIdentificator(i);
         i++;
     }
-
+    std::cout << Element::convertToJson(*solution, *theElement.get()) << std::endl;
     if (writeToFile) {
         std::stringstream fileName;
         std::stringstream fileNameTabu;

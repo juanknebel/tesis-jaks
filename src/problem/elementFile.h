@@ -11,6 +11,7 @@
 class ElementFile : public Element {
 private:
     void completeMapping() const;
+    std::string convertToJson(const std::vector<SnowFlake>& solution) const;
 public:
     ElementFile() : Element() {
         this->fileTypeName_ = "type_name.csv";

@@ -39,6 +39,7 @@ protected:
     std::unique_ptr<std::map<std::string, std::string>> node2name_;
 protected:
     virtual void completeMapping() const = 0;
+    virtual std::string convertToJson(const std::vector<SnowFlake>& solution) const = 0;
 public:
     Element();
     const std::string &getTableCost() const;
@@ -64,6 +65,7 @@ public:
 
     static std::string showInScreen(const Element* element, std::vector<SnowFlake> &solution);
     static std::string showInScreen(const Element* element, const SnowFlake& snowFlake);
+    static std::string convertToJson(const std::vector<SnowFlake>& solution, const Element& element);
     virtual ~Element();
 };
 

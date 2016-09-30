@@ -51,3 +51,7 @@ void ElementAuthor::writeSolution(const std::vector<SnowFlake> &solution, std::s
     file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
     file.close();
 }
+
+std::string ElementAuthor::convertToJson(const std::vector<SnowFlake> &solution) const {
+    return std::__cxx11::string();
+}

@@ -160,6 +160,10 @@ std::string Element::showInScreen(const Element* element, const SnowFlake &snowF
     return result;
 }
 
+std::string Element::convertToJson(const std::vector<SnowFlake> &solution, const Element &element) {
+    return element.convertToJson(solution);
+}
+
 /*
  * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, std::string fileName)
 {

@@ -19,7 +19,7 @@ void ElementAffiliation::completeMapping() const
     std::string query = "SELECT affiliationId, title, location FROM AFFILIATIONS";
     if (dao->executeCustomConsultativeQuery(query)) {
         while (dao->fetch()) {
-            std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(1));
+            std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(0));
 
             if (it == id2str->end()) {
                 (*id2str)[dao->getField(0)] = dao->getField(1) + this->separator_ + dao->getField(2);
@@ -50,4 +50,8 @@ ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::s
     file << "Inter" << this->separator_ << SnowFlake::getInter(solution) << "\n";
     file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
     file.close();
+}
+
+std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solution) const {
+    return std::__cxx11::string();
 }

@@ -12,6 +12,7 @@
 class ElementArticle : public Element {
 private:
     void completeMapping() const;
+    std::string convertToJson(const std::vector<SnowFlake>& solution) const;
 public:
     ElementArticle() : Element() {
         this->tableCost_ = "ARTICLES";
