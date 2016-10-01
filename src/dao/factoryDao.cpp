@@ -17,24 +17,25 @@ Dao* FactoryDao::getDaoInstance()
 std::shared_ptr<FactoryDao> FactoryDao::getInstance(std::string environment)
 {
     if (FactoryDao::theInstance_ == nullptr) {
-        FactoryDao::theInstance_ = new FactoryDao(environment);
+        FactoryDao::theInstance_ = new FactoryDao();
     }
 
     static std::shared_ptr<FactoryDao> instance = std::shared_ptr<FactoryDao>(FactoryDao::theInstance_);
     return instance;
 }
 
-FactoryDao::FactoryDao(std::string environment)
+FactoryDao::FactoryDao()
 {
     boost::property_tree::ptree pt;
     boost::property_tree::ini_parser::read_ini("Tesis.ini", pt);
-    if (environment.compare("RELEASE") == 0) {
+    std::string environment = pt.get<std::string>("SectionEnvironment");
+    if (environment.compare("release") == 0) {
         environment = "SectionDatabase";
     }
-    if (environment.compare("DEBUG") == 0) {
+    if (environment.compare("debug") == 0) {
         environment = "SectionDatabaseDebug";
     }
-    if (environment.compare("TEST") == 0) {
+    if (environment.compare("test") == 0) {
         environment = "SectionDatabaseTest";
     }
     std::string database = pt.get<std::string>(environment + ".database");

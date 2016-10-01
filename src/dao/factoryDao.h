@@ -14,7 +14,7 @@ class FactoryDao {
 private:
     Dao* theDao_;
     static FactoryDao* theInstance_;
-    FactoryDao(std::string environment);
+    FactoryDao();
 
 public:
     static std::shared_ptr<FactoryDao> getInstance(std::string environment);

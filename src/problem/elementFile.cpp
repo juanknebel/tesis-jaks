@@ -4,8 +4,8 @@
 
 #include "elementFile.h"
 #include "../util/system/stringUtilities.h"
-#include "../dao/dao.h"
-#include <sstream>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 ElementFile::~ElementFile()
 {
@@ -14,9 +14,12 @@ ElementFile::~ElementFile()
 
 void ElementFile::completeMapping() const
 {
+    boost::property_tree::ptree pt;
+    boost::property_tree::ini_parser::read_ini("Tesis.ini", pt);
+    std::string directory = pt.get<std::string>("SectionFile.directoryOfWork");
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::ifstream file;
-    file.open(this->fileNodeName_.c_str());
+    file.open(directory + this->fileNodeName_.c_str());
     std::string line;
 
     while(getline(file, line, '\n')) {
