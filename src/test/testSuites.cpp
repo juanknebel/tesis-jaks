@@ -179,56 +179,54 @@ void testDBGeneric(Dao& dao, std::string tableName)
 void testDB1()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
-	bool connect = dao->connect();
-	std::cout<<dao->showConnection();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
+	bool connect = dao.connect();
+	std::cout<<dao.showConnection();
 
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao->getError()<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
 	}
 
 	else {
-		if (dao->executeCustomConsultativeQuery("select count(*) from ARTICLES")) {
-			if (dao->fetch()) {
-				int count = convertToInt(dao->getField(1));
+		if (dao.executeCustomConsultativeQuery("select count(*) from ARTICLES")) {
+			if (dao.fetch()) {
+				int count = convertToInt(dao.getField(1));
 				std::cout<<"La cantidad que hay es de: "<<count<<std::endl;
 			}
 		}
 
-		testDBGeneric(*dao,"ARTICLES");
+		testDBGeneric(dao,"ARTICLES");
 	}
-
-	delete dao;
 }
 
 void testDBCustomQuery()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
-	bool connect = dao->connect();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
+	bool connect = dao.connect();
 
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao->getError()<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
 	}
 
 	else {
-		std::cout<<dao->showConnection();
+		std::cout<<dao.showConnection();
 
-		if (dao->isConnected()) {
-			bool wasOk = dao->executeCustomConsultativeQuery("SELECT * from AUTHORS");
+		if (dao.isConnected()) {
+			bool wasOk = dao.executeCustomConsultativeQuery("SELECT * from AUTHORS");
 
 			if (wasOk) {
 				std::cout<<"Ejecuto bien"<<std::endl;
-				int numOffields = dao->getNumberOfFields();
+				int numOffields = dao.getNumberOfFields();
 				bool hasresult = false;
 
-				while(dao->fetch()) {
+				while(dao.fetch()) {
 					hasresult = true;
 					for (int i=0; i<numOffields; ++i) {
-						if (!(dao->getField(i)).empty()) {
-							std::cout<<dao->getField(i);
+						if (!(dao.getField(i)).empty()) {
+							std::cout<<dao.getField(i);
 						}
 
 						else {
@@ -253,7 +251,7 @@ void testDBCustomQuery()
 
 			else {
 				std::cerr<<"Error al obtener resutlados"<<std::endl;
-				std::cerr<<dao->getError()<<std::endl;
+				std::cerr<<dao.getError()<<std::endl;
 			}
 		}
 		else {
@@ -265,76 +263,71 @@ void testDBCustomQuery()
 void testDBInsertCustom()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
-	bool connect = dao->connect();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
+	bool connect = dao.connect();
 
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao->getError()<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
 	}
 
 	else {
-		std::cout<<dao->showConnection();
+		std::cout<<dao.showConnection();
 
-		if (dao->isConnected()) {
-			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba values (3,5,\'prueba tres\')");
+		if (dao.isConnected()) {
+			bool isOk = dao.executeCustomModifiableQuery("insert into tablaPrueba values (3,5,\'prueba tres\')");
 
 			if (!isOk) {
-				std::cerr<<dao->getError()<<std::endl;
+				std::cerr<<dao.getError()<<std::endl;
 			}
 		}
 	}
-
-	delete dao;
 }
 
 void testDBInsertPartial()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
-	bool connect = dao->connect();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
+	bool connect = dao.connect();
 
 	if (!connect) {
 		std::cerr<<"Error al conectarse a la base de datos"<<std::endl;
-		std::cerr<<dao->getError()<<std::endl;
+		std::cerr<<dao.getError()<<std::endl;
 	}
 
 	else {
-		std::cout<<dao->showConnection();
+		std::cout<<dao.showConnection();
 
-		if (dao->isConnected()) {
-			bool isOk = dao->executeCustomModifiableQuery("insert into tablaPrueba set id=6, descripcion=\'prueba tesis\',valor=3");
+		if (dao.isConnected()) {
+			bool isOk = dao.executeCustomModifiableQuery("insert into tablaPrueba set id=6, descripcion=\'prueba tesis\',valor=3");
 
 			if (!isOk) {
-				std::cerr<<dao->getError()<<std::endl;
+				std::cerr<<dao.getError()<<std::endl;
 			}
 		}
 	}
-
-	delete dao;
 }
 
 void testOverLoadFunction()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
 	ProblemInstance *problem = new ProblemInstanceFromDataBase("tab", "tab", "tab",
 															   "tab", "tab", "tab",
 															   "tab", "tab", "tab",
 															   "tab", "tab", "tab", 5);
 	std::cout<<problem->getCompat(1,1)<<std::endl;
-	delete dao;
 	delete problem;
 }
 
 void testDB()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao* dao = theFactoryDao.get()->getDaoInstance();
+	Dao& dao = theFactoryDao.get()->getDaoInstance();
 
 
 	std::shared_ptr<FactoryDao> theFactoryDao2 = FactoryDao::getInstance("TEST");
-	Dao* dao2 = theFactoryDao.get()->getDaoInstance();
+	Dao& dao2 = theFactoryDao.get()->getDaoInstance();
 
 
 	testDBCustomQuery();

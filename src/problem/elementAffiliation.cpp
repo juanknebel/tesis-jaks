@@ -15,15 +15,15 @@ ElementAffiliation::~ElementAffiliation()
 void ElementAffiliation::completeMapping() const
 {
     std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
-    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    Dao& dao = theFactoryDao.get()->getDaoInstance();
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::string query = "SELECT affiliationId, title, location FROM AFFILIATIONS";
-    if (dao->executeCustomConsultativeQuery(query)) {
-        while (dao->fetch()) {
-            std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(0));
+    if (dao.executeCustomConsultativeQuery(query)) {
+        while (dao.fetch()) {
+            std::map<std::string, std::string>::iterator it = id2str->find(dao.getField(0));
 
             if (it == id2str->end()) {
-                (*id2str)[dao->getField(0)] = dao->getField(1) + this->separator_ + dao->getField(2);
+                (*id2str)[dao.getField(0)] = dao.getField(1) + this->separator_ + dao.getField(2);
             }
 
             else {
@@ -55,7 +55,7 @@ ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::s
 
 std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solution) const {
     std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
-    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    Dao& dao = theFactoryDao.get()->getDaoInstance();
     pt::ptree root;
 
     pt::ptree bundlesList;
@@ -66,14 +66,14 @@ std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solu
             std::string id = aFlake.getProblemNode(aNode);
             query << "select aff.title, tpd.distributionAffiliation,tpd.distribution_KEY from AFFILIATIONS aff, TopicProfileAffiliations tpd where aff.affiliationId = "
                   << id << " and tpd.AFFILIATION_affiliationId = aff.affiliationId;";
-            dao->executeCustomConsultativeQuery(query.str());
+            dao.executeCustomConsultativeQuery(query.str());
             pt::ptree topicsList;
             std::string articleName;
-            while(dao->fetch()) {
+            while(dao.fetch()) {
                 pt::ptree topics;
-                articleName = dao->getField(0);
-                topics.put("topic", dao->getField(2));
-                topics.put("dist", dao->getField(1));
+                articleName = dao.getField(0);
+                topics.put("topic", dao.getField(2));
+                topics.put("dist", dao.getField(1));
                 topicsList.push_back(std::make_pair("", topics));
             }
             pt::ptree affiliation;

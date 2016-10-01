@@ -15,7 +15,7 @@ ElementArticle::~ElementArticle()
 void ElementArticle::completeMapping() const
 {
     std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
-    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    Dao& dao = theFactoryDao.get()->getDaoInstance();
     std::map<std::string, std::string> *id2str = this->node2name_.get();
     std::string query = "SELECT \
                 a.ArticleId as ArticleId \
@@ -26,16 +26,16 @@ void ElementArticle::completeMapping() const
                 WHERE a.venue_VenueId=b.VenueId and a.ArticleId=d.ARTICLES_ArticleId and \
                 d.authors_AuthorId=c.AuthorId";
 
-    if (dao->executeCustomConsultativeQuery(query)) {
-        while (dao->fetch()) {
-            std::map<std::string, std::string>::iterator it = id2str->find(dao->getField(0));
+    if (dao.executeCustomConsultativeQuery(query)) {
+        while (dao.fetch()) {
+            std::map<std::string, std::string>::iterator it = id2str->find(dao.getField(0));
 
             if (it == id2str->end()) {
-                (*id2str)[dao->getField(0)] = dao->getField(0) + this->separator_ + dao->getField(1) + this->separator_ + dao->getField(2) + this->separator_  + dao->getField(3);
+                (*id2str)[dao.getField(0)] = dao.getField(0) + this->separator_ + dao.getField(1) + this->separator_ + dao.getField(2) + this->separator_  + dao.getField(3);
             }
 
             else {
-                it->second.append("," + dao->getField(3));
+                it->second.append("," + dao.getField(3));
             }
         }
     }
@@ -63,7 +63,7 @@ ElementArticle::writeSolution(const std::vector<SnowFlake> &solution, std::strin
 
 std::string ElementArticle::convertToJson(const std::vector<SnowFlake> &solution) const {
     std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
-    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    Dao& dao = theFactoryDao.get()->getDaoInstance();
     pt::ptree root;
 
     pt::ptree bundlesList;
@@ -74,14 +74,14 @@ std::string ElementArticle::convertToJson(const std::vector<SnowFlake> &solution
             std::string id = aFlake.getProblemNode(aNode);
             query << "select art.title, tpd.distribution, tpd.distribution_KEY from ARTICLES art, TopicProfile_distribution tpd where art.ArticleId = "
                     << id << " and art.topicProfile_identifier = tpd.topicProfile_identifier;";
-            dao->executeCustomConsultativeQuery(query.str());
+            dao.executeCustomConsultativeQuery(query.str());
             pt::ptree topicsList;
             std::string articleName;
-            while(dao->fetch()) {
+            while(dao.fetch()) {
                 pt::ptree topics;
-                articleName = dao->getField(0);
-                topics.put("topic", dao->getField(2));
-                topics.put("dist", dao->getField(1));
+                articleName = dao.getField(0);
+                topics.put("topic", dao.getField(2));
+                topics.put("dist", dao.getField(1));
                 topicsList.push_back(std::make_pair("", topics));
             }
             pt::ptree paper;

@@ -3,32 +3,9 @@
 #include <memory>
 #include "executeSolver.h"
 #include "util/algorithm/localSearch.h"
-
 #include "problem/factoryProblem.h"
 #include "solver/factorySolver.h"
 #include "problem/factoryElement.h"
-
-using namespace std;
-
-/*
-void showSolution(SnowFlakeVector& solution, Configurator& configurator)
-{
-	if(configurator.getPrintToScreen()) {
-		std::cout<<configurator.getTheWrtiter()->showInScreen(solution, configurator.getTheNodeName())<<std::endl;
-	}
-}
-
-void writeSolution(SnowFlakeVector &solution, Configurator &configurator, std::string fileName,
-                   double interSimilarityWeight)
-{
-	if(configurator.getWriteToFile()) {
-		WriterSolution* theWriter = configurator.getTheWrtiter();
-		std::cout << "Writing the solution into the file: " << fileName << std::endl;
-		theWriter->writeSolution(solution, fileName, configurator.getTheNodeName(), interSimilarityWeight);
-		//WriterSolution::writeInterAndIntraValues(solution, fileName);
-	}
-}
-*/
 
 void executeNew(std::string element, std::string algorithm, std::string strategy, std::string directory, double budget, double gamma,
                 int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen, bool json)
@@ -43,7 +20,7 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     std::cout << "Guardar soluciones: " << ((writeToFile) ? "Si" : "No") << std::endl;
     std::cout << "Guardar json: " << ((json) ? "Si" : "No") << std::endl;
     std::cout << "Mostrar solución en pantalla: " << ((printToScreen) ? "Si" : "No") << std::endl;
-    std::cout << "Directorio donde se destino de los archivos: " << directory << std::endl;
+    std::cout << "Directorio destino de los archivos: " << directory << std::endl;
 
     std::unique_ptr<Element> theElement = std::move(FactoryElement::getTheElement(element));
     std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(theElement.get(), budget));

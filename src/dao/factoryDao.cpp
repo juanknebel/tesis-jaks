@@ -6,12 +6,12 @@
 #include "factoryDao.h"
 FactoryDao* FactoryDao::theInstance_;
 
-Dao * FactoryDao::getDaoInstance()
+Dao & FactoryDao::getDaoInstance()
 {
     if (!this->theDao_->isConnected()) {
         this->theDao_->connect();
     }
-    return this->theDao_;
+    return *this->theDao_;
 }
 
 std::shared_ptr<FactoryDao> FactoryDao::getInstance(std::string environment)
