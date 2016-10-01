@@ -30,8 +30,8 @@ void writeSolution(SnowFlakeVector &solution, Configurator &configurator, std::s
 }
 */
 
-void executeNew(std::string element, std::string algorithm, std::string strategy, double budget, double gamma,
-                int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen)
+void executeNew(std::string element, std::string algorithm, std::string strategy, std::string directory, double budget, double gamma,
+                int numFlakes, int maxIter, int toProduce, bool writeToFile, bool printToScreen, bool json)
 {
     std::cout << "Algoritmo para la resolución: " << algorithm << std::endl;
     std::cout << "Estrategia de selección: " << strategy << std::endl;
@@ -40,6 +40,10 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     std::cout << "Presupuesto: " << budget << std::endl;
     std::cout << "Valor del gamma: " << gamma << std::endl;
     std::cout << "Bundles a producir solo para BOBO: " << toProduce << std::endl;
+    std::cout << "Guardar soluciones: " << ((writeToFile) ? "Si" : "No") << std::endl;
+    std::cout << "Guardar json: " << ((json) ? "Si" : "No") << std::endl;
+    std::cout << "Mostrar solución en pantalla: " << ((printToScreen) ? "Si" : "No") << std::endl;
+    std::cout << "Directorio donde se destino de los archivos: " << directory << std::endl;
 
     std::unique_ptr<Element> theElement = std::move(FactoryElement::getTheElement(element));
     std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(theElement.get(), budget));
@@ -64,22 +68,25 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
         bundle.setIdentificator(i);
         i++;
     }
-    std::cout << Element::convertToJson(*solution, *theElement.get()) << std::endl;
+
+    std::stringstream fileName;
+    std::stringstream fileNameTabu;
+    fileName << directory << algorithm << strategy << "Gamma-" << gamma;
+    fileNameTabu << directory << algorithm << strategy << "Gamma-" << gamma;
+
+    if (json) {
+        Element::saveJson(*solution, *theElement.get(), fileName.str() + ".json");
+        Element::saveJson(newSolution, *theElement.get(), fileNameTabu.str() + "-Tabu.json");
+    }
+
     if (writeToFile) {
-        std::stringstream fileName;
-        std::stringstream fileNameTabu;
-        fileName << algorithm << strategy << "Gamma-" << gamma << ".csv";
-        fileNameTabu << algorithm << strategy << "Gamma-" << gamma << "-Tabu.csv";
-        std::cout << "Escribiendo la solución original en: " << fileName.str() << std::endl;
-        theElement.get()->writeSolution(*solution, fileName.str(), gamma);
-        std::cout << "Escribiendo la solución con tabu en: " << fileNameTabu.str() << std::endl;
-        theElement.get()->writeSolution(newSolution, fileNameTabu.str(), gamma);
+        Element::saveSolution(*solution, fileName.str() + ".csv", gamma, *theElement.get());
+        Element::saveSolution(newSolution, fileNameTabu.str() + "-Tabu.csv", gamma, *theElement.get());
     }
 
     if (printToScreen) {
         std::cout << Element::showInScreen(theElement.get(), *solution) << std::endl;
         std::cout << Element::showInScreen(theElement.get(), newSolution) << std::endl;
-
         std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
         std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;
     }

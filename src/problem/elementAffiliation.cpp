@@ -3,8 +3,9 @@
 //
 
 #include "elementAffiliation.h"
-#include "../dao/dao.h"
 #include "../dao/factoryDao.h"
+#include <boost/property_tree/json_parser.hpp>
+namespace pt = boost::property_tree;
 
 ElementAffiliation::~ElementAffiliation()
 {
@@ -53,5 +54,40 @@ ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::s
 }
 
 std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solution) const {
-    return std::__cxx11::string();
+    std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    pt::ptree root;
+
+    pt::ptree bundlesList;
+    for (auto aFlake : solution) {
+        pt::ptree affiliationList;
+        for (auto aNode : aFlake.ids()) {
+            std::stringstream query;
+            std::string id = aFlake.getProblemNode(aNode);
+            query << "select aff.title, tpd.distributionAffiliation,tpd.distribution_KEY from AFFILIATIONS aff, TopicProfileAffiliations tpd where aff.affiliationId = "
+                  << id << " and tpd.AFFILIATION_affiliationId = aff.affiliationId;";
+            dao->executeCustomConsultativeQuery(query.str());
+            pt::ptree topicsList;
+            std::string articleName;
+            while(dao->fetch()) {
+                pt::ptree topics;
+                articleName = dao->getField(0);
+                topics.put("topic", dao->getField(2));
+                topics.put("dist", dao->getField(1));
+                topicsList.push_back(std::make_pair("", topics));
+            }
+            pt::ptree affiliation;
+            affiliation.put("name", articleName);
+            affiliation.add_child("topics", topicsList);
+            affiliationList.push_back(std::make_pair("", affiliation));
+        }
+        pt::ptree bundles;
+        bundles.put("bundle", aFlake.getIdentificator());
+        bundles.add_child("papers", affiliationList);
+        bundlesList.push_back(std::make_pair("", bundles));
+    }
+    root.add_child("solution", bundlesList);
+    std::stringstream jsonString;
+    pt::write_json(jsonString, root);
+    return jsonString.str();
 }

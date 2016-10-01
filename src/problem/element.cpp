@@ -164,6 +164,17 @@ std::string Element::convertToJson(const std::vector<SnowFlake> &solution, const
     return element.convertToJson(solution);
 }
 
+void Element::saveSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, const Element &element) {
+    element.writeSolution(solution, fileName, gamma);
+}
+
+void Element::saveJson(const std::vector<SnowFlake> &solution, const Element &element, std::string fileName) {
+    std::string json = element.convertToJson(solution);
+    std::ofstream file(fileName.c_str());
+    file << json;
+    file.close();
+}
+
 /*
  * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, std::string fileName)
 {

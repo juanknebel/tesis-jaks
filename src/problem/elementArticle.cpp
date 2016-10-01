@@ -95,7 +95,6 @@ std::string ElementArticle::convertToJson(const std::vector<SnowFlake> &solution
         bundlesList.push_back(std::make_pair("", bundles));
     }
     root.add_child("solution", bundlesList);
-    //root.push_back(std::make_pair("", bundlesList));
     std::stringstream jsonString;
     pt::write_json(jsonString, root);
     return jsonString.str();

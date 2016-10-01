@@ -3,8 +3,9 @@
 //
 
 #include "elementAuthor.h"
-#include "../dao/dao.h"
 #include "../dao/factoryDao.h"
+#include <boost/property_tree/json_parser.hpp>
+namespace pt = boost::property_tree;
 
 ElementAuthor::~ElementAuthor()
 {
@@ -53,5 +54,40 @@ void ElementAuthor::writeSolution(const std::vector<SnowFlake> &solution, std::s
 }
 
 std::string ElementAuthor::convertToJson(const std::vector<SnowFlake> &solution) const {
-    return std::__cxx11::string();
+    std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("RELEASE");
+    Dao* dao = theFactoryDao.get()->getDaoInstance();
+    pt::ptree root;
+
+    pt::ptree bundlesList;
+    for (auto aFlake : solution) {
+        pt::ptree authorList;
+        for (auto aNode : aFlake.ids()) {
+            std::stringstream query;
+            std::string id = aFlake.getProblemNode(aNode);
+            query << "select aut.name, tpd.distributionAuthor,tpd.distribution_KEY from AUTHORS aut, TopicProfileAuthors tpd where aut.AuthorId = "
+                  << id << " and tpd.authors_AuthorId = aut.AuthorId;";
+            dao->executeCustomConsultativeQuery(query.str());
+            pt::ptree topicsList;
+            std::string articleName;
+            while(dao->fetch()) {
+                pt::ptree topics;
+                articleName = dao->getField(0);
+                topics.put("topic", dao->getField(2));
+                topics.put("dist", dao->getField(1));
+                topicsList.push_back(std::make_pair("", topics));
+            }
+            pt::ptree author;
+            author.put("name", articleName);
+            author.add_child("topics", topicsList);
+            authorList.push_back(std::make_pair("", author));
+        }
+        pt::ptree bundles;
+        bundles.put("bundle", aFlake.getIdentificator());
+        bundles.add_child("papers", authorList);
+        bundlesList.push_back(std::make_pair("", bundles));
+    }
+    root.add_child("solution", bundlesList);
+    std::stringstream jsonString;
+    pt::write_json(jsonString, root);
+    return jsonString.str();
 }

@@ -13,6 +13,7 @@ class ElementArticle : public Element {
 private:
     void completeMapping() const;
     std::string convertToJson(const std::vector<SnowFlake>& solution) const;
+    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
 public:
     ElementArticle() : Element() {
         this->tableCost_ = "ARTICLES";
@@ -31,7 +32,6 @@ public:
         this->elementType_ = "ARTICLE";
         completeMapping();
     }
-    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
     ~ElementArticle();
 };
 

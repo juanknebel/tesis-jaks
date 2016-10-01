@@ -12,7 +12,7 @@
 #include <boost/program_options.hpp>
 #include "util/algorithm/vectornorm.h"
 
-std::string version = "0.9-beta";
+std::string version = "0.9.5-beta";
 
 namespace po = boost::program_options;
 
@@ -32,8 +32,8 @@ void usingTestHardcode()
  *
  */
 
-bool processCommandLine(int argc, char ** argv, int& option, std::string& element, std::string& algorithm, std::string& strategy,
-                        double& budget, double& gamma, int& numFlakes, int& maxIter, int& toProduce, bool& writeToFile, bool& printToScreen)
+bool processCommandLine(int argc, char ** argv, int& option, std::string& element, std::string& algorithm, std::string& strategy, std::string& directory,
+                        double& budget, double& gamma, int& numFlakes, int& maxIter, int& toProduce, bool& writeToFile, bool& printToScreen, bool& json)
 {
     std::string errorMsg = "Bad Arguments. Use -h to see how to use.";
 
@@ -49,10 +49,12 @@ bool processCommandLine(int argc, char ** argv, int& option, std::string& elemen
                 ("budget,b", po::value<double>(&budget)->required(), "Presupuesto > 0")
                 ("gamma,g", po::value<double>(&gamma)->required(), "Valor del gamma (0 <= gamma <= 1")
                 ("bundles,b", po::value<int>(&numFlakes)->required(), "Cantidad de bundles")
-                ("iteration,i", po::value<int>(&maxIter)->required(), "Cantidad máxima de iteraciones")
-                ("produce,p", po::value<int>(&toProduce)->required(), "Cantidad de bundles que se produciran antes de la selección (solo para BOBO)")
-                ("write,w", po::value<bool>(&writeToFile)->required(), "Escribir las soluciones en archivos")
-                ("print,r", po::value<bool>(&printToScreen)->required(), "Mostrar por pantalla las soluciones")
+                ("iteration,i", po::value<int>(&maxIter)->default_value(10), "Cantidad máxima de iteraciones")
+                ("produce,p", po::value<int>(&toProduce)->default_value(10), "Cantidad de bundles que se produciran antes de la selección (solo para BOBO)")
+                ("write,w", po::value<bool>(&writeToFile)->default_value(false), "Escribir las soluciones en archivos")
+                ("print,r", po::value<bool>(&printToScreen)->default_value(false), "Mostrar por pantalla las soluciones")
+                ("json,j",po::value<bool>(&json)->default_value(false), "Generar archivos json")
+                ("directory,d",po::value<std::string>(&directory)->default_value("./"), "Directorio donde grabar los archivos")
                 ;
 
         po::variables_map vm;
@@ -102,6 +104,7 @@ int main(int argc, char **argv)
     std::string element;
     std::string algorithm;
     std::string strategy;
+    std::string directory;
     double budget;
     double gamma;
     int numFlakes;
@@ -109,9 +112,10 @@ int main(int argc, char **argv)
     int toProduce;
     bool writeToFile;
     bool printToScreen;
+    bool json;
 
-    bool result = processCommandLine(argc, argv, option, element, algorithm, strategy, budget, gamma,
-                                     numFlakes, maxIter, toProduce, writeToFile, printToScreen);
+    bool result = processCommandLine(argc, argv, option, element, algorithm, strategy, directory, budget, gamma,
+                                     numFlakes, maxIter, toProduce, writeToFile, printToScreen, json);
 
     if (!result) {
         exit(EXIT_FAILURE);
@@ -121,8 +125,8 @@ int main(int argc, char **argv)
             case 1:
             {
                 std::cout<<"Executing solver ..."<<std::endl;
-                executeNew(element, algorithm, strategy, budget, gamma,
-                           numFlakes, maxIter, toProduce, writeToFile, printToScreen);
+                executeNew(element, algorithm, strategy, directory, budget, gamma,
+                           numFlakes, maxIter, toProduce, writeToFile, printToScreen, json);
                 break;
             }
             case 2:
