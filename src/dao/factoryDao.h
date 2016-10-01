@@ -18,7 +18,7 @@ private:
 
 public:
     static std::shared_ptr<FactoryDao> getInstance(std::string environment);
-    Dao *getDaoInstance();
+    Dao * getDaoInstance();
     virtual ~FactoryDao();
 };
 

@@ -6,7 +6,7 @@
 #include "factoryDao.h"
 FactoryDao* FactoryDao::theInstance_;
 
-Dao* FactoryDao::getDaoInstance()
+Dao * FactoryDao::getDaoInstance()
 {
     if (!this->theDao_->isConnected()) {
         this->theDao_->connect();
@@ -28,20 +28,21 @@ FactoryDao::FactoryDao()
 {
     boost::property_tree::ptree pt;
     boost::property_tree::ini_parser::read_ini("Tesis.ini", pt);
-    std::string environment = pt.get<std::string>("SectionEnvironment");
+    std::string environment = pt.get<std::string>("SectionEnvironment.environment");
+    std::string connection;
     if (environment.compare("release") == 0) {
-        environment = "SectionDatabase";
+        connection = "SectionDatabase";
     }
     if (environment.compare("debug") == 0) {
-        environment = "SectionDatabaseDebug";
+        connection = "SectionDatabaseDebug";
     }
     if (environment.compare("test") == 0) {
-        environment = "SectionDatabaseTest";
+        connection = "SectionDatabaseTest";
     }
-    std::string database = pt.get<std::string>(environment + ".database");
-    std::string user = pt.get<std::string>(environment + ".user");
-    std::string password = pt.get<std::string>(environment + ".password");
-    std::string server = pt.get<std::string>(environment + ".server");
+    std::string database = pt.get<std::string>(connection + ".database");
+    std::string user = pt.get<std::string>(connection + ".user");
+    std::string password = pt.get<std::string>(connection + ".password");
+    std::string server = pt.get<std::string>(connection + ".server");
     this->theDao_ = new DaoQt(database, user, password, server);
 }
 

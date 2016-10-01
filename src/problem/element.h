@@ -65,8 +65,8 @@ public:
 
     static void saveSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, const Element& element);
     static void saveJson(const std::vector<SnowFlake>& solution, const Element& element, std::string fileName);
-    static std::string showInScreen(const Element* element, std::vector<SnowFlake> &solution);
-    static std::string showInScreen(const Element* element, const SnowFlake& snowFlake);
+    static std::string showInScreen(const Element &element, std::vector<SnowFlake> &solution);
+    static std::string showInScreen(const Element &element, const SnowFlake &snowFlake);
     static std::string convertToJson(const std::vector<SnowFlake>& solution, const Element& element);
     virtual ~Element();
 };

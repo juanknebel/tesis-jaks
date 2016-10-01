@@ -114,7 +114,7 @@ const std::string &Element::getElementType() const {
     return elementType_;
 }
 
-std::string Element::showInScreen(const Element* element, std::vector<SnowFlake> &solution)
+std::string Element::showInScreen(const Element &element, std::vector<SnowFlake> &solution)
 {
     std::string result = "\n";
     int avgCost = 0;
@@ -141,8 +141,8 @@ std::string Element::showInScreen(const Element* element, std::vector<SnowFlake>
     return result;
 }
 
-std::string Element::showInScreen(const Element* element, const SnowFlake &snowFlake) {
-    std::map<std::string, std::string> *node2name = element->node2name_.get();
+std::string Element::showInScreen(const Element &element, const SnowFlake &snowFlake) {
+    std::map<std::string, std::string> *node2name = element.node2name_.get();
     std::string result = "";
     for (auto anElement : snowFlake.ids()) {
         std::string node = snowFlake.getProblemNode(anElement);;
