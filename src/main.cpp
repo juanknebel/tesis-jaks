@@ -47,7 +47,7 @@ bool processCommandLine(int argc, char ** argv, int& option, std::string& elemen
                 ("element,e", po::value<std::string>(&element)->required(), "Elemento: AUTHOR, ARTICLE, AFFILIATION, FILE")
                 ("algorithms,a", po::value<std::string>(&algorithm)->required(), "Algoritmos: EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO, RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific")
                 ("strategy,s", po::value<std::string>(&strategy)->required(), "Estrategias: RANK_BY_INTRA, RANK_BY_INTRA_INTER, RANK_BY_DENSEST_SUBGRAPH, RANK_BY_INTRA_INTER_TUPLE, RANK_BY_INTRA_INTER_PROPORTIONAL")
-                ("budget,b", po::value<double>(&budget)->required(), "Presupuesto > 0")
+                ("budget,u", po::value<double>(&budget)->required(), "Presupuesto > 0")
                 ("gamma,g", po::value<double>(&gamma)->required(), "Valor del gamma (0 <= gamma <= 1")
                 ("bundles,b", po::value<int>(&numFlakes)->required(), "Cantidad de bundles")
                 ("iteration,i", po::value<int>(&maxIter)->default_value(10), "Cantidad máxima de iteraciones")
