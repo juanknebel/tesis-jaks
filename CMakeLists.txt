@@ -70,13 +70,8 @@ set(tesis-jaks_source_files
         #src/solver/factorySolver.h
         src/cluster/clustering.cpp
         src/cluster/metisWrapper.cpp
-        #src/test/testingClusterAndPickSolver.cpp
-        #src/test/testingClustering.cpp
-        #src/test/testingMatrix.cpp
-        #src/test/testingMetisWrapper.cpp
-        #src/test/testingProblemInstance.cpp
-        #src/test/testingProblemInstanceFromFiles.cpp
-        #src/test/testSuites.cpp
+        src/test/testingMatrix.cpp
+        src/test/testSuites.cpp
         )
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks boost_log Qt5::Sql)

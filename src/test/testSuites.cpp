@@ -8,13 +8,8 @@
 #include <iostream>
 #include "testSuites.h"
 #include "testingMatrix.h"
-#include "testingProblemInstance.h"
-#include "testingProblemInstanceFromFiles.h"
-#include "testingMetisWrapper.h"
-#include "testingClustering.h"
-#include "testingClusterAndPickSolver.h"
-#include "../problem/problemInstanceFromDataBase.h"
 #include "../dao/factoryDao.h"
+#include "../util/system/stringUtilities.h"
 
 MatrixConcrete giveMeMatrix2x2(double a, double b, double c, double d)
 {
@@ -114,28 +109,6 @@ MatrixConcrete giveMeSymetricMatrix3x3With0InDiagonal()
 	matrix.set(2,1,2.0);
 	matrix.set(2,2,0.0);
 	return matrix;
-}
-
-ProblemInstanceFromFiles* giveMeProblemInstance(std::string directory)
-{
-	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
-	std::string fileNodeCost = directory + "node_cost.csv";
-	std::string fileNodeCover = directory + "node_cover.csv";
-	std::string fileNodeName = directory + "node_name.csv";
-	std::string fileTypeName = directory + "type_name.csv";
-	ProblemInstanceFromFiles* result = new ProblemInstanceFromFiles(fileNodeCost, fileNodeCompatibility, fileNodeCover, 1000.00);
-	return result;
-}
-
-ProblemInstance* giveMeAnotherProblemInstance(std::string directory)
-{
-	std::string fileNodeCompatibility = directory + "node_compatibility.csv";
-	std::string fileNodeCost = directory + "node_cost.csv";
-	std::string fileNodeCover = directory + "node_cover.csv";
-	std::string fileNodeName = directory + "node_name.csv";
-	std::string fileTypeName = directory + "type_name.csv";
-	ProblemInstance* result = new ProblemInstanceFromFiles(fileNodeCost, fileNodeCompatibility, fileNodeCover, 1000.00);
-	return result;
 }
 
 void testDBGeneric(Dao& dao, std::string tableName)
@@ -308,18 +281,6 @@ void testDBInsertPartial()
 	}
 }
 
-void testOverLoadFunction()
-{
-	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
-	Dao& dao = theFactoryDao.get()->getDaoInstance();
-	ProblemInstance *problem = new ProblemInstanceFromDataBase("tab", "tab", "tab",
-															   "tab", "tab", "tab",
-															   "tab", "tab", "tab",
-															   "tab", "tab", "tab", 5);
-	std::cout<<problem->getCompat(1,1)<<std::endl;
-	delete problem;
-}
-
 void testDB()
 {
 	std::shared_ptr<FactoryDao> theFactoryDao = FactoryDao::getInstance("TEST");
@@ -372,43 +333,4 @@ void testMatrix()
 	testMatrix.testCountNonZeros(0);
 	testMatrix.getMatrix()->showMe();
 	testMatrix.testCountNonZeros(2);
-}
-
-void testProblemInstance()
-{
-	std::cout << "Test ProblemInstance" << std::endl;
-	ProblemInstance* problem = new ProblemInstance(6.66);
-	TestingProblemInstance testProblem = TestingProblemInstance();
-	testProblem.setProblem(problem);
-
-	delete problem;
-}
-
-void testProblemInstanceFromFiles(std::string directory)
-{
-	std::cout << "Test ProblemInstanceFromFiles" << std::endl;
-	TestingProblemInstanceFromFiles testProblemFiles(directory);
-}
-
-void testMetisWrapper()
-{
-	TestingMetisWrapper metis;
-	MatrixConcrete graph = giveMeSymetricMatrix3x3With0InDiagonal();
-	metis.testCluster(graph, 2);
-}
-
-void testClustering()
-{
-	TestingClustering clustering;
-	MatrixConcrete graphNoSymetric = giveMeMatrix3x3With0InDiagonal();
-	MatrixConcrete graphSymetric = giveMeSymetricMatrix3x3With0InDiagonal();
-	clustering.testCluster(graphSymetric, 2);
-	clustering.testSymmetrizeCluster(graphNoSymetric, 2);
-}
-
-void testClusterAndPickSolver ( std::string directory)
-{
-	ProblemInstance* anotherProblem = giveMeAnotherProblemInstance(directory);
-	TestingClusterAndPickSolver anotherClusterPickSolver(*anotherProblem);
-	anotherClusterPickSolver.testingSolve(4);
 }

@@ -8,30 +8,20 @@
 
 #include <iostream>
 #include "executeSolver.h"
-//#include "test/testSuites.h"
+#include "test/testSuites.h"
 #include <boost/program_options.hpp>
 #include "util/algorithm/vectornorm.h"
 #include "util/system/stringUtilities.h"
 
-std::string version = "0.9.5-beta";
+std::string version = "1.0-alpha";
 
 namespace po = boost::program_options;
 
 void usingTestHardcode()
 {
-	//testOverLoadFunction();
-	//testDB();
+	testDB();
 	//testMatrix();
-	//testProblemInstanceFromFiles("../files/");
-	//testMetisWrapper();
-	//testClustering();
-	//testClusterAndPickSolver("../files/");
-	//testConfiguration();
 }
-
-/*
- *
- */
 
 bool processCommandLine(int argc, char ** argv, int& option, std::string& element, std::string& algorithm, std::string& strategy, std::string& directory,
                         double& budget, double& gamma, int& numFlakes, int& maxIter, int& toProduce, bool& writeToFile, bool& printToScreen, bool& json)
@@ -63,11 +53,13 @@ bool processCommandLine(int argc, char ** argv, int& option, std::string& elemen
 
         if (vm.count("help")) {
             std::cout << desc << std::endl;
-            return false;
+            option = -1;
+            return true;
         }
         if (vm.count("version")) {
             std::cout<< version << std::endl;
-            return false;
+            option = -1;
+            return true;
         }
         po::notify(vm);
     }
@@ -142,6 +134,8 @@ int main(int argc, char **argv)
                 insertSimilarity();
                 break;
             }
+            default:
+                break;
         }
         exit(EXIT_SUCCESS);
     }
