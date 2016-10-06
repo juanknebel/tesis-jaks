@@ -3,7 +3,6 @@
 //
 
 #include "localSearchBundles.h"
-#include "../system/exception.h"
 
 SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &solution,
         SnowFlakeVector &remainingFlakes, ProblemInstance &theProblem,
@@ -28,7 +27,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
 	}
 
 	SnowFlakeVector bestSolution(visitSolution.begin(), visitSolution.end());
-	double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
+	double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight, theProblem);
 
 	int iteration = 1;
 
@@ -55,7 +54,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
 				}
 			}
 
-			double newInterFunction = SnowFlake::objetiveFunction(aNewSolution, 1);
+			double newInterFunction = SnowFlake::objetiveFunction(aNewSolution, 1, theProblem);
 
 			//Si mejora la solucion
 			if (newInterFunction > itBetterInterFunction) {
@@ -83,7 +82,7 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
 					}
 				}
 
-				double newInterFunction = SnowFlake::objetiveFunction(aNewSolution, 1);
+				double newInterFunction = SnowFlake::objetiveFunction(aNewSolution, 1, theProblem);
 
 				//Si mejora la solucion
 				if (newInterFunction > tabuItBestObjectiveFunction) {
@@ -116,7 +115,8 @@ SnowFlakeVector LocalSearchBundles::execute(int maxIteration, SnowFlakeVector &s
 			}
 		}
 
-		double tempObjectiveFunction = SnowFlake::objetiveFunction(visitSolution, interSimilarityWeight);
+		double tempObjectiveFunction = SnowFlake::objetiveFunction(visitSolution, interSimilarityWeight, theProblem
+		);
 
 		if (tempObjectiveFunction > theBestObjectiveSolution) {
 			bestSolution.clear();
@@ -158,7 +158,7 @@ SnowFlake LocalSearchBundles::getWorstBundle(SnowFlakeVector &solution, TabuBund
 
 			for (auto otherBundle : solution) {
 				if (bundle.getIdentificator() != otherBundle.getIdentificator()) {
-					value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
+					value += (1 - SnowFlake::maxPairwiseCompatibility(bundle.ids(), otherBundle.ids(), theProblem));
 				}
 			}
 
@@ -185,7 +185,7 @@ SnowFlake LocalSearchBundles::getCentroidBundle(SnowFlake worstBundle, SnowFlake
 			for (auto otherBundle : solution) {
 				if (bundle.getIdentificator() != otherBundle.getIdentificator()
 				        && otherBundle.getIdentificator() != worstBundle.getIdentificator()) {
-					value += (1 - theProblem.maxPairwiseCompatibility(bundle.ids(), otherBundle.ids()));
+					value += (1 - SnowFlake::maxPairwiseCompatibility(bundle.ids(), otherBundle.ids(), theProblem));
 				}
 			}
 
@@ -212,7 +212,7 @@ SnowFlakeVector LocalSearchBundles::getBetterFlakes(SnowFlake centroid, TabuBund
 		if ((takeTabu && setOfTabuBundles[bundle.getIdentificator()] > 0) ||
 		        (!takeTabu && setOfTabuBundles[bundle.getIdentificator()] == 0)) {
 			temporaryFlakes.push_back(bundle);
-			double newFunction = SnowFlake::objetiveFunction(temporaryFlakes, 1);
+			double newFunction = SnowFlake::objetiveFunction(temporaryFlakes, 1, theProblem);
 
 			if (newFunction > objectiveFunction) {
 				if (newFunction > objectiveFunctionTwo) {

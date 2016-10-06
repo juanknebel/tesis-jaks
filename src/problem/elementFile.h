@@ -10,8 +10,8 @@
 class ElementFile : public Element {
 private:
     void completeMapping() const;
-    std::string convertToJson(const std::vector<SnowFlake>& solution) const;
-    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
+    std::string convertToJson(const std::vector<SnowFlake> &solution) const;
+    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, ProblemInstance &theProblem) const;
 public:
     ElementFile() : Element() {
         this->fileTypeName_ = "type_name.csv";

@@ -9,7 +9,7 @@
 #define TESTSUITES_H_
 
 #include <string>
-#include "../solver/restrictedHACWithSpecificItemSolver.h"
+#include "../solver/algorithms/concretes/restrictedHACWithSpecificItemSolver.h"
 
 void initDefaultDebug();
 

@@ -21,6 +21,8 @@ private:
 	int nextKey;
 public:
 	PriorityQueue();
+	PriorityQueue(const PriorityQueue& otherQue);
+	PriorityQueue& operator=(const PriorityQueue& otherQue);
 	int push(std::pair<int, double> element);
 	std::pair<int, double> top();
 	void pop();

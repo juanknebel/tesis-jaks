@@ -21,7 +21,7 @@
 #ifndef TESTINGCLUSTERANDPICKSOLVER_H
 #define TESTINGCLUSTERANDPICKSOLVER_H
 
-#include "../solver/clusterAndPickSolver.h"
+#include "../solver/algorithms/concretes/clusterAndPickSolver.h"
 
 class TestingClusterAndPickSolver {
 private:

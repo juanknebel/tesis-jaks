@@ -9,103 +9,97 @@ FactorySolver::FactorySolver()
 
 }
 
-std::unique_ptr<Solver> FactorySolver::getTheSolver(ProblemInstance* theProblem, std::string algorithm, std::string strategy, int multiplier, double gamma)
+unique_ptr<Solver>
+FactorySolver::getTheSolver(std::string algorithm, std::string strategy, int multiplier, double gamma, double budget)
 {
+    double interSimilarityWeight = 1.00 - gamma;
     int solverId = FactorySolver::getSolverByName(algorithm);
     ProduceAndChooseSolver::RankingStrategy theStrategy = FactorySolver::getStrategyByName(strategy);
     Solver *theSolver;
 
     switch(solverId) {
         case FactorySolver::ClusterAndPick:
-            theSolver = new ClusterAndPickSolver(theProblem);
+            theSolver = new ClusterAndPickSolver(interSimilarityWeight, budget);
             break;
 
         case FactorySolver::SeqScan:
-            theSolver = new SequentialScanSolver(theProblem);
+            theSolver = new SequentialScanSolver(interSimilarityWeight, budget);
             break;
 
         case FactorySolver::RestrictedHAC:
-            theSolver = new RestrictedHACSolver(theProblem);
+            theSolver = new RestrictedHACSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<RestrictedHACSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<RestrictedHACSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<RestrictedHACSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::RestrictedHACSpecific:
-            theSolver = new RestrictedHACSWithSpecificItemSolver(theProblem);
+            theSolver = new RestrictedHACSWithSpecificItemSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<RestrictedHACSWithSpecificItemSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::RandomBOBO:
-            theSolver = new RandomBOBOSolver(theProblem);
+            theSolver = new RandomBOBOSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<RandomBOBOSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<RandomBOBOSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<RandomBOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::RandomSOBO:
-            theSolver = new RandomSOBOSolver(theProblem);
+            theSolver = new RandomSOBOSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<RandomSOBOSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<RandomSOBOSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<RandomSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::ExAnySimSOBO:
-            theSolver = new ExhaustiveGreedyAnySimSOBOSolver(theProblem);
+            theSolver = new ExhaustiveGreedyAnySimSOBOSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<ExhaustiveGreedyAnySimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::ExSumSimSOBO:
-            theSolver = new ExhaustiveGreedySumSimSOBOSolver(theProblem);
+            theSolver = new ExhaustiveGreedySumSimSOBOSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<ExhaustiveGreedySumSimSOBOSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 
             break;
 
         case FactorySolver::AllGreedySolver:
-            theSolver = new GreedySolver(theProblem);
+            theSolver = new GreedySolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<GreedySolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<GreedySolver *> (theSolver)->setInterSimilarityWeight(gamma);
             }
 
             break;
 
         case FactorySolver::EfficientHAC:
-            theSolver = new RestrictedEfficientHACSolver(theProblem);
+            theSolver = new RestrictedEfficientHACSolver(interSimilarityWeight, budget);
 
             if (theStrategy != ProduceAndChooseSolver::RANK_BY_INTRA) {
                 dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setRankingStrategy(theStrategy);
-                dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setInterSimilarityWeight(gamma);
                 dynamic_cast<RestrictedEfficientHACSolver *> (theSolver)->setNumCandidatesMultiplier(multiplier);
             }
 

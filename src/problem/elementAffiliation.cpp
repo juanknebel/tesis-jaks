@@ -4,6 +4,7 @@
 
 #include "elementAffiliation.h"
 #include "../dao/factoryDao.h"
+#include "../util/system/exception.h"
 #include <boost/property_tree/json_parser.hpp>
 namespace pt = boost::property_tree;
 
@@ -27,29 +28,29 @@ void ElementAffiliation::completeMapping() const
             }
 
             else {
-                //error no puede pasar!!!
+                throw Exception(__FILE__, __LINE__, "Error executing query to complete mapping");
             }
         }
     }
 }
 
 void
-ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const
+ElementAffiliation::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, ProblemInstance &theProblem) const
 {
     std::map<std::string, std::string> *node2name = this->node2name_.get();
     std::ofstream file(fileName.c_str());
     file << "Bundle" << this->separator_ << "Title" << this->separator_ << "Location" << "\n";
 
-    for (auto aFlake : solution) {
-        for (auto anElement : aFlake.ids()) {
-            std::string node = aFlake.getProblemNode(anElement);
-            file << "Bundle " << aFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
+    for (auto aSnowFlake : solution) {
+        for (auto aFlake : aSnowFlake.ids()) {
+            std::string node = aFlake.getNodeId();
+            file << "Bundle " << aSnowFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
         }
     }
 
-    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma)<<"\n";
-    file << "Inter" << this->separator_ << SnowFlake::getInter(solution) << "\n";
-    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
+    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma, theProblem)<<"\n";
+    file << "Inter" << this->separator_ << SnowFlake::getInter(solution, theProblem) << "\n";
+    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, theProblem);
     file.close();
 }
 
@@ -59,11 +60,11 @@ std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solu
     pt::ptree root;
 
     pt::ptree bundlesList;
-    for (auto aFlake : solution) {
+    for (auto aSnowFlake : solution) {
         pt::ptree affiliationList;
-        for (auto aNode : aFlake.ids()) {
+        for (auto aFlake : aSnowFlake.ids()) {
             std::stringstream query;
-            std::string id = aFlake.getProblemNode(aNode);
+            std::string id = aFlake.getNodeId();
             query << "select aff.title, tpd.distributionAffiliation,tpd.distribution_KEY from AFFILIATIONS aff, TopicProfileAffiliations tpd where aff.affiliationId = "
                   << id << " and tpd.AFFILIATION_affiliationId = aff.affiliationId;";
             dao.executeCustomConsultativeQuery(query.str());
@@ -82,7 +83,7 @@ std::string ElementAffiliation::convertToJson(const std::vector<SnowFlake> &solu
             affiliationList.push_back(std::make_pair("", affiliation));
         }
         pt::ptree bundles;
-        bundles.put("bundle", aFlake.getIdentificator());
+        bundles.put("bundle", aSnowFlake.getIdentificator());
         bundles.add_child("papers", affiliationList);
         bundlesList.push_back(std::make_pair("", bundles));
     }

@@ -20,38 +20,63 @@ set(tesis-jaks_source_files
         src/util/system/stringUtilities.cpp
         src/util/system/systemUtilities.cpp
         src/dao/dao.cpp
+        src/dao/daoQt.cpp
+        #src/dao/daoQt.h
+        src/dao/factoryDao.cpp
+        #src/dao/factoryDao.h
         src/executeSolver.cpp
         src/main.cpp
         src/problem/problemInstanceFromDataBase.cpp
         src/problem/problemInstance.cpp
         src/problem/problemInstanceFromFiles.cpp
         src/problem/snowFlake.cpp
+        #src/problem/snowFlake.h
+        src/problem/flake.cpp
+        #src/problem/flake.h
+        src/problem/factoryFlake.cpp
+        #src/problem/factoryFlake.h
+        src/problem/element.cpp
+        #src/problem/element.h
+        src/problem/elementArticle.cpp
+        #src/problem/elementArticle.h
+        src/problem/elementAuthor.cpp
+        #src/problem/elementAuthor.h
+        src/problem/elementAffiliation.cpp
+        #src/problem/elementAffiliation.h
+        src/problem/elementFile.cpp
+        #src/problem/elementFile.h
+        src/problem/factoryProblem.cpp
+        #src/problem/factoryProblem.h
+        src/problem/factoryElement.cpp
+        #src/problem/factoryElement.h
         src/queue/priorityQueue.cpp
         src/matrix/matrixConcrete.cpp
-        src/solver/greedySolver.cpp
-        src/solver/restrictedHACWithSpecificItemSolver.cpp
-        src/solver/clusterAndPickSolver.cpp
-        src/solver/exhaustiveGreedyAnySimSOBOSolver.cpp
-        src/solver/exhaustiveGreedySumSimSOBOSolver.cpp
-        src/solver/exhaustiveSOBOSolver.cpp
-        src/solver/multiplicativeEffortProduceAndChooseSolver.cpp
-        src/solver/produceAndChooseSolver.cpp
-        src/solver/randomBOBOSolver.cpp
-        src/solver/randomSOBOSolver.cpp
-        src/solver/restrictedHACSolver.cpp
-        src/solver/restrictedEfficientHACSolver.cpp
-        src/solver/sequentialScanSolver.cpp
-        src/solver/snowflakesOneByOneSolver.cpp
-        src/solver/solver.cpp
+        src/solver/algorithms/concretes/greedySolver.cpp
+        src/solver/algorithms/concretes/restrictedHACWithSpecificItemSolver.cpp
+        src/solver/algorithms/concretes/clusterAndPickSolver.cpp
+        src/solver/algorithms/concretes/exhaustiveGreedyAnySimSOBOSolver.cpp
+        src/solver/algorithms/concretes/exhaustiveGreedySumSimSOBOSolver.cpp
+        src/solver/algorithms/abstract/exhaustiveSOBOSolver.cpp
+        src/solver/algorithms/abstract/multiplicativeEffortProduceAndChooseSolver.cpp
+        src/solver/algorithms/abstract/produceAndChooseSolver.cpp
+        src/solver/algorithms/concretes/randomBOBOSolver.cpp
+        src/solver/algorithms/concretes/randomSOBOSolver.cpp
+        src/solver/algorithms/concretes/restrictedHACSolver.cpp
+        src/solver/algorithms/concretes/restrictedEfficientHACSolver.cpp
+        src/solver/algorithms/concretes/sequentialScanSolver.cpp
+        src/solver/algorithms/abstract/snowflakesOneByOneSolver.cpp
+        src/solver/algorithms/abstract/solver.cpp
+        src/solver/factorySolver.cpp
+        #src/solver/factorySolver.h
         src/cluster/clustering.cpp
         src/cluster/metisWrapper.cpp
-        src/test/testingClusterAndPickSolver.cpp
-        src/test/testingClustering.cpp
-        src/test/testingMatrix.cpp
-        src/test/testingMetisWrapper.cpp
-        src/test/testingProblemInstance.cpp
-        src/test/testingProblemInstanceFromFiles.cpp
-        src/test/testSuites.cpp
-        src/problem/element.cpp src/problem/element.h src/problem/elementArticle.cpp src/problem/elementArticle.h src/problem/elementAuthor.cpp src/problem/elementAuthor.h src/problem/elementAffiliation.cpp src/problem/elementAffiliation.h src/problem/elementFile.cpp src/problem/elementFile.h src/problem/factoryProblem.cpp src/problem/factoryProblem.h src/solver/factorySolver.cpp src/solver/factorySolver.h src/dao/daoQt.cpp src/dao/daoQt.h src/problem/factoryElement.cpp src/problem/factoryElement.h src/dao/factoryDao.cpp src/dao/factoryDao.h)
+        #src/test/testingClusterAndPickSolver.cpp
+        #src/test/testingClustering.cpp
+        #src/test/testingMatrix.cpp
+        #src/test/testingMetisWrapper.cpp
+        #src/test/testingProblemInstance.cpp
+        #src/test/testingProblemInstanceFromFiles.cpp
+        #src/test/testSuites.cpp
+        )
 add_executable(tesis-jaks ${tesis-jaks_source_files})
 target_link_libraries(tesis-jaks boost_log Qt5::Sql)

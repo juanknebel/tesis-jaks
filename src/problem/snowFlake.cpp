@@ -6,201 +6,182 @@
  */
 
 #include "snowFlake.h"
-#include "../util/system/stringUtilities.h"
-#include <float.h>
 
-double SnowFlake::getMinCompat() const
-{
-	double minCompat = FLT_MAX;
-
-	for (std::set<int>::iterator it = this->elements_.begin(); it != this->elements_.end(); ++it) {
-		for (std::set<int>::iterator it2 = this->elements_.begin(); it2 != this->elements_.end(); ++it2) {
-			double compat = this->problem_->getCompat(*it, *it2);
-
-			if (compat > 0.0 && compat < minCompat) {
-				minCompat = compat;
-			}
-		}
-	}
-
-	return minCompat;
+double calculateCost(std::set<Flake>& elements) {
+    double cost = 0.0;
+    for (auto aFlake : elements) {
+        cost += aFlake.getCost();
+    }
+    return cost;
 }
 
-SnowFlake::SnowFlake()
-{
-	this->elements_ = std::set<int>();
-	this->problem_ = nullptr;
-	this->identificator_ = 0;
+int calculateCoverSize(std::set<Flake>& elements) {
+    int coverSize = 0;
+    for (auto aFlake : elements) {
+        coverSize += aFlake.getCover().size();
+    }
+    return coverSize;
 }
 
-SnowFlake::SnowFlake(const std::set<int>& elements, ProblemInstance* problem)
-{
-	this->problem_ = problem;
-	this->elements_ = std::set<int>(elements);
-	this->identificator_ = 0;
+std::set<int> SnowFlake::getInternalIds() const {
+    std::set<int> ids = std::set<int> ();
+    for (auto aFlake : this->elements_) {
+        ids.insert(aFlake.getId());
+    }
+    return ids;
 }
 
-SnowFlake::SnowFlake(const SnowFlake& snowflake)
-{
-	this->problem_ = snowflake.problem_;
-	this->elements_ = std::set<int>(snowflake.elements_);
-	this->identificator_ = snowflake.getIdentificator();
+SnowFlake::SnowFlake() {
+    this->identificator_ = -1;
+    this->elements_ = std::set<Flake> ();
+    this->cost_ = -1.0;
+    this->coverSize_ = -1;
 }
 
-SnowFlake& SnowFlake::operator=(const SnowFlake& snowflake)
-{
-	this->problem_ = snowflake.problem_;
-	this->elements_.clear();
-	this->elements_ = std::set<int>(snowflake.elements_);
-	this->identificator_ = snowflake.getIdentificator();
-	return *this;
-}
+SnowFlake::SnowFlake(const SnowFlake &snowflake) {
+    this->identificator_ = snowflake.getIdentificator();
+    this->elements_ = std::set<Flake> (snowflake.ids());
+    this->cost_ = calculateCost(this->elements_);
+    this->coverSize_ = calculateCoverSize(this->elements_);
 
-SnowFlake::~SnowFlake()
-{
-	this->elements_.clear();
-	this->problem_ = nullptr;
-}
-
-bool SnowFlake::operator<(const SnowFlake& snowflake) const
-{
-	return snowflake.getSumIntraCompat() < this->getSumIntraCompat();
-}
-
-double SnowFlake::getCost() const
-{
-	double sumCosts = 0.00;
-
-	for (std::set<int>::iterator it = this->elements_.begin(); it != this->elements_.end(); ++it) {
-		sumCosts += this->problem_->getCost(*it);
-	}
-
-	return sumCosts;
-}
-
-int SnowFlake::getCoverSize() const
-{
-	std::set<int> covered;
-
-	for (std::set<int>::iterator it = this->elements_.begin(); it != this->elements_.end(); ++it) {
-		const std::set<int> *aSetToInsert = this->problem_->getCover(*it);
-		covered.insert(aSetToInsert->begin(), aSetToInsert->end());
-	}
-
-	return covered.size();
-}
-
-double SnowFlake::getSumIntraCompat() const
-{
-	double sum = 0.0;
-
-	for (std::set<int>::iterator it = this->elements_.begin(); it != this->elements_.end(); ++it) {
-		for (std::set<int>::iterator it2 = this->elements_.begin(); it2 != this->elements_.end(); ++it2) {
-			if (*it<*it2) {
-				sum += this->problem_->getCompat(*it, *it2);
-			}
-		}
-	}
-
-	return sum;
-}
-
-double SnowFlake::getSumIntraCompatWithSpecificProfile() const
-{
-	double sum = 0.0;
-
-	for (std::set<int>::iterator it = this->elements_.begin(); it != this->elements_.end(); ++it) {
-		for (std::set<int>::iterator it2 = this->elements_.begin(); it2 != this->elements_.end(); ++it2) {
-			if (*it<*it2) {
-				sum += this->problem_->getCompatWithSpecificProfile(*it, *it2);
-			}
-		}
-	}
-
-	return sum;
 
 }
 
-void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector)
-{
-	std::sort(snowFlakesVector.begin(), snowFlakesVector.end());
+SnowFlake::SnowFlake(const std::set<Flake> &elements) {
+    this->identificator_ = -1;
+    this->elements_ = std::set<Flake> (elements);
+    this->cost_ = calculateCost(this->elements_);
+    this->coverSize_ = calculateCoverSize(this->elements_);
 }
 
-std::set<int>& SnowFlake::ids() const
-{
-	return const_cast<std::set<int>&> (this->elements_);
+SnowFlake &SnowFlake::operator=(const SnowFlake &snowflake) {
+    this->identificator_ = snowflake.getIdentificator();
+    this->elements_ = std::set<Flake> (snowflake.ids());
+    this->cost_ = calculateCost(this->elements_);
+    this->coverSize_ = calculateCoverSize(this->elements_);
+    return *this;
 }
 
-std::string SnowFlake::getProblemNode(int aNode) const
-{
-	return this->problem_->getNode(aNode);
+
+SnowFlake::~SnowFlake() {
+    this->identificator_ = -1;
+    this->elements_.clear();
 }
 
-double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, double gamma)
-{
-	double sumIntraCompat = SnowFlake::getIntra(solution);
-	double sumOneMinusInter = SnowFlake::getInter(solution);
-
-	return ((1.0 - gamma) * sumIntraCompat) + (gamma * sumOneMinusInter);
+bool SnowFlake::operator<(const SnowFlake& snowflake) const {
+    /*
+     * TODO: arreglar esto!
+     * return snowflake.getSumIntraCompat() < this->getSumIntraCompat();
+     */
+    return false;
 }
 
-double SnowFlake::getIntra(const std::vector<SnowFlake> &solution)
-{
-	double sumIntraCompat = 0.00;
-
-	for (auto aFlake : solution) {
-		sumIntraCompat += (aFlake.ids().size() > 0) ? aFlake.getSumIntraCompat() : 0;
-	}
-
-	return sumIntraCompat;
-}
-
-double SnowFlake::getInter(const std::vector<SnowFlake> &solution)
-{
-	double sumOneMinusInter = 0.00;
-
-	for (std::vector<SnowFlake>::const_iterator it = solution.begin(); it != solution.end(); ++it) {
-		if (it->ids().size() > 0) {
-			for (std::vector<SnowFlake>::const_iterator it2 = it; it2 != solution.end(); ++it2) {
-				if (it2->ids().size() > 0) {
-					sumOneMinusInter += 1.0 - it->problem_->maxPairwiseCompatibility(it->ids(), it2->ids());
-				}
-			}
-		}
-	}
-
-	return sumOneMinusInter;
-}
-
-int SnowFlake::getIdentificator() const
-{
-	return this->identificator_;
-}
-
-void SnowFlake::setIdentificator(int theIdentificator)
-{
-	this->identificator_ = theIdentificator;
-}
-
-double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake)
-{
-	return aSnowFlake.problem_->maxPairwiseCompatibility(aSnowFlake.ids(), otherSnowFlake.ids());
-}
-
-std::ostream& operator<< (std::ostream& stream, const SnowFlake& snowFlake)
-{
+std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake) {
     int i = 1, count = snowFlake.ids().size();
-	for (auto anElement : snowFlake.ids()) {
+    for (auto anElement : snowFlake.ids()) {
         if (i == count) {
             stream << anElement;
         } else {
-        stream << anElement << ",";
+            stream << anElement << ",";
         }
         i++;
-	}
-	return stream;
+    }
+    return stream;
 }
 
-double SnowFlake::getCostNode(int aNode) const {
-	return this->problem_->getCost(aNode);
+const std::set<Flake>& SnowFlake::ids() const {
+    return this->elements_;
+}
+
+int SnowFlake::getIdentificator() const {
+    return this->identificator_;
+}
+
+void SnowFlake::setIdentificator(int theIdentificator) {
+    this->identificator_ = theIdentificator;
+}
+
+double SnowFlake::getCost() const {
+    return this->cost_;
+}
+
+int SnowFlake::getCoverSize() const {
+    return this->coverSize_;
+}
+
+double SnowFlake::getSumIntraCompat(const SnowFlake& snowFlake, ProblemInstance& theProblem) {
+    double sumCompat = 0.0;
+    std::set<Flake> ids = snowFlake.ids();
+    for (auto aFlakeIt = ids.begin(); aFlakeIt != ids.end(); ++aFlakeIt) {
+        for (auto otherFlakeIt = ids.begin(); otherFlakeIt != ids.end(); ++otherFlakeIt) {
+            sumCompat += Flake::getCompat(*aFlakeIt, *otherFlakeIt, theProblem);
+        }
+    }
+    return sumCompat;
+}
+
+double SnowFlake::getSumIntraCompatWithSpecificProfile(const SnowFlake& snowFlake, ProblemInstance& theProblem) {
+    double sumCompat = 0.0;
+    std::set<Flake> ids = snowFlake.ids();
+    for (auto aFlakeIt = ids.begin(); aFlakeIt != ids.end(); ++aFlakeIt) {
+        for (auto otherFlakeIt = ids.begin(); otherFlakeIt != ids.end(); ++otherFlakeIt) {
+            sumCompat += Flake::getCompat(*aFlakeIt, *otherFlakeIt, theProblem);
+            //sum += this->problem_->getCompatWithSpecificProfile(*it, *it2);
+        }
+    }
+    return sumCompat;
+}
+
+double SnowFlake::getMinCompat(const SnowFlake& snowFlake, ProblemInstance& theProblem) {
+    double minCompat = std::numeric_limits<double>::max();
+    std::set<Flake> ids = snowFlake.ids();
+    for (auto aFlakeIt = ids.begin(); aFlakeIt != ids.end(); ++aFlakeIt) {
+        for (auto otherFlakeIt = ids.begin(); otherFlakeIt != ids.end(); ++otherFlakeIt) {
+            double compat = Flake::getCompat(*aFlakeIt, *otherFlakeIt, theProblem);
+            if (compat > 0.0 && compat < minCompat) {
+                minCompat = compat;
+            }
+        }
+    }
+    return minCompat;
+}
+
+
+double SnowFlake::objetiveFunction(const std::vector<SnowFlake>& solution, double gamma, ProblemInstance& theProblem) {
+    double sumIntraCompat = SnowFlake::getIntra(solution, theProblem);
+    double sumOneMinusInter = SnowFlake::getInter(solution, theProblem);
+    return ((1.0 - gamma) * sumIntraCompat) + (gamma * sumOneMinusInter);
+}
+
+double SnowFlake::getInter(const std::vector<SnowFlake> &solution, ProblemInstance& theProblem) {
+    double sumIntraCompat = 0.0;
+    for (auto aSnowFlake : solution) {
+        sumIntraCompat += (aSnowFlake.ids().size() > 0) ? SnowFlake::getSumIntraCompat(aSnowFlake, theProblem) : 0;
+    }
+    return sumIntraCompat;
+}
+
+double SnowFlake::getIntra(const std::vector<SnowFlake> &solution, ProblemInstance& theProblem) {
+    double sumOneMinusInter = 0.00;
+    for (auto aSnowFlakeIt = solution.begin(); aSnowFlakeIt != solution.end(); ++aSnowFlakeIt) {
+        if (aSnowFlakeIt->ids().size() > 0) {
+            for (auto otherSnowFlakeIt = aSnowFlakeIt; otherSnowFlakeIt != solution.end(); ++otherSnowFlakeIt) {
+                if (otherSnowFlakeIt->ids().size() > 0) {
+                    sumOneMinusInter += 1.0 - SnowFlake::maxPairwiseCompatibility(*aSnowFlakeIt, *otherSnowFlakeIt, theProblem);
+                }
+            }
+        }
+    }
+    return sumOneMinusInter;
+}
+
+double SnowFlake::maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake, ProblemInstance& theProblem) {
+    return theProblem.maxPairwiseCompatibility(aSnowFlake.getInternalIds(), otherSnowFlake.getInternalIds());
+}
+
+void SnowFlake::sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector, ProblemInstance& theProblem) {
+    /*
+     * TODO: arreglar esto
+     */
+    //std::sort(snowFlakesVector.begin(), snowFlakesVector.end());
 }

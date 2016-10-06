@@ -65,3 +65,16 @@ PriorityQueue::~PriorityQueue()
 	delete this->theQueue_;
 	delete this->blackListElements_;
 }
+
+PriorityQueue::PriorityQueue(const PriorityQueue &otherQue) {
+	this->theQueue_ = new PrtyQueueTupleIntDouble(*otherQue.theQueue_);
+	this->blackListElements_ = new std::map<int, bool>(*otherQue.blackListElements_);
+	this->nextKey = otherQue.nextKey;
+}
+
+PriorityQueue &PriorityQueue::operator=(const PriorityQueue &otherQue) {
+	this->theQueue_ = new PrtyQueueTupleIntDouble(*otherQue.theQueue_);
+	this->blackListElements_ = new std::map<int, bool>(*otherQue.blackListElements_);
+	this->nextKey = otherQue.nextKey;
+	return *this;
+}

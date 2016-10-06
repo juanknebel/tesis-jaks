@@ -33,22 +33,22 @@ void ElementFile::completeMapping() const
     file.close();
 }
 
-void ElementFile::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const
+void ElementFile::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, ProblemInstance &theProblem) const
 {
     std::map<std::string, std::string> *node2name = this->node2name_.get();
     std::ofstream file(fileName.c_str());
     file << "Bundle" << this->separator_ << "AtractionId" << this->separator_ << "Atraction" << "\n";
 
-    for (auto aFlake : solution) {
-        for (auto anElement : aFlake.ids()) {
-            std::string node = aFlake.getProblemNode(anElement);
-            file << "Bundle " << aFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
+    for (auto aSnowFlake : solution) {
+        for (auto aFlake : aSnowFlake.ids()) {
+            std::string node = aFlake.getNodeId();
+            file << "Bundle " << aSnowFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
         }
     }
 
-    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma)<<"\n";
-    file << "Inter" << this->separator_ << SnowFlake::getInter(solution) << "\n";
-    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
+    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma, theProblem)<<"\n";
+    file << "Inter" << this->separator_ << SnowFlake::getInter(solution, theProblem) << "\n";
+    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, theProblem);
     file.close();
 }
 

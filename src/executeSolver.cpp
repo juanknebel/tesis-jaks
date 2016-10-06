@@ -23,16 +23,17 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     std::cout << "Directorio destino de los archivos: " << directory << std::endl;
 
     std::unique_ptr<Element> theElement = std::move(FactoryElement::getTheElement(element));
-    std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(theElement.get(), budget));
-    std::unique_ptr<Solver> theSolver = std::move(FactorySolver::getTheSolver(theProblem.get(), algorithm, strategy, numFlakes, gamma));
+    std::unique_ptr<ProblemInstance> theProblem = std::move(FactoryProblem::getTheProblem(*theElement.get(), budget));
+    std::unique_ptr<Solver> theSolver = std::move(
+            FactorySolver::getTheSolver(algorithm, strategy, numFlakes, gamma, budget));
 
-    SnowFlakeVector* solution = 0;
+    SnowFlakeVector solution;
     SnowFlakeVector newSolution;
 
     try {
-        solution = theSolver.get()->solve(toProduce);
+        solution = Solver::execute(*theProblem.get(), *theSolver.get(), toProduce);
         LocalSearch localSearch;
-        newSolution = localSearch.execute(maxIter,*solution, *theProblem.get(), gamma);
+        newSolution = localSearch.execute(maxIter, solution, *theProblem.get(), gamma, budget);
     }
 
     catch (Exception& e) {
@@ -41,7 +42,7 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     }
 
     int i=0;
-    for (auto& bundle : *solution) {
+    for (auto& bundle : solution) {
         bundle.setIdentificator(i);
         i++;
     }
@@ -52,21 +53,19 @@ void executeNew(std::string element, std::string algorithm, std::string strategy
     fileNameTabu << directory << algorithm << strategy << "Gamma-" << gamma;
 
     if (json) {
-        Element::saveJson(*solution, *theElement.get(), fileName.str() + ".json");
+        Element::saveJson(solution, *theElement.get(), fileName.str() + ".json");
         Element::saveJson(newSolution, *theElement.get(), fileNameTabu.str() + "-Tabu.json");
     }
 
     if (writeToFile) {
-        Element::saveSolution(*solution, fileName.str() + ".csv", gamma, *theElement.get());
-        Element::saveSolution(newSolution, fileNameTabu.str() + "-Tabu.csv", gamma, *theElement.get());
+        Element::saveSolution(solution, fileName.str() + ".csv", gamma, *theElement.get(), *theProblem.get());
+        Element::saveSolution(newSolution, fileNameTabu.str() + "-Tabu.csv", gamma, *theElement.get(), *theProblem.get());
     }
 
     if (printToScreen) {
-        std::cout << Element::showInScreen(*theElement.get(), *solution) << std::endl;
-        std::cout << Element::showInScreen(*theElement.get(), newSolution) << std::endl;
-        std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(*solution, gamma)<<std::endl;
-        std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma)<<std::endl;
+        std::cout << Element::showInScreen(*theElement.get(), solution, *theProblem.get()) << std::endl;
+        std::cout << Element::showInScreen(*theElement.get(), newSolution, *theProblem.get()) << std::endl;
+        std::cout<<"Primera solucion: "<<SnowFlake::objetiveFunction(solution, gamma, *theProblem.get())<<std::endl;
+        std::cout<<"Segunda solucion: "<<SnowFlake::objetiveFunction(newSolution, gamma, *theProblem.get())<<std::endl;
     }
-
-    delete solution;
 }

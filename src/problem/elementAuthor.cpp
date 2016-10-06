@@ -34,22 +34,22 @@ void ElementAuthor::completeMapping() const
     }
 }
 
-void ElementAuthor::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const
+void ElementAuthor::writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, ProblemInstance &theProblem) const
 {
     std::map<std::string, std::string> *node2name = this->node2name_.get();
     std::ofstream file(fileName.c_str());
     file << "Bundle" << this->separator_ << "Author" << this->separator_ << "Affiliation" << "\n";
 
-    for (auto aFlake : solution) {
-        for (auto anElement : aFlake.ids()) {
-            std::string node = aFlake.getProblemNode(anElement);
-            file << "Bundle " << aFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
+    for (auto aSnowFlake : solution) {
+        for (auto aFlake : aSnowFlake.ids()) {
+            std::string node = aFlake.getNodeId();
+            file << "Bundle " << aSnowFlake.getIdentificator() << this->separator_ << (*node2name)[node] << this->separator_ << "\n";
         }
     }
 
-    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma)<<"\n";
-    file << "Inter" << this->separator_ << SnowFlake::getInter(solution) << "\n";
-    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution);
+    file << "Objetive function" << this->separator_ << SnowFlake::objetiveFunction(solution, gamma, theProblem)<<"\n";
+    file << "Inter" << this->separator_ << SnowFlake::getInter(solution, theProblem) << "\n";
+    file << "Intra" << this->separator_ << SnowFlake::getIntra(solution, theProblem);
     file.close();
 }
 
@@ -59,11 +59,11 @@ std::string ElementAuthor::convertToJson(const std::vector<SnowFlake> &solution)
     pt::ptree root;
 
     pt::ptree bundlesList;
-    for (auto aFlake : solution) {
+    for (auto aSnowFlake : solution) {
         pt::ptree authorList;
-        for (auto aNode : aFlake.ids()) {
+        for (auto aFlake : aSnowFlake.ids()) {
             std::stringstream query;
-            std::string id = aFlake.getProblemNode(aNode);
+            std::string id = aFlake.getNodeId();
             query << "select aut.name, tpd.distributionAuthor,tpd.distribution_KEY from AUTHORS aut, TopicProfileAuthors tpd where aut.AuthorId = "
                   << id << " and tpd.authors_AuthorId = aut.AuthorId;";
             dao.executeCustomConsultativeQuery(query.str());
@@ -82,7 +82,7 @@ std::string ElementAuthor::convertToJson(const std::vector<SnowFlake> &solution)
             authorList.push_back(std::make_pair("", author));
         }
         pt::ptree bundles;
-        bundles.put("bundle", aFlake.getIdentificator());
+        bundles.put("bundle", aSnowFlake.getIdentificator());
         bundles.add_child("papers", authorList);
         bundlesList.push_back(std::make_pair("", bundles));
     }

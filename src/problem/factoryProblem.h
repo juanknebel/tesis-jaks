@@ -15,8 +15,7 @@ private:
     FactoryProblem();
 
 public:
-    static std::unique_ptr<ProblemInstance> getTheProblem(const Element *element, double budget);
-
+    static std::unique_ptr<ProblemInstance> getTheProblem(const Element &element, double budget);
 };
 
 

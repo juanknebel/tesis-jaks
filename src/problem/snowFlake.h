@@ -8,46 +8,43 @@
 #ifndef SNOWFLAKE_H_
 #define SNOWFLAKE_H_
 
-//#include "../util/identificator/id2Str.h"
-#include "problemInstance.h"
+#include <set>
+#include "flake.h"
+#include <vector>
 
 class SnowFlake {
 private:
-	/**
-	 * The elements this snowflake is composed of.
-	 */
-	std::set<int> elements_;
-	/**
-	 * The problem instance for which this snowflake was generated.
-	 */
-	ProblemInstance *problem_;
-
+	std::set<Flake> elements_;
 	int identificator_;
+    double cost_;
+    int coverSize_;
+    std::set<int> getInternalIds() const;
 
 public:
 	SnowFlake();
 	SnowFlake(const SnowFlake& snowflake);
-	SnowFlake(const std::set<int>& elements, ProblemInstance* problem);
+	SnowFlake(const std::set<Flake>& elements);
 	SnowFlake& operator=(const SnowFlake& snowflake);
 	~SnowFlake();
 	bool operator<(const SnowFlake& snowflake) const;
-
-	double getCost() const;
-	double getCostNode(int aNode) const;
-	int getCoverSize() const;
-	double getSumIntraCompat() const;
-	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector);
-	std::set<int>& ids() const;
-	std::string getProblemNode(int aNode) const;
-	static double objetiveFunction(const std::vector<SnowFlake>& solution, double gamma);
-	int getIdentificator() const;
-	void setIdentificator(int theIdentificator);
-	static double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake);
-	static double getInter(const std::vector<SnowFlake> &solution);
-	static double getIntra(const std::vector<SnowFlake> &solution);
-	double getSumIntraCompatWithSpecificProfile() const;
 	friend std::ostream& operator<< (std::ostream& stream,const SnowFlake& snowFlake);
-	double getMinCompat() const;
+	const std::set<Flake>& ids() const;
+    int getIdentificator() const;
+    void setIdentificator(int theIdentificator);
+    double getCost() const;
+    int getCoverSize() const;
+
+
+	static double getSumIntraCompat(const SnowFlake& snowFlake, ProblemInstance& theProblem);
+    static double getSumIntraCompatWithSpecificProfile(const SnowFlake& snowFlake, ProblemInstance& theProblem);
+    static double getMinCompat(const SnowFlake& snowFlake, ProblemInstance& theProblem);
+
+    static double objetiveFunction(const std::vector<SnowFlake>& solution, double gamma, ProblemInstance& theProblem);
+	static double getInter(const std::vector<SnowFlake> &solution, ProblemInstance& theProblem);
+	static double getIntra(const std::vector<SnowFlake> &solution, ProblemInstance& theProblem);
+    static double maxPairwiseCompatibility(const SnowFlake& aSnowFlake, const SnowFlake& otherSnowFlake, ProblemInstance& theProblem);
+	static void sortByDecresingSumCompat(std::vector<SnowFlake>& snowFlakesVector, ProblemInstance& theProblem);
+
 };
 
 #endif /* SNOWFLAKE_H_ */

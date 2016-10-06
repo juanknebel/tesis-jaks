@@ -8,9 +8,10 @@
 
 #include <iostream>
 #include "executeSolver.h"
-#include "test/testSuites.h"
+//#include "test/testSuites.h"
 #include <boost/program_options.hpp>
 #include "util/algorithm/vectornorm.h"
+#include "util/system/stringUtilities.h"
 
 std::string version = "0.9.5-beta";
 
@@ -19,7 +20,7 @@ namespace po = boost::program_options;
 void usingTestHardcode()
 {
 	//testOverLoadFunction();
-	testDB();
+	//testDB();
 	//testMatrix();
 	//testProblemInstanceFromFiles("../files/");
 	//testMetisWrapper();
@@ -44,7 +45,7 @@ bool processCommandLine(int argc, char ** argv, int& option, std::string& elemen
                 ("version,v", "Muestra el número de version")
                 ("option,o", po::value<int>(&option)->required(), "Opciones de ejecución")
                 ("element,e", po::value<std::string>(&element)->required(), "Elemento: AUTHOR, ARTICLE, AFFILIATION, FILE")
-                ("algorithm,a", po::value<std::string>(&algorithm)->required(), "Algoritmos: EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO, RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific")
+                ("algorithms,a", po::value<std::string>(&algorithm)->required(), "Algoritmos: EfficientHAC, RestrictedHAC, RandomBOBO, AllGreedySolver, ExSumSimSOBO, ExAnySimSOBO, RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific")
                 ("strategy,s", po::value<std::string>(&strategy)->required(), "Estrategias: RANK_BY_INTRA, RANK_BY_INTRA_INTER, RANK_BY_DENSEST_SUBGRAPH, RANK_BY_INTRA_INTER_TUPLE, RANK_BY_INTRA_INTER_PROPORTIONAL")
                 ("budget,b", po::value<double>(&budget)->required(), "Presupuesto > 0")
                 ("gamma,g", po::value<double>(&gamma)->required(), "Valor del gamma (0 <= gamma <= 1")
@@ -91,7 +92,7 @@ std::vector<float> generateVector(char *theVector, int dimension)
 
 	stringToVectorSplit(theVector,separator,vectorString);
 
-	for (std::vector<string>::const_iterator i = vectorString.begin(); i != vectorString.end(); ++i) {
+	for (std::vector<std::string>::const_iterator i = vectorString.begin(); i != vectorString.end(); ++i) {
 		vectorProfile.push_back(convertToDouble(*i));
 	}
 

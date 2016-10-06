@@ -12,8 +12,8 @@
 class ElementArticle : public Element {
 private:
     void completeMapping() const;
-    std::string convertToJson(const std::vector<SnowFlake>& solution) const;
-    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
+    std::string convertToJson(const std::vector<SnowFlake> &solution) const;
+    void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, ProblemInstance &theProblem) const;
 public:
     ElementArticle() : Element() {
         this->tableCost_ = "ARTICLES";

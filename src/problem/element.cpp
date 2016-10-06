@@ -114,7 +114,7 @@ const std::string &Element::getElementType() const {
     return elementType_;
 }
 
-std::string Element::showInScreen(const Element &element, std::vector<SnowFlake> &solution)
+std::string Element::showInScreen(const Element &element, std::vector<SnowFlake> &solution, ProblemInstance &theProblem)
 {
     std::string result = "\n";
     int avgCost = 0;
@@ -123,12 +123,12 @@ std::string Element::showInScreen(const Element &element, std::vector<SnowFlake>
     int avgSumIntraCompat = 0;
     int solutionsSize = solution.size();
 
-    for (auto aFlake : solution) {
-        avgCost += aFlake.getCost();
-        avgCover += aFlake.getCoverSize();
-        avgSize += aFlake.ids().size();
-        avgSumIntraCompat += aFlake.getSumIntraCompat();
-        result.append(Element::showInScreen(element, aFlake));
+    for (auto aSnowFlake : solution) {
+        avgCost += aSnowFlake.getCost();
+        avgCover += aSnowFlake.getCoverSize();
+        avgSize += aSnowFlake.ids().size();
+        avgSumIntraCompat += SnowFlake::getSumIntraCompat(aSnowFlake, theProblem);
+        result.append(Element::showInScreen(element, aSnowFlake, theProblem));
     }
 
     result.append("-------------------------------------------------\n");
@@ -141,12 +141,12 @@ std::string Element::showInScreen(const Element &element, std::vector<SnowFlake>
     return result;
 }
 
-std::string Element::showInScreen(const Element &element, const SnowFlake &snowFlake) {
+std::string Element::showInScreen(const Element &element, const SnowFlake &snowFlake, ProblemInstance &theProblem) {
     std::map<std::string, std::string> *node2name = element.node2name_.get();
     std::string result = "";
-    for (auto anElement : snowFlake.ids()) {
-        std::string node = snowFlake.getProblemNode(anElement);;
-        double cost = snowFlake.getCostNode(anElement);
+    for (auto aFlake : snowFlake.ids()) {
+        std::string node = aFlake.getNodeId();
+        double cost = aFlake.getCost();
         result.append(" * ");
         result.append(node + " " + (*node2name)[node]);
         result.append(" (cost=" + convertToString(cost) + ")\n");
@@ -155,8 +155,8 @@ std::string Element::showInScreen(const Element &element, const SnowFlake &snowF
     result.append("SIZE             = " + convertToString((int)snowFlake.ids().size()) + "\n");
     result.append("COVERAGE         = " + convertToString(snowFlake.getCoverSize()) + "\n");
     result.append("COST             = " + convertToString(snowFlake.getCost()) + "\n");
-    result.append("MIN_INTRA_COMPAT = " + convertToString(snowFlake.getMinCompat()) + "\n");
-    result.append("SUM_INTRA_COMPAT = " + convertToString(snowFlake.getSumIntraCompat()) + "\n\n");
+    result.append("MIN_INTRA_COMPAT = " + convertToString(SnowFlake::getMinCompat(snowFlake, theProblem)) + "\n");
+    result.append("SUM_INTRA_COMPAT = " + convertToString(SnowFlake::getSumIntraCompat(snowFlake, theProblem)) + "\n\n");
     return result;
 }
 
@@ -164,8 +164,9 @@ std::string Element::convertToJson(const std::vector<SnowFlake> &solution, const
     return element.convertToJson(solution);
 }
 
-void Element::saveSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, const Element &element) {
-    element.writeSolution(solution, fileName, gamma);
+void Element::saveSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma, const Element &element,
+                           ProblemInstance &theProblem) {
+    element.writeSolution(solution, fileName, gamma, theProblem);
 }
 
 void Element::saveJson(const std::vector<SnowFlake> &solution, const Element &element, std::string fileName) {

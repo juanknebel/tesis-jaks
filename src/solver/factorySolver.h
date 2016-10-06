@@ -5,17 +5,16 @@
 #ifndef TESIS_JAKS_EXE_FACTORYSOLVER_H
 #define TESIS_JAKS_EXE_FACTORYSOLVER_H
 #include <memory>
-#include "../problem/problemInstance.h"
-#include "clusterAndPickSolver.h"
-#include "restrictedHACSolver.h"
-#include "restrictedEfficientHACSolver.h"
-#include "randomSOBOSolver.h"
-#include "randomBOBOSolver.h"
-#include "exhaustiveGreedyAnySimSOBOSolver.h"
-#include "exhaustiveGreedySumSimSOBOSolver.h"
-#include "sequentialScanSolver.h"
-#include "restrictedHACWithSpecificItemSolver.h"
-#include "greedySolver.h"
+#include "algorithms/concretes/clusterAndPickSolver.h"
+#include "algorithms/concretes/restrictedHACSolver.h"
+#include "algorithms/concretes/restrictedEfficientHACSolver.h"
+#include "algorithms/concretes/randomSOBOSolver.h"
+#include "algorithms/concretes/randomBOBOSolver.h"
+#include "algorithms/concretes/exhaustiveGreedyAnySimSOBOSolver.h"
+#include "algorithms/concretes/exhaustiveGreedySumSimSOBOSolver.h"
+#include "algorithms/concretes/sequentialScanSolver.h"
+#include "algorithms/concretes/restrictedHACWithSpecificItemSolver.h"
+#include "algorithms/concretes/greedySolver.h"
 
 class FactorySolver {
 public:
@@ -24,7 +23,8 @@ public:
         RandomSOBO, SeqScan, ClusterAndPick, RestrictedHACSpecific
     };
 
-    static std::unique_ptr<Solver> getTheSolver(ProblemInstance* theProblem, std::string algorithm, std::string strategy, int multiplier, double gamma);
+    static unique_ptr<Solver>
+    getTheSolver(std::string algorithm, std::string strategy, int multiplier, double gamma, double budget);
 
 private:
     FactorySolver();
