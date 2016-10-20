@@ -24,7 +24,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
     std::vector<int> centroidTimes;
 	double theBestObjectiveSolution = SnowFlake::objetiveFunction(bestSolution, interSimilarityWeight);
 
-    maxIter = 1001;
 	int id = 0;
 	int tabuBundleCount = solution.size();
 	int tabuElementCount = 2*maxIter/tabuBundleCount;
@@ -50,7 +49,6 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
         centroidTimes.push_back(0);
 	}
 
-	maxIter = 1001;
 	int iteration = 0;
 
 	//LOG_DEBUG<<"FnObjetivoInicial\t"<<theBestObjectiveSolution<<"\n";
@@ -135,7 +133,7 @@ SnowFlakeVector LocalSearch::execute(int maxIter, const SnowFlakeVector& solutio
         LocalSearch::SnowFlakeWithChooseElement bundleAndElement = bundleAndElementNotTabu;
         //LocalSearch::SnowFlakeWithChooseElement bundleAndElement = bundleAndElementTabu;
 
-        //logToFile(iteration, bundleWithWorstInter, centroidElement, farAwayElement, bundleAndElement.theIdOfTheChoosenElement, bundleAndElement.objetiveFunction, bundleAndElement.theSnowflake);
+        logToFile(iteration, bundleWithWorstInter, centroidElement, farAwayElement, bundleAndElement.theIdOfTheChoosenElement, bundleAndElement.objetiveFunction, bundleAndElement.theSnowflake);
 
         //Actualizo la mejor solucion global
 		if (bundleAndElement.objetiveFunction > theBestObjectiveSolution) {
