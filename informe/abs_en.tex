@@ -1,15 +1,21 @@
 %\begin{center}
-%\large \bf \runtitulo
+%\large \bf \runtitle
 %\end{center}
 %\vspace{1cm}
-\chapter*{\runtitulo}
+\chapter*{\runtitle}
 
-\noindent Las búsquedas tradicionales ofrecen soluciones que solo tienen en cuenta un solo atributo de los elementos y no la relación que estos tienen con el resto del universo. Las mismas suelen ofrecer una lista ordenada de resultados relacionadas con
-el criterio utilizado. Ocasionando, muchas veces, re formular la consulta original para así lograr una solución adecuada al criterio de búsqueda elegido previamente.\\
-Los algoritmos de agrupación clásicos o clustering generan conjuntos de soluciones, al igual que las búsquedas tradicionales, en los cuales los elementos dentro de cada conjunto (o cluster) tiene una relación directa con la búsqueda original y además se encuentran relacionados de alguna manera (generalmente una similitud o distancia). Aún así, éstas soluciones no tienen en cuenta ningún atributo que represente la complementaridad que existe entre los elementos, ocasionando que la solución encontrada contenga conjuntos de objetos muy similares sin diversidad. La relación entre los cluster no es sujeto de ningún análisis en estos algoritmos. En orden de lograr una solución con mayor diversidad (evitar cluster similares) y que cumpla las expectativas del usuario, debería existir un análisis entre los clusters.\\
-Como respuesta a éste último comportamiento surge Composite Retrieval of Diverse and Complementary Bundles \cite{compositeRetrival}, su objetivo es agrupar elementos en bundles en los cuales los elementos dentro de ellos se encuentran relacionados internamente bajo algún criterio de similitud y a la vez sean complementarios de forma tal que satisfaga las expectativas del usuario y no tenga la necesidad de realizar una nueva intervención logrando así una mejor experiencia de búsqueda.\\
-En este trabajo se tomaron las ideas ya desarrolladas previamente en \cite{compositeRetrival}, se propuso un nuevo algoritmo, nuevas mejoras y enfoques en orden de mejorar los resultados que se obtuvieron originalmente y los tiempos de ejecución para instancias más grandes. Las nuevas aplicaciones se aplicaron a la resolución de búsquedas sobre una base de datos de artículos científicos pertenecientes a la Ingeniería de Software \cite{dataDrive} y sobre una instancia conformada por atracciones turísticas de Europa.
+\noindent 
 
+Los usuarios de Internet, u otros medios informáticos, constantemente realizan búsquedas para hallar elementos de su interés, generalmente a través de palabras o frases. A lo largo del desarrollo de Internet las búsquedas fueron adquiriendo cada vez más importancia por la enorme cantidad de información que día a día se almacena en los distintos servidores del planeta.
+
+Las búsquedas tradicionales ofrecen soluciones que únicamente tienen en cuenta un atributo de los elementos y no la relación que éstos tienen con el resto del universo. Las mismas suelen ofrecer una lista ordenada de resultados relacionados con el criterio de búsqueda utilizado. Muchas veces esto ocasiona la necesidad de reformular la consulta original para así lograr una solución adecuada al criterio de búsqueda elegido previamente.
+
+Como respuesta a este último comportamiento se propone que el resultado de la búsqueda esté compuesta por conjuntos de elementos. Estos conjuntos, conocidos como {\em paquetes}, tienen la particularidad de que los elementos conformantes se encuentran relacionados internamente bajo algún criterio de similitud y a la vez son complementarios. El propósito es que la relación de los elementos de un paquete satisfaga las expectativas del usuario y no tenga la necesidad de realizar una nueva intervención, logrando así una mejor experiencia de búsqueda.
+
+Este tipo de búsqueda de elementos complementarios y compatibles, conectados mediante algún tipo de relación, generó el estudio de la {\em recuperación compuesta de información}. Es decir, el estudio de métodos para crear, recuperar y valorizar respuestas compuestas, organizando los resultados en paquetes de elementos. Esto ayuda a los usuarios a explorar un gran número de elementos relevantes de una forma más eficiente.
+
+En este trabajo se proponen algoritmos heurísticos para realizar este tipo de búsquedas. Los mismos son experimentalmente evaluados en dos bases de datos una de artículos relacionados con ingeniería de software y otra de atracciones turísticas, a partir de esta evaluación podemos concluir que tienen una muy buena performance, mejorando los existentes en la literatura.
 \bigskip
 
-\noindent\textbf{Palabras claves:} Composite Retrieval, Similitud, Complementaridad, Búsqueda Tabú, Generación de paquetes, Agrupamiento.
+
+\noindent\textbf{Palabras claves:} Recuperación de la información, Agrupamiento, Heuristícas.
