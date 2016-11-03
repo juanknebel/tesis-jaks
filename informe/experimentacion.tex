@@ -244,9 +244,9 @@ En la misma figura se compara las soluciones obtenidas por los algoritmos $alg2$
 \end{figure}
 
 \subsubsection{Búsqueda de autores}
-En la tabla \ref{tabla:comp2} se muestran los porcentajes de deterioro de cada solución con respecto a la mejor obtenida para la búsqueda de autores que escribieron artículos de tópicos similares que están afiliados a distintas universidades. Se observa que en este caso, a diferencia de la búsqueda de artículos, el algoritmo tabú no halló una mejor solución.
+En la tabla \ref{tabla:comp2} se muestran los porcentajes de deterioro de cada solución con respecto a la mejor obtenida para la búsqueda de autores que escribieron artículos de tópicos similares que están afiliados a distintas universidades. Se observa que en este caso, a diferencia de la búsqueda de artículos, el algoritmo tabú halló en todos los casos la mejor solución. Con la particularidad que el algoritmo goloso tuvo muy poco deterioro con respecto a la mejor solución, alcanzando en algunos casos la misma solución.
 
-En PAC no hubo una diferencia considerable entre las estrategias de producción $C-HAC$ e $Inter-Intra C-HAC$. Igualmente estos algoritmos jerárquicos siguen demostrando que obtienen una mejor solución que $BOBO$. En cuanto a la etapa de selección, cuando la producción de paquetes se realizó con $BOBO$ no se detectó una mejora con la estrategia con la selección proporcional propuesta en este trabajo. Al igual a lo ocurrido en la búsqueda de artículos, el algoritmo goloso generó para todos los gammas una solución mejor que $BOBO$. En cuanto a la búsqueda tabú, a partir de las soluciones iniciales del algoritmo $alg3$ encontró soluciones mejores promedediando una mejora al rededor del $30\%$. Así como también encontró mejores soluciones para $alg5$ y $alg7$
+Los algoritmos jerárquicos $C-HAC$ e $Inter-Intra C-HAC$ siguen demostrando que obtienen las mejores soluciones en comparación a $BOBO$, sobre todo $alg6$ que contiene la búsqueda tabú. Éstas búsquedas vuelven a indicar que las soluciones pueden ser mejoradas en porcentajes muy significativos como ocurrió en el caso del algoritmo $alg3$, mejorando las soluciones en un promedio de al rededor del $30\%$ y tambien para $alg5$ y $alg7$ que en todos los casos mejoraron sus valores iniciales. Con respecto a la estrategía de selección propocional aplicada al algoritmo $BOBO$ no se observaron mejoras, aunque las soluciones obtenidas fueron cercanas en términos de función objetivo. 
 
 \begin{table}[H]
 \begin{center}
@@ -268,7 +268,10 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{center}
 \end{table}
 
-En la figura \ref{res:aut_alg1_vs_alg5_vs_alg7} de la izquierda se visualiza que los valores inter e intra de las soluciones provistas por el algoritmo $alg2$ para todos los $\gamma$ son significativamente inferiores a las soluciones de los algoritmos $alg1$, $alg5$ y $alg7$. También se observa una pronunciada curva que se genera por el $\gamma$. A la derecha de la misma figura se distingue que las soluciones del algoritmo $alg5$ son más dispersas en la parte inter y están más concentradas en la parte intra que las soluciones del algoritmo $alg1$. En las soluciones del algoritmo $alg5$ la variación entre el mínimo inter y el máximo es $2.12\%$ y para el intra de $0.63\%$ mientras que para $alg1$ la variación es de $0.7\%$ para el inter y de $1.46\%$ para el intra.
+Para analizar el trade-off entre la parte inter y la intra en la figura \ref{res:aut_alg1_vs_alg5_vs_alg7} del lado izquierdo se muestra los valores inter e intra de las soluciones obtenidas por los algoritmos $alg1$, $alg2$, $alg5$ y $alg7$ para todos los $\gamma$. Puede apreciarse, como es de esperar, que los valores del $alg2$ son significativamente inferiores al resto de los algorimots y en cambio, $alg1$, $alg5$ y $alg7$ sus valores se concentran en una región reducida ya que sus soluciones fueron muy similares respecto al valor de la función objetivo.
+
+A la derecha de la figura \ref{res:aut_alg1_vs_alg5_vs_alg7} se encuetran los valores inter e intra de los algoritmos $alg1$ y $alg5$. Puede verse como los valores de las soluciones obtenidas con $alg5$ no están dominadas por la parte inter y si más concentradas en la parte intra, a diferencia de los que ocurre con $alg1$.
+
 \begin{figure}[H]
 	\centering
 	\begin{tabular}{cc}
