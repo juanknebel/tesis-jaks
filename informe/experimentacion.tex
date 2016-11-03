@@ -169,6 +169,8 @@ Para la búsqueda de artículos con tópicos similares en la tabla \ref{tabla:co
 
 Cabe resaltar el muy buen rendimiento de la búsqueda tabú, tanto en escenarios donde la solución inicial no es de buena calidad (algoritmo BOBO) así como también considerando soluciones de mejor calidad (algoritmo Intra-Inter C-HAC). En el primer caso, se obtienen porcentajes de mejora por encima del $70\%$. En el segundo caso, para varios valores de $\gamma$ la solución obtenida por la búsqueda tabú resultó ser la mejor opción y en otros con deterioros inferiores al $0.5\%$.
 
+Si bien el algoritmo goloso no alcanzó los valores obtenidos por las soluciones generadas por C-HAC, tiene como ventaja su fácil y rápida implementación. Sus tiempos de ejecución fueron levemente mayores a las que se obtuvieron con BOBO y menores a las ejecutadas por C-HAC. Por la forma en la que fue construido siempre genera paquetes completos. Si bien la definición formal del problema no obliga a ésto último, se implementó de esta manera ya que a efectos de un usuario final es más interesante obtener paquetes completos, aunque esto signifique sacrificar la búsqueda de la solución óptima.
+
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
