@@ -112,7 +112,7 @@ Con el objetivo de simplificar la ejecución de los algoritmos, considerando que
 \subsection{Base de dato de atracciones turísticas}
 Se utilizó una instancia de datos correspondiente a 200 atracciones turísticas de Europa, con datos relevados del sitio \textit{TripAdvisor}. De cada atracción se tiene la información del precio, del tipo (parque, museo, edificio) y de la distancia geográfica con el resto de las atracciones.
 
-El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con las siguientes requerimientos: evitar realizar largos traslados; que haya variedad en el tipo de atracción y que que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedo diseñada de la siguiente manera:
+El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con las siguientes requerimientos: evitar realizar largos traslados; que haya variedad en el tipo de atracción y que que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedo diseñada de la siguiente manera: \label{busqueda:atracciones}
 
 \begin{itemize}
 	\item \textbf{Similitud}: La inversa de la distancia entre las atracciones. 
@@ -263,7 +263,7 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 0.8 & 0.00 & -38.19 & -38.70 & -1.44 & -0.08 & 0.00 & -2.72 & -1.20 \\
 0.9 & -0.03 & -39.15 & -39.38 & -1.21 & -0.10 & 0.00 & -3.35 & -1.72 \\ \hline 
 \end{tabular}
-\caption{Comparación de calidad de soluciones entre algoritmos para la \hyperref[busqueda:autores]{búsqueda de artículos}} 
+\caption{Comparación de calidad de soluciones entre algoritmos para la \hyperref[busqueda:autores]{búsqueda de autores}} 
 \label{tabla:comp2}
 \end{center}
 \end{table}
@@ -301,11 +301,11 @@ Por (1) y (2) la calidad intra e inter paquete es máxima respectivamente. Con (
 
 
 \subsubsection{Búsqueda de universidades}
-En este escenario lo que más se destaca de la tabla \ref{tabla:comp3} es el comportamiento del algoritmo $alg1$ que generó una mejor solución para los valores de $\gamma$ $0.1$ y $0.2$ y para el resto de los valores mayores la solución provista empeora en comparación al algoritmo $alg5$ y la brecha aumenta a medida que aumenta el $\gamma$. 
+En este escenario lo que más se destaca de la tabla \ref{tabla:comp3} es el comportamiento del algoritmo $alg1$ que generó una mejor solución para los valores de $\gamma\ =\ 0.1$ y $\gamma\ =\ 0.2$ con respecto al algoritmo $alg6$. En el resto de las soluciones obtenidas (de $alg1$ y $alg6$) se aprecia un deterioro cada vez más significativo a medida que crece el valor del $\gamma$.
 
 Por otro lado la función objetivo de las soluciones provista por los algoritmos $alg2$, $alg3$ y $alg7$ se encuentran muy alejadas de las soluciones provistas por los jerárquicos. En el caso del algoritmo goloso $alg7$ las soluciones mejoran con respecto a los algoritmos $alg2$ y $alg3$ cuando el valor de $\gamma$ disminuye.
 
-En este escenario la búsqueda tabú mejoró las soluciones iniciales del BOBO y del algoritmo goloso considerablemente, pero no así con los algoritmos jerárquicos. 
+En este escenario, al igual que en el resto, la búsqueda tabú mejoró las soluciones iniciales del $BOBO$ y del algoritmo goloso considerablemente. Se destaca que para las soluciones jerárquicas la búsqueda tabú siempre mejora la solución inicial sin importar que tan buena.
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -322,13 +322,13 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 0.9 & -17.46 & -88.10 & -87.79 & -31.16 & 0.00 & 0.00 & -92.13 & -28.26 \\
  \hline 
 \end{tabular}
-\caption{Comparación de calidad de soluciones entre algoritmos} 
+\caption{Comparación de calidad de soluciones entre algoritmos para la \hyperref[busqueda:universidades]{búsqueda de univerdades}} 
 \label{tabla:comp3}
 \end{center}
 \end{table}
 
 \subsection{Búsqueda de atracciones turísticas}\label{res:busAtracciones}
-En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas a partir de las modificaciones propuestas en este trabajo de los algoritmos PAC mejoran a los originales en todos. Es para destacar que en en este escenario el algoritmo goloso supera a $alg1$. La búsqueda tabú consiguió mejores resultados para los algoritmos PAC, pero no así para el algoritmo goloso.
+En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas a partir de las modificaciones propuestas en este trabajo de los algoritmos PAC, como puede observarse en la tabla \ref{tabla:comp4}, mejoran a los originales en todos los casos. Es para destacar que en en este escenario el algoritmo goloso supera a $alg1$. La búsqueda tabú consiguió mejores resultados para los algoritmos PAC. Por otro lado en el algoritmo goloso, en contraste a lo sucedido en las demás consultas, la heurística de búsqueda no obtuvo mejores soluciones.
 
 \begin{table}[H]
 \begin{center}
@@ -346,16 +346,16 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 0.9 & -84.97 & -60.59 & -59.81 & -44.04 & 0.00 & 0.00 & -7.33 & -7.33 \\
 \hline 
 \end{tabular}
-\caption{Comparación de calidad de soluciones entre algoritmos} 
+\caption{Comparación de calidad de soluciones entre algoritmos para la \hyperref[busqueda:atracciones]{búsqueda de atracciones turísticas}}
 \label{tabla:comp4}
 \end{center}
 \end{table}
 
-En la figura \ref{res:cit_bobo_diff} se visualiza el porcentaje de mejora del algoritmo $alg3$ para cada valor de $\gamma$ con respecto a $alg2$. En promedio el porcentaje de mejora es de $3.5\%$ y la mayor diferencia se da para los valores de $\gamma$ $0.3$, $0.4$ y $0.5$
-y en los extremos la diferencia disminuye.
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=1\textwidth]{img/cit_bobo_diff.png}
-  \caption{}
-  \label{res:cit_bobo_diff}
-\end{figure}
+%En la figura \ref{res:cit_bobo_diff} se visualiza el porcentaje de mejora del algoritmo $alg3$ para cada valor de $\gamma$ con respecto a $alg2$. En %promedio el porcentaje de mejora es de $3.5\%$ y la mayor diferencia se da para los valores de $\gamma$ $0.3$, $0.4$ y $0.5$
+%y en los extremos la diferencia disminuye.
+%\begin{figure}[H]
+%  \centering
+%    \includegraphics[width=1\textwidth]{img/cit_bobo_diff.png}
+%  \caption{}
+%  \label{res:cit_bobo_diff}
+%\end{figure}
