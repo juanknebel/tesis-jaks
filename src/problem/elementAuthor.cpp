@@ -91,3 +91,25 @@ std::string ElementAuthor::convertToJson(const std::vector<SnowFlake> &solution)
     pt::write_json(jsonString, root);
     return jsonString.str();
 }
+
+void ElementAuthor::completeDataForQtModel(const std::vector<SnowFlake> &solution, QStandardItemModel *model) const
+{
+    std::map<std::string, std::string> *node2name = this->node2name_.get();
+    int row = 0;
+    for (auto aFlake : solution) {
+        for (auto anElement : aFlake.ids()) {
+            std::string node = aFlake.getProblemNode(anElement);
+            std::stringstream bundleId;
+            bundleId << "Bundle " << aFlake.getIdentificator();
+            QString bundleIdent = QString::fromUtf8(bundleId.str().data(), bundleId.str().size());
+            QStandardItem *item = new QStandardItem(bundleIdent);
+            model->setItem(row, 0, item);
+            QString name = QString::fromUtf8(((*node2name)[node]).data(), ((*node2name)[node]).size());
+            item = new QStandardItem(name);
+            model->setItem(row, 1, item);
+            row++;
+        }
+    }
+    QStringList labelList = {"Bundle", "Autor"};
+    model->setHorizontalHeaderLabels(labelList);
+}

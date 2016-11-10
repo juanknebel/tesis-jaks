@@ -12,6 +12,7 @@ private:
     void completeMapping() const;
     std::string convertToJson(const std::vector<SnowFlake>& solution) const;
     void writeSolution(const std::vector<SnowFlake> &solution, std::string fileName, double gamma) const;
+    void completeDataForQtModel(const std::vector<SnowFlake> &solution, QStandardItemModel *model) const;
 public:
     ElementFile() : Element() {
         this->fileTypeName_ = "type_name.csv";

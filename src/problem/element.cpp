@@ -175,6 +175,11 @@ void Element::saveJson(const std::vector<SnowFlake> &solution, const Element &el
     file.close();
 }
 
+void Element::completeTable(const std::vector<SnowFlake> &solution, QStandardItemModel *model, const Element &element)
+{
+    element.completeDataForQtModel(solution, model);
+}
+
 /*
  * void WriterSolution:: writeInterAndIntraValues(std::vector<SnowFlake> &solution, std::string fileName)
 {
