@@ -30,6 +30,20 @@
     linkcolor=black,
     urlcolor=black
 }
+\usepackage[many]{tcolorbox}
+
+\newtcolorbox{mybox}[1]{
+    tikznode boxed title,
+    enhanced,
+    arc=0mm,
+    interior style={white},
+    attach boxed title to top center= {yshift=-\tcboxedtitleheight/2},
+    fonttitle=\bfseries,
+    colbacktitle=white,coltitle=black,
+    boxed title style={size=normal,colframe=white,boxrule=0pt},
+    title={#1}
+}
+
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \newcommand{\algorithmicbreak}{\textbf{break}}

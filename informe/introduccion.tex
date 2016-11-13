@@ -5,115 +5,114 @@
 \end{flushright}%
 \end{small}%
 \vspace{.5cm}}
-Los motores de búsqueda se diseñan para ayudar a encontrar información en sistemas informáticos. Con el desarrollo de Internet cada vez es más la cantidad de información que 
-se almacena en los distintos servidores del planeta. Los motores de búsquedas adquieren cada vez más importancia, para que el usuarios de Internet puedan acceder a la información que le es relevante.
+Los motores de búsqueda son sistemas informáticos que buscan archivos almacenados en distintos servidores. Los resultados son generalmente presentados como una lista ordenada. El clásico ejemplo son los buscadores de Internet que buscan información a través de toda la web. Al mismo tiempo, con el desarrollo de Internet la cantidad de información que es almacenada en los distintos servidores alrededor del planeta se incrementa día a día. El aumento de la información guardada requiere que los motores de búsqueda evolucionen constantemente y entren en escena nuevos buscadores especializados en temáticas puntuales. Lo último mencionado tiene como consecuencia que los motores adquieran cada vez más importancia para los usuarios de Internet, ya que éstos son la única herramienta que poseen para poder acceder a la información que ellos consideran relevante.
 
-Los primeros motores búsqueda, el usuario buscaba la coincidencia exacta de una palabra o frase dentro de una colección de documentos. Con el paso del tiempo las estrategias fueron evolucionando y adaptándose, con el objetivo de devolverle al usuario resultados más completos y a la vez más relevantes.
+En un primer momento los motores búsqueda tomaban como punto de partida una palabra o frase que el usuario ingresaba y se buscaba una coincidencia exacta dentro de una colección de documentos. A medida que la cantidad de información comenzó a incrementarse, las estrategias iniciales dejaron de ser útiles ya que, eran lentas y se debía reorganizar las estructuras de una manera diferente y a la vez los usuarios requerían una mejor calidad de los resultados. Como consecuencia de lo último mencionado las formas de buscar fueron evolucionando y adaptándose a las necesidades del usuario, con el objetivo final de entregar resultados completos y relevantes.
 
-La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés) \cite{BR,MRS,ZM} es un área de investigación que se enfoca en obtener información relevante de colección de datos a partir de algún criterio. Los criterios elegidos pueden ser de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de confirmación sobre una compra.
+La \textbf{Recuperación de la Información} (IR por Information Retrieval en inglés) \cite{Baeza-Yates:1999:MIR:553876,Manning:2008:IIR:1394399,Zobel:2006:IFT:1132956.1132959} es el área de investigación que se enfoca en obtener información relevante de colecciones de datos a partir de criterios elegidos por los usuarios. Los criterios elegidos pueden ser de lo más variados, desde el resultado de la final del mundial de fútbol, los libros de un autor y hasta el mail de confirmación de una compra. Según \cite{Baeza-Yates:1999:MIR:553876} se identifican dos etapas en la resolución de los problemas puntuales del área, la primera es la elección de un modelo que permita calcular la relevancia de un documento frente a una consulta y por último las estructuras de datos y algoritmos que implementen el problema y lo resulevan de manera eficiente.
 
-Los motores de búsquedas que se utilizan en la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando obtener una colección de elementos que coincidan con el criterio de búsqueda elegido. Ocurre que son varios los elementos del universo que concuerdan con el criterio de búsqueda, pero los grados de relevancia difieren. Esta diferencia se utiliza para ordenar el resultado, en lo que se conoce como ranking de resultados.
+Los motores de búsquedas que se utilizan en la web como Google, Yahoo y otros, son los clásicos ejemplos de una aplicación de IR. El proceso de búsqueda comienza cuando el usuario ingresa una consulta esperando obtener una colección de elementos que coincidan con el criterio de búsqueda elegido. Ocurre que son varios los elementos del universo que concuerdan con el criterio de búsqueda, pero los grados de relevancia difieren. Esta diferencia es utilizada para ordenar el resultado en lo que se conoce como ranking de resultados.
 
-Cada motor de búsqueda tiene su propio algoritmo de ranking de resultados, PageRank de Google es uno de los más conocidos. En general, por cuestiones de mercado, los algoritmos utilizados por los motores de búsqueda comerciales no son divulgados públicamente ya que son uno de los componentes principales. (quizas aca habria que poner como funcionan). La desventaja en los resultados ordenados por ranking es que se deja de lado la relación que existe entre los elementos. Por lo tanto si el resultado esperado por el usuario es un grupo de elementos, entonces para este tipo de motores el usuario deberá realizar varias búsquedas cambiando el criterio de búsqueda para poder explorar las colecciones de elementos resultantes hasta lograr encontrar el resultado deseado.
+Los motores de búsqueda tienen sus propios algoritmos de rankinig de resultados como por ejemplo, PageRank de Google \cite{Brin:1998:ALH:297810.297827}, HITS \cite{Kleinberg:1999:ASH:324133.324140} por nombrar algunos. Éste tipo de algoritmos son los encargados de valorizar los elementos de su dominio y asignarle un valor de relevancia entre ellos. En los casos de las búsquedas por Internet la idea en \cite{Brin:1998:ALH:297810.297827} es determinar que tan importante es un sitio en Internet, generando un voto hacia el sitio B si el sitio A tiene un enlace hacia él. No solamente importa la cantidad de votos sino También quién emite ese voto. Generalmente, por cuestiones de mercado, éstos algoritmos no son divulgados por ser un componente importante de su negocio. 
+
+La desventaja de obtener un resutlado basado en un ranking ordenado es que se deja de lado la relación existente entre los elementos. Ésto último ocaciona que si el usuario estaba esperando un grupo de elementos como resultado, deberá realizar varias consultas en el motor cambiando o combinando su criterio de búsqueda original para de esta manera, poder explorar todas las colecciones de elementos resultantes hasta lograr encontrar el resutlado deseado.
 
 \section{Motivación}
-Esta tesis esta motivada por el usuario de motores de búsqueda que esperan como resultado un conjunto de elementos. Un ejemplo es el del usuario que planifica su viaje con Internet. Para planear un viaje típicamente requiere realizar múltiples búsquedas en distintos motores para recabar la información de los diferentes destinos que se quiere visitar, las distancias geográficas, los precios de las atracciones, las actividades que se pueden realizar o leer opiniones acerca de los destinos seleccionados, entre otros.
+Esta tesis está motivada por el usuario de motores de búsquedas que espera un resultado diferente al de una lista ordenada de elementos, ya sea por la naturaleza de su interés o porque el dominio en el que se encuentra su problema se podría exprear mejor como conjunto de elementos y no como listas de resutlados de tamaño interminable.
 
-En una búsqueda típica los resultados obtenidos son una larga lista ordenada por la relevancia del criterio de la consulta. Este tipo de soluciones no otorgan respuestas que relacionen el criterio buscado con los demás elementos de la lista resultante.
+Para explicar lo anterior vamos a mostraremos un ejemplo, supongamos que un usuario quiere organizar su viaje utilizando los motores tradicionales de Internet. Planear un viaje típicamente requiere, realizar múltiples búsquedas en distintos motores para recolectar la información de los diferentes destinos que se quiere visitar, las distancias geográficas, los precios de las atracciones, las actividades que se pueden realizar o leer opiniones acerca de los destinos seleccionados, entre otros.
 
-Otro ejemplo es el escenario donde un coleccionista de discos desea hacer una compra on-line de música de diferentes países. El comprador no ésta interesado en ninguna época en particular, pero sí quiere que los discos que compre pertenezcan al mismo período. Supongamos que se cuenta con un presupuesto máximo para la compra, por ejemplo de \$100. El coleccionista podría realizar una búsqueda en la tienda de discos on-line ingresando como palabra clave de la consulta nombres de diferentes países. Por ejemplo, al ingresar ``Inglaterra'' una posible lista de resultado es:
-\fbox{
-\parbox{8cm}{
+Otro ejemplo es el escenario donde un coleccionista de discos desea hacer una compra on-line de música de diferentes países. El comprador no ésta interesado en ninguna época en particular, pero sí quiere que los discos que compre pertenezcan al mismo período. Supongamos que se cuenta con un presupuesto máximo para la compra, por ejemplo de \$100. El coleccionista podría realizar una búsqueda en la tienda de discos on-line ingresando como palabra clave de la consulta nombres de diferentes países. En los siguientes ejemplos se presentarán unos ejemplos de búsquedas y sus posibles resultados.
+
+\begin{mybox}{Búsqueda: Inglaterra}
 \begin{itemize}
-  \item Physical Graffiti - Led Zeppelin (1975)
-  \item Perfect Strangers - Deep Purple (1984)
-  \item It's Hard - The Who  (1982)
-  \item Wheels of Fire - Cream (1968)
-  \item The White Album - The Beatles (1968)
-  \item Innuendo - Queen (1991)
-  \item Sticky Fingers - The Rolling Stones (1971)
-	\item Please Please Me - The Beatles (1963)
-	\item 461 Ocean Boulevard - Eric Clapton (1964)
-	\item Physical Graffiti - Led Zeppelin (1975)
-\end{itemize}}} 
+	\item {\scriptsize Physical Graffiti - Led Zeppelin (1975)}
+	\item {\scriptsize Perfect Strangers - Deep Purple (1984)}
+	\item {\scriptsize It's Hard - The Who  (1982)}
+	\item {\scriptsize Wheels of Fire - Cream (1968)}
+	\item {\scriptsize The White Album - The Beatles (1968)}
+	\item {\scriptsize Innuendo - Queen (1991)}
+	\item {\scriptsize Sticky Fingers - The Rolling Stones (1971)}
+	\item {\scriptsize Please Please Me - The Beatles (1963)}
+	\item {\scriptsize 461 Ocean Boulevard - Eric Clapton (1964)}
+	\item {\scriptsize Physical Graffiti - Led Zeppelin (1975)}
+\end{itemize}
+\end{mybox}
 
-Luego podría buscar discos de ``Argentina'', obteniendo como respuesta:
-\fbox{
-\parbox{8cm}{
+\begin{mybox}{Búsqueda: Argentina}
 \begin{itemize}
-  \item El Cielo Puede Esperar - Attaque 77 (1990)
-  \item Confesiones de Invierno - Sui Generis (1973)
-  \item Kamikaze - Luis Alberto Spinetta (1982)
-  \item Acariciando lo Aspero - Divididos (1991)
-  \item La Biblia - Vox Dei (1971)
-	\item Rock de la Mujer Perdida - Los Gatos (1969)
-	\item Lo Mejor de Violeta Rivas - Violeta Rivas (1966)
-	\item Se Dice de Mí - Tita Merello (1954)
-	\item Películas - La Maquina de Hacer Pajaros (1977)
-\end{itemize}}}
-Y continuar así con los otros países.
+	\item {\scriptsize El Cielo Puede Esperar - Attaque 77 (1990)}
+	\item {\scriptsize Confesiones de Invierno - Sui Generis (1973)}
+	\item {\scriptsize Kamikaze - Luis Alberto Spinetta (1982)}
+	\item {\scriptsize Acariciando lo Aspero - Divididos (1991)}
+	\item {\scriptsize La Biblia - Vox Dei (1971)}
+	\item {\scriptsize Rock de la Mujer Perdida - Los Gatos (1969)}
+	\item {\scriptsize Lo Mejor de Violeta Rivas - Violeta Rivas (1966)}
+	\item {\scriptsize Se Dice de Mí - Tita Merello (1954)}
+	\item {\scriptsize Películas - La Maquina de Hacer Pajaros (1977)}
+\end{itemize}
+\end{mybox}
 
-También debería realizar una búsqueda por época. Al ingresar como criterio de búsqueda ``60-70'', tal vez obtendría:
-\fbox{
-\parbox{8cm}{
+\begin{mybox}{Búsqueda: Años 1960 - 1970}
 \begin{itemize}
-	\item Let it Bleed - The Rolling Stones (1969)
-	\item Please Please Me - The Beatles (1963)
-	\item My Favorite Things - John Coltrante (1960)
-	\item Tommy - The Who (1969)
-	\item Rock de la Mujer Perdida - Los Gatos (1969)
-	\item Lo Mejor de Violeta Rivas - Violeta Rivas (1966)
-\end{itemize}}} 
+	\item {\scriptsize Let it Bleed - The Rolling Stones (1969)}
+	\item {\scriptsize Please Please Me - The Beatles (1963)}
+	\item {\scriptsize My Favorite Things - John Coltrante (1960)}
+	\item {\scriptsize Tommy - The Who (1969)}
+	\item {\scriptsize Rock de la Mujer Perdida - Los Gatos (1969)}
+	\item {\scriptsize Lo Mejor de Violeta Rivas - Violeta Rivas (1966)}
+\end{itemize}
+\end{mybox}
 
-Y cuando ingresa ``65-75'':
-\fbox{
-\parbox{8cm}{
+\begin{mybox}{Búsqueda: Años 1965 - 1975}
 \begin{itemize}
-	\item Tommy - The Who (1969)
-	\item Fuente y Caudal - Paco de Lucía (1973)
-	\item Fragile - Yes (1971)
-	\item Rock de la Mujer Perdida - Los Gatos (1969)
-	\item Let It Bleed - The Rolling Stones (1969)
-	\item Confesiones de Invierno - Sui Generis(1973)
-	\item 461 Ocean Boulevard - Eric Clapton (1974)
-	\item Natty Dread - Bob Marley (1974)
-	\item Un Muchacho Como Yo - Palito Ortega (1967)
-\end{itemize}}}
+	\item {\scriptsize Tommy - The Who (1969)}
+	\item {\scriptsize Fuente y Caudal - Paco de Lucía (1973)}
+	\item {\scriptsize Fragile - Yes (1971)}
+	\item {\scriptsize Rock de la Mujer Perdida - Los Gatos (1969)}
+	\item {\scriptsize Let It Bleed - The Rolling Stones (1969)}
+	\item {\scriptsize Confesiones de Invierno - Sui Generis(1973)}
+	\item {\scriptsize 461 Ocean Boulevard - Eric Clapton (1974)}
+	\item {\scriptsize Natty Dread - Bob Marley (1974)}
+	\item {\scriptsize Un Muchacho Como Yo - Palito Ortega (1967)}
+\end{itemize}
+\end{mybox}
 
+Los siguientes pasos que debe realizar el usuario luego de obtener las listas de resultados de cada una de sus búsquedas es, decidir el conjunto de discos que comprará. El comprador tendrá que realizar la tediosa tarea de seleccionar los discos de su interés combinando las listas obtenidas, con la posibilidad de que, por error y contra su intención inicial, seleccione discos de épocas diferentes, o más de un disco del mismo origen, y con el riesgo de no aprovechar de manera eficiente su presupuesto. Más aún, las listas generadas en una situación de la vida real contendrán mucha más información que la mostrada en el ejemplo y por lo tanto las combinaciones que debería analizar manualmente el coleccionista escapan a la capacidad humana. 
 
-A continuación, a partir de todas las listas generadas por cada búsqueda, para decidir la lista de discos que comprará, el coleccionista deberá realizar la tediosa tarea de seleccionar un conjunto de discos de su interés combinando las listas obtenidas, con la posibilidad de, por error y contra su intención inicial, seleccionar discos de  épocas diferentes, o más de un disco del mismo origen, y con el riesgo de no aprovechar de manera inteligente su presupuesto. Más aún, las listas generadas en una situación de la vida real contendrán mucha más información que la mostrada en el ejemplo, y por lo tanto las combinaciones que debería analizar manualmente el coleccionista escapan a la capacidad humana. 
+En el trabajo {\em Composite Retrieval of Diverse and Complementary Bundles} \cite{compositeRetrival} se propone un enfoque en el cuál los resultados de las búsquedas no se presenten como una simple lista ``vertical". La idea de los autores es que la información generada se visualice agrupada bajo algún criterio de similitud que satisfaga las expectativas del usuario. De ésa manera se evita la necesidad de realizar una nueva intervención humana y lograr una mejor experiencia de búsqueda adecuandose a las expectativas del usuario.
 
-Para lograr una recuperación de la información más eficiente para el usuario en escenarios de estas características, en el trabajo {\em Composite Retrieval of Diverse and Complementary Bundles} \cite{compositeRetrival} se propone un enfoque donde los resultados de la búsqueda no se presenten como una simple lista ``vertical", sino que sean agrupados bajo algún criterio de similitud que satisfaga las expectativas del usuario. De esta manera se evitaría la necesidad de realizar una nueva intervención humana y lograr una mejor experiencia de búsqueda.
+En este tipo de búsquedas o consultas, el usuario espera un conjunto de elementos relacionados entre sí. Si bien se podría aplicar la generación de {\em clusters} sobre los resultados, en las técnicas tradicionales la agrupación se realiza por la similitud entre items. Retomando el escenario de los discos de música. Las técnicas de {\em clustering} tradicional en las que se eligiera como criterio de similitud el año de lanzamiento del disco seguramente se generarían tantos {\em clusters} como períodos emblemáticos hubiera. Al mismo tiempo en cada {\em cluster} se encontrarían todos los discos de los períodos que existieran repitiendo orígenes de los mismos. Una vez obtenido el resultado se deberían explorar todos los {\em clusters} para elegir los discos, considerando el presupuesto límite y la diversidad de procedencias.
 
-En este tipo de búsquedas o consultas, el usuario espera un conjunto de elementos relacionados entre sí. Si bien se podría realizar un {\em clustering} de los resultados, en las técnicas tradicionales la agrupación se hace por la similitud entre items. En el escenario de los discos con técnicas de {\em clustering} tradicional, donde el criterio de similitud fuera por año de lanzamiento del disco, seguramente se generarían tantos {\em clusters} como períodos emblemáticos hubiera, y en cada {\em cluster} se encontrarían todos los discos de esos períodos, repitiendo orígenes de los mismos. Una vez obtenido el resultado se deberían explorar todos los {\em clusters} para elegir los discos, considerando el presupuesto límite y la diversidad de procedencias.
-
-Una respuesta más conveniente para el coleccionista sería una lista de paquetes donde los discos dentro de cada paquete sean cercanos en el tiempo ({\em criterio de similitud}), correspondan a artistas de diferentes países ({\em criterio de compatibilidad}), estén representados varios países ({\em diversidad}) y se ajusten al presupuesto ({\em validez}). Además sería deseable que los paquetes de la lista cubrieran todos los períodos ({\em completitud}). Esta última condición no fue explorada en este trabajo pero si mencionada como posible extensión.
+Una respuesta más conveniente para el coleccionista sería una conjunto de paquetes donde los discos dentro de cada paquete sean cercanos en el tiempo ({\em criterio de similitud}), correspondan a artistas de diferentes países ({\em criterio de compatibilidad}), estén representados varios países ({\em diversidad}) y se ajusten al presupuesto ({\em validez}). Además sería deseable que los paquetes de la lista cubrieran todos los períodos ({\em completitud}). Esta última condición no fue explorada en este trabajo pero si mencionada como posible extensión.
 
 Si la tienda on-line aplicase un motor de búsqueda sofisticado bajo este enfoque, permitiendo ingresar un presupuesto máximo (\$100 en el ejemplo), un criterio de similitud (en este caso año de lanzamiento) y uno de complementariedad (atributo origen del intérprete), un posible resultado sería:
 
-\begin{itemize}
-  \item Paquete 1:
-  \begin{itemize}
-    \item Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20
-    \item Confesiones de Invierno - Sui Generis (1973 - Argentina) \$20
-    \item Natty Dread - Bob Marley (1974 - Jamaica) \$30
-		\item Saturday Night Fiver - Bee Gees (1977 - Australia) \$30
-  \end{itemize}
-  \item Paquete 2:
-  \begin{itemize}
-	  \item Please Please Me - The Beatles (1963 - Inglaterra) \$20
-	  \item My favorite things - John Coltrane (1960 - EEUU) \$30
-	  \item Rock de la mujer perdida - Los Gatos (1969 - Argentina) \$20
-		\item Digan lo que digan - Rafhael (1967 - España) \$20
-  \end{itemize}
-	  \item Paquete 3:
-  \begin{itemize}
-	  \item Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20
-		\item Saturday Night Fiver - Bee Gees (1977 - Australia) \$30
-	  \item Un muchacho como yo - Palito Ortega (1967 - Argentina) \$35
-  \end{itemize}
-\end{itemize}
+\begin{mybox}{Paquete 1}
+	\begin{itemize}
+		\item {\scriptsize Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20}
+		\item {\scriptsize Confesiones de Invierno - Sui Generis (1973 - Argentina) \$20}
+		\item {\scriptsize Natty Dread - Bob Marley (1974 - Jamaica) \$30}
+		\item {\scriptsize Saturday Night Fiver - Bee Gees (1977 - Australia) \$30}
+	\end{itemize}
+\end{mybox}
 
+\begin{mybox}{Paquete 2}
+	\begin{itemize}
+		\item {\scriptsize Please Please Me - The Beatles (1963 - Inglaterra) \$20}
+		\item {\scriptsize My favorite things - John Coltrane (1960 - EEUU) \$30}
+		\item {\scriptsize Rock de la mujer perdida - Los Gatos (1969 - Argentina) \$20}
+		\item {\scriptsize Digan lo que digan - Rafhael (1967 - España) \$20}
+	\end{itemize}
+\end{mybox}
+
+\begin{mybox}{Paquete 3}
+	\begin{itemize}
+		\item {\scriptsize Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20}
+		\item {\scriptsize Saturday Night Fiver - Bee Gees (1977 - Australia) \$30}
+		\item {\scriptsize Un muchacho como yo - Palito Ortega (1967 - Argentina) \$35}
+	\end{itemize}
+\end{mybox}
 
 El grado de similitud de los elementos que forman un paquete define su calidad. En el caso de nuestro coleccionista, cuanto 
 más contemporáneos sean los discos dentro de un paquete, mayor será su calidad. Además, el conjunto de paquetes que se obtiene como respuesta puede cubrir diferentes épocas, dándole diversidad a las opciones brindadas. 
@@ -121,18 +120,18 @@ más contemporáneos sean los discos dentro de un paquete, mayor será su calida
 En concreto, lo que se quiere lograr en el escenario descripto, y en cualquier otro problema similar de búsquedas, es otorgarle al usuario un conjunto de paquetes que cumplan siempre con las siguientes propiedades: 
 
 \begin{itemize}
-  \item \textbf{Compatibilidad}: Los elementos dentro de un paquete deben ser similares.
-  \item \textbf{Validez}: El costo total de los elementos del paquete no puede superar el presupuesto.
-  \item \textbf{Diversidad}: Los paquetes entre sí deben ser diversos.
-  \item \textbf{Complementariedad}: Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro del paquete contienen un valor diferente para tal propiedad.
+\item \textbf{Compatibilidad}: Los elementos dentro de un paquete deben ser similares.
+\item \textbf{Validez}: El costo total de los elementos del paquete no puede superar el presupuesto.
+\item \textbf{Diversidad}: Los paquetes entre sí deben ser diversos.
+\item \textbf{Complementariedad}: Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro del paquete contienen un valor diferente para tal propiedad.
 \end{itemize}
 
-Es importante destacar que para esta trabajo se asume que la calidad de los items individuales está garantizada por el sistema y es igual para todos ellos. 
+Es importante destacar que para esta trabajo se asume que la calidad de los items individuales está garantizada por el sistema y es igual para todos ellos. Asumiendo esta premisa podemos estar seguros que la calidad de cada paquetes obtenido dentro del resultado final podráser comparado contra cualquier otro proveniente del mismo algoritmo o de otro diferente.
 
 \section{Problema, definición formal}
 A continuación se definirá formalmente el problema de devolver un conjunto de paquetes $S = \left\{S_1, \ldots, S_k\right\}$ compuestos por elementos de $I=\left\{i_1,\ldots, i_n\right\}$. Siendo $S_i \in P(I)$ un conjunto de objetos que satisface las siguientes reglas:
 \begin{itemize}
-  \item \textbf{complementaridad}:  No permitir que existan dos objetos con igual atributo en el mismo paquete.
+\item \textbf{complementaridad}:  No permitir que existan dos objetos con igual atributo en el mismo paquete.
 	\item \textbf{presupuesto}: La suma de los costos de los objetos no excede el presupuesto.
 \end{itemize}
 
@@ -154,7 +153,7 @@ En \cite{compositeRetrival} se demostró que el problema recientemente planteado
 En esta tesis se analiza, se experimenta y se proponen nuevas alternativas a los algoritmos ya conocidos para el problema {\em Recuperación de la Información Combinada} con el fin de incrementar la eficiencia de los algoritmos y mejorar la calidad de las soluciones. En particular concentrandose en los algoritmos {\em Produce and Choose} de \cite{compositeRetrival} por haber resultado los más efectivos. Más adelante se explicará más detalladamente esta familia de algoritmos que utiliza un esquema de dos fases para obtener una solución. En la primera fase se produce un conjunto de paquetes válidos y en la segunda se selecciona un subconjunto de $k$ de ellos.
 
 Los cambios propuestos en este trabajo se focalizan en mejorar ciertos criterios de selección y {\em clustering} de estos algoritmos que resultan decisivos para la obtención de soluciones de mejor calidad. Por otro lado se propone una metaheurística de búsqueda tabú como procedimiento de mejora en la etapa de producción de paquetes y otra para mejorar la soluciones obtenidas por los distintos algoritmos constructivos.
- 
+
 Para evaluar los algoritmos propuestos se utilizan dos bases de datos. La primera corresponde a una base bibliográfica de artículos académicos \cite{dataDrive}. Esta base contiene alrededor de 7800 artículos relacionados con la ingeniería de software, de 9800 autores, presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos están catalogados por autores, tópicos que abarcan (asignándole un porcentaje de relevancia para cada uno de los 38 tópicos que se consideran), conferencia donde fue presentado y afiliaciones de los autores. La segunda base utilizada contiene 200 atracciones turísticas de Europa con la información del costo de la visita, el tipo de atracción (parque, museo o edificio) y la similitud que existe entre ellas. En \autoref{sect:busquedas} se puede encontrar más detalle.
 
 Esta tesis se organiza de la siguiente manera: en el \autoref{chap:trabajos-previos} se describen las características de los algoritmos presentes en la literatura. Luego en el \autoref{chap:nuevas-propuestas} se proponen nuevas alternativas para resolver el problema {\em Recuperación de la Información Combinada}. El \autoref{chap:experimentacion} se divide en dos secciones, en la \autoref{sect:busquedas} se presentan las instancias que se utilizaron para experimentar y en la \autoref{sect:resultados} se 
