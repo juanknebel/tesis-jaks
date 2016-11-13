@@ -61,7 +61,7 @@ El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar 
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
 
-La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{newSimilarity} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{Zhang:2002:ESI:638644.638646} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
@@ -189,13 +189,13 @@ Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vér
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
 
-El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{SubgraphProblem}. Transformando en la instancia del problema original la función del peso de los vértices por:
+El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{DBLP:journals/algorithmica/FeigePK01}. Transformando en la instancia del problema original la función del peso de los vértices por:
  
 \begin{equation}
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{compositeRetrival}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
+A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
