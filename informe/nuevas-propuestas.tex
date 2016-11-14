@@ -16,7 +16,7 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas (también se analizan distintas estrategias). Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.\\
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas (también se analizan distintas estrategias). Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.
 
 La estructura de estos algoritmos permiten introducir mejoras en sus dos fases: generación y selección de paquetes.
 \subsection{Generación de paquetes}
@@ -37,7 +37,7 @@ Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entr
 Del algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} se plantean dos mejoras: (1) La función que se utiliza para decidir que \textit{clusters} se unen. (2) El segundo punto radica en su complejidad algorítmica. Mientras que el BOBO se mantuvo cómo en la literatura.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos.\\
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos.
 
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
@@ -109,7 +109,7 @@ Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma 
 \caption{C-HAC}\label{alg:C-HAC}
 \end{algorithm}
 
-El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.\\
+El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.
 
 La propuesta de este trabajo para incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
 
@@ -127,7 +127,7 @@ $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
 $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
-El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.\\
+El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.
 
 Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
