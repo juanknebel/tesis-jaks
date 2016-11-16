@@ -199,20 +199,20 @@ El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértice
 
 A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
 
-% \begin{algorithm}[H]
-% \begin{algorithmic}[1]
-% \REQUIRE $k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
-% \ENSURE Conjunto de k bundles
-% \STATE $\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$
-% \STATE $S \leftarrow V$
-% \WHILE {$ \left|S\right| > k$}
-% \STATE $u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$
-% \STATE $S \leftarrow S \setminus  \left\{u\right\} $
-% \ENDWHILE
-% \RETURN $C$
-% \end{algorithmic}
-% \caption{Selección de paquetes}\label{alg:chooseBundles}
-% \end{algorithm}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+	\KwData{$k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
+	\KwResult{Conjunto de k bundles}
+	$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
+	$S \leftarrow V$\;
+	\While{$ \left|S\right| > k$}{
+		$u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$\;
+		$S \leftarrow S \setminus  \left\{u\right\} $\;
+	}
+	\Return $C$\;
+\caption{Selección de paquetes}\label{alg:chooseBundles}
+\end{algorithm}
 
 En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
 
@@ -222,20 +222,21 @@ Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paqu
 \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
 \end{equation}
 
-% \begin{algorithm}[H]
-% \begin{algorithmic}[1]
-% \REQUIRE $k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$
-% \ENSURE Conjunto de k bundles
-% \STATE $S \leftarrow V$
-% \WHILE {$ \left|S\right| < k$}
-% \STATE $c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$
-% \STATE $S \leftarrow S \cup \left\{c\right\}$
-% \STATE $B \leftarrow B \setminus \left\{c\right\}$
-% \ENDWHILE
-% \RETURN $S$
-% \end{algorithmic}
-% \caption{Selección de paquetes proporcional}\label{alg:algSelProp}
-% \end{algorithm}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+	\KwData{$k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
+	\KwResult{Conjunto de k bundles}
+	$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
+	$S \leftarrow V$\;
+	\While{$ \left|S\right| < k$}{
+		$c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
+		$S \leftarrow S \cup \left\{c\right\}$\;
+		$B \leftarrow B \setminus \left\{c\right\}$\;
+	}
+	\Return $S$\;
+\caption{Selección de paquetes proporcional}\label{alg:algSelProp}
+\end{algorithm}
 
 \section{Algoritmo goloso}
 Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
@@ -244,40 +245,40 @@ Por la forma de generar la solución que tiene la heurística \texttt{Produce-an
 
 El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos e iterativamente se agrega un item, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de ítems posibles.
 
-% \begin{algorithm}[H]
-% \begin{algorithmic}[1]
-% \REQUIRE {$I,\alpha,f,\beta,k,\gamma$}
-% \ENSURE Conjunto válido de paquetes
-% \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $cand \leftarrow \bigcup_{1 \ldots k}\emptyset$
-% \STATE $isComplete \leftarrow False$
-% \WHILE {$isComplete = False$}
-%   \STATE $bestScore \leftarrow -\infty$
-%   \STATE $bestCandidate \leftarrow \varnothing$
-%   \STATE $bestBundle \leftarrow \varnothing$
-%   \FOR {$\text{each}\ elem \in I$}
-%     \FOR {$\text{each}\ bundle \in cand$}
-%       \IF {$validMerge(bundle,\{elem\},\alpha,f,\beta)$}
-%         \STATE $score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$
-%         \IF {$score > bestScore$}
-%           \STATE $bestScore \leftarrow score$
-%           \STATE $bestBundle \leftarrow bundle$
-%           \STATE $bestCandidate \leftarrow elem$
-%         \ENDIF
-%       \ENDIF
-%     \ENDFOR
-%   \ENDFOR
-% 	\IF {$bestCandidate \neq \varnothing$}
-% 		\STATE $cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$
-% 		\STATE $I \leftarrow I \setminus \left\{bestCandidate\right\}$
-% 	\ELSE
-% 		\STATE $isComplete \leftarrow True$
-% 	\ENDIF
-% \ENDWHILE
-% \RETURN $cand$
-% \end{algorithmic}
-% \caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
-% \end{algorithm}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+	\KwData{$I,\alpha,f,\beta,k,\gamma$}
+	\KwResult{Conjunto válido de paquetes}
+	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$cand \leftarrow \bigcup_{1 \ldots k}\emptyset$\;
+	$isComplete \leftarrow False$\;
+	\While{$isComplete = False$}{
+		$bestScore \leftarrow -\infty$\;
+		$bestCandidate \leftarrow \varnothing$\;
+		$bestBundle \leftarrow \varnothing$\;
+		\ForEach{$elem \in I$}{
+			\ForEach{$bundle \in cand$}{
+				\If{$validMerge(bundle,\{elem\},\alpha,f,\beta)$}{
+					$score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$\;
+					\If{$score > bestScore$}{
+						$bestScore \leftarrow score$\;
+						$bestBundle \leftarrow bundle$\;
+						$bestCandidate \leftarrow elem$\;
+					}
+				}
+			}
+		}
+		\eIf{$bestCandidate \neq \varnothing$}{
+			$cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$\;
+			$I \leftarrow I \setminus \left\{bestCandidate\right\}$\;
+		}{
+			$isComplete \leftarrow True$\;
+		}
+	}
+	\Return $cand$\;
+\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
+\end{algorithm}
 
 \section{Búsquedas Tabú}
 Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueven a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
@@ -327,8 +328,6 @@ $$b_{tabu} = \argmax_{\scriptscriptstyle b_s \in C \cap LT} w(\bar{S} \setminus 
 
 \item Si $\max(w(S^*),w(\bar{S} \setminus \{b_r\} \cup \{b\})) < \qquad \qquad$ $\qquad \qquad w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ entonces
 
-%\item Si $\max(w(S^*) < w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ y $w(\bar{S} \setminus \{b_r\} \cup \{b\})) < w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ entonces
-
 $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b_{tabu}\}$$ 
 
 Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
@@ -343,39 +342,38 @@ Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
 
 \end{enumerate}
 
-% \begin{algorithm}[H]
-% \begin{algorithmic}[1]
-% \REQUIRE {$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
-% \ENSURE Conjunto válido de paquetes
-% \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
-% \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $Inter(S) = \sum_{b_1, b_2 \in S}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $iteration \leftarrow 0$
-% \STATE $tabuBundles \leftarrow \emptyset$
-% \STATE $bestSolution \leftarrow S$
-% \STATE $visitSolution \leftarrow S$ 
-% \WHILE {$iteration < MAX\_ITER$}
-%   \STATE $worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$
-% 	\STATE $centroidBundle \leftarrow getCentroid(visitSolution)$
-% 	\STATE $visitSolution_a \leftarrow \max_{b \in cand}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$
-% 	\STATE $visitSolution \leftarrow \max_{b \in cand \setminus tabuBundles}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$
-% 	\IF {$\omega(visitSolution) > \omega(bestSolution)$}
-%     \STATE $bestSolution \leftarrow visitSolution$
-%   \ENDIF
-% 	\IF {$\omega(visitSolution_a) > \omega(bestSolution)$}
-%     \STATE $bestSolution \leftarrow visitSolution_a$
-% 		\STATE $visitSolution \leftarrow visitSolution_a$
-%   \ENDIF
-%   \STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
-% 	\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$
-% 	\STATE $tabuBundles \leftarrow UpdateTabu(tabuBundles)$
-% 	\STATE $iteration \leftarrow iteration + 1$
-% \ENDWHILE
-% \RETURN $bestSolution$
-% \end{algorithmic}
-% \caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
-% \end{algorithm}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+	\KwData{$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
+	\KwResult{Conjunto válido de paquetes}
+	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
+	$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$Inter(S) = \sum_{b_1, b_2 \in S}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$iteration \leftarrow 0$\;
+	$tabuBundles \leftarrow \emptyset$\;
+	$bestSolution \leftarrow S$\;
+	$visitSolution \leftarrow S$\;
+	\While{$iteration < MAX\_ITER$}{
+		$worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$\;
+		$centroidBundle \leftarrow getCentroid(visitSolution)$\;
+		$visitSolution_a \leftarrow \max_{b \in cand}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
+		$visitSolution \leftarrow \max_{b \in cand \setminus tabuBundles}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
+		\If{$\omega(visitSolution) > \omega(bestSolution)$}{
+			$bestSolution \leftarrow visitSolution$\;
+		}
+		\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
+			$bestSolution \leftarrow visitSolution_a$\;
+			$visitSolution \leftarrow visitSolution_a$\;
+		}
+		$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$\;
+		$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
+		$iteration \leftarrow iteration + 1$\;
+	}
+	\Return $bestSolution$\;
+\caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
+\end{algorithm}
 
 \subsection{Intra-Paquete}
 El objetivo de la búsqueda Intra-Paquete es buscar una mejor solución a través de generar soluciones con paquetes más cohesivos. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
@@ -396,44 +394,42 @@ De la solución actual se realiza el movimiento a una nueva solución con los pa
 
 Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
 
-% \begin{algorithm}[H]
-% \begin{algorithmic}[1]
-% \REQUIRE {$S, cand, I, \alpha, f, \beta, k, \gamma, MAX\_ITER, ITER\_TABU$}
-% \ENSURE Conjunto válido de paquetes
-% \STATE $\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$
-% \STATE $Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$
-% \STATE $UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$
-% \STATE $iteration \leftarrow 0$
-% \STATE $tabuBundles \leftarrow \emptyset$
-% \STATE $tabuElements \leftarrow \emptyset$
-% \STATE $bestSolution \leftarrow S$
-% \STATE $visitSolution \leftarrow S$
-% \WHILE {$iteration < MAX\_ITER$}
-%   \STATE $worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$
-%   \STATE $centroid \leftarrow GetCentroid(worstBunlde)$
-%   \STATE $fe \leftarrow GetFarawayElement(worstBunlde,centroid)$
-% 	\STATE $visitSolution_1 \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{worstBunlde \setminus \left\{faraway\right\}\right\}$
-% 	\STATE $visitSolution_2 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde\cup\left\{b\right\}\right\}}$
-% 	\STATE $visitSolution_3 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$
-% 	\STATE $visitSolution_a \leftarrow \max_{b \in I}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$
-% 	\STATE $visitSolution \leftarrow \max{visitSolution_1,visitSolution_2,visitSolution_3}$
-% 	\IF {$\omega(visitSolution) > \omega(bestSolution)$}
-% 		\STATE $bestSolution \leftarrow visitSolution$
-%   \ENDIF
-% 	\IF {$\omega(visitSolution_a) > \omega(bestSolution)$}
-% 		\STATE $bestSolution \leftarrow visitSolution$
-% 		\STATE $visitSolution \leftarrow visitSolution_a$
-%   \ENDIF
-% 	\STATE $tabuBundles \leftarrow tabuBundles \cup \left\{
-% 	\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$
-%   \STATE $tabuElements \leftarrow tabuElements \cup \left\{
-% 	\left\langle faraway, ITER\_TABU \right\rangle\right\}$
-% 	\STATE $tabuBundles \leftarrow UpdateTabu(tabuBundles)$
-%   \STATE $tabuElements \leftarrow UpdateTabu(tabuElements)$
-% 	\STATE $iteration \leftarrow iteration + 1$
-% \ENDWHILE
-% \RETURN $bestSolution$
-% \end{algorithmic}
-% \caption{Búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
-% \end{algorithm}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+	\KwData{$S, cand, I, \alpha, f, \beta, k, \gamma, MAX\_ITER, ITER\_TABU$}
+	\KwResult{Conjunto válido de paquetes}
+	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+	$Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$\;
+	$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
+	$iteration \leftarrow 0$\;
+	$tabuBundles \leftarrow \emptyset$\;
+	$tabuElements \leftarrow \emptyset$\;
+	$bestSolution \leftarrow S$\;
+	$visitSolution \leftarrow S$\;
+	\While{$iteration < MAX\_ITER$}{
+		$worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$\;
+		$centroid \leftarrow GetCentroid(worstBunlde)$\;
+		$fe \leftarrow GetFarawayElement(worstBunlde,centroid)$\;
+		$visitSolution_1 \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{worstBunlde \setminus \left\{faraway\right\}\right\}$\;
+		$visitSolution_2 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde\cup\left\{b\right\}\right\}}$\;
+		$visitSolution_3 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
+		$visitSolution_a \leftarrow \max_{b \in I}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
+		$visitSolution \leftarrow \max{visitSolution_1,visitSolution_2,visitSolution_3}$\;
+		\If{$\omega(visitSolution) > \omega(bestSolution)$}{
+			$bestSolution \leftarrow visitSolution$\;
+		}
+		\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
+			$bestSolution \leftarrow visitSolution$\;
+			$visitSolution \leftarrow visitSolution_a$\;
+		}
+		$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$\;
+		$tabuElements \leftarrow tabuElements \cup \left\{\left\langle faraway, ITER\_TABU \right\rangle\right\}$\;
+		$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
+		$tabuElements \leftarrow UpdateTabu(tabuElements)$\;
+		$iteration \leftarrow iteration + 1$\;
+	}
+	\Return $bestSolution$\;
+\caption{Búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
+\end{algorithm}
