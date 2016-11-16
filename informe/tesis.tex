@@ -10,8 +10,8 @@
 \usepackage{color}
 \usepackage{solucion}
 \usepackage{multicol}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+\usepackage{float}
+\usepackage[linesnumbered,ruled,lined,spanish]{algorithm2e}
 \usepackage{xcolor}
 \usepackage{colortbl}
 \usepackage{lscape}
@@ -44,10 +44,6 @@
     title={#1}
 }
 
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\newcommand{\algorithmicbreak}{\textbf{break}}
-\newcommand{\BREAK}{\STATE \algorithmicbreak}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \begin{document}
