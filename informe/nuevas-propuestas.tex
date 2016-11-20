@@ -5,18 +5,20 @@ Además de las mejoras descriptas, mostraremos nuevos procedimientos basados en 
 \section{Produce-and-Choose}
 En general los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} genera una cierta cantidad de paquetes y luego se seleccionan los que pertenecerán a la solución.
 
-Los parámetros del algoritmo son los del problema mencionado en la sección \ref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
+Los parámetros del algoritmo son los del problema mencionado en~\autoref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$I,\alpha,f,\beta,k,\gamma$}
-	\KwResult{Conjunto válido de $k$ paquetes}
-	$cand \leftarrow ProduceBundle(I,\alpha,f,\beta)$\;
-	$G \leftarrow BuildBundleGraph(cand)$\;
-	\Return $ChooseBundles(k,\gamma,G)$\;
-\caption{Produce-and-Choose}\label{alg:PAC}
-\end{algorithm}
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$I,\alpha,f,\beta,k,\gamma$}
+		\KwResult{Conjunto válido de $k$ paquetes}
+		$cand \leftarrow ProduceBundle(I,\alpha,f,\beta)$\;
+		$G \leftarrow BuildBundleGraph(cand)$\;
+		\Return $ChooseBundles(k,\gamma,G)$\;
+	\caption{Produce-and-Choose}\label{alg:PAC}
+	\end{algorithm}
+\end{center}
 
 La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las diferentes estrategias que fueron usadas y se detallara su funcionamiento.
 
@@ -31,7 +33,7 @@ La generación de paquetes se puede realizar a través de un proceso de agrupaci
 
 La noción de que es un grupo correctamente constituido no puede ser definido con presición y es por tal motivo que existe una gran cantiad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir ambiguamente como un conjunto de objetos relacionados entre sí. Dependiendo del modelo de repsentación usado para el problema, dependerá el tipo de algoritmo que será utilizado.
 
-Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
+Por ejemplo, para los veinte puntos de~\autoref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
 
 \begin{figure}[H]
   \centering
@@ -52,79 +54,90 @@ En relación al algoritmo \textit{BOBO}, también descripto en la publicación m
 \subsubsection{Bundles One-By-One}
 El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar $k$ paquetes válidos.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$I,\alpha,f,\beta,\mu,\text{ cantidad de paquetes }c$}
-	\KwResult{Conjunto válido de paquetes}
-	$pivots \leftarrow I$\;
-	$cand \leftarrow \emptyset$\;
-	\While{$ \left|C\right| < c\ and\ P \neq \emptyset$}{
-		$pivot \leftarrow SelectPivot(pivots)$\;
-		$bundle \leftarrow BuildBundle(pivot,I,\alpha,f,\beta)$\;
-		\eIf{$Score(bundle) \geq \mu$}{
-			$cand \leftarrow cand \cup \left\{bundle\right\}$\;
- 			$I \leftarrow I \setminus \left\{bundle\right\}$\;
- 			$pivots \leftarrow pivots \setminus \left\{pivot\right\}$\;
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$I,\alpha,f,\beta,\mu,\text{ cantidad de paquetes }c$}
+		\KwResult{Conjunto válido de paquetes}
+		$pivots \leftarrow I$\;
+		$cand \leftarrow \emptyset$\;
+		\While{$ \left|C\right| < c\ and\ P \neq \emptyset$}{
+			$pivot \leftarrow SelectPivot(pivots)$\;
+			$bundle \leftarrow BuildBundle(pivot,I,\alpha,f,\beta)$\;
+			\eIf{$Score(bundle) \geq \mu$}{
+				$cand \leftarrow cand \cup \left\{bundle\right\}$\;
+				$I \leftarrow I \setminus \left\{bundle\right\}$\;
+				$pivots \leftarrow pivots \setminus \left\{pivot\right\}$\;
+			}
+			{
+				$pivots \leftarrow pivots \setminus \left\{pivot\right\}$\;
+			}
 		}
-		{
-			$pivots \leftarrow pivots \setminus \left\{pivot\right\}$\;
-		}
-	}
-	\Return $cand$\;
-\caption{BOBO-k}\label{alg:bobo}
-\end{algorithm}
+		\Return $cand$\;
+	\caption{BOBO-k}\label{alg:bobo}
+	\end{algorithm}
+\end{center}
 
 La función \texttt{selPivote} selecciona un pivote perteneciente al conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{Zhang:2002:ESI:638644.638646} de que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
 Anteriomente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. El aglomerativo, comienza con cada objeto perteneciente a su un grupo unitario y en cada iteración se intentará unir dos grupos generando un nuevo y de esa manera se logra subir de jerarquía, el algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14}. La estrategia divisiva, en cambio, comineza con todos los objetos en un mismo grupo y en cada paso se realizan divisiones, generando que un grupo descienda en la jerarquía hasta no lograr más subdivisiones.
 
-Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos grupos han sido unidos. Por ejemplo la unión del grupo que contiene a \textit{Indiana tobacco lawsuit} con el perteneciente a \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el grupo resultante se une con el que contiene a \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos grupos hasta que quede uno solo.
-
-Ascendiendo desde la capa inferior hasta obtener un único grupo el dendrograma permite reconstruir la historia de las uniones de los grupos. Un supuesto fundamental en el algoritmo HAC es que es monótono, lo que significa que si la unión sucesiva de grupos con las similitudes es $s_1,s_2,\ldots,s_n$ entonces se tiene que $s_1 \geq s_2 \geq \ldots \geq s_n$.
+Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los puede visualizar como un dendograma, como se ve en la~\autoref{nuevaspropuestas:dendograma1}. En el eje X se encuentran los objetos que van a ser agrupados y en la coordenada Y se haya la distancia en la que los elementos se unirán. Las uniones de los objetos se representan mediante una línea vertical que comienza a la altura de la distancia en la que los grupos han sido unidos. Por ejemplo, en la figura mencionada, el grupo \textit{4} se une al \textit{5} en la distancia 2 formando el \textit{cluster B}. En un paso posterior éste último se unirá al grupo \textit{3} en una distancia cercana a 3 obteniendo el nuevo \textit{cluster C}. En cada paso se generará una nueva unión hasta que solo quede un solo grupo.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=1\textwidth]{img/Dendrogram.png}
-  \caption{dendrograma}
-  \label{des:Dendrogram}
+    \includegraphics[width=0.5\textwidth]{img/dendograma01.png}
+  \caption{Dendrograma}
+  \label{nuevaspropuestas:dendograma1}
 \end{figure}
 
-\textit{Constrained hierarchical agglomerative clustering} (C-HAC) es una modificación que se realiza sobre HAC para que nunca se realice la unión de los grupos $S_1$ y $S_2$ si el grupo resultante $S_1 \cup S_2$ es inválido, o sea sí el grupo resultante no cumple con las reglas de complementaridad o de presupuesto. El algoritmo C-HAC que se presenta a continuación.
+Cortando el dendograma mediante líneas horizontales se puede determinar el número de paquetes o \emph{clusters} en el que se dividirá el conjunto de objetos inicial. En la~\autoref{nuevaspropuestas:dendograma2} parte a) se puede ver que aplicando un corte en la distancia 5 se obtienen 2 paquetes, en cambio si se aplicara a una distancia mayor a 2 se obtendrían 3 paquetes como se puede observarse en la parte b) de la misma figura.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$I,\alpha,f,\beta,\gamma,\text{ cantidad de paquetes }c$}
-	\KwResult{Conjunto válido de paquetes}
-	$cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$\;
-	\While{$ \left|cand\right| > c$}{
-		$bestScore \leftarrow -\infty$\;
-		$bestCandidate \leftarrow \emptyset$\;
-		\ForEach{$S_i\in cand$}{
-			\ForEach{$S_j\in cand; S_i \neq S_j$}{
-				\If{$ValidMerge(S_i,S_j,\alpha,f,\beta)$}{ \label{validMerge}
-					\If{$Score(S_i \cup S_j) \geq bestcore$}{ \label{score}
-						$bestScore \leftarrow score(S_i \cup  S_j)$\;
-						$bestCandidate \leftarrow \left\{S_i,S_j\right\}$\;
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1\textwidth]{img/dendograma02.png}
+  \caption{Cortes en el dendrograma}
+  \label{nuevaspropuestas:dendograma2}
+\end{figure}
+
+El algormitmo llamado \textit{Constrained hierarchical agglomerative clustering} (C-HAC), más adelante se detallara, es una modificación aplicada sobre la técnica HAC descripta en los párrafos anteriores. La idea prinicipal es agregar restricciones pertenecientes al problema puntual que presentamos en este trabajo. Por ejemplo, supongamos que se quiere realizar la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas de complementaridad o de presupuesto definadas al cominezo del problema, entonces el algoritmo no aplicará dicho agrupamiento.
+
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$I,\alpha,f,\beta,\gamma,\text{ cantidad de paquetes }c$}
+		\KwResult{Conjunto válido de paquetes}
+		$cand \leftarrow \bigcup_{i \in I}\left\{i\right\}$\; \label{alg:C-HAC:init}
+		\While{$ \left|cand\right| > c$}{ \label{alg:C-HAC:cycleOutter}
+			$bestScore \leftarrow -\infty$\;
+			$bestCandidate \leftarrow \emptyset$\;
+			\ForEach{$S_i\in cand$}{ \label{alg:C-HAC:cycleInner}
+				\ForEach{$S_j\in cand; S_i \neq S_j$}{ \label{alg:C-HAC:cycleInnerInner}
+					\If{$ValidMerge(S_i,S_j,\alpha,f,\beta)$}{ \label{alg:C-HAC:validMerge}
+						\If{$Score(S_i \cup S_j) \geq bestcore$}{ \label{alg:C-HAC:score}
+							$bestScore \leftarrow score(S_i \cup  S_j)$\;
+							$bestCandidate \leftarrow \left\{S_i,S_j\right\}$\;
+						}
 					}
 				}
 			}
+			\If{$bestCandidate = \emptyset$}{
+				$break$\;
+			}
+			$cand \leftarrow cand \setminus \left\{S\right\}$ $(\forall S \in bestCandidate)$\;
+			$cand \leftarrow cand \cup bestCandidate$\;
 		}
-		\If{$bestCandidate = \emptyset$}{
-			$break$\;
-		}
-		$cand \leftarrow cand \setminus \left\{S\right\}$ $(\forall S \in bestCandidate)$\;
-		$cand \leftarrow cand \cup bestCandidate$\;
-	}
-	\Return $cand$\;
-\caption{C-HAC}\label{alg:C-HAC}
-\end{algorithm}
+		\Return $cand$\;
+	\caption{C-HAC}\label{alg:C-HAC}
+	\end{algorithm}
+\end{center}
 
-El algoritmo ejecuta $N - c$ pasos, donde N es la cantidad de items, en el que en cada uno se unen los dos grupos más similares que forman un grupo válido. En cada paso se realiza una comparación entre todos los grupos. Por lo tanto el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. En cuanto a la función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo considera el valor intra-paquete, por lo que es considerado un criterio de unión local.
+A continuación explicaremos en detalle el\textbf{~\autoref{alg:C-HAC}}. Como puede observarse, se ejecuta $N - c$ (\textit{~\autoref{alg:C-HAC:cycleOutter}}) veces, donde $N$ es la cantidad de items. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud y que a su vez sea una unión válida. Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto grupos candidatos a unir, realizando comparaciones entre todos los grupos que existentes hasta el momento. Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo toma en cuenta el valor \texttt{intra}, por lo que dicha operación puede ser tratada como constante ya que se trata de número fijo de comparaciones.
 
-La propuesta de este trabajo para incluir información inter-paquete en la selección del par de {\em clusters} a unir, se define la función Intra-Inter en reemplazo de la función $Score$ como se indica a continuación. Dados dos {\em clusters} $C_i$ y $C_j$ sean
+La propuesta de esta tesis es incluir el valor \texttt{inter} de los paquetes en la selección del par de {\em clusters} en pos de lograr un mejor criterio de unión como consecuencia obtener soluciones de mayor calidad. Por este motivo se definió la función \textit{Intra-Inter} en reemplazo de la función \textit{Score}. Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
 
 $$A(C_i,C_j) = \sum_{u \in C_i, v \in C_j}{s(u,v)},$$
 
@@ -134,7 +147,9 @@ $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
 De esta manera el {\em cluster} resultante incrementará el valor intra y se habrán unido dos {\em clusters} con alta similitud favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario el segundo resultará siempre despreciable con respecto al primero. En este trabajo el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) \cdot (\#C_i + \#C_j - 1)}{2}$  
 
-Un punto clave es el costo computacional del cálculo de la función Intra-Inter. Para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y la $r-1$:
+Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras propuestas no hubieran podido ser usadas en las pruebas que en los próximos capítulos detallaremos, por tratarse de instancias con miles de objetos.
+
+Recapitulando las fórmulas presentadas anteriormente, para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
 
 $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
@@ -144,55 +159,57 @@ El valor de la función Intra-Inter para cada {\em cluster} es almacenado en ord
 
 Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$I,\alpha,f,\beta,\gamma$}
-	\KwResult{Conjunto válido de paquetes}
-	\ForEach{$S_i\in I$}{
-		\ForEach{$S_j\in I$}{
-			\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-				$C[i][j].sim \leftarrow Score(S_i \cup S_j)$\;
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$I,\alpha,f,\beta,\gamma$}
+		\KwResult{Conjunto válido de paquetes}
+		\ForEach{$S_i\in I$}{
+			\ForEach{$S_j\in I$}{
+				\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
+					$C[i][j].sim \leftarrow Score(S_i \cup S_j)$\;
+				}
+				{
+					$C[i][j].sim \leftarrow -1$\;
+				}
+				$C[i][j].index \leftarrow j$\;
 			}
-			{
-				$C[i][j].sim \leftarrow -1$\;
-			}
-			$C[i][j].index \leftarrow j$\;
+			$I[i] \leftarrow 1$\;
+			$P[i] \leftarrow $ priority queue for $C[i]$ sorted on sim\;
+			$P[i].Delete(C[i][i])$ \tcc*[f]{se elimina así mismo de la pila}\;
 		}
-		$I[i] \leftarrow 1$\;
-		$P[i] \leftarrow $ priority queue for $C[i]$ sorted on sim\;
-		$P[i].Delete(C[i][i])$ \tcc*[f]{se elimina así mismo de la pila}\;
-	}
-	$A \leftarrow []$\;
-	\For{$k \leftarrow 1$ to $I.length$}{
-		$k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$\;
-		\If{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-			$break$\;
-		}
-		$k_2 \leftarrow P[k_1].max().index$\;
-		$A.Append(\left\langle k_1,k_2 \right\rangle)$\;
-		$I[k_2] \leftarrow 0$\;
-		$P[k_1] \leftarrow []$\;
-		\For{$i$ with $I[i]-1 \vee i \neq k_1$}{
-			$P[i].Delete(C[i][K_1])$\;
-			$P[i].Delete(C[i][k_2])$\;
-			\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-				$C[i][k_1].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
-				$C[k_1][i].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
+		$A \leftarrow []$\;
+		\For{$k \leftarrow 1$ to $I.length$}{
+			$k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$\;
+			\If{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
+				$break$\;
 			}
-			{
-				$C[i][k_1].sim \leftarrow -1$\;
-				$C[k_1][i].sim \leftarrow -1$\;
+			$k_2 \leftarrow P[k_1].max().index$\;
+			$A.Append(\left\langle k_1,k_2 \right\rangle)$\;
+			$I[k_2] \leftarrow 0$\;
+			$P[k_1] \leftarrow []$\;
+			\For{$i$ with $I[i]-1 \vee i \neq k_1$}{
+				$P[i].Delete(C[i][K_1])$\;
+				$P[i].Delete(C[i][k_2])$\;
+				\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
+					$C[i][k_1].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
+					$C[k_1][i].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
+				}
+				{
+					$C[i][k_1].sim \leftarrow -1$\;
+					$C[k_1][i].sim \leftarrow -1$\;
+				}
+				$C[i][k_1].index \leftarrow i$\;
+				$C[k_1][i].index \leftarrow i$\;
+				$P[i].Insert(C[i][k_1])$\;
+				$P[K_1].Insert(C[k_1][i])$\;
 			}
-			$C[i][k_1].index \leftarrow i$\;
-			$C[k_1][i].index \leftarrow i$\;
-			$P[i].Insert(C[i][k_1])$\;
-			$P[K_1].Insert(C[k_1][i])$\;
 		}
-	}
-	\Return $A$\;
-\caption{Intra-Inter C-HAC}\label{alg:Intra-Inter C-HAC}
-\end{algorithm}
+		\Return $A$\;
+	\caption{Intra-Inter C-HAC}\label{alg:Intra-Inter C-HAC}
+	\end{algorithm}
+\end{center}
 
 \subsection{Selección de paquetes}
 Al finalizar la producción de paquetes comienza la etapa de selección de los mismos, en la cual se deben seleccionar los $k$ mejores paquetes para la solución. El problema de seleccionar los que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los paquetes y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).
@@ -211,20 +228,22 @@ El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértice
 
 A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
-	\KwResult{Conjunto de k bundles}
-	$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
-	$S \leftarrow V$\;
-	\While{$ \left|S\right| > k$}{
-		$u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$\;
-		$S \leftarrow S \setminus  \left\{u\right\} $\;
-	}
-	\Return $C$\;
-\caption{Selección de paquetes}\label{alg:chooseBundles}
-\end{algorithm}
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
+		\KwResult{Conjunto de k bundles}
+		$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
+		$S \leftarrow V$\;
+		\While{$ \left|S\right| > k$}{
+			$u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$\;
+			$S \leftarrow S \setminus  \left\{u\right\} $\;
+		}
+		\Return $C$\;
+	\caption{Selección de paquetes}\label{alg:chooseBundles}
+	\end{algorithm}
+\end{center}
 
 En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
 
@@ -234,21 +253,23 @@ Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paqu
 \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
 \end{equation}
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
-	\KwResult{Conjunto de k bundles}
-	$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
-	$S \leftarrow V$\;
-	\While{$ \left|S\right| < k$}{
-		$c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
-		$S \leftarrow S \cup \left\{c\right\}$\;
-		$B \leftarrow B \setminus \left\{c\right\}$\;
-	}
-	\Return $S$\;
-\caption{Selección de paquetes proporcional}\label{alg:algSelProp}
-\end{algorithm}
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
+		\KwResult{Conjunto de k bundles}
+		$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
+		$S \leftarrow V$\;
+		\While{$ \left|S\right| < k$}{
+			$c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
+			$S \leftarrow S \cup \left\{c\right\}$\;
+			$B \leftarrow B \setminus \left\{c\right\}$\;
+		}
+		\Return $S$\;
+	\caption{Selección de paquetes proporcional}\label{alg:algSelProp}
+	\end{algorithm}
+\end{center}
 
 \section{Algoritmo goloso}
 Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
@@ -257,40 +278,42 @@ Por la forma de generar la solución que tiene la heurística \texttt{Produce-an
 
 El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos e iterativamente se agrega un item, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de ítems posibles.
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$I,\alpha,f,\beta,k,\gamma$}
-	\KwResult{Conjunto válido de paquetes}
-	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$cand \leftarrow \bigcup_{1 \ldots k}\emptyset$\;
-	$isComplete \leftarrow False$\;
-	\While{$isComplete = False$}{
-		$bestScore \leftarrow -\infty$\;
-		$bestCandidate \leftarrow \varnothing$\;
-		$bestBundle \leftarrow \varnothing$\;
-		\ForEach{$elem \in I$}{
-			\ForEach{$bundle \in cand$}{
-				\If{$validMerge(bundle,\{elem\},\alpha,f,\beta)$}{
-					$score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$\;
-					\If{$score > bestScore$}{
-						$bestScore \leftarrow score$\;
-						$bestBundle \leftarrow bundle$\;
-						$bestCandidate \leftarrow elem$\;
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$I,\alpha,f,\beta,k,\gamma$}
+		\KwResult{Conjunto válido de paquetes}
+		$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$cand \leftarrow \bigcup_{1 \ldots k}\emptyset$\;
+		$isComplete \leftarrow False$\;
+		\While{$isComplete = False$}{
+			$bestScore \leftarrow -\infty$\;
+			$bestCandidate \leftarrow \varnothing$\;
+			$bestBundle \leftarrow \varnothing$\;
+			\ForEach{$elem \in I$}{
+				\ForEach{$bundle \in cand$}{
+					\If{$validMerge(bundle,\{elem\},\alpha,f,\beta)$}{
+						$score \leftarrow \omega((Cand \setminus \left\{bundle\right\}) \cup \left\{bundle \cup \left\{elem\right\}\right\})$\;
+						\If{$score > bestScore$}{
+							$bestScore \leftarrow score$\;
+							$bestBundle \leftarrow bundle$\;
+							$bestCandidate \leftarrow elem$\;
+						}
 					}
 				}
 			}
+			\eIf{$bestCandidate \neq \varnothing$}{
+				$cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$\;
+				$I \leftarrow I \setminus \left\{bestCandidate\right\}$\;
+			}{
+				$isComplete \leftarrow True$\;
+			}
 		}
-		\eIf{$bestCandidate \neq \varnothing$}{
-			$cand \leftarrow (cand \setminus \left\{bestBundle\right\}) \cup \left\{bundle \cup \left\{bestCandidate\right\}\right\}$\;
-			$I \leftarrow I \setminus \left\{bestCandidate\right\}$\;
-		}{
-			$isComplete \leftarrow True$\;
-		}
-	}
-	\Return $cand$\;
-\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
-\end{algorithm}
+		\Return $cand$\;
+	\caption{Algoritmo heurística golosa}\label{alg:algHeuGol}
+	\end{algorithm}
+\end{center}
 
 \section{Búsquedas Tabú}
 Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueven a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
@@ -354,38 +377,40 @@ Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
 
 \end{enumerate}
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
-	\KwResult{Conjunto válido de paquetes}
-	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
-	$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$Inter(S) = \sum_{b_1, b_2 \in S}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$iteration \leftarrow 0$\;
-	$tabuBundles \leftarrow \emptyset$\;
-	$bestSolution \leftarrow S$\;
-	$visitSolution \leftarrow S$\;
-	\While{$iteration < MAX\_ITER$}{
-		$worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$\;
-		$centroidBundle \leftarrow getCentroid(visitSolution)$\;
-		$visitSolution_a \leftarrow \max_{b \in cand}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
-		$visitSolution \leftarrow \max_{b \in cand \setminus tabuBundles}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
-		\If{$\omega(visitSolution) > \omega(bestSolution)$}{
-			$bestSolution \leftarrow visitSolution$\;
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$S, cand, \gamma, MAX\_ITER, ITER\_TABU$}
+		\KwResult{Conjunto válido de paquetes}
+		$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
+		$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$Inter(S) = \sum_{b_1, b_2 \in S}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$iteration \leftarrow 0$\;
+		$tabuBundles \leftarrow \emptyset$\;
+		$bestSolution \leftarrow S$\;
+		$visitSolution \leftarrow S$\;
+		\While{$iteration < MAX\_ITER$}{
+			$worstBundle \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Inter(b, visitSolution)}$\;
+			$centroidBundle \leftarrow getCentroid(visitSolution)$\;
+			$visitSolution_a \leftarrow \max_{b \in cand}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
+			$visitSolution \leftarrow \max_{b \in cand \setminus tabuBundles}{(visitSolution \setminus \left\{worstBundle\right\}) \cup \left\{b\right\}}$\;
+			\If{$\omega(visitSolution) > \omega(bestSolution)$}{
+				$bestSolution \leftarrow visitSolution$\;
+			}
+			\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
+				$bestSolution \leftarrow visitSolution_a$\;
+				$visitSolution \leftarrow visitSolution_a$\;
+			}
+			$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$\;
+			$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
+			$iteration \leftarrow iteration + 1$\;
 		}
-		\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
-			$bestSolution \leftarrow visitSolution_a$\;
-			$visitSolution \leftarrow visitSolution_a$\;
-		}
-		$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBundle, ITER\_TABU \right\rangle\right\}$\;
-		$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
-		$iteration \leftarrow iteration + 1$\;
-	}
-	\Return $bestSolution$\;
-\caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
-\end{algorithm}
+		\Return $bestSolution$\;
+	\caption{Búsqueda tabú sobre paquetes}\label{alg:algBusTabuBundle}
+	\end{algorithm}
+\end{center}
 
 \subsection{Intra-Paquete}
 El objetivo de la búsqueda Intra-Paquete es buscar una mejor solución a través de generar soluciones con paquetes más cohesivos. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
@@ -406,42 +431,44 @@ De la solución actual se realiza el movimiento a una nueva solución con los pa
 
 Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-	\KwData{$S, cand, I, \alpha, f, \beta, k, \gamma, MAX\_ITER, ITER\_TABU$}
-	\KwResult{Conjunto válido de paquetes}
-	$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-	$Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$\;
-	$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
-	$iteration \leftarrow 0$\;
-	$tabuBundles \leftarrow \emptyset$\;
-	$tabuElements \leftarrow \emptyset$\;
-	$bestSolution \leftarrow S$\;
-	$visitSolution \leftarrow S$\;
-	\While{$iteration < MAX\_ITER$}{
-		$worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$\;
-		$centroid \leftarrow GetCentroid(worstBunlde)$\;
-		$fe \leftarrow GetFarawayElement(worstBunlde,centroid)$\;
-		$visitSolution_1 \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{worstBunlde \setminus \left\{faraway\right\}\right\}$\;
-		$visitSolution_2 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde\cup\left\{b\right\}\right\}}$\;
-		$visitSolution_3 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
-		$visitSolution_a \leftarrow \max_{b \in I}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
-		$visitSolution \leftarrow \max{visitSolution_1,visitSolution_2,visitSolution_3}$\;
-		\If{$\omega(visitSolution) > \omega(bestSolution)$}{
-			$bestSolution \leftarrow visitSolution$\;
+\begin{center}
+	\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+		\KwData{$S, cand, I, \alpha, f, \beta, k, \gamma, MAX\_ITER, ITER\_TABU$}
+		\KwResult{Conjunto válido de paquetes}
+		$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$Inter(b_1, S) = \sum_{b_2 \in S, b_1\neq b_2}{(1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
+		$Intra(b) = \sum_{u,v \in b}{\gamma s(u,v)}$\;
+		$UpdateTabu(S) = \left\{ \left\langle b, n-1 \right\rangle  / \left\langle b, n \right\rangle \in S \wedge n-1 > 0 \right\}$\;
+		$iteration \leftarrow 0$\;
+		$tabuBundles \leftarrow \emptyset$\;
+		$tabuElements \leftarrow \emptyset$\;
+		$bestSolution \leftarrow S$\;
+		$visitSolution \leftarrow S$\;
+		\While{$iteration < MAX\_ITER$}{
+			$worstBunlde \leftarrow \min_{b \in visitSolution \setminus tabuBundles}{Intra(b)}$\;
+			$centroid \leftarrow GetCentroid(worstBunlde)$\;
+			$fe \leftarrow GetFarawayElement(worstBunlde,centroid)$\;
+			$visitSolution_1 \leftarrow (visitSolution \setminus \left\{worstBunlde\right\}) \cup \left\{worstBunlde \setminus \left\{faraway\right\}\right\}$\;
+			$visitSolution_2 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde\cup\left\{b\right\}\right\}}$\;
+			$visitSolution_3 \leftarrow \max_{b \in I \setminus tabuElements}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
+			$visitSolution_a \leftarrow \max_{b \in I}{visitSolution \setminus \left\{worstBunlde\right\} \cup \left\{worstBunlde \setminus \left\{fe\right\}\cup\left\{b\right\}\right\}}$\;
+			$visitSolution \leftarrow \max{visitSolution_1,visitSolution_2,visitSolution_3}$\;
+			\If{$\omega(visitSolution) > \omega(bestSolution)$}{
+				$bestSolution \leftarrow visitSolution$\;
+			}
+			\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
+				$bestSolution \leftarrow visitSolution$\;
+				$visitSolution \leftarrow visitSolution_a$\;
+			}
+			$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$\;
+			$tabuElements \leftarrow tabuElements \cup \left\{\left\langle faraway, ITER\_TABU \right\rangle\right\}$\;
+			$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
+			$tabuElements \leftarrow UpdateTabu(tabuElements)$\;
+			$iteration \leftarrow iteration + 1$\;
 		}
-		\If{$\omega(visitSolution_a) > \omega(bestSolution)$}{
-			$bestSolution \leftarrow visitSolution$\;
-			$visitSolution \leftarrow visitSolution_a$\;
-		}
-		$tabuBundles \leftarrow tabuBundles \cup \left\{\left\langle worstBunlde, ITER\_TABU \right\rangle\right\}$\;
-		$tabuElements \leftarrow tabuElements \cup \left\{\left\langle faraway, ITER\_TABU \right\rangle\right\}$\;
-		$tabuBundles \leftarrow UpdateTabu(tabuBundles)$\;
-		$tabuElements \leftarrow UpdateTabu(tabuElements)$\;
-		$iteration \leftarrow iteration + 1$\;
-	}
-	\Return $bestSolution$\;
-\caption{Búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
-\end{algorithm}
+		\Return $bestSolution$\;
+	\caption{Búsqueda tabú sobre elementos}\label{alg:algBusTabuIntra}
+	\end{algorithm}
+\end{center}
