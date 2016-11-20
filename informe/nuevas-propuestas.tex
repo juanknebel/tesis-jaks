@@ -1,9 +1,11 @@
-En este capítulo se presentan alternativas a los algoritmos descriptos recientemente, así como también procedimientos de búsqueda tabú que mejoren la calidad de las soluciones obtenidas.
+Como mencionamos antes, en este capítulo se presentaran las modificaciones que se implementaron sobre los algoritmos que se describieron anteriormente. Éstos cambios apuntan a mejorar la calidad de las soluciones, haciendo hincapié en los valores \texttt{inter} de los paquetes pero al mismo tiempo sin descuidar los buenos resultados que se habían obtenido.
+
+Además de las mejoras descriptas, mostraremos nuevos procedimientos basados en búsquedas tabú, que demostraron ser muy útiles y eficientes en todos los casos. También se incluye una alternativa completamente diferente a los algoritmos del estilo \texttt{Produce\allowbreak-and\allowbreak-Choose} influenciado por las soluciones del estilo \emph{greedy}.
 
 \section{Produce-and-Choose}
-El algoritmo para aproximar a la solución \texttt{Produce-and-Choose} genera una cierta cantidad de paquetes y luego se seleccionan los que pertenecerán a la solución.
+En general los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} genera una cierta cantidad de paquetes y luego se seleccionan los que pertenecerán a la solución.
 
-Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $\alpha$ el atributo complementario, $f: 2^{I} \rightarrow \rm I \!R$ la función de presupuesto, $\beta$ el limite del presupuesto, $\gamma$ para ponderar si se quiere paquetes más cohesivos o no y $k$ la cantidad de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
+Los parámetros del algoritmo son los del problema mencionado en la sección \ref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -16,13 +18,20 @@ Los parámetros del algoritmo son los del problema: $I$ el conjunto de ítems, $
 \caption{Produce-and-Choose}\label{alg:PAC}
 \end{algorithm}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, más adelante se analizan distintas estrategias. \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor intra, mientras que el peso de las aristas representa el valor inter entre los paquetes que le asocia. Finalmente la función \texttt{ChooseBundles} busca el subgrafo-k que maximice el peso de las vértices y aristas (también se analizan distintas estrategias). Los vértices del subgrafo-k son los paquetes que pertenecen a la solución.
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las diferentes estrategias que fueron usadas y se detallara su funcionamiento.
 
-La estructura de estos algoritmos permiten introducir mejoras en sus dos fases: generación y selección de paquetes.
-\subsection{Generación de paquetes}
-La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como agrupamiento consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor es la similitud dentro del conjunto (intra) y mayor la diferencia entre conjuntos el agrupamiento será mejor.
+\texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor \texttt{intra}, mientras que el peso de las aristas representa el valor \texttt{inter} entre los paquetes correspondientes a cada nodo. 
 
-No existe una definición formal de que es un grupo correctamente constituido porque es muy complejo realizar esta definición. Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
+Finalmente la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas. En este punto también se analizarán distintas implementaciones. Finalmente los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución.
+
+Como se puede observar la estructura de esta familia de algoritmos permite la facilidad de introducir mejoras en las dos fases críticas: generación y selección de paquetes. Permitiendo al mismo tiempo combinar cada una de ellas de la mejora manera dependiendo del objetivo de la búsqueda requerida.
+
+\subsection{Mejoras en la generación de paquetes}
+La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como ``agrupamiento'' consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor la similitud dentro del conjunto (valor \texttt{intra}) y mayor sea la diferencia entre conjuntos el agrupamiento será mejor.
+
+La noción de que es un grupo correctamente constituido no puede ser definido con presición y es por tal motivo que existe una gran cantiad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir ambiguamente como un conjunto de objetos relacionados entre sí. Dependiendo del modelo de repsentación usado para el problema, dependerá el tipo de algoritmo que será utilizado.
+
+Por ejemplo, para los veinte puntos de la figura \ref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
 
 \begin{figure}[H]
   \centering
@@ -30,14 +39,18 @@ No existe una definición formal de que es un grupo correctamente constituido po
    \caption{}
    \label{res:img-howToCluster}
 \end{figure}
-En este trabajo el agrupamiento esta definido para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecido posible y así obtener paquetes cohesivos.
+En este trabajo el agrupamiento esta definido para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
-Existen varios algoritmos de agrupamiento, los cuales se pueden categorizar entre los particionales y los jerárquicos. Los métodos particionales re ubican iterativamente los objetos moviéndolos de un grupo a otro. Generalmente, estos métodos, requieren que la cantidad de grupos a generar sea preestablecido. Los métodos jerárquicos construyen los grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir la cantidad de grupos a generar.
+En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría pueden categorizarse entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales, $k$ será el número final de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Éste tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
 
-Del algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} se plantean dos mejoras: (1) La función que se utiliza para decidir que \textit{clusters} se unen. (2) El segundo punto radica en su complejidad algorítmica. Mientras que el BOBO se mantuvo cómo en la literatura.
+A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez éstas técnicas se suelen subdividir en dos estrategias: algomerativas y divisivas, las cuales serán detalladas más adelante.
+
+En esta tesis se plantearon dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: (1) La función que se utiliza para decidir qué \textit{clusters} se unen. (2) La complejidad algorítmica. En las próximas secciones se describen detalladamente los pasos elegidos.
+
+En relación al algoritmo \textit{BOBO}, también descripto en la publicación mencionada en el párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido alrededor de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar de $k$ paquetes válidos.
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar $k$ paquetes válidos.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -62,11 +75,10 @@ El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar 
 \caption{BOBO-k}\label{alg:bobo}
 \end{algorithm}
 
-La función \texttt{selPivote} selecciona el pivote del conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{Zhang:2002:ESI:638644.638646} que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
-
+La función \texttt{selPivote} selecciona un pivote perteneciente al conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{Zhang:2002:ESI:638644.638646} de que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
-El agrupamiento jerárquica se clasifica entre los algoritmos \textit{aglomerativo} y \textit{divisivo}. En el aglomerativo inicialmente cada objeto pertenece a un grupo unitario y luego sucesivamente se unen un par de grupos hasta que todos se hayan unido en un único gran grupo que contenga a todos los objetos, este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC). El divisorio comienza con un único grupo al que todos los objetos pertenecen y recursivamente se realiza una división del grupo hasta obtener grupos unitarios.
+Anteriomente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. El aglomerativo, comienza con cada objeto perteneciente a su un grupo unitario y en cada iteración se intentará unir dos grupos generando un nuevo y de esa manera se logra subir de jerarquía, el algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14}. La estrategia divisiva, en cambio, comineza con todos los objetos en un mismo grupo y en cada paso se realizan divisiones, generando que un grupo descienda en la jerarquía hasta no lograr más subdivisiones.
 
 Comúnmente HAC es visualizado como un dendrograma, como se ve en la figura ~\ref{des:Dendrogram}, cada unión se representa por una línea horizontal y la coordenada Y es la similitud en la que los dos grupos han sido unidos. Por ejemplo la unión del grupo que contiene a \textit{Indiana tobacco lawsuit} con el perteneciente a \textit{Suits against tobacco firms}, es con la similitud aproximada de 0,7. Luego el grupo resultante se une con el que contiene a \textit{Lawsuit against tobacco companies} con la similitud 0,47. Sucesivamente se realizan la unión de estos grupos hasta que quede uno solo.
 
@@ -325,7 +337,7 @@ El esquema del proceso para construir una nueva soluci\'on es el siguiente:
 $$b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
 
 \item Se determina el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
-
+	
 \item Se determina el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
 
 $$C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))$$
