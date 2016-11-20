@@ -183,7 +183,7 @@ Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la informa
 \end{algorithm}
 
 \subsection{Selección de paquetes}
-Al finalizar la producción de paquetes comienza la etapa de selección de los mismos, en la cual se deben seleccionar los $k$ mejores paquetes para la solución. El problema de seleccionar los que maximizan la función objetivo se traduce en encontrar en el grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los paquetes y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).
+Al finalizar la producción de paquetes comienza la etapa de selección de los mismos, en la cual se deben seleccionar los $k$ mejores paquetes para la solución. El problema de seleccionar los que maximizan la función objetivo se traduce en encontrar un grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los paquetes y el peso de las aristas es la distancia entre los nodos) el k-subgrafo de mayor peso (considerando los nodos y vértices).
 
 Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vértices con k nodos, consiste en dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
 
@@ -191,13 +191,13 @@ Formalmente el problema de encontrar el subgrafo de máximo peso de nodos y vér
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
 
-El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{DBLP:journals/algorithmica/FeigePK01}. Transformando en la instancia del problema original la función del peso de los vértices por:
+El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{DBLP:journals/algorithmica/FeigePK01}. Transformando el grafo del problema original a un grafo ponderado, en el que el peso de los vértices esta dado por la siguiente función:
  
 \begin{equation}
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-A esta nueva instancia del problema se le aplica la heurística golosa, del artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, en la que en cada iteración se remueve el nodo con menos peso en las aristas.
+En \cite{journals/tkde/Amer-YahiaBCFMZ14} se propone utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en remover en cada interación uno del par de nodos del vértice con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -214,7 +214,19 @@ A esta nueva instancia del problema se le aplica la heurística golosa, del art�
 \caption{Selección de paquetes}\label{alg:chooseBundles}
 \end{algorithm}
 
-En este trabajo se propone otra heurística para la selección que consiste en ir seleccionando iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
+
+La debilidad de este algoritmo es que no esta definida la selección, en la arista de menor peso, del nodo a remover. Entonces se puede dar el caso de que el nodo que se remueve es el que pertenece a una solución de mejor calidad.
+
+Por ejemplo si se considera que en la etapa de producción se generan los tres paquetes $A$, $B$ y $C$. En el cual los valores \texttt{Intra} de los paquetes $A$ y $B$ es 5 y 0 el del paquete $C$. El valor \texttt{Inter} entre los paquetes $A$ y $B$ es 0 como así también entre los paquetes $B$ y $C$,  mientras que para los paquetes  $A$ y $D$ el valor $Inter$ es uno. En este escenario para $\gamma 0.1$ se tiene los siguientes valores para cada par de paquete:
+\begin{itemize}
+	\item $\omega(A,B) = 0,5$
+	\item $\omega(A,C) = 1,15$
+	\item $\omega(B,C) = 0,25$
+\end{itemize}
+ 
+Siendo el par de paquetes $B, C$ el de menor valor en la función $\omega$, entonces sí el paquete que se remueve es $C$ la solución resultante contiene los paquetes $A$ y $B$. El valor la función objetivo de esta solución generada es $1$, mientras que el valor de la función objetivo de la solución que contiene los paquetes $A$ y $C$ es $1,4$.
+
+La propuesta que se hace en este trabajo se propone modificar el algoritmo de selección para que iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
 
 Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
 
