@@ -226,7 +226,7 @@ El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértice
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-En \cite{journals/tkde/Amer-YahiaBCFMZ14} se propone utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en remover en cada interación uno del par de nodos del vértice con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
+En \cite{journals/tkde/Amer-YahiaBCFMZ14} se propone utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en remover en cada iteración uno del par de nodos del vértice con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -248,21 +248,30 @@ En \cite{journals/tkde/Amer-YahiaBCFMZ14} se propone utilizar la heurística \re
 
 La debilidad de este algoritmo es que no esta definida la selección, en la arista de menor peso, del nodo a remover. Entonces se puede dar el caso de que el nodo que se remueve es el que pertenece a una solución de mejor calidad.
 
-Por ejemplo si se considera que en la etapa de producción se generan los tres paquetes $A$, $B$ y $C$. En el cual los valores \texttt{Intra} de los paquetes $A$ y $B$ es 5 y 0 el del paquete $C$. El valor \texttt{Inter} entre los paquetes $A$ y $B$ es 0 como así también entre los paquetes $B$ y $C$,  mientras que para los paquetes  $A$ y $D$ el valor $Inter$ es uno. En este escenario para $\gamma 0.1$ se tiene los siguientes valores para cada par de paquete:
+Por ejemplo si se considera que en la etapa de producción se generan los tres paquetes $A$, $B$ y $C$. En el cual los valores \texttt{Intra} de los paquetes son: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$. En cuanto a los valor \texttt{Inter} entre los paquetes:$\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga 2 paquetes y con $\gamma=0,1$ se tiene los siguientes valores para cada par de paquete:
 \begin{itemize}
-	\item $\omega(A,B) = 0,5$
+	\item $\omega(A,B) = 0,45$
 	\item $\omega(A,C) = 1,15$
-	\item $\omega(B,C) = 0,25$
+	\item $\omega(B,C) = 0,2$
 \end{itemize}
  
-Siendo el par de paquetes $B, C$ el de menor valor en la función $\omega$, entonces sí el paquete que se remueve es $C$ la solución resultante contiene los paquetes $A$ y $B$. El valor la función objetivo de esta solución generada es $1$, mientras que el valor de la función objetivo de la solución que contiene los paquetes $A$ y $C$ es $1,4$.
+Siendo el par de paquetes $B, C$ el de menor valor en la función $\omega$, entonces sí el paquete que se remueve es $C$ la solución resultante contiene los paquetes $A$ y $B$. El valor la función objetivo de esta solución generada es $0.9$, mientras que el valor de la función objetivo de la solución que contiene los paquetes $A$ y $C$ es $1,4$.
 
-La propuesta que se hace en este trabajo se propone modificar el algoritmo de selección para que iterativamente los paquetes de la solución. En cada iteración se elije al paquete que maximiza la función objetivo, a diferencia del algoritmo ~\ref{alg:chooseBundles}, multiplicada por un coeficiente para ponderar la parte inter de la función. Esta ponderación se realiza porque el peso del nodo (parte intra de la función) es mayor al peso de la arista (parte inter). Con este equilibrio se asegura que en las primeras iteraciones el valor del inter no sea despreciable en comparación con el valor del intra al momento de realizar la selección.
+En este trabajo se propone un nuevo enfoque para seleccionar los paquetes de la solución. En esta propuesta, a diferencia del algoritmo anterior, la solución se genera iterativamente agregando en cada paso el paquete que maximiza la función objetivo hasta alcanzar la cantidad de paquetes requeridos en la solución.
 
-Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
+Para los paquetes generados en el ejemplo anterior, en esta propuesta se tiene que para la primer iteración las soluciones posibles son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Siendo que $S^{1}_{1}$ es la solución con mayor valor de función objetivo, en la segunda iteración las posibles soluciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Quedándose finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la solución con mayor función objetivo.
+
+En los casos que acá interesa estudiar, en la relación entre la parte \texttt{intra} y la \texttt{inter} de función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} esta dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes entonces la segunda solución tiene $n$ relaciones inter-paquete más que la primer solución. Por esto, es necesario plantear para este nuevo algoritmo una función que contemple   
+
+En este algoritmo en que la solución va creciendo en cada iteración, 
+
+ 
+El inconveniente de utilizar en cada iteración la función objetivo es que al estar g
+
+Sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
 
 \begin{equation}
-\max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
+\max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
 \end{equation}
 
 \begin{center}
@@ -272,11 +281,12 @@ Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paqu
 		\KwData{$k,\gamma, \text{el grafo con peso en los vértices y aristas } G=(V,E) \text{ donde } \forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)} y \forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
 		\KwResult{Conjunto de k bundles}
 		$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
-		$S \leftarrow V$\;
+		$S \leftarrow \emptyset$\;
+		$R \leftarrow V$\;
 		\While{$ \left|S\right| < k$}{
-			$c \leftarrow \max_{b \in (B/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
+			$c \leftarrow \max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
 			$S \leftarrow S \cup \left\{c\right\}$\;
-			$B \leftarrow B \setminus \left\{c\right\}$\;
+			$R \leftarrow R \setminus \left\{c\right\}$\;
 		}
 		\Return $S$\;
 	\caption{Selección de paquetes proporcional}\label{alg:algSelProp}
@@ -284,7 +294,8 @@ Sea $B$ el conjunto de paquetes producidos y $S \subseteq B$ el conjunto de paqu
 \end{center}
 
 \section{Algoritmo goloso}
-Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y velocidad de la ejecución.
+Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y ve
+locidad de la ejecución.
 
 Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} (construir una cantidad suficiente paquetes y luego seleccionar un conjunto) supone que las soluciones se enfocan más en la parte intra que inter. Lo que motivo a diseñar otro tipo de heurística.
 
