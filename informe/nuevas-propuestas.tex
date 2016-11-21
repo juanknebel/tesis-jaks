@@ -261,14 +261,11 @@ En este trabajo se propone un nuevo enfoque para seleccionar los paquetes de la 
 
 Para los paquetes generados en el ejemplo anterior, en esta propuesta se tiene que para la primer iteración las soluciones posibles son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Siendo que $S^{1}_{1}$ es la solución con mayor valor de función objetivo, en la segunda iteración las posibles soluciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Quedándose finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la solución con mayor función objetivo.
 
-En los casos que acá interesa estudiar, en la relación entre la parte \texttt{intra} y la \texttt{inter} de función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} esta dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes entonces la segunda solución tiene $n$ relaciones inter-paquete más que la primer solución. Por esto, es necesario plantear para este nuevo algoritmo una función que contemple   
+En los casos que acá interesa estudiar, en la relación entre la parte \texttt{intra} y la \texttt{inter} de función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} esta dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes entonces la segunda solución tiene $n$ relaciones inter-paquete más que la primer solución. A continuación se propone una función para este nuevo algoritmo en el que se compensa estas diferencias.
 
-En este algoritmo en que la solución va creciendo en cada iteración, 
+Para el algoritmo \ref{alg:algSelProp} que se propone en esta tesis para la etapa de selección, la función que se utiliza en cada iteración para seleccionar un paquete para la solución es una variante de la función objetivo. En esta función cada parte de la función objetivo es multiplicada por un coeficiente. Con el coeficiente se equilibra la parte \texttt{intra} y la \texttt{inter} durante todo la generación de la solución.   
 
- 
-El inconveniente de utilizar en cada iteración la función objetivo es que al estar g
-
-Sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
+Formalmente esta función se define como, sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
 
 \begin{equation}
 \max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
