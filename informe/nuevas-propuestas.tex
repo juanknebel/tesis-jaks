@@ -211,22 +211,24 @@ Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la informa
 	\end{algorithm}
 \end{center}
 
-\subsection{Selección de paquetes}
-Al finalizar la producción de paquetes comienza la etapa de selección de los mismos, en la cual se deben seleccionar los $k$ mejores paquetes para la solución. El problema de seleccionar aquellos paquetes que maximizan la función objetivo se traduce en, encontrar un grafo completo G con peso en los nodos y vértices (el peso de los nodos representa la calidad de los paquetes y el peso de las aristas es la distancia entre los nodos) en el k-subgrafo de mayor peso, teniendo en cuenta los nodos y vértices.
+\subsection{Modificaciones en la selección de paquetes}
+El segundo paso de los algortimos del estilo \emph{Produce and Choose} luego de la producción de paquetes es la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación orignal de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
 
-La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente, dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
+El problema puede representarse como un de grafo completo con pesos en las aristas y vértices. Los nodos corresponden a los paquetes generados en la primer parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está corresponde con el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada recientemente se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
+
+La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente: dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
 
 \begin{equation}
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
 
-El problema de encontrar el máximo k-subgrafo con pesos en los nodos y vértices, se puede reducir al problema ya conocido de hallar el k-subgrafo más denso\cite{DBLP:journals/algorithmica/FeigePK01}. Transformando el grafo del problema original a un grafo ponderado, en el que el peso de los vértices esta dado por la siguiente función:
+El problema previamente mencionado puede reducirce a la ya conocida situación de hallar el k-subgrafo más denso \cite{DBLP:journals/algorithmica/FeigePK01}. Transformando el grafo del problema original a un grafo ponderado, en el que el peso de los vértices esta dado por la siguiente función:
  
 \begin{equation}
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-En \cite{journals/tkde/Amer-YahiaBCFMZ14} se propone utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en remover en cada iteración uno del par de nodos del vértice con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
+En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en cada iteración remover un vértice al par con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
 
 \begin{center}
 	\begin{algorithm}[H]
