@@ -293,12 +293,14 @@ Formalmente esta función se define como, sea $R$ el conjunto de paquetes produc
 \end{center}
 
 \section{Algoritmo goloso}
-Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución de suma calidad al finalizar la ejecución. No siempre encuentra la solución óptima pero son muy usados por su sencillez y ve
-locidad de la ejecución.
 
-Por la forma de generar la solución que tiene la heurística \texttt{Produce-and-choose} (construir una cantidad suficiente paquetes y luego seleccionar un conjunto) supone que las soluciones se enfocan más en la parte intra que inter. Lo que motivo a diseñar otro tipo de heurística.
+En esta tesis se plantea una alternativa para encontrar una solución al problema de \texttt{Recuperación de Ítems Empaquetados}, en el que se ataquen principalmente dos puntos: (1)que la solución se construya de forma tal que se considere de la misma manera las dos partes de la función objetivo -la parte \texttt{inter} y la \texttt{intra}- y (2)que sea aceptable el tiempo de ejecución para grandes cantidades de ítems. El primero de estos puntos es para tener una variante de \texttt{Produce-and-choose} en el cual por la forma de generar la soluciones se enfocan más en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
 
-El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos e iterativamente se agrega un item, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Un posible escenario de este algoritmo es que a la solución $S$ se le agrega el ítem $i$ obteniedo así la solución válida $S'$ y que el valor de la función objetivo de $S$ sea mayor que el de $S'$, ya que se la prioridad es que la solución resultante tenga la mayor cantidad de ítems posibles.
+Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución óptima. En la mayoría de los problemas el algoritmo goloso no encuentra la solución óptima, pero son muy usados por su sencillez y velocidad de la ejecución.
+
+Por los motivos mencionados anteriormente y por las características del algoritmo goloso, es que de decidió implementar esta heurística para encontrar una solución. El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos y en cada iteración se agrega un ítem, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Sea $I$ el conjunto de ítems del problema, $\omega$ la función objetivo y en el inicio la solución $S_0 = \emptyset$ y $t=1$ entonces se define $S_t = S_{t-1} \cup \{i\}$ dónde $i \in I$, $i \notin S_{t-1}$ y $S_t$ es una solución válida. 
+
+Como se puede ver, esta implementación prioriza la cantidad de elementos de la solución ante el valor objetivo de la misma. Con esto se quiere decir que en cada paso, si es posible, se agrega un ítem a la solución pese a que disminuya el valor de la función objetivo. Ya que un escenario posible es que $\omega(S_{t-1}) > \omega(S_t)$.
 
 \begin{center}
 	\begin{algorithm}[H]
