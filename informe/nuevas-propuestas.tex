@@ -1,9 +1,9 @@
-Como mencionamos antes, en este capítulo se presentaran las modificaciones que se implementaron sobre los algoritmos que se describieron anteriormente. Éstos cambios apuntan a mejorar la calidad de las soluciones, haciendo hincapié en los valores \texttt{inter} de los paquetes pero al mismo tiempo sin descuidar los buenos resultados que se habían obtenido.
+Como se mencionó en la sección previa, en este capítulo se presentaran las modificaciones implementadas sobre los algoritmos anteriormente descriptos. Éstos cambios apuntan a mejorar la calidad de las soluciones, haciendo hincapié en los valores \texttt{inter} de los paquetes pero al mismo tiempo sin descuidar los buenos resultados que se habían obtenido.
 
-Además de las mejoras descriptas, mostraremos nuevos procedimientos basados en búsquedas tabú, que demostraron ser muy útiles y eficientes en todos los casos. También se incluye una alternativa completamente diferente a los algoritmos del estilo \texttt{Produce\allowbreak-and\allowbreak-Choose} influenciado por las soluciones del estilo \emph{greedy}.
+Además de las mejoras propuetas, mostraremos nuevos procedimientos basados en búsquedas tabú, que demostraron ser muy útiles y eficientes en todos los casos. También se incluye una alternativa completamente diferente a los algoritmos del estilo \texttt{Produce\allowbreak-and\allowbreak-Choose} influenciado por las soluciones del estilo \emph{greedy}.
 
 \section{Produce-and-Choose}
-En general los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} genera una cierta cantidad de paquetes y luego se seleccionan los que pertenecerán a la solución.
+Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes y luego seleccion aquellos que maximicen el valor de la función objetivo para que formen parte de la solución.
 
 Los parámetros del algoritmo son los del problema mencionado en~\autoref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
 
@@ -20,13 +20,13 @@ Los parámetros del algoritmo son los del problema mencionado en~\autoref{introd
 	\end{algorithm}
 \end{center}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las diferentes estrategias que fueron usadas y se detallara su funcionamiento.
+La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las diferentes estrategias que fueron usadas y se detallará su funcionamiento.
 
 \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor \texttt{intra}, mientras que el peso de las aristas representa el valor \texttt{inter} entre los paquetes correspondientes a cada nodo. 
 
 Finalmente la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas. En este punto también se analizarán distintas implementaciones. Finalmente los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución.
 
-Como se puede observar la estructura de esta familia de algoritmos permite la facilidad de introducir mejoras en las dos fases críticas: generación y selección de paquetes. Permitiendo al mismo tiempo combinar cada una de ellas de la mejora manera dependiendo del objetivo de la búsqueda requerida.
+Como se puede observar la estructura de esta familia de algoritmos permite facilidad de introducir mejoras en sus dos fases críticas: generación y selección de paquetes. Permitiendo al mismo tiempo combinar cada una de ellas de la mejor manera dependiendo del objetivo de la búsqueda requerida.
 
 \subsection{Mejoras en la generación de paquetes}
 La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como ``agrupamiento'' consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor la similitud dentro del conjunto (valor \texttt{intra}) y mayor sea la diferencia entre conjuntos el agrupamiento será mejor.
