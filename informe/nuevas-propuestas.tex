@@ -1,6 +1,6 @@
 Con el objetivos de obtener soluciones de mejor calidad y que se puedan generar a partir de miles de elementos, en este capítulo se presentan nuevas propuestas para la resolver el problema de \texttt{Recuperación de Ítems Empaquetados}. Estas propuestas consisten en modificaciones a algoritmos ya conocidos y presentados en el capítulo anterior como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a mejorar la calidad de las soluciones mejorando los valores \texttt{inter} de los paquetes.
 
-La primer propuesta que se dará a conocer es de un conjunto de mejoras aplicadas al algoritmo estudiado en el capítulo anterior\texttt{Produce\allowbreak-and\allowbreak-Choose}. En la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. Una de las mejoras es para reducir el orden de complejidad del algoritmo y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de que los paquetes producidos. En cuanto a la fase de producción, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
+La primer propuesta que sae dará a conocer es de un conjunto de mejoras aplicadas al algoritmo estudiado en el capítulo anterior\texttt{Produce\allowbreak-and\allowbreak-Choose}. En la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. Una de las mejoras es para reducir el orden de complejidad del algoritmo y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de que los paquetes producidos. En cuanto a la fase de producción, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
 Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseño un algoritmo goloso.
 
@@ -215,7 +215,7 @@ Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la informa
 	\end{algorithm}
 \end{center}
 
-\subsection{Modificaciones en la selección de paquetes}
+\subsection{Mejoras en la selección de paquetes}
 El segundo paso de los algortimos del estilo \emph{Produce and Choose} luego de la producción de paquetes es la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación orignal de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
 
 El problema puede representarse como un de grafo completo con pesos en las aristas y vértices. Los nodos corresponden a los paquetes generados en la primer parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está corresponde con el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada recientemente se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
@@ -296,7 +296,7 @@ Formalmente esta función se define como, sea $R$ el conjunto de paquetes produc
 	\end{algorithm}
 \end{center}
 
-\section{Algoritmo goloso}
+\section{Resolución con algoritmo goloso}
 
 En esta tesis se plantea una alternativa para encontrar una solución al problema de \texttt{Recuperación de Ítems Empaquetados}, en el que se ataquen principalmente dos puntos: (1)que la solución se construya de forma tal que tenga la misma consideración las dos partes de la función objetivo -la parte \texttt{inter} y la \texttt{intra}- durante todo el proceso y (2)que sea aceptable el tiempo de ejecución para grandes cantidades de ítems. El primero de estos puntos es para tener una variante de \texttt{Produce-and-choose} en el cual por la forma de generar la soluciones se enfocan más en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
 
@@ -343,24 +343,21 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 	\end{algorithm}
 \end{center}
 
-\section{Búsquedas Tabú}
+\section{Resolución con Búsqueda Tabú}
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de items y que el tiempo de ejecución este acorde con el resto de los algoritmos. Para abordar esta problemática, se implementaron distintas variantes de la metaheuristica \textbf{Tabú search}. \textbf{Tabú search}se basa en buscar una mejor solución a partir de una solución ya existente, lo que permite combinar junto con las hueristicas estudiadas anteriormente.
+
 Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueven a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
 
-\textbf{Tabú search} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
+\textbf{Tabú search}\cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
 
-Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como listas tabú, que determinan cuáles son las soluciones vecinas permitidas de una solución. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, visitar una solución que se encuentra en la lista tabú.
-
-Para alcanzar mejores soluciones se introduce el concepto de criterios de aspiración. Estos determinan cuándo se pueden reemplazar las restricciones tabú, eliminando así la clasificación tabú aplicada a un movimiento. 
-
-Una de las ventajas que tienen este tipo de metaheurísticas es que no son muy costosas en tiempo de ejecución siempre que la cantidad máxima de iteraciones no sea excesiva, con lo cual se puede ejecutar sin problemas y sin importar de que algoritmo de generación y selección provenga la solución original con el fin de intentar mejorarla.
+Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como listas tabú, que determinan cuáles son las soluciones vecinas permitidas de una solución. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, eludir las restricciones tabú y así poder visitar soluciones.
 
 Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
 \subsection{Inter-Paquete}
-La búsqueda se concibió especialmente para la fase de selección del algoritmo \texttt{Produce and Choose}, es decir en la fase que se selecciona un subconjunto de paquetes de los generados en la fase anterior de producción. De la solución obtenida en la fase de selección se va a realizar la búsqueda tabú con los paquetes generados en la fase de producción con el objetivo de visitar soluciones vecinas y esperando obtener una mejor selección.
+La búsqueda se concibió especialmente para algoritmo \texttt{Produce and Choose}. A partir de la solución obtenida con \texttt{Produce and Choose} la búsqueda tabú  se realizará con aquellos paquetes generados en la fase de producción que no pertencen a la solución. 
 
-Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que no contienen el paquete con menor valor Inter de $S$ e incluye un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de
-iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define para el criterio de aspiración, admitir una solución vecina que contiene un paquete que esta en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
+Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que no contienen al paquete con menor valor Inter de $S$ e incluyen a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define, para el criterio de aspiración, admitir una solución vecina que contiene un paquete que está en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
 El esquema del proceso para construir una nueva soluci\'on es el siguiente:
 
@@ -371,21 +368,21 @@ El esquema del proceso para construir una nueva soluci\'on es el siguiente:
 
 \begin{enumerate}
       	
-\item Se identifica el paquete $b_r$ en $\bar{S}$ con menor inter:
+\item Identificar el paquete $b_r$ en $\bar{S}$ con menor inter:
 
 $$b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
 
-\item Se determina el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
+\item Determinar el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
 	
-\item Se determina el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
+\item Determinar el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
 
 $$C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))$$
 
-\item Se determina el mejor paquete de $C$ no prohibido en la lista tabú $LT$ según el criterio:
+\item Determinar el mejor paquete de $C$ no prohibido en la lista tabú $LT$ según el criterio:
 
 $$b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
 
-\item Se evalúa el criterio de aspiración para los paquetes en $C \cap LT$
+\item Evaluar el criterio de aspiración para los paquetes en $C \cap LT$
 
 $$b_{tabu} = \argmax_{\scriptscriptstyle b_s \in C \cap LT} w(\bar{S} \setminus \{b_r\} \cup \{b_s\})$$
 
