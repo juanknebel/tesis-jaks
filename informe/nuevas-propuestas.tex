@@ -1,15 +1,19 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}, el foco principal de las propuestas se centran en obtener soluciones de mejor calidad y que puedan ser generadas a partir de miles de elementos. Los nuevo planteos consisten en modificaciones de los algoritmos ya conocidos y presentados en el capítulo anterior como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si. Para lo cual se intenta mejorar la parte \texttt{inter} de de la función objetivo.
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}, el foco principal de las propuestas se centran en obtener soluciones de mejor calidad y que puedan ser generadas a partir de innumerable cantidad de elementos. 
 
-La primer propuesta que se dará a conocer es de un conjunto de mejoras aplicadas al algoritmo estudiado en el capítulo anterior\texttt{Produce\allowbreak-and\allowbreak-Choose}. En la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. Una de las mejoras es para reducir el orden de complejidad del algoritmo y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de que los paquetes producidos. En cuanto a la fase de producción, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
+Los nuevos planteos consisten en modificaciones de los algoritmos ya conocidos, trabajados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
-Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseño un algoritmo goloso.
+La primer propuesta que se dará a conocer es un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. A su vez, en la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras: una de ellas es para reducir el orden de complejidad del algoritmo, y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de producción, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
-Entre las mejoras propuestas, también se cuenta con la iniciativa de aplicar la heurísitica de la búsqueda tabú a las soluciones generadas por otros algoritmos. Con las cuales se intenta encontrar una mejor solución, evitando caer en máximos locales. 
+Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso, y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseño un algoritmo goloso.
+
+Propondremos además aplicar la heurísitica de la búsqueda tabú, a las soluciones generadas por otros algoritmos. Con las cuales se intenta encontrar una mejor solución, evitando caer en máximos locales. 
 
 \section{Produce-and-Choose}
-Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes y luego seleccion aquellos que maximicen el valor de la función objetivo para que formen parte de la solución.
+Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes para luego seleccionar aquellas que maximicen el valor de la función objetivo que formarán parte de la solución.
 
-Los parámetros del algoritmo son los del problema mencionado en~\autoref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. El algoritmo devuelve un conjunto de paquetes válidos.
+Los parámetros del algoritmo son los del problema mencionado en~\autoref{introduccion:problemaFormal}: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el limite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ para ponderar si se quiere paquetes más cohesivos o no y una cantidad $k$ de paquetes a generar. 
+
+Para que finalmente el algoritmo entregue como resultado, un conjunto de paquetes válidos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -26,18 +30,20 @@ Los parámetros del algoritmo son los del problema mencionado en~\autoref{introd
 
 La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las estrategias propuestas que se aplicaron al algoritmo jerárquico.
 
-\texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos y devuelve un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor \texttt{intra}, mientras que el peso de las aristas representa el valor \texttt{inter} entre los paquetes correspondientes a cada nodo. 
+\texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos, transformandolo en un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor \texttt{intra}, mientras que el peso de las aristas representa el valor \texttt{inter} entre los paquetes correspondientes a cada nodo. 
 
-Por último la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas, los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución. Para esta etapa también se plantean nuevas estrategias con el fin de cumplir con los objetivos propuestos en esta tesis.
+Por último la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas. Los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución.
 
-Como se puede observar la estructura de esta familia de algoritmos permite facilidad de introducir mejoras en sus dos fases críticas: generación y selección de paquetes. Permitiendo al mismo tiempo combinar cada una de ellas de la mejor manera dependiendo del objetivo de la búsqueda requerida.
+Como se puede observar la estructura de esta familia de algoritmos facilita la introducción de mejoras en sus dos fases críticas: generación y selección de paquetes. De éste modo se podrán combinar de la mejor manera, teniendo en cuenta el objetivo de la búsqueda requerida.
 
 \subsection{Mejoras en la generación de paquetes}
-La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como ``agrupamiento'' (\textit{clustering} en inglés) \cite{wiki:clustering} consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. El objetivo es que los objetos del grupo sean similares entre sí y diferentes de los objetos de los restantes grupos. Cuanto mayor sea la similitud dentro del conjunto (valor \texttt{intra}) y mayor sea la diferencia entre conjuntos el agrupamiento será mejor.
+La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como ``agrupamiento'' (\textit{clustering} en inglés) \cite{wiki:clustering} consiste en juntar objetos basándose en la información que estos describen o en sus relaciones. La finalidad es que los objetos del grupo sean similares entre sí y diferentes de los restantes grupos. Cuanto mayor sea la similitud \textbf{dentro} del conjunto (valor \texttt{intra}) y mayor sea la diferencia \textbf{entre} conjuntos el agrupamiento será mejor.
 
-La noción de que es un grupo correctamente constituido no puede ser definido con precisión y es por tal motivo que existe una gran cantidad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir ambiguamente como un conjunto de objetos relacionados entre sí. Dependiendo del modelo de representación usado para el problema, dependerá el tipo de algoritmo que será utilizado.
+La noción de que es un grupo correctamente constituido no puede ser definido con precisión y es por tal motivo que existe una gran cantidad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir como un conjunto de objetos relacionados entre sí. Teniendo en cuenta el modelo de representación usado para el problema, dependerá el tipo de algoritmo que será utilizado.
 
-Por ejemplo, para los veinte puntos de~\autoref{res:img-howToCluster} existen tres (o más) formas de agruparlos que son válidas y que dependen del contexto. Si es por que los puntos estén juntos, entonces la estructura más razonable es en la que existen dos grupos. Pero la división de los dos grupos en tres subgrupos es más intuitiva para el ojo humano. Tampoco es irracional decir que los puntos pertenecen a cuatro conjuntos. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto de los objetos que se quieren agrupar y del problema.
+Para ejemplificar lo anteriormente mencionado, en los veinte puntos de~\autoref{res:img-howToCluster} existen más de una única forma de agruparlos que son válidas y que dependen del contexto. 
+
+Si se quisiera agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizarían dos grupos. A su vez cada uno de los subgrupos puede ser nuevamente particionado de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
 
 \begin{figure}[H]
   \centering
@@ -45,18 +51,24 @@ Por ejemplo, para los veinte puntos de~\autoref{res:img-howToCluster} existen tr
    \caption{}
    \label{res:img-howToCluster}
 \end{figure}
-En este trabajo el agrupamiento esta definido para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la función de similitud, para que los items dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
-En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría pueden categorizarse entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales, $k$ será el número final de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Éste tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
+De éste modo definimos el agrupamiento para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza a través de la \textbf{función de similitud} de los objetos, para que los items dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
+
+En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría pueden categorizarse entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales. Por lo tanto $k$ será el número total de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Éste tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
 
 A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez éstas técnicas se suelen subdividir en dos estrategias: algomerativas y divisivas, las cuales serán detalladas más adelante.
 
-En esta tesis se plantearon dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: (1) La estrategia para decidir en cada iteración qué \textit{clusters} se combinan. (2) La complejidad algorítmica. En las próximas secciones se describen detalladamente las mejoras propuestas.
+En esta tesis se plantean dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: 
+\begin{enumerate}
+	\item La elección en cada iteración de la estrategia para combinar \textit{clusters}.
+	\item La complejidad algorítmica.
+\end{enumerate}
+En las próximas secciones se describirán detalladamente las mejoras propuestas.
 
-En relación al algoritmo \textit{BOBO}, también descripto en la publicación mencionada en el párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
+En relación al algoritmo \textit{BOBO}, también descripto en la publicación del párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este, en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos y los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, generar $k$ paquetes válidos.
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -83,12 +95,14 @@ El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar 
 	\end{algorithm}
 \end{center}
 
-La función \texttt{selPivote} selecciona un pivote perteneciente al conjunto de pivotes, en este trabajo se siguió con la recomendación de \cite{Zhang:2002:ESI:638644.638646} de que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+La función \texttt{selectPivote} selecciona un pivote perteneciente al conjunto de pivotes, en este trabajo se siguió con la recomendación citada en \cite{Zhang:2002:ESI:638644.638646}: la cuál dice que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso dado que que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de la complementariedad y el presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
-Anteriormente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. El aglomerativo, comienza con cada objeto perteneciente en un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14}. La estrategia divisiva, en cambio, comienza con todos los objetos en un mismo grupo y en cada paso se realiza la división de uno de los grupos.
+Anteriormente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. El aglomerativo, comienza con cada objeto perteneciente en un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14}. 
 
-Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los puede visualizar como un dendrograma, como se ve en la~\autoref{nuevaspropuestas:dendograma1}. En el eje X se encuentran los objetos que van a ser agrupados y en la coordenada Y se haya la distancia en la que los elementos se unirán. Las uniones de los objetos se representan mediante una línea vertical que comienza a la altura de la distancia en la que los grupos han sido unidos. Por ejemplo, en la figura mencionada, el grupo \textit{4} se une al \textit{5} en la distancia 2 formando el \textit{cluster B}. En un paso posterior éste último se unirá al grupo \textit{3} en una distancia cercana a 3 obteniendo el nuevo \textit{cluster C}. En cada paso se generará una nueva unión hasta que solo quede un solo grupo.
+La estrategia divisiva, en cambio, comienza con todos los objetos en un mismo grupo y en cada paso se realiza la división de uno de los grupos.
+
+Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los puede visualizar como un dendrograma, como se ve en la~\autoref{nuevaspropuestas:dendograma1}: en el eje X se encuentran los objetos que van a ser agrupados y en la coordenada Y se haya la distancia en la que los elementos se unirán. Las uniones de los objetos se representan mediante una línea vertical que comienza a la altura de la distancia en la que los grupos han sido unidos. Por ejemplo, en la figura mencionada, el grupo \textit{4} se une al \textit{5} en la distancia 2 formando el \textit{cluster B}. En un paso posterior éste último se unirá al grupo \textit{3} en una distancia cercana a 3 obteniendo el nuevo \textit{cluster C}. En cada paso se generará una nueva unión hasta que solo quede un solo grupo.
 
 \begin{figure}[H]
   \centering
@@ -139,9 +153,15 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de items. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud y que a su vez sea una unión válida. Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto grupos candidatos a unir, realizando comparaciones entre todos los grupos que existentes hasta el momento. Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir sólo toma en cuenta el valor \texttt{intra}, por lo que dicha operación puede ser tratada como constante ya que se trata de número fijo de comparaciones.
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de items. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud y que a su vez sea una unión válida. 
 
-La propuesta de esta tesis es incluir el valor \texttt{inter} en la selección del par de {\em clusters} que se unen, en pos de lograr un mejor criterio de unión. Como consecuencia el conjunto de paquetes generados es más disperso. Por este motivo se definió la función \textit{Intra-Inter} en reemplazo de la función \textit{Score}. Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
+Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. 
+
+La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir, sólo toma en cuenta el valor \texttt{intra}, por lo que dicha operación puede ser tratada como constante, ya que se trata de un número fijo de comparaciones.
+
+La desición en esta tesis es la de incluir el valor \texttt{inter} en la selección del par de {\em clusters} que se unen, en pos de lograr un mejor criterio de unión. Como consecuencia, el conjunto de paquetes generados es más disperso. Por este motivo se definió la función \textit{Intra-Inter} en reemplazo de la función \textit{Score}. 
+
+Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
 
 $$A(C_i,C_j) = \sum_{u \in C_i, v \in C_j}{s(u,v)},$$
 
@@ -149,11 +169,11 @@ $$E(C_i,C_j)=\max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
 
 $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
-De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario el segundo resultará siempre despreciable con respecto al primero. En este trabajo el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) \cdot (\#C_i + \#C_j - 1)}{2}$  
+De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario el segundo resultará siempre despreciable con respecto al primero. Por lo tanto el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) \cdot (\#C_i + \#C_j - 1)}{2}$  
 
-Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras propuestas no hubieran podido ser usadas en las pruebas que en los próximos capítulos se detallaran, por tratarse de instancias con miles de objetos.
+Si bien el objetivo principal de la modificación propuesta es, aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras no hubieran podido ser usadas en las pruebas, que en los próximos capítulos se detallarán, por tratarse de instancias impredecibles en cuánto a la cantidad de objetos.
 
-Recapitulando las fórmulas presentadas anteriormente, para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
+Retomando las fórmulas presentadas anteriormente, para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
 
 $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
@@ -161,7 +181,13 @@ $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
 El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.
 
-Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. La similitud entre los grupos se guarda en colas de prioridad en orden decreciente, entonces la cola $P\left[k\right].max()$ devuelve el grupo de mayor similitud con el k-ésimo grupo. Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
+Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. 
+
+La similitud entre los grupos se guarda en colas de prioridad en orden decreciente. Por lo tanto, el k-ésimo grupo tiene la mayor similitud con el grupo contenido en $P\left[k\right].max()$.
+
+VER!!!!!!!!!!!!\\
+Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
+\\VER!!!!!!!!!!!!
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -218,9 +244,13 @@ Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la informa
 \subsection{Mejoras en la selección de paquetes}
 En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación orignal de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
 
-El problema puede representarse como un de grafo completo con pesos en las aristas y vértices. Los nodos corresponden a los paquetes generados en la primer parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está corresponde con el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada recientemente se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
+El problema puede representarse como un grafo completo con pesos en las aristas y vértices. 
 
-La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente: dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. La salida es el conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
+Los nodos corresponden a los paquetes generados en la primer parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está definido en el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada recientemente se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
+
+La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente: dado el grafo $ G = (V,E) $, la funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. 
+
+El resutado es el conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
 
 \begin{equation}
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
@@ -232,7 +262,9 @@ El problema previamente mencionado puede reducirce a la ya conocida situación d
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo consiste en cada iteración remover un vértice al par con menor peso del grafo hasta que quedarse con un grafo de $k$ nodos.
+En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar la heurística \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. 
+
+El algoritmo en cada iteración, elimina un vértice al par de nodos con menor peso del grafo, hasta que quedarse con un grafo de $k$ nodos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -252,26 +284,32 @@ En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar la heurística \ref{
 \end{center}
 
 
-La debilidad de este algoritmo es que no esta definida la selección, en la arista de menor peso, del nodo a remover. Entonces se puede dar el caso de que el nodo que se remueve es el que pertenece a una solución de mejor calidad.
+La debilidad de este algoritmo, es que no esta definida la selección en la arista de menor peso, del nodo a remover. Entonces se puede dar el caso de que el nodo que se remueve es el que pertenece a una solución de mejor calidad.
 
-Por ejemplo si se considera que en la etapa de producción se generan los tres paquetes $A$, $B$ y $C$. En el cual los valores \texttt{Intra} de los paquetes son: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$. En cuanto a los valor \texttt{Inter} entre los paquetes:$\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga 2 paquetes y con $\gamma=0,1$ se tiene los siguientes valores para cada par de paquete:
+Por ejemplo si se considera que en la etapa de producción se generan los tres paquetes $A$, $B$ y $C$. En el cual los valores \texttt{Intra} de los paquetes son: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$. En cuanto a los valor \texttt{Inter} entre los paquetes:$\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga dos paquetes y con $\gamma=0,1$ se tiene los siguientes valores para cada par de paquete:
 \begin{itemize}
 	\item $\omega(A,B) = 0,45$
 	\item $\omega(A,C) = 1,15$
 	\item $\omega(B,C) = 0,2$
 \end{itemize}
  
-Siendo el par de paquetes $B, C$ el de menor valor en la función $\omega$, entonces sí el paquete que se remueve es $C$ la solución resultante contiene los paquetes $A$ y $B$. El valor la función objetivo de esta solución generada es $0.9$, mientras que el valor de la función objetivo de la solución que contiene los paquetes $A$ y $C$ es $1,4$.
+El par de paquetes $B, C$ es el que tiene el menor valor en la función $\omega$, por lo tanto sí el paquete elegido para ser eliminado es $C$, la solución resultante contendrá a los paquetes $A$ y $B$. 
 
-En este trabajo se propone un nuevo enfoque para seleccionar los paquetes de la solución. En esta propuesta, a diferencia del algoritmo anterior, la solución se genera iterativamente agregando en cada paso el paquete que maximiza la función objetivo hasta alcanzar la cantidad de paquetes requeridos en la solución.
+El valor de la función objetivo de esta solución generada es $0,9$, mientras que el valor de la función objetivo de la solución que contiene a los paquetes $A$ y $C$ es $1,4$.
 
-Para los paquetes generados en el ejemplo anterior, en esta propuesta se tiene que para la primer iteración las soluciones posibles son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Siendo que $S^{1}_{1}$ es la solución con mayor valor de función objetivo, en la segunda iteración las posibles soluciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Quedándose finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la solución con mayor función objetivo.
+En esta propuesta se propone un nuevo enfoque para seleccionar los paquetes de la solución, a diferencia del algoritmo anterior, la solución se genera iterativamente agregando en cada paso el paquete que maximiza la función objetivo hasta alcanzar la cantidad de paquetes requeridos en la solución.
 
-En los casos que acá interesa estudiar, en la relación entre la parte \texttt{intra} y la \texttt{inter} de función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} esta dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes entonces la segunda solución tiene $n$ relaciones inter-paquete más que la primer solución. A continuación se propone una función para este nuevo algoritmo en el que se compensa estas diferencias.
+Para los paquetes generados en el ejemplo anterior, las soluciones posibles en la primera iteración son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Siendo que $S^{1}_{1}$ es la solución con mayor valor de función objetivo. En la segunda iteración las posibles soluciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Quedándose finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la de mayor función objetivo.
 
-El algoritmo \ref{alg:algSelProp} que se propone en esta tesis para la etapa de selección, la función que se utiliza en cada iteración para seleccionar un paquete para la solución es una variante de la función objetivo. En esta función cada parte de la función objetivo es multiplicada por un coeficiente. Con el coeficiente se equilibra la parte \texttt{intra} y la \texttt{inter} durante todo la generación de la solución.   
+En los casos estudiados, la relación entre la parte \texttt{intra} y la \texttt{inter} de la función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} esta dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes entonces la segunda solución tiene $n$ relaciones inter-paquete más que la primer solución. 
 
-Formalmente esta función se define como, sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$ se agrega a la solución el paquete que cumple con:
+A continuación se propone una función para este nuevo algoritmo en el que se compensa estas diferencias.
+
+El algoritmo \ref{alg:algSelProp} en la etapa de selección, utiliza una función en cada iteración para seleccionar un paquete que formará parte de la solución. Consistiendo en una variante de la función objetivo. En la variante cada parte de la función objetivo es multiplicada por un coeficiente \textbf{coef}. Con el coeficiente se equilibra la parte \texttt{intra} y la \texttt{inter} durante todo la generación de la solución.   
+
+Formalmente esta función se define de la siguiente manera.
+
+Sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$, se agrega a la solución el paquete que cumple con:
 
 \begin{equation}
 \max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}
