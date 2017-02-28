@@ -336,13 +336,21 @@ Sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paqu
 
 \section{Resolución con algoritmo goloso}
 
-Una alternativa que se propone para encontrar una solución al problema de \texttt{Recuperación de Ítems Empaquetados}, en el que se ataquen principalmente dos puntos: (1)que la solución se construya de forma tal que tenga la misma consideración las dos partes de la función objetivo -la parte \texttt{inter} y la \texttt{intra}- durante todo el proceso y (2)que sea aceptable el tiempo de ejecución para grandes cantidades de ítems. El primero de estos puntos es para tener una variante de \texttt{Produce-and-choose} en el cual por la forma de generar la soluciones se enfocan más en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
+Para el problema de \texttt{Recuperación de Ítems Empaquetados} se pronpone una solución basada en heurísiticas golosas, la misma abordará dos temas puntuales:
+\begin{itemize}
+	\item Que la solución se construya de forma tal que tenga la misma consideración las dos partes de la función objetivo -la parte \texttt{inter} y la \texttt{intra}- durante todo el proceso.
+	\item Que sea aceptable el tiempo de ejecución para grandes cantidades de ítems.
+\end{itemize}
 
-Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la opción óptima local, esperando así lograr una solución óptima. En la mayoría de los problemas el algoritmo goloso no encuentra la solución óptima, pero son muy usados por su sencillez y velocidad de la ejecución.
+El primero de estos puntos es para tener una variante de \texttt{Produce-and-choose} en el cual por la forma de generar la soluciones se enfocan más en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
 
-Por los motivos mencionados anteriormente y por las características del algoritmo goloso, es que de decidió implementar esta heurística para encontrar una solución. El algoritmo goloso que se propone comienza con con los $k$ paquetes de la solución vacíos y en cada iteración se agrega un ítem, que no pertenece a la solución, en el paquete que maximiza la función objetivo y sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Sea $I$ el conjunto de ítems del problema, $\omega$ la función objetivo y en el inicio la solución $S_0 = \emptyset$ y $t=1$ entonces se define $S_t = S_{t-1} \cup \{i\}$ dónde $i \in I$, $i \notin S_{t-1}$ y $S_t$ es una solución válida. 
+Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la mejor opción local, esperando así lograr una solución óptima. En la mayoría de los problemas el algoritmo goloso no encuentra la solución óptima, pero son muy usados por su sencillez y velocidad de la ejecución.
 
-Como se puede ver, esta implementación prioriza la cantidad de elementos de la solución ante el valor objetivo de la misma. Con esto se quiere decir que en cada paso, si es posible, se agrega un ítem a la solución pese a que disminuya el valor de la función objetivo. Ya que un escenario posible es que $\omega(S_{t-1}) > \omega(S_t)$.
+Por los motivos mencionados anteriormente y por las características del algoritmo goloso, es que se decidió implementar esta heurística para encontrar una solución. 
+
+El algoritmo goloso que se propone, comienza con los $k$ paquetes de la solución vacíos, y en cada iteración se agrega un ítem que no pertenece a la solución, ubicandolo en el paquete que maximiza la función objetivo, sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Sea $I$ el conjunto de ítems del problema, $\omega$ la función objetivo y en el inicio la solución $S_0 = \emptyset$ y $t=1$ entonces se define $S_t = S_{t-1} \cup \{i\}$ dónde $i \in I$, $i \notin S_{t-1}$ y $S_t$ es una solución válida. 
+
+Como se puede ver, esta implementación prioriza la cantidad de elementos de la solución, ante el valor objetivo de la misma. Con esto se quiere decir que en cada paso, si es posible, se agrega un ítem a la solución, pese a que disminuya el valor de la función objetivo. Ya que un escenario posible es que $\omega(S_{t-1}) > \omega(S_t)$.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -382,20 +390,26 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 \end{center}
 
 \section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de items y que el tiempo de ejecución este acorde con el resto de los algoritmos. Para abordar esta problemática, se implementaron distintas variantes de la metaheuristica \textbf{Tabú search}. \textbf{Tabú search} se basa en buscar una mejor solución a partir de una solución ya existente, lo que permite combinar junto con las hueristicas estudiadas anteriormente.
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de items y que el tiempo de ejecución este acorde con el resto de los algoritmos se implementaron distintas variantes de la metaheuristica \textbf{Tabú search}. 
 
-Las búsquedas locales consisten en moverse de solución en solución, aplicando cambios a la solución candidata hasta encontrar una mejor solución o satisfacer un criterio de parada. Los algoritmos comienzan a partir de una solución válida y en cada iteración se mueven a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad en el espacio de soluciones. Como una solución puede tener muchas soluciones vecinas se elige siempre la que maximice (o minimice, según el problema elegido) el criterio seleccionado, esto produce que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
+\textbf{Tabú search} se basa en buscar una mejor solución a partir de una otra anterior ya existente, lo que permite ser combinada junto con las hueristicas estudiadas anteriormente.
 
-\textbf{Tabú search}\cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Para explorar regiones del espacio de búsqueda que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú modifica la estructura de vecinos para cada solución a medida que la búsqueda progresa y permite moverse a una solución vecina de menor calidad. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
+Las búsquedas locales consisten en moverse de una solución a otra, aplicando cambios a la solución candidata hasta encontrar una mejor o satisfacer un criterio de parada. 
 
-Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como listas tabú, que determinan cuáles son las soluciones vecinas permitidas de una solución. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, eludir las restricciones tabú y así poder visitar soluciones.
+Los algoritmos comienzan a partir de una instancia válida, que puede haber sido obtenida mediante algún otro método, y en cada iteración se mueve a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad entre las instancias del problema. Como una solución puede tener muchas instancias vecinas se elige siempre aquella que maximice (o minimice, según el problema elegido) el criterio seleccionado, produciendo que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
+
+\textbf{Tabú search}\cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. 
+
+Para explorar regiones del espacio de búsqueda, que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú permite moverse a una solución vecina de menor calidad modificando la estructura de vecinos en cada una de las soluciones. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
+
+Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como \textbf{listas tabú}, que determinan cuáles son las soluciones vecinas permitidas de una instancia. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración que permite, bajo ciertas circunstancias, eludir las restricciones tabú y así poder visitar soluciones.
 
 Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. La primera busca encontrar una mejor solución entre la actual y los paquetes ya generados; la otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
 \subsection{Inter-Paquete}
-La búsqueda \texttt{Inter-Paquete} se diseño especialmente para el algoritmo \texttt{Produce and Choose}. La idea Surge de la idea de aprovechar los paquetes generado que no son parte de la solución. Es por eso que se plantea un búsqueda tabú que comienza con la solución obtenida con \texttt{Produce and Choose} y que luego se intenta buscar una mejor solución con los paquetes que no pertenecen a la solución inicial. 
+La búsqueda \texttt{Inter-Paquete} se diseñó especialmente para el algoritmo \texttt{Produce and Choose}. La idea surge de aprovechar los paquetes generados que no forman parte de la solución. Es por eso que se plantea un búsqueda tabú que comienza con una solución inicial obtenida a través \texttt{Produce and Choose} y luego se intenta buscar una mejor con los paquetes que no pertenecen a la instancia inicial. 
 
-Para esta implementación se define que las soluciones vecinas de la solución $S$, son aquellas soluciones que no contiene al paquete con menor valor Inter de $S$ e incluye a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Además se define, para el criterio de aspiración, admitir una solución vecina que contiene un paquete que está en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
+Para esta implementación se define que las instancias vecinas de la solución $S$, son aquellas que no contienen al paquete con menor valor Inter de $S$ e incluye a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la solución a visitar. Eligiendo para el criterio de aspiración, la admición de una solución vecina que contiene un paquete que está en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
 El esquema del proceso para construir una nueva soluci\'on es el siguiente:
 
@@ -476,13 +490,22 @@ Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
 \end{center}
 
 \subsection{Intra-Paquete}
-El objetivo de la búsqueda Intra-Paquete es buscar una mejor solución a través de generar soluciones con paquetes más cohesivos. En esta búsqueda los vecinos de la solución $S$ son las soluciones a las cuales se le modifica un paquete con alguna de las siguientes acciones que generan un paquete válido: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. Para esta implementación existen tres listas tabú: una lista de elementos, una de movimientos y una de paquetes. Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
+El objetivo de la búsqueda Intra-Paquete es buscar una mejor solución con paquetes más cohesivos. En esta búsqueda los vecinos de la solución $S$ son aquellos a los cuales se les modifica un paquete con alguna de las siguientes acciones: agregar un elemento, quitar un elemento o intercambiar un elemento del paquete con otro elemento que no pertenece a la solución. 
+
+Para esta implementación existen tres listas tabú: 
+\begin{enumerate}
+	\item Una lista de elementos.
+	\item Una de movimientos.
+	\item Una de paquetes.
+\end{enumerate}
+
+Los elementos que se encuentran en la lista tabú, no pueden ser seleccionados para incluirse en una solución. Los paquetes de la lista, son los que no pueden ser seleccionados para modificar su estructura para una nueva solución y la lista de movimientos contiene el par de elementos que se intercambiaron para ir de la solución $S$ a $S'$ para que esos elementos no se vuelvan a intercambiar.
 
 La lista de los movimientos se utiliza para evitar ciclar entre las soluciones, por ejemplo si las soluciones visitadas son $S, S_1, \ldots, S_n, S$, prohibiendo que se vuelvan a intercambiar el mismo par de elementos se asegura que la próxima no sea $S_1$.
 
-El criterio de aspiración que se utiliza es permitir utilizar un elemento de la lista tabú para intercambiar con un elemento de la solución actual, si el valor de la función objetivo es mayor del de la mejor solución encontrada hasta al momento.
+El criterio de aspiración que se utiliza, es permitir elegir un elemento de la lista tabú para ser intercambiado por un elemento de la instancia actual, sólo si el valor de la función objetivo es mayor del de la mejor solución encontrada hasta al momento.
 
-De la solución actual se realiza el movimiento a una nueva solución con los pasos:
+De la solución actual se realiza el movimiento a una nueva solución con los siguientes pasos:
 \begin{enumerate}
 	\item Obtener el paquete, $p$, menos cohesivos de la solución $S$.
 	\item Crear el paquete $p'$ válido agregando un elemento que no pertenezca a la solución a $p$ y no este en la lista tabú.
