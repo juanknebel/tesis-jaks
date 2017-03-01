@@ -68,7 +68,7 @@ En las próximas secciones se describirán detalladamente las mejoras propuestas
 En relación al algoritmo \textit{BOBO}, también descripto en la publicación del párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los ítems del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los ítems del conjunto $I$ como posibles pivotes $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
 
 \begin{center}
 	\begin{algorithm}[H]
