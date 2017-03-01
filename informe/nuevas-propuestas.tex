@@ -159,7 +159,7 @@ Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\au
 
 La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir, sólo toma en cuenta el valor \texttt{intra}, por lo que dicha operación puede ser tratada como constante, ya que se trata de un número fijo de comparaciones.
 
-La desición en esta tesis es la de incluir el valor \texttt{inter} en la selección del par de {\em clusters} que se unen, en pos de lograr un mejor criterio de unión. Como consecuencia, el conjunto de paquetes generados es más disperso. Por este motivo se definió la función \textit{Intra-Inter} en reemplazo de la función \textit{Score}. 
+Para que la dispersión de los paquetes que se generan en la fase de producción coincidan con la esperada por el usuario se decidió, en esta tesis, modificar el algoritmo \texttt{C-HAC} para incluir el valor \texttt{inter} en el cálculo de la selección el par de grupos que se unen. De esta manera al evaluar la unión entre dos grupos se considera tanto el valor \texttt{intra} como también así la distancia con el resto de los paquetes del posible nuevo paquete. A diferencia de la función \textit{Score} vista previamente, en la que solo tenía en cuenta el valor \texttt{intra}, se definió la función \textit{Intra-Inter} en la que ambas partes de la función objetivo es tenida en cuenta. 
 
 Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
 
@@ -173,21 +173,25 @@ De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter}
 
 Si bien el objetivo principal de la modificación propuesta es, aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras no hubieran podido ser usadas en las pruebas, que en los próximos capítulos se detallarán, por tratarse de instancias impredecibles en cuánto a la cantidad de objetos.
 
-Retomando las fórmulas presentadas anteriormente, para evitar realizar el cálculo desde cero de $A$ y $E$ para todo par de {\em clusters} en todas las iteraciones de la etapa \emph{Produce} del algoritmo, se  mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
+Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, a continuación se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
 
 $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
 $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
-El valor de la función Intra-Inter para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.
+El algoritmo para producir paquetes que se propone en esta tesis es \ref{alg:Intra-Inter C-HAC}, con el cual se mejora la complejidad del algoritmo de \texttt{C-HAC} y se incluye la información inter-paquete. La complejidad del algoritmo es $\mathcal{O}(n^{2}\lg n)$. 
 
-Para mejorar la complejidad del algoritmo de \texttt{C-HAC} e incluir la información inter-paquete, aquí se propone el algoritmo \texttt{Intra-Inter C-HAC}, el cual tiene una complejidad $\mathcal{O}(N^{2}\lg n)$. 
+El algoritmo \texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. Con la matriz $C$ que en la posición $i,j$ se almacena la similitud de los grupos $i$ y $j$ y con un arreglo de colas de prioridad donde la cola $P_i$ contiene, ordenadas de forma decreciente, la relación de similitud del grupo $i$ con el resto de los grupos.
+
+Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, en el que cada elemento pertenece a un grupo unitario. El algoritmo comienza con la inicializacion de la matriz de compatibilidad $C$ de tamaño $n x n$, dónde $n$ es la cantidad de elementos, en la posición $i,j$ se almacena el valor de la similitud de los elemento $i$ $j$.
+
+El valor de la función \textit{Intra-Inter} para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.
 
 La similitud entre los grupos se guarda en colas de prioridad en orden decreciente. Por lo tanto, el k-ésimo grupo tiene la mayor similitud con el grupo contenido en $P\left[k\right].max()$.
 
 VER!!!!!!!!!!!!\\
 Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
-\\VER!!!!!!!!!!!!
+\\ !!!!!!!!!!!
 
 \begin{center}
 	\begin{algorithm}[H]
