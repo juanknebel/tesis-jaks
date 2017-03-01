@@ -52,7 +52,7 @@ Si se quisiera agrupar por proximidad, entonces la estructura más razonable es 
    \label{res:img-howToCluster}
 \end{figure}
 
-De éste modo definimos el agrupamiento para que cada grupo contenga la máxima cantidad de items sin exceder el presupuesto. La agrupación se realiza a través de la \textbf{función de similitud} de los objetos, para que los items dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
+De éste modo definimos el agrupamiento para que cada grupo contenga la máxima cantidad de ítems sin exceder el presupuesto. La agrupación se realiza a través de la \textbf{función de similitud} de los objetos, para que los ítems dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
 En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría pueden categorizarse entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales. Por lo tanto $k$ será el número total de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Éste tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
 
@@ -68,7 +68,7 @@ En las próximas secciones se describirán detalladamente las mejoras propuestas
 En relación al algoritmo \textit{BOBO}, también descripto en la publicación del párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los items del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
+El método \texttt{BOBO-k}, que está inspirado en k-means, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los ítems del conjunto $I$ como posibles pivots $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de este; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -153,7 +153,7 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de items. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud y que a su vez sea una unión válida. 
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud y que a su vez sea una unión válida. 
 
 Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. 
 
@@ -177,9 +177,9 @@ El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\au
 
 \texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz $C$ que en la posición $i,j$ almacena la similitud de los grupos $i$ y $j$ y con un arreglo de colas de prioridad, donde la cola $P_i$ contiene (ordenadas de forma decreciente) la relación de similitud del grupo $i$ con el resto de los grupos.
 
-El algoritmo comienza con la inicializacion de la matriz $C$ de tamaño $n x n$ y con el arreglo de colas de prioridad $P\left[n\right]$ , dónde $n$ es la cantidad de elementos. Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo unitario $i$ $j$.
+El algoritmo comienza con la inicialización de la matriz $C$ de tamaño $n x n$ y con el arreglo de colas de prioridad $P\left[n\right]$ , dónde $n$ es la cantidad de elementos. Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo unitario $i$ $j$.
 
-Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continua con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similiaridad. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
+Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continua con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similaridad. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -348,7 +348,7 @@ Un algoritmo goloso es un tipo de heurística que construye la solución iterati
 
 Por los motivos mencionados anteriormente y por las características del algoritmo goloso, es que se decidió implementar esta heurística para encontrar una solución. 
 
-El algoritmo goloso que se propone, comienza con los $k$ paquetes de la solución vacíos, y en cada iteración se agrega un ítem que no pertenece a la solución, ubicandolo en el paquete que maximiza la función objetivo, sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Sea $I$ el conjunto de ítems del problema, $\omega$ la función objetivo y en el inicio la solución $S_0 = \emptyset$ y $t=1$ entonces se define $S_t = S_{t-1} \cup \{i\}$ dónde $i \in I$, $i \notin S_{t-1}$ y $S_t$ es una solución válida. 
+El algoritmo goloso que se propone, comienza con los $k$ paquetes de la solución vacíos, y en cada iteración se agrega un ítem que no pertenece a la solución, ubicándolo en el paquete que maximiza la función objetivo, sin violar las restricciones del problema. El algoritmo finaliza cuando por alguna restricción no es posible agregar más objetos a la solución. Sea $I$ el conjunto de ítems del problema, $\omega$ la función objetivo y en el inicio la solución $S_0 = \emptyset$ y $t=1$ entonces se define $S_t = S_{t-1} \cup \{i\}$ dónde $i \in I$, $i \notin S_{t-1}$ y $S_t$ es una solución válida. 
 
 Como se puede ver, esta implementación prioriza la cantidad de elementos de la solución, ante el valor objetivo de la misma. Con esto se quiere decir que en cada paso, si es posible, se agrega un ítem a la solución, pese a que disminuya el valor de la función objetivo. Ya que un escenario posible es que $\omega(S_{t-1}) > \omega(S_t)$.
 
@@ -390,7 +390,7 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 \end{center}
 
 \section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de items y que el tiempo de ejecución este acorde con el resto de los algoritmos se implementaron distintas variantes de la metaheuristica \textbf{Tabú search}. 
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y que el tiempo de ejecución este acorde con el resto de los algoritmos se implementaron distintas variantes de la metaheuristica \textbf{Tabú search}. 
 
 \textbf{Tabú search} se basa en buscar una mejor solución a partir de una otra anterior ya existente, lo que permite ser combinada junto con las hueristicas estudiadas anteriormente.
 
@@ -516,7 +516,7 @@ De la solución actual se realiza el movimiento a una nueva solución con los si
 	$S' = \max{S_{i}\cup\{p'\}, S_{i}\cup\{p''\}, S_{i}\cup\{p'''\}, S_{i}\cup\{p''''\}}$.
 \end{enumerate}
 
-Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El item de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El item para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
+Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El ítem de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El ítem para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$. Por lo que la nueva solución se define $S' = (S \setminus \left\{b\right\}) \cup \left\{(b \setminus \left\{i\right\})\cup\left\{j\right\}\right\}$
 
 \begin{center}
 	\begin{algorithm}[H]
