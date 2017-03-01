@@ -173,25 +173,13 @@ De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter}
 
 Si bien el objetivo principal de la modificación propuesta es, aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras no hubieran podido ser usadas en las pruebas, que en los próximos capítulos se detallarán, por tratarse de instancias impredecibles en cuánto a la cantidad de objetos.
 
-Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, a continuación se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, cuya actualización se realiza en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y $r-1$:
+El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\autoref{alg:Intra-Inter C-HAC}}, el cual mejora la complejidad de  \texttt{C-HAC} e incluye la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\lg n)$. 
 
-$$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
+\texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz $C$ que en la posición $i,j$ almacena la similitud de los grupos $i$ y $j$ y con un arreglo de colas de prioridad, donde la cola $P_i$ contiene (ordenadas de forma decreciente) la relación de similitud del grupo $i$ con el resto de los grupos.
 
-$$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
+El algoritmo comienza con la inicializacion de la matriz $C$ de tamaño $n x n$ y con el arreglo de colas de prioridad $P\left[n\right]$ , dónde $n$ es la cantidad de elementos. Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo unitario $i$ $j$.
 
-El algoritmo para producir paquetes que se propone en esta tesis es \ref{alg:Intra-Inter C-HAC}, con el cual se mejora la complejidad del algoritmo de \texttt{C-HAC} y se incluye la información inter-paquete. La complejidad del algoritmo es $\mathcal{O}(n^{2}\lg n)$. 
-
-El algoritmo \texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. Con la matriz $C$ que en la posición $i,j$ se almacena la similitud de los grupos $i$ y $j$ y con un arreglo de colas de prioridad donde la cola $P_i$ contiene, ordenadas de forma decreciente, la relación de similitud del grupo $i$ con el resto de los grupos.
-
-Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, en el que cada elemento pertenece a un grupo unitario. El algoritmo comienza con la inicializacion de la matriz de compatibilidad $C$ de tamaño $n x n$, dónde $n$ es la cantidad de elementos, en la posición $i,j$ se almacena el valor de la similitud de los elemento $i$ $j$.
-
-El valor de la función \textit{Intra-Inter} para cada {\em cluster} es almacenado en orden decreciente en una cola de prioridad. La implementación de colas de prioridad permite el borrado e inserción en $O(\log n)$, resultando la complejidad total del algoritmo $O(n^2 log n)$.
-
-La similitud entre los grupos se guarda en colas de prioridad en orden decreciente. Por lo tanto, el k-ésimo grupo tiene la mayor similitud con el grupo contenido en $P\left[k\right].max()$.
-
-VER!!!!!!!!!!!!\\
-Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}}$ se utiliza como la representación. Para $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud. Para identificar entre dos grupos que la unión es inválida por alguna de las restricciones, en las colas de similitud el valor de la similitud es $-1$.
-\\ !!!!!!!!!!!
+Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continua con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similiaridad. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -214,7 +202,7 @@ Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}
 			$P[i].Delete(C[i][i])$ \tcc*[f]{se elimina así mismo de la pila}\;
 		}
 		$A \leftarrow []$\;
-		\For{$k \leftarrow 1$ to $I.length$}{
+		\For{$n \leftarrow 1$ to $I.length$}{
 			$k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$\;
 			\If{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
 				$break$\;
@@ -244,6 +232,14 @@ Luego de combinar los grupos $\omega_{k_{1}}$ y $\omega_{k_{2}}$, $\omega_{k_{1}
 	\caption{Intra-Inter C-HAC}\label{alg:Intra-Inter C-HAC}
 	\end{algorithm}
 \end{center}
+
+Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, a continuación se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, por lo que la complejidad de la función \textit{Intra-Inter} es constante. A partir de las siguientes relaciones entre la iteración $r$ y $r-1$ se tiene que:
+
+$$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
+
+$$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
+
+El ciclo de la inicialización de las esctructuras $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\lg n)$ para una implementación de las colas de prioridad en que la inserción y borrado en $O(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
 
 \subsection{Mejoras en la selección de paquetes}
 En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación orignal de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
