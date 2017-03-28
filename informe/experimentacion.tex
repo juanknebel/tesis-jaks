@@ -1,12 +1,12 @@
 \section{Instancias de pruebas}\label{sect:busquedas}
 En esta sección se presentarán las consultas elaboradas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
 
-Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La restante corresponde a atracciones turísticas de Europa obtenida de (TODO: poner cita).
+Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La restante corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas por \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
 A continuación se describirá para cada caso particular cuales fueron: la función de similitud, el atributo utilizado para definir la complementaridad de los elementos y el presupuesto, elegidos para las instancias escogidas. 
 
 \subsection{Base de datos de artículos}
-La base de datos utilizada es la proporcionada por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. Además, cada uno tiene asociado un \texttt{topicProfile} de los autores, que expresa el porcentaje de la relevancia de cada tópico considerado dentro del artículo. Este valor fue calculado en función de los temas de las conferencias o revistas de los trabajos citados en el artículo. La base considera 37 tópicos para definir el \texttt{topicProfile}.
+La base de datos utilizada es la proporcionada por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. El trabajo cuenta con una clasificación, definida por los autores como \texttt{topicProfile}, para cada uno de los artículos pertenecientes a la base de datos. La clasificación es asignada a cada artículo en base a las citas provenientes de otros trabajos publicados en conferencias específicas sobre alguno de los 37 tópicos que fueron tratados en \cite{dataDrive}. Como resultado, cada \texttt{topicProfile} expresa el porcentaje de relevancia de cada uno de los tópicos encontrados dentro del artículo. La base de datos considera 37 tópicos para definir el \texttt{topicProfile}.
 
 De los $9800$ autores se tiene la información de la universidad a la que cada uno pertenece y la región donde se encuentra dicha universidad.
 
@@ -26,7 +26,7 @@ Para todas las búsquedas, sin importar el ítem que sea (artículo, autor o uni
 
 Como se mencionó anteriormente, en la base de datos cada artículo cuenta con su \texttt{Topic Profile}. El \texttt{Topic Profile} define el perfil de un artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. Esto significa que el 71.43\% de los trabajos citados en este artículo fueron presentados en conferencias o publicados en revistas vinculadas al área REQUIREMENTS.
 
-El modelo computacional del perfil de cada artículo es un vector que la dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.
+El modelo computacional del perfil de cada artículo es un vector cuya dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.
 
 Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores. Para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}. Para obtener el perfil de las universidades se aplicó el mismo criterio. Se realiza la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así se genera el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
@@ -62,7 +62,7 @@ Para clarificar mostramos un ejemplo de los perfiles de los elementos:
 \label{tabla:topicProfileEj3}
 \end{table}
 
-Para la evaluación las consultas realizadas son:
+Para la evaluación de los algoritmos propuestos a lo largo del trabajo, se realizaron las siguientes consultas:
 \begin{enumerate}
 	\item
 		Artículos con tópicos similares presentados en distintas conferencias. \label{busqueda:articulos}
@@ -94,7 +94,7 @@ La similitud se emplea para comparar dos objetos y determinar qué tan parecido 
 Entonces se define la función de similitud $S(U_i, V_j)$ para los vectores $U_i$ y $V_j$ a partir del producto escalar
 
 \begin{equation} \label{eq:angulovectorial}
-\cos(\theta) =  \dfrac{\overrightarrow{U_i} . \overrightarrow{V_j}}{\overrightarrow{\lVert U_i\lVert}.\overrightarrow{\lVert V_j\lVert}}
+\cos(\theta) =  \dfrac{\overrightarrow{U_i} \overrightarrow{V_j}}{\overrightarrow{\lVert U_i\lVert} \overrightarrow{\lVert V_j\lVert}}
 \end{equation}
 
 Para esta instancia los objetos (ahora artículos, autores o universidades) están representados por vectores, donde cada dimensión corresponde a un tópico cuyo valor se corresponde con el valor del tópico del objeto según la base de datos \cite{dataDrive}. Por lo tanto el objeto $a$ se representa con el vector $V_a = [v_1,v_2,...,v_3]$ que cumple con las siguientes propiedades:
@@ -113,12 +113,12 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtiene q
 
 %Para \textbf{similitud coseno} dos vectores proporcionales con la misma dirección la similitud es 1 (ya que es 0 el ángulo que se forma). Por lo que esta similitud no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Por ejemplo si dos artículos que cubren un mismo y único tópico, pero para uno el valor del tópic Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1.
 
-Con el objetivo de simplificar la ejecución de los algoritmos, considerando que el costo de calcular $cos()$ de los vectores es alto, se decidió realizar el cáculo de la similitud de los artículos, autores y universidades previamente a la ejecución de los algoritmos de búsquedas
+Con el objetivo de simplificar la ejecución de los algoritmos, considerando que el costo de calcular $cos()$ de los vectores es alto, se decidió realizar el cálculo de la similitud de los artículos, autores y universidades previamente a la ejecución de los algoritmos de búsquedas
 
 \subsection{Base de dato de atracciones turísticas}
 Se utilizó una instancia de datos correspondiente a 200 atracciones turísticas de Europa, con datos relevados del sitio \textit{TripAdvisor}. De cada atracción se tiene la información del precio, del tipo (parque, museo, edificio) y de la distancia geográfica con el resto de las atracciones.
 
-El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con las siguientes requerimientos: evitar realizar largos traslados; que haya variedad en el tipo de atracción y que que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedo diseñada de la siguiente manera: \label{busqueda:atracciones}
+El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con las siguientes requerimientos: evitar realizar largos traslados; que haya variedad en el tipo de atracción y que que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedó diseñado de la siguiente manera: \label{busqueda:atracciones}
 
 \begin{itemize}
 	\item \textbf{Similitud}: La inversa de la distancia entre las atracciones. 
@@ -127,11 +127,9 @@ El propósito de la búsqueda es darle al usuario distintas opciones de circuito
 	\item \textbf{Complementariedad}: Tipo de atracción.
 \end{itemize}
 
-\section{Análisis de resutados}\label{sect:resultados}
+\section{Análisis de resultados}\label{sect:resultados}
 
-En esta sección se analizan los resultados computacionales comparando la calidad de las soluciones obtenidos por los algoritmos discutidos en \autoref{chap:nuevas-propuestas}, sobre las bases de datos de \autoref{sect:busquedas}. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos.
-
-Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
+En esta sección se analizan los resultados computacionales comparando la calidad de las soluciones obtenidas por los algoritmos discutidos en \autoref{chap:nuevas-propuestas}, sobre las bases de datos de \autoref{sect:busquedas}. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos.
 
 \begin{itemize}
 \item{$alg1$} PAC(C-HAC / selección simple)
@@ -143,6 +141,8 @@ Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4
 \item{$alg7$} Construcción golosa
 \item{$alg8$} Construcción golosa + tabú
 \end{itemize}
+
+Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
 
 Tanto $alg1$ como $alg2$ corresponden a las metodologías propuestas en \cite{journals/tkde/Amer-YahiaBCFMZ14}. Los demás algoritmos involucran las mejoras propuestas en este trabajo. En \texttt{PAC}, la búsqueda tabú \texttt{Inter-Paquete} se realiza al finalizar la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} se intenta mejorar la solución obtenida mediante la búsqueda tabú \texttt{Intra-Paquete}. Cabe señalar que no se tienen en consideración BOBO-Ex y CAP ya que para el tamaño de la instancia los tiempos de ejecución de esos algoritmos resultaron prohibitivos. A partir de experimentación preliminar con BOBO para valores $c=1, 5$ y $10$, resultó $c=10$ la opción más competitiva. Para la búsquedas tabú se definió que la cantidad de iteraciones de permanencia de un elemento en la lista tabú sea el promedio de elementos que tiene un paquete en la solución inicial.
 
