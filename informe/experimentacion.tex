@@ -1,5 +1,5 @@
 \section{Instancias de pruebas}\label{sect:busquedas}
-En esta sección se presentarán las consultas elaboradas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
+En esta sección se presentarán las consultas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
 
 Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La restante corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas por \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
@@ -32,7 +32,7 @@ El modelo computacional del perfil de cada artículo es un vector cuya dimensió
 
 Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores. Para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}. Para obtener el perfil de las universidades se aplicó el mismo criterio. Se realiza la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así se genera el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
-Para clarificar mostramos un ejemplo de los perfiles de los elementos:
+Para clarificar se presenta un ejemplo de los perfiles de los elementos:
 
 \begin{table}[H]
 \begin{tabular}{lll}
@@ -64,7 +64,7 @@ Para clarificar mostramos un ejemplo de los perfiles de los elementos:
 \label{tabla:topicProfileEj3}
 \end{table}
 
-Para la evaluación de los algoritmos propuestos a lo largo del trabajo, se realizaron las siguientes consultas:
+Para la evaluación de los algoritmos propuestos a en esta tesis, se realizaron las siguientes consultas:
 \begin{enumerate}
 	\item
 		Artículos con tópicos similares presentados en distintas conferencias. \label{busqueda:articulos}
