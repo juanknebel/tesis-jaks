@@ -171,7 +171,7 @@ De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter}
 
 Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental como es la complejidad temporal del algoritmo. De lo contrario el uso de las mejoras no hubieran podido ser usadas en las pruebas, que en los próximos capítulos se detallarán, por tratarse de instancias con miles de objetos.
 
-El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\autoref{alg:Intra-Inter C-HAC}}, el cual mejora la complejidad de  \texttt{C-HAC} e incluye la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\lg n)$. 
+El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\autoref{alg:Intra-Inter C-HAC}}, el cual mejora la complejidad de  \texttt{C-HAC} e incluye la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
 
 \texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz $C$ que en la posición $i,j$ almacena la similitud de los grupos $i$ y $j$ y un arreglo de colas de prioridad, donde la cola $P_i$ contiene (ordenadas de forma decreciente) la relación de similitud del grupo $i$ con el resto de los grupos.
 
@@ -237,7 +237,7 @@ $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
 $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
-El ciclo de la inicialización de las estructuras $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\lg n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $O(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
+El ciclo de la inicialización de las estructuras $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
 
 \subsection{Mejoras en la selección de paquetes}
 En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
