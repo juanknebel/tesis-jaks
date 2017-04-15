@@ -2,7 +2,7 @@ En este capítulo se presentan nuevas propuestas para resolver el problema de \t
 
 Los nuevos planteos consisten en modificaciones de los algoritmos ya conocidos, trabajados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
-La primera propuesta que se dará a conocer es un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. A su vez, en la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras: una de ellas es para reducir el orden de complejidad del algoritmo, y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de producción, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
+La primera propuesta que se dará a conocer es un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. A su vez, en la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras: una de ellas es para reducir el orden de complejidad del algoritmo, y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
 Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso, y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseñó un algoritmo goloso.
 
@@ -505,8 +505,7 @@ El criterio de aspiración que se utiliza, es permitir elegir un elemento de la 
 
 De la solución actual se realiza el movimiento a una nueva solución con los siguientes pasos:
 
-Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \i
-n b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El ítem de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El ítem para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$.
+Sea $S$ el conjunto de paquete de la solución e $I$ el conjunto de ítems, el paquete de (1) es $b = \min_{b_1 \in S}{\sum_{v,w \in b_1}{s(v,w)}}$. De $b$ se define el centroide $c$ del paso (2) con $c = \max_{v \in b}{\sum_{w \in b}{s(v,w)}}$. El ítem de (3) se obtiene de $i = \min_{v \in b}{s(v,c)}$. El ítem para reemplazar a $i$ es $j = \max_{v \in I \setminus items(S)}{s(v,c)}$.
 
 \begin{enumerate}
 	\item Obtener el paquete, $p$, menos cohesivo de la solución $S$.
