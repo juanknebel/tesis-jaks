@@ -357,11 +357,15 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{center}
 \end{table}
 
-%En la figura \ref{res:cit_bobo_diff} se visualiza el porcentaje de mejora del algoritmo $alg3$ para cada valor de $\gamma$ con respecto a $alg2$. En %promedio el porcentaje de mejora es de $3.5\%$ y la mayor diferencia se da para los valores de $\gamma$ $0.3$, $0.4$ y $0.5$
-%y en los extremos la diferencia disminuye.
-%\begin{figure}[H]
-%  \centering
-%    \includegraphics[width=1\textwidth]{img/cit_bobo_diff.png}
-%  \caption{}
-%  \label{res:cit_bobo_diff}
-%\end{figure}
+\subsection{PENSAR TITULO}
+Se obtuvieron mejores resultados en términos de los valores de la función objetivo, así como en la sensibilidad al criterio de valorización de cada objetivo sin perjuicio en el tiempo de ejecución. En el caso de los algoritmos $PAC$ usando generación de paquetes mediente las técnicas $BOBO$ y aplicando la búsqueda tabú el resultado mejoró considerablemente, como puede verse en \autoref{tabla:comp1} y \autoref{tabla:comp2}.
+
+Se observó que las soluciones obtenidas utilizando el algoritmo goloso fueron mejores en comparación a las generados por la metodologia $PAC$, solo cuando en la etapa de producción se utilizó la estrategia $BOBO$. Por el contrario, la producción jerárquica derivó en la obtención final de mejores paquetes. Si bien la técnica de las implementaciones de $BOBO$ son golosas, éstas solo hacen hincapié en los valores intra de la función objetivo. Mientras qué la nueva propuesta lo hace sobre la totalidad de la función objetivo. 
+
+Para la estrategia PAC las implementaciones de BOBO fueron en todos los casos las más rápidas, resultando ser las ideales para instancias de tamaño muy grandes. La solución obtenida mejora considerablemente. Si se aplica al final una búsqueda tabú. En las pruebas realizadas con HAC con un universo de elementos menor a los 10000 se cuadruplica o quintuplica los tiempos de ejecución debido a su complejidad ($\mathcal{O}(N^{2}\log n)$). Sin embargo en instancias más chicas como las atracciones turísticas los tiempos fueron muy cercanos entre ellos.
+
+Las soluciones obtenidas usando \texttt{Efficient-HAC} y búsquedas golosas para valores de $\gamma$ menores a $0.5$ fueron \textquotedblleft similarmente buenas\textquotedblright , dado que los resultados en términos de función objetivo fueron cercanos. En cambio para $\gamma$ más cercanos a uno se observó que el valor de la función objetivo de las soluciones HAC resultaron significativamente mayores. En todos los casos se identificó que las relaciones interpaquetes son mejores en las soluciones del algoritmo goloso, logrando soluciones más interdependientes.
+
+Al comparar \texttt{BOBO-10} y \texttt{BOBO-160} usando la selección simple se observa que la diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ se acerca a $1$. Se supone que esto se debe a la estrategia \texttt{produce and choose}. El objetivo de la primera etapa es producir paquetes con máximo valor de similitud. En el caso de que se requiera una solución con mayor separación entre paquetes, al haber producido menos cantidad de paquetes existen menos posibilidades para generar una solución más dispersa. Un mismo análisis se podría hacer si se compara \texttt{BOBO-10} y \texttt{HAC}.
+
+Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección de a pares se obtuvo que para \texttt{BOBO-160} y \texttt{HAC} los tiempos aumentaron a $40$ minutos y para \texttt{BOBO-10} a $2$ minutos. En cuanto al valor de la función objetivo el único beneficiado fue \texttt{BOBO-10} ya que para \texttt{HAC} empeoró y para \texttt{BOBO-160} el aumento fue muy pequeño en comparación al incremento de tiempo.
