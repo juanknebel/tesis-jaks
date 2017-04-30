@@ -1,14 +1,14 @@
 \section{Instancias de pruebas}\label{sect:busquedas}
 En esta sección se presentarán las consultas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
 
-Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La restante corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas por \cite{journals/tkde/Amer-YahiaBCFMZ14}.
+Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La otra corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas por \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
-A continuación se describirá para cada caso particular cuales fueron: la función de similitud, el atributo utilizado para definir la complementaridad de los elementos y el presupuesto, elegidos para las instancias escogidas. 
+A continuación se describirá para cada consulta, realizada sobre las bases de datos, cuales fueron: la función de similitud, el atributo utilizado para definir la complementaridad de los elementos y el presupuesto, elegidos para las instancias escogidas. 
 
 Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
 
 \subsection{Base de datos de artículos}
-La base de datos utilizada es la proporcionada por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. El trabajo cuenta con una clasificación, definida por los autores como \texttt{topicProfile}, para cada uno de los artículos pertenecientes a la base de datos. La clasificación es asignada a cada artículo en base a las citas provenientes de otros trabajos publicados en conferencias específicas sobre alguno de los 37 tópicos que fueron tratados en \cite{dataDrive}. Como resultado, cada \texttt{topicProfile} expresa el porcentaje de relevancia de cada uno de los tópicos encontrados dentro del artículo. La base de datos considera 37 tópicos para definir el \texttt{topicProfile}.
+La base de datos utilizada es la proporcionada por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. Además los artículos se clasificaron, que los autores lo definieron como \texttt{topicProfile}. La clasificación es asignada a cada artículo en base a las citas provenientes de otros trabajos publicados en conferencias específicas sobre alguno de los 37 tópicos que fueron tratados en \cite{dataDrive}. Como resultado, cada \texttt{topicProfile} expresa el porcentaje de relevancia de cada uno de los tópicos encontrados dentro del artículo. La base de datos considera 37 tópicos para definir el \texttt{topicProfile}.
 
 De los $9800$ autores se tiene la información de la universidad a la que cada uno pertenece y la región donde se encuentra dicha universidad.
 
@@ -129,7 +129,7 @@ El propósito de la búsqueda es darle al usuario distintas opciones de circuito
 	\item \textbf{Complementariedad}: Tipo de atracción.
 \end{itemize}
 
-\section{Análisis de resultados}\label{sect:resultados}
+\section{Resultados}\label{sect:resultados}
 
 En esta sección se analizan los resultados computacionales comparando la calidad de las soluciones obtenidas por los algoritmos discutidos en \autoref{chap:nuevas-propuestas}, sobre las bases de datos de \autoref{sect:busquedas}. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos.
 
@@ -150,7 +150,7 @@ Para realizar una comparación entre la calidad de las soluciones obtenidas por 
 
 En el caso de la búsqueda de artículos, que es el escenario que contiene la mayor cantidad de objetos, los tiempos de ejecución  para los algoritmos C-HAC ($alg1$, $algo5$ y $alg6$) son del orden de los 5 minutos, mientras que para los algoritmos BOBO ($alg2$, $alg3$ y $alg4$) de 2 minutos y los golosos ($alg7$ y $alg8$) de los 6 minutos. Los incrementos de tiempo debido a la ejecución de las metaheruísticas de mejora son despreciables, están entre los 5 y 7 segundos. Por lo cual no se considera que el tiempo sea un factor que valga la pena analizar.
 
-\subsection{Base de datos de artículos}
+\subsection{Análisis de los resultados obtenidos de la base de datos de artículos}
 Para comprender el comportamiento de los resultados de las búsquedas se diseñaron dos tipos de gráficos que permiten visualizar la cohesión de los paquetes y la dispersión entre ellos. De esta forma se podrá analizar la calidad del resultado obtenido más allá del valor de la función objetivo.
 
 Los gráficos del estilo de la figura \ref{res:img-explain-bars} permiten analizar la distribución de los tópicos de una solución a nivel de paquete y de la relación con otros. Las filas corresponden a los 10 paquetes obtenidos y las columnas a los 38 tópicos considerados. El tamaño del círculo representa la proporción del tópico en el perfil del artículo y el color hace referencia al paquete al cual el artículo pertenece. Por lo tanto, dos artículos tendrán gran similitud cuando los patrones de sus círculos coincidan, tanto en tamaño como en distribución. Si para un paquete la distribución entre los tópicos y el tamaño de los círculos es similar entre sus artículos se puede deducir que este paquete es cohesivo (tiene buen valor intra). Por otro lado, si los patrones de los círculos de los dos artículos más similares entre distintos paquetes no coinciden, esto indica que el resultado es diverso.
@@ -333,7 +333,7 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{center}
 \end{table}
 
-\subsection{Búsqueda de atracciones turísticas}\label{res:busAtracciones}
+\subsection{Análisis de los resultados obtenidos de la base de datos de atracciones turísticas}\label{res:busAtracciones}
 En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas a partir de las modificaciones propuestas en este trabajo de los algoritmos PAC, como puede observarse en la tabla \ref{tabla:comp4}, mejoran a los originales en todos los casos. Es para destacar que en este escenario el algoritmo goloso supera a $alg1$. La búsqueda tabú consiguió mejores resultados para los algoritmos PAC. Por otro lado en el algoritmo goloso, en contraste a lo sucedido en las demás consultas, la heurística de búsqueda no obtuvo mejores soluciones.
 
 \begin{table}[H]
@@ -357,7 +357,7 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{center}
 \end{table}
 
-\subsection{PENSAR TITULO}
+\subsection{Análisis general de los resultados obtenidos}
 Se obtuvieron mejores resultados en términos de los valores de la función objetivo, así como en la sensibilidad al criterio de valorización de cada objetivo sin perjuicio en el tiempo de ejecución. En el caso de los algoritmos $PAC$ usando generación de paquetes mediente las técnicas $BOBO$ y aplicando la búsqueda tabú el resultado mejoró considerablemente, como puede verse en \autoref{tabla:comp1} y \autoref{tabla:comp2}.
 
 Se observó que las soluciones obtenidas utilizando el algoritmo goloso fueron mejores en comparación a las generados por la metodologia $PAC$, solo cuando en la etapa de producción se utilizó la estrategia $BOBO$. Por el contrario, la producción jerárquica derivó en la obtención final de mejores paquetes. Si bien la técnica de las implementaciones de $BOBO$ son golosas, éstas solo hacen hincapié en los valores intra de la función objetivo. Mientras qué la nueva propuesta lo hace sobre la totalidad de la función objetivo. 
