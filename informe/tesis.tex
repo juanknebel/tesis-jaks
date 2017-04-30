@@ -10,8 +10,8 @@
 \usepackage{color}
 \usepackage{solucion}
 \usepackage{multicol}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+\usepackage{float}
+\usepackage[linesnumbered,ruled,lined,spanish]{algorithm2e}
 \usepackage{xcolor}
 \usepackage{colortbl}
 \usepackage{lscape}
@@ -30,10 +30,22 @@
     linkcolor=black,
     urlcolor=black
 }
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
-\newcommand{\algorithmicbreak}{\textbf{break}}
-\newcommand{\BREAK}{\STATE \algorithmicbreak}
+\usepackage[many]{tcolorbox}
+
+\newtcolorbox{mybox}[1]{
+    tikznode boxed title,
+    enhanced,
+    arc=0mm,
+    interior style={white},
+    attach boxed title to top center= {yshift=-\tcboxedtitleheight/2},
+    fonttitle=\bfseries,
+    colbacktitle=white,coltitle=black,
+    boxed title style={size=normal,colframe=white,boxrule=0pt},
+    title={#1}
+}
+
+\SetAlFnt{\small\sffamily}
+
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \begin{document}
@@ -42,12 +54,12 @@
 % Comentar y descomentar según corresponda
 \def\titulo{Licenciado }
 \def\autor{Amit Stein, Juan Andrés Knebel}
-\def\tituloTesis{Composite Retrival: \mbox{Algo}}
-\def\runtitulo{Composite Retrival en español}
-\def\runtitle{Composite Retrival en ingles}
+\def\tituloTesis{Nuevos algoritmos para recuperación de ``ítems empaquetados'': \mbox{Algo}}
+\def\runtitulo{Nuevos algoritmos para recuperación de ``ítems empaquetados''}
+\def\runtitle{New Algorithms for composite retrival}
 \def\director{Obi-Wan Kenobi}
 \def\codirector{Master Yoda}
-\def\lugar{Buenos Aires, 2014}
+\def\lugar{Buenos Aires, 2016}
 %\input{caratula}
 
 %%%% ABSTRACTS, AGRADECIMIENTOS Y DEDICATORIA
@@ -75,23 +87,18 @@
 \chapter{Introducción}
 \label{chap:introduccion}
 \input{introduccion.tex}
-\chapter{Desarrollo}
-\label{chap:desarrollo}
-\input{desarrollo.tex}
-\chapter{Búsquedas}
-\label{chap:busquedas}
-\input{busquedas.tex}
-\chapter{Resultados}
-\label{chap:resultados}
-\input{resultados.tex}
+\chapter{Trabajos previos}
+\label{chap:trabajos-previos}
+\input{trabajos-previos.tex}
+\chapter{Nuevas propuestas}
+\label{chap:nuevas-propuestas}
+\input{nuevas-propuestas.tex}
+\chapter{Experimentación computacional}
+\label{chap:experimentacion}
+\input{experimentacion.tex}
 \chapter{Conclusiones}
 \label{chap:conclusiones}
 \input{conclusiones.tex}
-%\chapter{Implementación}
-%\input{implementacion.tex}
-\chapter{Trabajo futuro}
-\label{chap:trabajos-futuros}
-\input{trabajos-futuros.tex}
 %\chapter{Apéndice}
 %\input{tablas-resutlados.tex}
 
