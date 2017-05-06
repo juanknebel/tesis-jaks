@@ -132,7 +132,6 @@ Es importante destacar que para este trabajo se asume que la calidad de los íte
 
 \section{Problema, definición formal}\label{introduccion:problemaFormal}
 A continuación se definirá formalmente el problema de recuperar un conjunto de paquetes $S = \left\{S_1, \ldots, S_k\right\}$ compuestos por elementos de $I=\left\{i_1,\ldots, i_n\right\}$. Siendo $S_i \in P(I)$ un conjunto de objetos que satisfaga dos reglas. La regla de \textbf{complementaridad} no permite que existan dos objetos con igual atributo en el mismo paquete. Mientras que la regla de \textbf{presupuesto} esta definida para que la suma de los costos de los objetos no supere el presupuesto asignado.
-\end{itemize}
 
 Dado el conjunto de objetos $I=\left\{i_1,\ldots, i_n\right\}$, una función de similitud $s(u,v): I \times I \rightarrow [0;1]$, una de costo $f(u): I \rightarrow (0;+\infty)$, un presupuesto $\beta \in \Re^{+}$ (servirá como cota máxima para formar un paquete), un atributo complementario $\alpha$, un valor $\gamma$ tal que $0 < \gamma < 1$ y $k \in N$ que indica la cantidad de paquetes que debe tener la solución, se desea hallar el conjunto válido de paquetes $S = \left\{s_1, \ldots, s_k\right\}$ que maximiza la función:
 \begin{equation} \label{des:eq-fnObj}
