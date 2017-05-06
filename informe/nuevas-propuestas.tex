@@ -26,13 +26,13 @@ Los parámetros del algoritmo son los del problema mencionado en~\autoref{introd
 	\end{algorithm}
 \end{center}
 
-La función \texttt{ProduceBundle} genera un conjunto de paquetes candidatos, en las siguientes secciones se presentarán y analizarán las estrategias propuestas que se aplicaron al algoritmo jerárquico.
+La función \texttt{ProduceBundle} genera a partir del conjunto de elementos un conjunto de paquetes candidatos.
 
 \texttt{BuildBundleGraph} recibe el conjunto de paquetes candidatos, transformándolo en un grafo completo con peso en las aristas y en los vértices. Cada vértice representa un paquete del conjunto de candidatos y el peso del vértice es el valor \texttt{intra}, mientras que el peso de las aristas representa el valor \texttt{inter} entre los paquetes correspondientes a cada nodo. 
 
 Por último la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas. Los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución.
 
-Como se puede observar la estructura de esta familia de algoritmos facilita la introducción de mejoras en sus dos fases críticas: generación y selección de paquetes. De este modo se podrán combinar de la mejor manera, teniendo en cuenta el objetivo de la búsqueda requerida.
+Como se puede observar la estructura de esta familia de algoritmos facilita la introducción de mejoras en sus dos fases críticas: generación y selección de paquetes. En las siguientes secciones se presentarán y analizarán las estrategias propuestas que se aplicaron tanto en la etapa de generación como así en la etapa de selección. De este modo se podrán combinar de la mejor manera, teniendo en cuenta el objetivo de la búsqueda requerida.
 
 \subsection{Mejoras en la generación de paquetes}
 La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. Este proceso conocido como ``agrupamiento'' (\textit{clustering} en inglés) \cite{wiki:clustering} consiste en juntar objetos basándose en la información que éstos mismos describen o en sus relaciones. La finalidad es que los objetos del grupo sean similares entre sí y diferentes de los restantes grupos. Cuanto mayor sea la similitud \textbf{dentro} del conjunto (valor \texttt{intra}) y mayor sea la diferencia \textbf{entre} conjuntos el agrupamiento será mejor.
