@@ -1,12 +1,12 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las propuestas se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir de una mayor cantidad de elementos con respecto a lo visto en el capítulo anterior. 
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de los cambios se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir de una mayor cantidad de elementos con respecto a lo visto en el capítulo anterior. 
 
-Los nuevos planteos consisten en modificaciones de los algoritmos ya conocidos, enunciados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
+Los nuevos alternativas consisten en modificaciones de los algoritmos ya conocidos, enunciados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
 La primera propuesta que se dará a conocer es un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. A su vez, en la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras: una de ellas es para reducir el orden de complejidad del algoritmo, y la otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
 Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso, y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseñó un algoritmo goloso.
 
-También se propone aplicar una heurísitica de búsqueda tabú, a las soluciones generadas por otros algoritmos. Con esto se intenta encontrar una mejor solución, evitando caer en máximos locales. 
+También se propone aplicar una heurística de búsqueda tabú, a las soluciones generadas por otros algoritmos. Con esto se intenta encontrar una mejor solución, evitando caer en máximos locales. 
 
 \section{Produce-and-Choose}
 Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad válidos de paquetes para luego seleccionar aquellos que maximicen el valor de la función objetivo. Los cuales formarán parte de la solución.
@@ -41,7 +41,7 @@ La noción de qué es un grupo correctamente constituido no puede ser definido c
 
 Para ejemplificar lo anteriormente mencionado, en los veinte puntos de~\autoref{res:img-howToCluster} existen más de una única forma de agruparlos que son válidas y que dependen del contexto. 
 
-Si se quisiera agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizarían dos grupos. A su vez cada uno de los subgrupos puede ser nuevamente particionado de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
+Si se quisiera agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizarían dos grupos. A su vez cada uno de los subgrupos puede generar una nueva partición de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
 
 \begin{figure}[H]
   \centering
@@ -52,7 +52,7 @@ Si se quisiera agrupar por proximidad, entonces la estructura más razonable es 
 
 De éste modo definimos el agrupamiento para que cada grupo contenga la máxima cantidad de ítems sin exceder el presupuesto. La agrupación se realiza a través de la \textbf{función de similitud} de los objetos, para que los ítems dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
-En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría puede categorizarse entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales. Por lo tanto $k$ será el número total de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Este tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
+En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la gran mayoría puede ser categorizado entre los particionales y los jerárquicos \cite{opac-b1087461}. Los métodos particionales seleccionan un número definido de $k$ centroides iniciales. Por lo tanto $k$ será el número total de grupos finales. Cada objeto será asignado al paquete que le sea más cercano y luego iterativamente los elementos serán reubicados de un grupo a otro. Este tipo de métodos requieren que la cantidad de grupos a generar sea preestablecida. 
 
 A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez estas técnicas se suelen subdividir en dos estrategias: aglomerativas y divisivas, las cuales serán detalladas más adelante.
 
@@ -118,7 +118,7 @@ Cortando el dendrograma mediante líneas horizontales se puede determinar el nú
   \label{nuevaspropuestas:dendograma2}
 \end{figure}
 
-El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que para cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evaluá la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplicará dicho agrupamiento.
+El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que para cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplicará dicho agrupamiento.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -254,7 +254,7 @@ El resultado es el conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza e
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
 \end{equation}
 
-El problema previamente mencionado puede reducirce a la ya conocida situación de hallar el k-subgrafo más denso \cite{DBLP:journals/algorithmica/FeigePK01}. Transformando el grafo del problema original a un grafo ponderado, en el que el peso de los vértices está dado por la siguiente función:
+El problema previamente mencionado puede reducirse a la ya conocida situación de hallar el k-subgrafo más denso \cite{DBLP:journals/algorithmica/FeigePK01}. Transformando el grafo del problema original a un grafo ponderado, en el que el peso de los vértices está dado por la siguiente función:
  
 \begin{equation}
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
@@ -334,7 +334,7 @@ Sea $R$ el conjunto de paquetes producidos y $S \subseteq R$ el conjunto de paqu
 
 \section{Resolución con algoritmo goloso}
 
-Para el problema de \texttt{Recuperación de Ítems Empaquetados} se propone una solución basada en heurísiticas golosas, la misma abordará dos temas puntuales:
+Para el problema de \texttt{Recuperación de Ítems Empaquetados} se propone una solución basada en heurísticas golosas, la misma abordará dos temas puntuales:
 \begin{itemize}
 	\item Que la solución se construya de forma tal que tenga la misma consideración las dos partes de la función objetivo -la parte \texttt{inter} y la \texttt{intra}- durante todo el proceso.
 	\item Que sea aceptable el tiempo de ejecución para grandes cantidades de ítems.
@@ -388,15 +388,15 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 \end{center}
 
 \section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y que el tiempo de ejecución esté acorde con el resto de los algoritmos se implementaron distintas variantes de la metaheurística \textbf{Tabú search}. 
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y que el tiempo de ejecución esté acorde con el resto de los algoritmos se implementaron distintas variantes de la meta-heurística \textbf{Tabú search}. 
 
-\textbf{Tabú search} se basa en buscar una mejor solución a partir de una otra anterior ya existente, lo que permite ser combinada junto con las huerísticas estudiadas anteriormente.
+\textbf{Tabú search} se basa en buscar una mejor solución a partir de una otra anterior ya existente, lo que permite ser combinada junto con las heurísticas estudiadas anteriormente.
 
 Las búsquedas locales consisten en moverse de una solución a otra, aplicando cambios a la solución candidata hasta encontrar una mejor o satisfacer un criterio de parada. 
 
 Los algoritmos comienzan a partir de una instancia válida, que puede haber sido obtenida mediante algún otro método, y en cada iteración se mueve a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad entre las instancias del problema. Como una solución puede tener muchas instancias vecinas se elige siempre aquella que maximice (o minimice, según el problema elegido) el criterio seleccionado, produciendo que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
 
-\textbf{Tabú search}\cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. 
+\textbf{Tabú search}\cite{TS-1,TS-2} es una meta-heurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. 
 
 Para explorar regiones del espacio de búsqueda, que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú permite moverse a una solución vecina de menor calidad modificando la estructura de vecinos en cada una de las soluciones. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
 
@@ -409,7 +409,7 @@ La búsqueda \texttt{Inter-Paquete} se diseñó especialmente para el algoritmo 
 
 Para esta implementación se define que las instancias vecinas de la solución $S$, son aquellas que no contienen al paquete con menor valor Inter de $S$ e incluye a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la próxima solución a visitar. Se elige entonces como criterio de aspiración, la admisión de una solución vecina que contiene un paquete que está en la lista tabú si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
 
-El esquema del proceso para construir una nueva soluci\'on es el siguiente:
+El esquema del proceso para construir una nueva solución es el siguiente:
 
 \begin{enumerate}
 \item $S^* = S$, $ \bar{S}= S$, $LT = \emptyset$
