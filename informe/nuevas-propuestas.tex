@@ -1,4 +1,4 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de los cambios se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir de una mayor cantidad de elementos con respecto a lo visto en el capítulo anterior. 
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las propuestas se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir de una mayor cantidad de elementos con respecto a lo visto en el capítulo anterior. 
 
 Los nuevos alternativas consisten en modificaciones de los algoritmos ya conocidos, enunciados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las alternativas apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
@@ -388,7 +388,7 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 \end{center}
 
 \section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y que el tiempo de ejecución esté acorde con el resto de los algoritmos se implementaron distintas variantes de la meta-heurística \textbf{Tabú search}. 
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y que el tiempo de ejecución esté acorde con el resto de los algoritmos se implementaron distintas variantes de la metaheurística \textbf{Tabú search}. 
 
 \textbf{Tabú search} se basa en buscar una mejor solución a partir de una otra anterior ya existente, lo que permite ser combinada junto con las heurísticas estudiadas anteriormente.
 
@@ -396,7 +396,7 @@ Las búsquedas locales consisten en moverse de una solución a otra, aplicando c
 
 Los algoritmos comienzan a partir de una instancia válida, que puede haber sido obtenida mediante algún otro método, y en cada iteración se mueve a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad entre las instancias del problema. Como una solución puede tener muchas instancias vecinas se elige siempre aquella que maximice (o minimice, según el problema elegido) el criterio seleccionado, produciendo que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
 
-\textbf{Tabú search}\cite{TS-1,TS-2} es una meta-heurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. 
+\textbf{Tabú search}\cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. 
 
 Para explorar regiones del espacio de búsqueda, que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú permite moverse a una solución vecina de menor calidad modificando la estructura de vecinos en cada una de las soluciones. De esta manera se permite al algoritmo escapar de máximos (o mínimos) locales.
 
