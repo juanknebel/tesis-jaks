@@ -28,7 +28,7 @@ Para todas las búsquedas, sin importar el ítem que sea (artículo, autor o uni
 
 El \texttt{Topic Profile} define el perfil de un artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. Esto significa que el 71.43\% de los trabajos citados en este artículo fueron presentados en conferencias o publicados en revistas vinculadas al área REQUIREMENTS.
 
-El modelo computacional del perfil de cada artículo es un vector cuya dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica como estos vectores se utilizan para comparar la similitud entre los artículos.
+El modelo computacional del perfil de cada artículo es un vector cuya dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica cómo estos vectores se utilizan para comparar la similitud entre los artículos.
 
 Para los autores no se cuenta con información más allá de los artículos que escribieron, pero sólo con eso alcanza para poder generar un perfil de autores. Para cada autor se hace la suma vectorial de cada uno de los \texttt{Topic Profile} de los artículos en los cuales participó y con eso se obtiene el \texttt{Topic Profile de Autores}. Para obtener el perfil de las universidades se aplicó el mismo criterio. Se realiza la suma vectorial de cada uno de los \texttt{Topic Profile de Autores} pertenecientes a la misma universidad y así se genera el \texttt{Topic Profile de Universidades}. En ambos casos se aplica la normalización sobre los vectores resultantes.
 
@@ -88,7 +88,7 @@ Para la evaluación de los algoritmos propuestos a en esta tesis, se realizaron 
 	\end{itemize}
 \end {enumerate}
 
-Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración $5500$ artículos.  
+Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración, $5500$ artículos.  
 
 \paragraph{Función de similitud}
 La similitud se emplea para comparar dos objetos y determinar qué tan parecidos son entre si. En este trabajo se definió la similitud entre los objetos de la base de datos de artículos mediante la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos.
@@ -115,12 +115,12 @@ Como los componentes de todos los vectores son mayor o igual a cero se obtiene q
 
 %Para \textbf{similitud coseno} dos vectores proporcionales con la misma dirección la similitud es 1 (ya que es 0 el ángulo que se forma). Por lo que esta similitud no diferencia entre un artículo profesional y un artículo de un diario que cubre el mismo tópico. Por ejemplo si dos artículos que cubren un mismo y único tópico, pero para uno el valor del tópic Esta debilidad de la medida basada en el ángulo no interfiere en este trabajo por la segunda propiedad de los vectores del problema, porque para que dos vectores sean proporcionalmente iguales tienen que ser idénticos y en tal caso es correcto que la similitud entre ellos sea 1.
 
-Con el objetivo de simplificar la ejecución de los algoritmos, considerando que el costo de calcular $cos()$ de los vectores es alto, se decidió realizar el cálculo de la similitud de los artículos, autores y universidades previamente a la ejecución de los algoritmos de búsquedas
+Con el objetivo de simplificar la ejecución de los algoritmos, considerando que el costo de calcular $cos()$ de los vectores es alto, se decidió realizar el cálculo de la similitud de los artículos, autores y universidades previamente a la ejecución de los algoritmos de búsquedas.
 
 \subsection{Base de dato de atracciones turísticas}
 Se utilizó una instancia de datos correspondiente a 200 atracciones turísticas de Europa, con datos relevados del sitio \textit{TripAdvisor}. De cada atracción se tiene la información del precio, del tipo (parque, museo, edificio) y de la distancia geográfica con el resto de las atracciones.
 
-El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con los siguientes requerimientos: evitar realizar largos traslados, que haya variedad en el tipo de atracción y que que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedó diseñado de la siguiente manera: \label{busqueda:atracciones}
+El propósito de la búsqueda es darle al usuario distintas opciones de circuitos turísticos que contienen atracciones, con los siguientes requerimientos: evitar realizar largos traslados, variedad en el tipo de atracción y que el costo del circuito no supere el presupuesto del turista. Por lo tanto el modelo de la búsqueda quedó diseñado de la siguiente manera: \label{busqueda:atracciones}
 
 \begin{itemize}
 	\item \textbf{Similitud}: La inversa de la distancia entre las atracciones. 
@@ -131,7 +131,7 @@ El propósito de la búsqueda es darle al usuario distintas opciones de circuito
 
 \section{Resultados}\label{sect:resultados}
 
-En esta sección se analizan los resultados computacionales comparando la calidad de las soluciones obtenidas por los algoritmos discutidos en \autoref{chap:nuevas-propuestas}, sobre las bases de datos de \autoref{sect:busquedas}. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos.
+En esta sección se analizarán los resultados computacionales comparando la calidad de las soluciones obtenidas por los algoritmos discutidos en \autoref{chap:nuevas-propuestas}, sobre las bases de datos de \autoref{sect:busquedas}. Con el objetivo de evaluar las propuestas algorítmicas, se consideraron los siguientes métodos.
 
 \begin{itemize}
 \item{$alg1$} PAC(C-HAC / selección simple)
@@ -197,7 +197,7 @@ $\gamma$&$alg1$&$alg2$&$alg3$&$alg4$&$alg5$&$alg6$&$alg7$&$alg8$ \\ \hline
 \end{center}
 \end{table}
 
-Para comprender la semántica de las soluciones comparamos las soluciones con $\gamma = 0,1$ y $\gamma = 0,9$. En la figura \ref{res:comp1} se observa que para $\gamma = 0,1$ los tópicos (representados por burbujas) para la solución de \textit{alg 3} están presentes en varios paquetes (representados por círculos de colores). En cambio en el $alg6$ la mayoría de las burbujas contiene círculos de un solo color. De esta manera se visualiza que la solución de $alg6$ es más diversa. En $\gamma = 0,9$ el resultado obtenido con $alg3$ no se visualiza que cada burbuja contenga cinco círculos del mismo color, en cambio si sucede para la solución de $alg1$. Eso significa que los paquetes de la solución de $alg1$ son más cohesivos, ya que los cinco elementos de cada paquete tienen los mismos tópicos.
+Para comprender la semántica de las soluciones se compararon las soluciones con $\gamma = 0,1$ y $\gamma = 0,9$. En la figura \ref{res:comp1} se observa que para $\gamma = 0,1$ los tópicos (representados por burbujas) para la solución de \textit{alg 3} están presentes en varios paquetes (representados por círculos de colores). En cambio en el $alg6$ la mayoría de las burbujas contiene círculos de un solo color. De esta manera se visualiza que la solución de $alg6$ es más diversa. En $\gamma = 0,9$ el resultado obtenido con $alg3$ no se visualiza que cada burbuja contenga cinco círculos del mismo color, en cambio si sucede para la solución de $alg1$. Eso significa que los paquetes de la solución de $alg1$ son más cohesivos, ya que los cinco elementos de cada paquete tienen los mismos tópicos.
 
 \begin{figure}[H]
 	\centering
@@ -311,7 +311,7 @@ En este escenario lo que más se destaca de la tabla \ref{tabla:comp3} es el com
 
 Por otro lado la función objetivo de las soluciones provista por los algoritmos $alg2$, $alg3$ y $alg7$ se encuentran muy alejadas de las soluciones provistas por los jerárquicos. En el caso del algoritmo goloso $alg7$ las soluciones mejoran con respecto a los algoritmos $alg2$ y $alg3$ cuando el valor de $\gamma$ disminuye.
 
-En este escenario, al igual que en el resto, la búsqueda tabú mejoró las soluciones iniciales del $BOBO$ y del algoritmo goloso considerablemente. Se destaca que para las soluciones jerárquicas la búsqueda tabú siempre mejora la solución inicial sin importar que tan buena sea.
+Al igual que en el resto, la búsqueda tabú mejoró las soluciones iniciales del $BOBO$ y del algoritmo goloso considerablemente. Se destaca que para las soluciones jerárquicas la búsqueda tabú siempre mejora la solución inicial sin importar que tan buena sea.
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -362,7 +362,7 @@ Se obtuvieron mejores resultados en términos de los valores de la función obje
 
 Se observó que las soluciones obtenidas utilizando el algoritmo goloso fueron mejores en comparación a las generadas por la metodología $PAC$, solo cuando en la etapa de producción se utilizó la estrategia $BOBO$. Por el contrario, la producción jerárquica derivó en la obtención final de mejores paquetes. Si bien la técnica de las implementaciones de $BOBO$ son golosas, éstas solo hacen hincapié en los valores intra de la función objetivo. Mientras qué la nueva propuesta lo hace sobre la totalidad de la función objetivo. 
 
-Para la estrategia PAC las implementaciones de BOBO fueron en todos los casos las más rápidas, resultando ser las ideales para instancias de tamaño muy grandes. La solución obtenida mejorá considerablemente si se le aplica la búsqueda tabú. En las pruebas realizadas con HAC con un universo de elementos menor a los 10000 se cuadruplica o quintuplica los tiempos de ejecución debido a su complejidad ($\mathcal{O}(N^{2}\log n)$). Sin embargo en instancias más chicas como las atracciones turísticas los tiempos fueron muy cercanos entre ellos.
+Para la estrategia PAC las implementaciones de BOBO fueron en todos los casos las más rápidas, resultando ser las ideales para instancias de tamaño muy grandes. La solución obtenida mejorá considerablemente si se le aplica la búsqueda tabú. En las pruebas realizadas con HAC con un universo de elementos menor a los 10000 se cuadruplican o quintuplican los tiempos de ejecución debido a su complejidad ($\mathcal{O}(N^{2}\log n)$). Sin embargo en instancias más chicas como las atracciones turísticas los tiempos fueron muy cercanos entre ellos.
 
 Las soluciones obtenidas usando \texttt{Efficient-HAC} y búsquedas golosas para valores de $\gamma$ menores a $0.5$ fueron \textquotedblleft similarmente buenas\textquotedblright , dado que los resultados en términos de función objetivo fueron cercanos. En cambio para $\gamma$ más cercanos a uno se observó que el valor de la función objetivo de las soluciones HAC resultaron significativamente mayores. En todos los casos se identificó que las relaciones inter-paquetes son mejores en las soluciones del algoritmo goloso, logrando soluciones más interdependientes.
 

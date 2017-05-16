@@ -1,12 +1,12 @@
 En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir de una mayor cantidad de elementos con respecto a lo visto en el capítulo anterior. 
 
-Estas propuestas consisten en modificaciones de los algoritmos ya conocidos, enunciados en el capítulo anterior, como así también la presentación de nuevos algoritmos. Las que apuntan, principalmente, a generar soluciones con paquetes más diferentes entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
+Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en \autoref{chap:trabajos-previos}, y además la presentación de nuevos algoritmos. El objetivo es generar soluciones con paquetes con mayor diversidad entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
-La primera propuesta que se dará a conocer es un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. Para la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. Una de ellas es para reducir el orden de complejidad del algoritmo. La otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
+La primera propuesta consiste en un conjunto de mejoras aplicadas al algoritmo \texttt{Produce\allowbreak-and\allowbreak-Choose}. Para la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. Una de ellas es para reducir el orden de complejidad del algoritmo. La otra es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
 Otra de las propuestas es construir la solución con una heurística que considere ambas partes de la función objetivo durante todo el proceso y que el tiempo de ejecución sea competitivo con los otros algoritmos. Para cumplir con estos objetivos se diseñó un algoritmo goloso.
 
-También se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por otros algoritmos. Con esto se intenta encontrar una mejor solución, evitando caer en máximos locales. 
+También se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por otros algoritmos. Se intenta encontrar una mejor solución, evitando caer en máximos locales. 
 
 \section{Produce-and-Choose}
 Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes válidos para luego seleccionar aquellos que maximicen el valor de la función objetivo. Los cuales formarán parte de la solución.
@@ -32,7 +32,7 @@ La función \texttt{ProduceBundle} genera a partir del conjunto de elementos un 
 
 Por último la función \texttt{ChooseBundles} busca el \textit{subgrafo-k} que maximice el peso de los vértices y aristas. Los vértices del \textit{subgrafo-k} corresponderán a los paquetes pertenecientes a la solución.
 
-Como se puede observar la estructura de esta familia de algoritmos facilita la introducción de mejoras en sus dos fases críticas, en la generación y en selección de paquetes. En las siguientes secciones se presentarán y analizarán las estrategias propuestas que se aplicaron tanto en la etapa de generación como así en la etapa de selección. De este modo se podrán combinar de la mejor manera, teniendo en cuenta el objetivo de la búsqueda requerida.
+Como se puede observar la estructura de esta familia de algoritmos facilita la introducción de mejoras en sus dos fases críticas, en la generación y en la selección de paquetes. En las siguientes secciones se presentarán y analizarán las estrategias propuestas que se aplicaron tanto en la etapa de generación como también en la etapa de selección. De este modo se podrán combinar de la mejor manera, teniendo en cuenta el objetivo de la búsqueda requerida.
 
 \subsection{Mejoras en la generación de paquetes}
 La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. La finalidad es que los objetos del grupo sean similares entre sí y diferentes de los restantes grupos. Cuanto mayor sea la similitud \textbf{dentro} del conjunto (valor \texttt{intra}) y mayor sea la diferencia \textbf{entre} conjuntos el agrupamiento será mejor.
@@ -58,11 +58,12 @@ Los métodos particionales seleccionan un número definido de $k$ centroides ini
 
 A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez estas técnicas se suelen subdividir en dos estrategias: aglomerativas y divisivas, las cuales serán detalladas más adelante.
 
-En esta tesis se plantean dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: 
+Se plantearán dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: 
 \begin{enumerate}
 	\item La elección en cada iteración de la estrategia para combinar \textit{clusters}.
 	\item La complejidad algorítmica.
 \end{enumerate}
+
 En las próximas secciones se describirán detalladamente las mejoras propuestas.
 
 En relación al algoritmo \textit{BOBO}, también descripto en la publicación del párrafo anterior, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
@@ -155,7 +156,7 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos grupos de elementos con mayor similitud, y que a su vez, sea una unión válida. 
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos conjuntos con mayor similitud y que el conjunto resultante de esa unión sea válido. 
 
 Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. 
 
@@ -173,7 +174,7 @@ $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
 De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario, el segundo resultará siempre despreciable con respecto al primero. Por lo tanto el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
 
-Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta un aspecto fundamental, como es la complejidad temporal del algoritmo. De lo contrario, el uso de las mejoras no hubieran podido ser usadas en las pruebas, que se detallarán en los próximos capítulos, por tratarse de instancias con miles de objetos.
+Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, el uso de las mejoras no hubieran podido ser usadas en las pruebas, que se detallarán en los próximos capítulos, por tratarse de instancias con miles de objetos.
 
 El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\autoref{alg:Intra-Inter C-HAC}}, el cual mejora la complejidad de  \texttt{C-HAC} e incluye la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
 
@@ -235,7 +236,7 @@ Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} conti
 	\end{algorithm}
 \end{center}
 
-Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, a continuación se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, por lo que la complejidad de la función \textit{Intra-Inter} es constante. A partir de las siguientes relaciones entre la iteración $r$ y $r-1$ se tiene que:
+Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, por lo que la complejidad de la función \textit{Intra-Inter} es constante. A partir de las siguientes relaciones entre la iteración $r$ y $r-1$ se tiene que:
 
 $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
@@ -244,7 +245,7 @@ $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 El ciclo de la inicialización de las estructuras $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
 
 \subsection{Mejoras en la selección de paquetes}
-En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección de los $k$ mejores que formarán parte de la solución final. A continuación se detallará el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
+En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección del subconjunto de paquetes que será la solución. A continuación se detallará el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
 
 El problema puede representarse como un grafo completo con pesos en las aristas y vértices. 
 
@@ -392,7 +393,7 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 \end{center}
 
 \section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, manteniendo las premisas del tamaño del conjunto de ítems y el tiempo de ejecución acorde con el resto de los algoritmos, se implementaron distintas variantes de la metaheurística \textbf{Tabú search}. 
+Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, conservando las premisas del tamaño del conjunto de ítems y el tiempo de ejecución acorde con el resto de los algoritmos, se implementaron distintas variantes de la metaheurística \textbf{Tabú search}. 
 
 \textbf{Tabú search} \cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Se basa en buscar una mejor solución a partir de una anterior existente, lo que permite ser combinada junto con las heurísticas estudiadas anteriormente. 
 
