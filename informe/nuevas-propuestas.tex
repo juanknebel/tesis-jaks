@@ -37,7 +37,7 @@ Como se puede observar la estructura de esta familia de algoritmos facilita la i
 \subsection{Mejoras en la generación de paquetes}
 La generación de paquetes se puede realizar a través de un proceso de agrupación de un conjunto de objetos que son parecidos. La finalidad es que los objetos del grupo sean similares entre sí y diferentes de los restantes grupos. Cuanto mayor sea la similitud \textbf{dentro} del conjunto (valor \texttt{intra}) y mayor sea la diferencia \textbf{entre} conjuntos el agrupamiento será mejor.
 
-La noción de qué es un grupo correctamente constituido no puede ser definida con precisión y es por tal motivo que existen una gran cantidad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir como un conjunto de objetos relacionados entre sí. Teniendo en cuenta el modelo de representación usado para el problema, dependerá el tipo de algoritmo que será utilizado.
+La noción de qué es un grupo correctamente constituido no puede ser definida con precisión y es por tal motivo que existen una gran cantidad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir como un conjunto de objetos relacionados entre sí. Luego, para cada problema se deberá definir de que manera se constituye correctamente un grupo.
 
 Para ejemplificar lo anterior, en los veinte puntos de~\autoref{res:img-howToCluster} existen más de una única forma de agruparlos que son válidas y que dependen del contexto. 
 
@@ -50,7 +50,7 @@ Si se quisiera agrupar por proximidad, entonces la estructura más razonable es 
    \label{res:img-howToCluster}
 \end{figure}
 
-De éste modo definimos el agrupamiento para que cada grupo contenga la máxima cantidad de ítems sin exceder el presupuesto. La agrupación se realiza a través de la \textbf{función de similitud} de los objetos, para que los ítems dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
+En este trabajo para el agrupamiento se definió que cada grupo contenga la máxima cantidad de ítems sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la \textbf{función de similitud}, para que los ítems dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
 En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la mayoría puede ser categorizado en particionales o jerárquicos \cite{opac-b1087461}. 
 
@@ -123,7 +123,7 @@ Cortando el dendrograma mediante líneas horizontales se puede determinar el nú
   \label{nuevaspropuestas:dendograma2}
 \end{figure}
 
-El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que para cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplicará dicho agrupamiento.
+El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplicará dicho agrupamiento.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -242,7 +242,7 @@ $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
 $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
-El ciclo de la inicialización de las estructuras $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
+El ciclo de la inicialización de las estructuras es $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2})$.
 
 \subsection{Mejoras en la selección de paquetes}
 En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección del subconjunto de paquetes que será la solución. A continuación se detallará el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
