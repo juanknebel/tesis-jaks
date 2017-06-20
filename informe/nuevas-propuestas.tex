@@ -172,7 +172,7 @@ $$E(C_i,C_j)=\max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
 
 $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
-De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de esta sumatoria, ya que de lo contrario, el segundo resultará siempre despreciable con respecto al primero. Por lo tanto el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
+De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de la sumatoria, de lo contrario, el segundo resultará siempre despreciable con respecto al primero. Por lo tanto el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
 
 Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, el uso de las mejoras no hubieran podido ser usadas en las pruebas, que se detallarán en los próximos capítulos, por tratarse de instancias con miles de objetos.
 
@@ -182,7 +182,7 @@ El algoritmo para producir paquetes que se propone en esta tesis es \textbf{~\au
 
 El algoritmo comienza con la inicialización de la matriz $C$ de tamaño $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, dónde $n$ es la cantidad de elementos. Como ya se había anticipo \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo unitario $i$ $j$.
 
-Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similaridad. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
+Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similitud. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
 \begin{center}
 	\begin{algorithm}[H]
