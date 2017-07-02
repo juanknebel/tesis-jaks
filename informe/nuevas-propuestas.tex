@@ -362,7 +362,7 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 		\KwData{$I,\alpha,f,\beta,k,\gamma$}
 		\KwResult{Conjunto válido de paquetes}
 		$\omega(S) = \sum_{b \in S}{\sum_{u,v \in b}{\gamma s(u,v)}} + \sum_{b_1,b_2 \in S}{(1-\gamma) (1-\max_{u \in b_1, v \in b_2}{s(u,v)})}$\;
-		$cand \leftarrow \bigcup_{1 \ldots k}\emptyset$\;
+		$cand \leftarrow \left\{S_i: 1 \leq i \leq k, S_i = \emptyset\right\}$\;
 		$isComplete \leftarrow False$\;
 		\While{$isComplete = False$}{
 			$bestScore \leftarrow -\infty$\;

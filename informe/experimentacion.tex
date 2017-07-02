@@ -1,9 +1,9 @@
 \section{Instancias de pruebas}\label{sect:busquedas}
-En esta sección se presentarán las consultas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
+En esta sección se presentan las consultas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
 
-Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La otra corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas por \cite{journals/tkde/Amer-YahiaBCFMZ14}.
+Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La otra corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
-A continuación se describirá para cada consulta, realizada sobre las bases de datos, la función de similitud, el atributo utilizado para definir la complementariedad de los elementos y el presupuesto elegidos para las instancias escogidas. 
+A continuación se describe para cada consulta, realizada sobre las bases de datos, la función de similitud, el atributo utilizado para definir la complementariedad de los elementos y el presupuesto elegidos para las instancias escogidas. 
 
 Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
 
@@ -91,7 +91,7 @@ Para la evaluación de los algoritmos propuestos en esta tesis, se realizaron la
 Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración, $5500$ artículos.  
 
 \paragraph{Función de similitud}
-La similitud se emplea para comparar dos objetos y determinar qué tan parecidos son entre si. En este trabajo se definió la similitud entre los objetos de la base de datos de artículos mediante la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos.
+La similitud se emplea para comparar dos objetos y determinar qué tan parecidos son entre sí. En este trabajo se definió la similitud entre los objetos de la base de datos de artículos mediante la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos.
 
 Entonces se define la función de similitud $S(U_i, V_j)$ para los vectores $U_i$ y $V_j$ a partir del producto escalar
 
@@ -161,7 +161,7 @@ Los gráficos del estilo de la figura \ref{res:img-explain-bars} permiten analiz
   \label{res:img-explain-bars}
 \end{figure}
 
-Los gráficos de tipo burbuja de la figura \ref{res:img-explain-bubbles} son útiles para concluir el nivel de acoplamiento entre los paquetes de una solución, observando la relación entre los tópicos y los paquetes. Cada burbuja representa un tópico y cada círculo dentro de esa burbuja es un artículo. El tamaño del circulo es la proporción del artículo con el tópico y el color es el paquete al que pertenece. Entonces, si las burbujas contienen círculos de tamaños parecidos de más de un color se puede decir que ese resultado no es muy diverso. Mientras que el color de los círculos de las burbujas sea más homogéneo el resultado será más diverso. En cuanto a la cohesión de los paquetes, es más cohesivo cuando el tamaño de cada círculo dentro de las burbujas es similar (para el mismo color) y cada una de ellas contiene la misma cantidad, o ninguno, de círculos del mismo color.
+Los gráficos de tipo burbuja de la figura \ref{res:img-explain-bubbles} son útiles para concluir el nivel de acoplamiento entre los paquetes de una solución, observando la relación entre los tópicos y los paquetes. Cada burbuja representa un tópico y cada círculo dentro de esa burbuja es un artículo. El tamaño del circulo es la proporción del artículo con el tópico y el color es el paquete al que pertenece. Entonces, si las burbujas contienen círculos de tamaños parecidos de más de un color se puede decir que ese resultado no es muy diverso. Por otro lado, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado será más diverso. En cuanto a la cohesión de los paquetes, es más cohesivo cuando el tamaño de cada círculo dentro de las burbujas es similar (para el mismo color) y cada una de ellas contiene la misma cantidad, o ninguno, de círculos del mismo color.
 
 \begin{figure}[H]
   \centering
