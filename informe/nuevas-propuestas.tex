@@ -1,17 +1,17 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas se centra en obtener soluciones de mejor calidad y que puedan ser generadas a partir un universo con mayor cantidad de elementos con respecto a las estrategias utilizadas en los algoritmos presentados en \autoref{chap:trabajos-previos}. 
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas es la obtención de mejores soluciones que puedan ser generadas a partir de un dominio del problema que contiene gran cantidad de elementos disponibles respecto de las estrategias presentadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
-Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en \autoref{chap:trabajos-previos}, y además la presentación de nuevos algoritmos. El objetivo es generar soluciones con paquetes con mayor diversidad entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
+Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en el \autoref{chap:trabajos-previos}, y en la presentación de otros nuevos. El objetivo es generar soluciones que contengan paquetes con una mayor diversidad entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
 
 Una de las propuestas consiste en un conjunto de mejoras aplicadas al algoritmo \allowbreak \texttt{Produce\allowbreak-and\allowbreak-Choose}. Para la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. La primera tiene como objetivo reducir el orden de complejidad del algoritmo. La segunda es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
-Por otro lado, se diseñó una heurística que construya una solución considerando ambas partes de la función objetivo durante todo el proceso, manteniendo un tiempo de ejecución competitivo con los otros algoritmos.
+Por otro lado, se diseñó una heurística (golosa) que construya una solución considerando ambas partes de la función objetivo durante todo el proceso, manteniendo un tiempo de ejecución competitivo con los otros algoritmos.
 
-Finalmente se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por otros algoritmos. La intención es realizar búsquedas entre las soluciones vecinas con el fin de obtener una mejor solución, mediante un proceso que evita caer en máximos locales.
+Finalmente se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por los otros algoritmos. La intención es realizar búsquedas entre las soluciones vecinas con el fin de obtener una mejor solución, mediante un proceso que evite caer en máximos locales.
 
 \section{Produce-and-Choose}
 Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes válidos para luego seleccionar aquellos que maximicen el valor de la función objetivo, los cuales formarán parte de la solución.
 
-Los parámetros del algoritmo son: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el límite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ (para ponderar si se quiere paquetes más cohesivos frente a mayor diversidad) y una cantidad $k$ de paquetes a generar. 
+Como mencionamos en la \autoref{introduccion:problemaFormal}, los parámetros del algoritmo son: el conjunto de ítems $I$, el atributo complementario $\alpha$, la función de presupuesto $f: 2^{I} \rightarrow \rm I \!R$, el límite del presupuesto $\beta$, un valor $0 < \gamma < 1\ \in \rm I \!R$ (para ponderar si se quiere paquetes más cohesivos frente a mayor diversidad) y una cantidad $k$ de paquetes a generar. 
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -39,7 +39,7 @@ La generación de paquetes se puede realizar a través de un proceso de agrupaci
 
 La noción de qué es un grupo correctamente constituido no puede ser definida con precisión y es por tal motivo que existen una gran cantidad de algoritmos de agrupamiento \cite{Estivill-Castro:2002:WSM:568574.568575}. Sin embargo, se puede definir como un conjunto de objetos relacionados entre sí. Luego, para cada problema se deberá definir de que manera se constituye correctamente un grupo.
 
-Para ejemplificar lo anterior, en los veinte puntos de~\autoref{res:img-howToCluster} existen más de una única forma de agruparlos que son válidas. Por lo que es el contexto el que define cual es la forma más apropiada para agrupar los puntos.
+Para ejemplificar lo anterior, en los veinte puntos de la \autoref{res:img-howToCluster} existe más de una forma válida de agruparlos y de acuerdo al contexto en el que se encuentren dependerá cuál de todas ellas es la mejor.
 
 Si se quisiera agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizan dos grupos. A su vez cada uno de los subgrupos puede generar una nueva partición de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
 
@@ -50,26 +50,24 @@ Si se quisiera agrupar por proximidad, entonces la estructura más razonable es 
    \label{res:img-howToCluster}
 \end{figure}
 
-En este trabajo para el agrupamiento se definió que cada grupo contenga la máxima cantidad de ítems sin exceder el presupuesto. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la \textbf{función de similitud}, para que los ítems dentro del grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
+A partir de las necesidades presentadas en este trabajo, se definió que cada grupo contenga la máxima cantidad de ítems sin excederse en el presupuesto inicial. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la \textbf{función de similitud}, para que los ítems dentro de cada grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
 En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la mayoría puede ser categorizado en particionales o jerárquicos \cite{opac-b1087461}. 
 
-En los métodos de agrupamiento particional cada objeto es asignado a uno de los grupos posibles. La cantidad de grupos es establecida antes del inicio del proceso de agrupamiento. 
+En los métodos de agrupamiento particional se debe definir de antemano la cantidad de grupos finales que se quiere obtener. Luego cada uno de los objetos será asignado al grupo \textit{más cercano} que le corresponda.
 
 A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez estas técnicas se suelen subdividir en dos estrategias: aglomerativas y divisivas, las cuales serán detalladas más adelante.
 
-Se plantearán dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}: 
+Se plantearán dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, detallándolas en las próximas secciones:
 \begin{enumerate}
 	\item La elección en cada iteración de la estrategia para combinar \textit{clusters}.
 	\item La complejidad algorítmica.
 \end{enumerate}
 
-En las próximas secciones se describen detalladamente las mejoras propuestas.
-
-El algoritmo \textit{BOBO}, descripto en \autoref{chap:trabajos-previos}, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
+El algoritmo \textit{BOBO}, descripto en el \autoref{chap:trabajos-previos}, se mantuvo sin cambios en pos de realizar comparaciones entre los resultados obtenidos a través de las mejoras propuestas y las obtenidas mediante la implementación original.
 
 \subsubsection{Bundles One-By-One}
-El método \texttt{BOBO-k}, inspirado en \textit{k-means}, consiste en generar $k$ paquetes del conjunto de $n$ ítems. El algoritmo comienza con todos los ítems del conjunto $I$ como posibles pivotes $P$. Se selecciona un pivote de $P$ y con los elementos de $I$ se genera un paquete válido ``alrededor'' de éste; en caso que el paquete generado sea suficientemente bueno se agrega al conjunto de candidatos, en tanto los ítems del paquete se eliminan de $I$. La generación de paquetes continúa hasta que se cumpla el criterio de parada, que es generar $k$ paquetes válidos.
+A continuación se detallan los pasos más importantes del algoritmo \textit{BOBO-k} a partir de su pseudocódigo.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -96,12 +94,12 @@ El método \texttt{BOBO-k}, inspirado en \textit{k-means}, consiste en generar $
 	\end{algorithm}
 \end{center}
 
-La función \texttt{selectPivote} selecciona un pivote perteneciente al conjunto de pivotes. En este trabajo se siguió con la recomendación citada en \cite{Zhang:2002:ESI:638644.638646}, la cuál dice que la selección sea aleatoria. La función \texttt{BuildBundle} genera un paquete a partir del pivote. Se trata de una función que implementa un algoritmo goloso, dado que en cada iteración se agrega al paquete que se genera el ítem del conjunto $I$ que maximiza la función intra y que cumple con las restricciones de complementariedad y presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+La función \texttt{selectPivote} selecciona un pivote perteneciente al conjunto de pivotes. En este trabajo se siguió con la recomendación citada en \cite{Zhang:2002:ESI:638644.638646}, la cuál dice que la selección sea aleatoria. La función \texttt{BuildBundle} es una implementación golosa que genera un paquete a partir de un elemento pivote. Internamente en cada iteración se incluye un ítem del conjunto $I$ que maximiza la función intra y al mismo tiempo cumple con las restricciones de complementariedad y presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
 Anteriormente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. 
 
-El aglomerativo comienza con cada objeto perteneciente a un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14}. 
+El aglomerativo comienza con cada objeto perteneciente a un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14,informationRetrival}. 
 
 La estrategia divisiva, en cambio, comienza con todos los objetos en un mismo grupo y en cada paso se realiza la división de uno de los grupos.
 
@@ -156,7 +154,7 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos conjuntos con mayor similitud y que el conjunto resultante de esa unión sea válido. 
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos conjuntos con mayor similitud siempre y cuando el conjunto resultante de esa unión sea válido.
 
 Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. 
 
@@ -164,7 +162,7 @@ La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir,
 
 Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. 
 
-Para que la dispersión de los paquetes que se generan en la fase de producción coincida con la esperada por el usuario se decidió en esta tesis, modificar el algoritmo \texttt{C-HAC} para incluir el valor \texttt{inter} en el cálculo de la selección del par de grupos que se une. De esta manera, al evaluar la unión entre dos grupos se considera tanto el valor \texttt{intra} como también así la distancia con el resto de los paquetes del posible nuevo paquete. A diferencia de la función \textit{Score} vista previamente, en la que solo tenía en cuenta el valor \texttt{intra}, se definió la función \textit{Intra-Inter} en la que ambas partes de la función objetivo son tenidas en consideración. 
+Para que la dispersión de los paquetes que se generan en la fase de producción coincida con la esperada por el usuario se decidió en esta tesis, modificar el algoritmo \texttt{C-HAC} para incluir el valor \texttt{inter} en el cálculo de la selección del par de grupos que se une. De esta manera, al evaluar la unión entre dos grupos se considera tanto el valor \texttt{intra} como también así la distancia con el resto de los paquetes del posible nuevo paquete. A diferencia de la función \textit{Score} vista previamente, la que solo tenía en cuenta el valor \texttt{intra}, se definió la función \textit{Intra-Inter} en la que ambas partes de la función objetivo son tenidas en consideración. 
 
 Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
 
@@ -178,11 +176,11 @@ De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter}
 
 Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, el uso de las mejoras no hubieran podido ser usadas en las pruebas, que se detallarán en los próximos capítulos, por tratarse de instancias con miles de objetos.
 
-En \textbf{~\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad, el cual mejora la complejidad de  \texttt{C-HAC} e incluye la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
+En el \textbf{\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad y la complejidad de  \texttt{C-HAC} incluyendo la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
 
 \texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz $C$, que en la posición $i,j$ almacena la similitud de los grupos $i$ y $j$, y un arreglo de colas de prioridad, donde la cola $P_i$ contiene (en orden decreciente) la relación de similitud del grupo $i$ con el resto de los grupos.
 
-El algoritmo comienza con la inicialización de la matriz $C$ de tamaño $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo unitario $i$ $j$.
+El algoritmo comienza con la inicialización de la matriz $C$ de dimensión $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo $C_{i,j}$ conformado por los grupos unitarios $i$ y $j$.
 
 Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similitud. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
