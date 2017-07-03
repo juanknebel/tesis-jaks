@@ -178,9 +178,9 @@ Si bien el objetivo principal de la modificación propuesta es aumentar la calid
 
 En el \textbf{\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad y la complejidad de  \texttt{C-HAC} incluyendo la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
 
-\texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz $C$, que en la posición $i,j$ almacena la similitud de los grupos $i$ y $j$, y un arreglo de colas de prioridad, donde la cola $P_i$ contiene (en orden decreciente) la relación de similitud del grupo $i$ con el resto de los grupos.
+\texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz de similitud $C$ y un arreglo de colas de prioridad. Las filas $C\left[i\right]$ de la matriz $C$ están ordenadas de forma decreciente en las colas de prioridad $P\left[i\right]$.
 
-El algoritmo comienza con la inicialización de la matriz $C$ de dimensión $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que en la inicialización de $C$ en la posición $i,j$ se almacena el valor de la similitud del grupo $C_{i,j}$ conformado por los grupos unitarios $i$ y $j$.
+El algoritmo comienza con la inicialización de la matriz $C$ de dimensión $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que al inicio cada elemento pertenece a su propio grupo. En la posición $i,j$, de la matriz $C$, se almacena el valor de la similitud de los grupos $\omega_{i}$ y $\omega_{j}$
 
 Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similitud. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
@@ -190,48 +190,42 @@ Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} conti
 	\SetAlgoLined
 		\KwData{$I,\alpha,f,\beta,\gamma$}
 		\KwResult{Conjunto válido de paquetes}
-		\ForEach{$S_i\in I$}{
-			\ForEach{$S_j\in I$}{
-				\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-					$C[i][j].sim \leftarrow Score(S_i \cup S_j)$\;
+		$S \leftarrow \left\{\left\{i\right\}: i \in I\right\}$\;
+		\ForEach{$s_i\in S$}{
+			\ForEach{$s_j\in S$}{
+				\eIf{$validMerge(s_i,s_j,\alpha,f,\beta)$}{
+					$C[i][j] \leftarrow Score(s_i \cup s_j)$\;
 				}
 				{
-					$C[i][j].sim \leftarrow -1$\;
+					$C[i][j] \leftarrow -1$\;
 				}
-				$C[i][j].index \leftarrow j$\;
 			}
-			$I[i] \leftarrow 1$\;
-			$P[i] \leftarrow $ priority queue for $C[i]$ sorted on sim\;
+			$P[i] \leftarrow $ priority queue for $C[i]$ sorted \;
 			$P[i].Delete(C[i][i])$ \tcc*[f]{se elimina así mismo de la pila}\;
 		}
-		$A \leftarrow []$\;
 		\For{$n \leftarrow 1$ to $I.length$}{
-			$k_1 \leftarrow \max_{k:I[k]=1}{P[k].max().sim}$\;
-			\If{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-				$break$\;
-			}
-			$k_2 \leftarrow P[k_1].max().index$\;
-			$A.Append(\left\langle k_1,k_2 \right\rangle)$\;
-			$I[k_2] \leftarrow 0$\;
-			$P[k_1] \leftarrow []$\;
-			\For{$i$ with $I[i]-1 \vee i \neq k_1$}{
-				$P[i].Delete(C[i][K_1])$\;
-				$P[i].Delete(C[i][k_2])$\;
-				\eIf{$validMerge(S_i,S_j,\alpha,f,\beta)$}{
-					$C[i][k_1].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
-					$C[k_1][i].sim \leftarrow Inter-Intra(i,k_1 \cup k_2,\gamma)$\;
+			$k_1 \leftarrow \argmax_{k}{P[k].max()}$\;
+			$k_2 \leftarrow \max P[k].max()$\;
+			
+			\If{$validMerge(k_1,k_2,\alpha,f,\beta)$}{
+				$S \leftarrow S \cup \left\{k_1 \cup k_2 \right\} \setminus \left\{k_1\right\} \setminus \left\{k_2\right\} $\;
+				\ForEach{$s_i\in S$}{
+					$P[i].Delete(C[i][k_1])$\;
+					$P[i].Delete(C[i][k_2])$\;
+					\eIf{$validMerge(s_i,\left\{k_1 \cup k_2 \right\},\alpha,f,\beta)$}{
+						$C[i][k_1] \leftarrow Inter-Intra(s_i,k_1 \cup k_2,\gamma)$\;
+						$C[k_1][i] \leftarrow Inter-Intra(s_i,k_1 \cup k_2,\gamma)$\;
+					}
+					{
+						$C[i][k_1] \leftarrow -1$\;
+						$C[k_1][i] \leftarrow -1$\;
+					}
+					$P[i].Insert(C[i][k_1])$\;
+					$P[k_1].Insert(C[k_1][i])$\;
 				}
-				{
-					$C[i][k_1].sim \leftarrow -1$\;
-					$C[k_1][i].sim \leftarrow -1$\;
-				}
-				$C[i][k_1].index \leftarrow i$\;
-				$C[k_1][i].index \leftarrow i$\;
-				$P[i].Insert(C[i][k_1])$\;
-				$P[K_1].Insert(C[k_1][i])$\;
 			}
 		}
-		\Return $A$\;
+		\Return $S$\;
 	\caption{Intra-Inter C-HAC}\label{alg:Intra-Inter C-HAC}
 	\end{algorithm}
 \end{center}
@@ -288,7 +282,7 @@ La debilidad de este algoritmo reside en que para seleccionar el próximo nodo a
 
 %Si se considerase en la etapa de producción tres paquetes $A$, $B$ y $C$ con los siguientes valores \texttt{Intra}: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. Bajo ese escenario la solución que contenga dos paquetes con $\gamma=0,1$ se tiene los siguientes valores para cada par de paquetes:
 
-Un ejemplo sería la etapa de la producción donde se generan los tres paquetes $A$, $B$ y $C$, en la cual el valor \texttt{Intra} para cada uno de los mismos es: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga dos paquetes y con $\gamma=0,1$ se obtienen los siguientes valores para cada par de paquetes:
+Un ejemplo en la etapa de la producción donde se generan los tres paquetes $A$, $B$ y $C$, en la cual el valor \texttt{Intra} para cada uno de los mismos es: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga dos paquetes y con $\gamma=0,1$ se obtienen los siguientes valores para cada par de paquetes:
 \begin{itemize}
 	\item $\omega(A,B) = 0,45$
 	\item $\omega(A,C) = 1,15$
