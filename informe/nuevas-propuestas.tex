@@ -410,30 +410,35 @@ El esquema del proceso para construir una nueva solución es el siguiente:
 \item Mientras no se cumpla criterio de parada hacer:
 
 \begin{enumerate}
-      	
 \item Identificar el paquete $b_r$ en $\bar{S}$ con menor inter:
 
-$$b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
+\begin{align*}
+b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))
+\end{align*}
 
 \item Determinar el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
-	
-\item Determinar el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
 
-$$C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))$$
+\item Determinar el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
+\begin{align*}
+C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))
+\end{align*}
 
 \item Determinar el mejor paquete de $C$ no prohibido en la lista tabú $LT$ según el criterio:
-
-$$b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))$$
+\begin{align*}
+b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))
+\end{align*}
 
 \item Evaluar el criterio de aspiración para los paquetes en $C \cap LT$
+\begin{align*}
+b_{tabu} = \argmax_{\scriptscriptstyle b_s \in C \cap LT} w(\bar{S} \setminus \{b_r\} \cup \{b_s\})
+\end{align*}
 
-$$b_{tabu} = \argmax_{\scriptscriptstyle b_s \in C \cap LT} w(\bar{S} \setminus \{b_r\} \cup \{b_s\})$$
+\item Si $\max(w(S^*),w(\bar{S} \setminus \{b_r\} \cup \{b\})) < w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$
 
-\item Si $\max(w(S^*),w(\bar{S} \setminus \{b_r\} \cup \{b\})) < \qquad \qquad$ $\qquad \qquad w(\bar{S} \setminus \{b_r\} \cup \{b_{tabu}\})$ entonces
 
-$$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b_{tabu}\}$$ 
+entonces $\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b_{tabu}\}$
 
-Si no $$\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$$
+Si no $\bar{S} = \bar{S} \setminus \{b_r\} \cup \{b\}$
 
 \item Actualizar $LT$
 
