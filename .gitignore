@@ -58,3 +58,6 @@ main.pdf
 *.txss
 *.tcp
 *.tps
+presentacion.pdf
+*.nav
+*.snm
