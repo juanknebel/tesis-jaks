@@ -1,20 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
 \documentclass{beamer}
-\let\Tiny=\tiny
-\usepackage{beamerthemesidebar} % new
-\hypersetup{hidelinks}
+
 \usepackage[utf8]{inputenc}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\let\Tiny=\tiny
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Ítems empaquetados]{Algoritmos para recuperación de ``ítems empaquetados''} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Juan Andrés Knebel \& Amit Stein} % Your name
+\institute[UBA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación \\ % Your institution for the title page
+\begin{center}
+\includegraphics[width=2cm,height=2cm,keepaspectratio]{imagenes/logofcen.pdf}                                                                             \end{center}
+}
+\pgfdeclareimage[height=.1\textheight]{fcen}{imagenes/logofcen.pdf}
+\pgfdeclareimage[height=.1\textheight]{dc}{imagenes/logo.jpg}
+\logo{\pgfuseimage{dc}}
+
+\date{} % Date, can be changed to a custom date
+
 \begin{document}
-\title{Algoritmos para recuperación de ``ítems empaquetados''}
-\author{Juan Andrés Knebel\\Amit Stein}
-\institute[Inst.]{Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departamento de Computación}
-\logo{\includegraphics[width=.2\textwidth,height=.1\textheight]{imagenes/logo.jpg}}
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
 
-\frame{\titlepage} 
-
-\frame{\frametitle{Contenido}\tableofcontents} 
+\begin{frame}
+\frametitle{Contenido} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
 
 \section{Comprando discos on-line}
-\frame{\frametitle{Titulo} 
+\frame{\frametitle{Comprando discos on-line} 
 Un coleccionista de discos desea incorporar a su catalogo música de \underline{diferentes países}. Lo primordial en su búsqueda es que la elección final de discos pertenezca al mismo período de tiempo, pero si ninguna época en particular. Las consideraciones a tener en cuenta deben ser:
 \begin{itemize}
   \item Mismo período.
@@ -24,9 +122,9 @@ Un coleccionista de discos desea incorporar a su catalogo música de \underline{
 \end{itemize}
 }
 
-\frame{
-lalallala
-}
+%\frame[shrink=20]{\frametitle{Comprando discos on-line} 
+%lalallala
+%}
 
 \section{IR vs CR} 
 \frame{\frametitle{Titulo}
