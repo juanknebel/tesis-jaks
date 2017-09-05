@@ -1,12 +1,12 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas es la obtención de mejores soluciones que puedan ser generadas a partir de un dominio del problema que contiene gran cantidad de elementos disponibles respecto de las estrategias presentadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}.
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas es la obtención de mejores soluciones que puedan ser generadas a partir de un dominio del problema que contiene gran cantidad de elementos disponibles respecto de las estrategias presentadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}. La comparación entre soluciones es realizada en función del valor de la Función Objetivo presentada en la \autoref{des:eq-fnObj}.
 
-Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en el \autoref{chap:trabajos-previos}, y en la presentación de otros nuevos. El objetivo es generar soluciones que contengan paquetes con una mayor diversidad entre si, para lo cual se intenta mejorar la parte \texttt{inter} de la función objetivo.
+Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en el \autoref{chap:trabajos-previos} y en la presentación de otros nuevos. Con el fin de mejorar la función objetivo y obtener soluciones de mejor calidad, estas propuestas se enfocan en mejorar la parte \texttt{inter} de la función objetivo, por lo cual se intenta generar soluciones que contengan paquetes con una mayor diversidad entre si.
 
 Una de las propuestas consiste en un conjunto de mejoras aplicadas al algoritmo \allowbreak \texttt{Produce\allowbreak-and\allowbreak-Choose}. Para la fase de producción, más específicamente para el algoritmo jerárquico, se plantean dos mejoras. La primera tiene como objetivo reducir el orden de complejidad del algoritmo. La segunda es para equilibrar los valores \texttt{inter} e \texttt{intra} de los paquetes producidos. En cuanto a la fase de selección, la mejora que se propone es para dar más preponderancia a la parte \texttt{inter}.
 
 Por otro lado, se diseñó una heurística (golosa) que construya una solución considerando ambas partes de la función objetivo durante todo el proceso, manteniendo un tiempo de ejecución competitivo con los otros algoritmos.
 
-Finalmente se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por los otros algoritmos. La intención es realizar búsquedas entre las soluciones vecinas con el fin de obtener una mejor solución, mediante un proceso que evite caer en máximos locales.
+Finalmente se propone aplicar una heurística de búsqueda tabú para las soluciones generadas por los otros algoritmos. La intención es realizar búsquedas entre las soluciones vecinas con el fin de mejorar la Función Objetivo mediante un proceso que evite caer en máximos locales, y de esta manera obtener una mejor solución.
 
 \section{Produce-and-Choose}
 Los algoritmos de la clase \texttt{Produce\allowbreak-and\allowbreak-Choose} generan una cierta cantidad de paquetes válidos para luego seleccionar aquellos que maximicen el valor de la función objetivo, los cuales formarán parte de la solución.
@@ -41,7 +41,7 @@ La noción de qué es un grupo correctamente constituido no puede ser definida c
 
 Para ejemplificar lo anterior, en los veinte puntos de la \autoref{res:img-howToCluster} existe más de una forma válida de agruparlos y de acuerdo al contexto en el que se encuentren dependerá cuál de todas ellas es la mejor.
 
-Si se quisiera agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizan dos grupos. A su vez cada uno de los subgrupos puede generar una nueva partición de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
+Si se quiere agrupar por proximidad, entonces la estructura más razonable es aquella en la que se visualizan dos grupos. A su vez cada uno de los subgrupos puede generar una nueva partición de acuerdo a la especificidad planteada. Por lo tanto la mejor definición de cómo se debe realizar la agrupación depende del contexto del problema.
 
 \begin{figure}[H]
   \centering
@@ -50,15 +50,15 @@ Si se quisiera agrupar por proximidad, entonces la estructura más razonable es 
    \label{res:img-howToCluster}
 \end{figure}
 
-A partir de las necesidades presentadas en este trabajo, se definió que cada grupo contenga la máxima cantidad de ítems sin excederse en el presupuesto inicial. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la \textbf{función de similitud}, para que los ítems dentro de cada grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
+A partir de las necesidades presentadas en este trabajo, se definió que cada grupo contenga la máxima cantidad de ítems sin excederse en el presupuesto inicial. De esta manera se le ofrece al usuario paquetes con la mayor cantidad de ítems posible. La agrupación se realiza por la similitud de los objetos, que se obtiene a través de la \textbf{función de similitud}, para que los ítems dentro de cada grupo sean lo más parecidos posible y así obtener paquetes cohesivos.
 
 En la literatura se pueden encontrar diferentes tipos de algoritmos de agrupamiento, la mayoría puede ser categorizado en particionales o jerárquicos \cite{opac-b1087461}. 
 
 En los métodos de agrupamiento particional se debe definir de antemano la cantidad de grupos finales que se quiere obtener. Luego cada uno de los objetos será asignado al grupo \textit{más cercano} que le corresponda.
 
-A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez estas técnicas se suelen subdividir en dos estrategias: aglomerativas y divisivas, las cuales serán detalladas más adelante.
+A diferencia de los métodos particionales, los jerárquicos construyen grupos mediante la partición recursiva de los grupos de objetos y no requieren predefinir una cantidad de grupos a generar. A su vez estas técnicas se suelen subdividir en dos estrategias: aglomerativas y divisivas, las cuales son detalladas más adelante.
 
-Se plantearán dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, detallándolas en las próximas secciones:
+Se plantean dos mejoras para el algoritmo jerárquico \textit{Constrained hierarchical agglomerative clustering} presentado en el artículo \cite{journals/tkde/Amer-YahiaBCFMZ14}, que se detallan en las próximas secciones:
 \begin{enumerate}
 	\item La elección en cada iteración de la estrategia para combinar \textit{clusters}.
 	\item La complejidad algorítmica.
@@ -94,16 +94,16 @@ A continuación se detallan los pasos más importantes del algoritmo \textit{BOB
 	\end{algorithm}
 \end{center}
 
-La función \texttt{selectPivote} selecciona un pivote perteneciente al conjunto de pivotes. En este trabajo se siguió con la recomendación citada en \cite{Zhang:2002:ESI:638644.638646}, la cuál dice que la selección sea aleatoria. La función \texttt{BuildBundle} es una implementación golosa que genera un paquete a partir de un elemento pivote. Internamente en cada iteración se incluye un ítem del conjunto $I$ que maximiza la función intra y al mismo tiempo cumple con las restricciones de complementariedad y presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
+La función \texttt{selectPivote} selecciona un pivote perteneciente al conjunto de pivotes. En \cite{journals/tkde/Amer-YahiaBCFMZ14,Manning:2008:IIR:1394399} se detalla que la selección se puede realizar de diferentes maneras. En este trabajo se siguió con la misma implementación utilizada en la publicación recientemente mencionada, que es la selección aleatoria. La función \texttt{BuildBundle} es una implementación golosa que genera un paquete a partir de un elemento pivote. Internamente en cada iteración se incluye un ítem del conjunto $I$ que maximiza la función intra y al mismo tiempo cumple con las restricciones de complementariedad y presupuesto. La función \texttt{Score} calcula el valor intra del paquete. Se dice que un paquete es suficientemente bueno si el valor intra supera el umbral establecido por $\mu$.
 
 \subsubsection{Constrained hierarchical agglomerative clustering}
 Anteriormente se indicó que el agrupamiento jerárquico suele clasificarse en algoritmos \textit{aglomerativo} y \textit{divisivo}. 
 
-El aglomerativo comienza con cada objeto perteneciente a un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14,informationRetrival}. 
+El aglomerativo comienza con cada objeto perteneciente a un grupo unitario y en cada iteración se unen dos grupos generando un grupo nuevo. Este algoritmo es conocido como \textit{hierarchical agglomerative clustering} (HAC) \cite{journals/tkde/Amer-YahiaBCFMZ14,Manning:2008:IIR:1394399}. 
 
 La estrategia divisiva, en cambio, comienza con todos los objetos en un mismo grupo y en cada paso se realiza la división de uno de los grupos.
 
-Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los puede visualizar como un dendrograma, como se ve en la~\autoref{nuevaspropuestas:dendograma1}: en el eje X se encuentran los objetos que van a ser agrupados y en el eje Y se halla la distancia en la que los elementos se unirán. Las uniones de los objetos se representan mediante una línea vertical que comienza a la altura de la distancia en la que los grupos han sido unidos. Por ejemplo, en la figura mencionada, el grupo \textit{4} se une al \textit{5} en la distancia 2 formando el \textit{cluster B}. En un paso posterior éste último se unirá al grupo \textit{3} en una distancia cercana a 3 obteniendo el nuevo \textit{cluster C}. En cada paso se generará una nueva unión hasta que solo quede un único grupo.
+Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los puede visualizar como un dendrograma, como se ve en la~\autoref{nuevaspropuestas:dendograma1}: en el eje X se encuentran los objetos que van a ser agrupados y en el eje Y se halla la distancia en la que los elementos se unirán. Las uniones de los objetos se representan mediante una línea vertical que comienza a la altura de la distancia en la que los grupos han sido unidos. Por ejemplo, en la figura mencionada, el grupo \textit{4} se une al \textit{5} en la distancia 2 formando el \textit{cluster B}. En un paso posterior éste último se unirá al grupo \textit{3} en una distancia cercana a 3 obteniendo el nuevo \textit{cluster C}. En cada paso se genera una nueva unión hasta que solo quede un único grupo.
 
 \begin{figure}[H]
   \centering
@@ -112,7 +112,7 @@ Comúnmente a los algoritmos algomerativos (HAC desde ahora en adelante) se los 
   \label{nuevaspropuestas:dendograma1}
 \end{figure}
 
-Cortando el dendrograma mediante líneas horizontales se puede determinar el número de paquetes o \emph{clusters} en el que se dividirá el conjunto de objetos inicial. En la~\autoref{nuevaspropuestas:dendograma2} parte a) se puede ver que aplicando un corte en la distancia 5 se obtienen 2 paquetes, en cambio si se aplicara a una distancia mayor a 2 se obtendrían 3 paquetes, como puede observarse en la parte b) de la misma figura.
+Cortando el dendrograma mediante líneas horizontales se puede determinar el número de paquetes o \emph{clusters} en el que se divide el conjunto de objetos inicial. En la~\autoref{nuevaspropuestas:dendograma2} parte a) se puede ver que aplicando un corte en la distancia 5 se obtienen 2 paquetes, en cambio si se aplica a una distancia mayor a 2 se obtienen 3 paquetes, como puede observarse en la parte b) de la misma figura.
 
 \begin{figure}[H]
   \centering
@@ -121,7 +121,7 @@ Cortando el dendrograma mediante líneas horizontales se puede determinar el nú
   \label{nuevaspropuestas:dendograma2}
 \end{figure}
 
-El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplicará dicho agrupamiento.
+El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplica dicho agrupamiento.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -154,7 +154,7 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unirán los dos conjuntos con mayor similitud siempre y cuando el conjunto resultante de esa unión sea válido.
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unen los dos conjuntos con mayor similitud siempre y cuando el conjunto resultante de esa unión sea válido.
 
 Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. 
 
@@ -162,19 +162,19 @@ La función \textit{Score} que se utiliza para decidir qué {\em clusters} unir,
 
 Tomando como peor caso que cada iteración tenga $N$ pasos, el orden de complejidad de \texttt{C-HAC} es $\mathcal{O}(N^{3})$. 
 
-Para que la dispersión de los paquetes que se generan en la fase de producción coincida con la esperada por el usuario se decidió en esta tesis, modificar el algoritmo \texttt{C-HAC} para incluir el valor \texttt{inter} en el cálculo de la selección del par de grupos que se une. De esta manera, al evaluar la unión entre dos grupos se considera tanto el valor \texttt{intra} como también así la distancia con el resto de los paquetes del posible nuevo paquete. A diferencia de la función \textit{Score} vista previamente, la que solo tenía en cuenta el valor \texttt{intra}, se definió la función \textit{Intra-Inter} en la que ambas partes de la función objetivo son tenidas en consideración. 
+Para que la dispersión de los paquetes que se generan en la fase de producción coincida con la esperada por el usuario se decidió en esta tesis, modificar el algoritmo \texttt{C-HAC} para incluir el valor \texttt{inter} en el cálculo de la selección del par de grupos que se une. De esta manera, al evaluar la unión entre dos grupos se considera tanto el valor \texttt{intra} como también así la distancia con el resto de los paquetes del posible nuevo paquete. A diferencia de la función \textit{Score} del\textbf{~\autoref{alg:C-HAC}}, la que solo tenía en cuenta el valor \texttt{intra}, se definió la función \textit{Intra-Inter} en la que ambas partes de la función objetivo son tenidas en consideración. 
 
-Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ sean
+Entonces, para \textit{Intra-Inter} dados dos {\em clusters} $C_i$ y $C_j$ se define $A(C_i,C_j)$ para representa la similitud entre $C_i$ y $C_j$ y $E(C_i,C_j)$ la inversa de la distancia.
 
 $$A(C_i,C_j) = \sum_{u \in C_i, v \in C_j}{s(u,v)},$$
 
-$$E(C_i,C_j)=\max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
+$$E(C_i,C_j)= 1 - \max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
 
 $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
-De esta manera el {\em cluster} resultante incrementará el valor \texttt{inter} y se habrán unido dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de la sumatoria, de lo contrario, el segundo resultará siempre despreciable con respecto al primero. Por lo tanto se decidió que el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
+Lo que se quiere lograr con la función \textit{Intra-Inter} es balancear entre la similitud y la distancia de los clusters que se analiza. El primer término de la función evalúa que tan similares son los clusters y el segundo término lo contrarresta con la distancia. De esta manera el {\em cluster} resultante incrementa el valor \texttt{inter} y uniéndose dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de la sumatoria, de lo contrario, el segundo resulta siempre despreciable con respecto al primero. Por lo tanto se decidió que el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
 
-Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, el uso de las mejoras no hubieran podido ser usadas en las pruebas, que se detallarán en los próximos capítulos, por tratarse de instancias con miles de objetos.
+Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, las mejoras no hubiesen podido ser usadas en las pruebas, que se detallan en los próximos capítulos, por tratarse de instancias con miles de objetos.
 
 En el \textbf{\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad y la complejidad de  \texttt{C-HAC} incluyendo la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
 
@@ -336,7 +336,7 @@ Para el problema de \texttt{Recuperación de Ítems Empaquetados} se propone una
 	\item Que sea aceptable el tiempo de ejecución para grandes cantidades de ítems.
 \end{itemize}
 
-El objetivo del primer punto es proponer una variante a \texttt{Produce-and-choose}. Las soluciones que se generan con \texttt{Produce-and-choose} están más enfocadas en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
+El objetivo del primer punto es proponer una variante a \texttt{Produce-and-Choose}. Las soluciones que se generan con \texttt{Produce-and-Choose} están más enfocadas en la parte \texttt{intra}, porque primero produce paquetes sin considerar la parte \texttt{inter} de la función objetivo.
 
 Un algoritmo goloso es un tipo de heurística que construye la solución iterativamente seleccionando en cada paso la mejor opción local, esperando así lograr una solución de buena calidad. En la mayoría de los problemas el algoritmo goloso no encuentra la solución de buena calidad, pero son muy usados por su sencillez y velocidad de ejecución.
 
