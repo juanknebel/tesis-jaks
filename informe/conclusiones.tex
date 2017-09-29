@@ -2,13 +2,14 @@ La búsqueda y recuperación de información es una de las aplicaciones más uti
 
 A la luz de los resultados observados en el capítulo anterior, se puede concluir que los cambios propuestos en los algoritmos del tipo $PAC$ fueron exitosos en términos de los valores de la función objetivo. En la mayoría de los escenarios el valor de la función objetivo de la solución fue superior al de las soluciones obtenidas con algoritmos ya existentes, sólo en algunos pocos casos esto no ocurrió. 
 
-En las etapas de producción de paquetes y selección de los mismos, la elección de utilizar las dos medidas \texttt{inter} e \texttt{intra} resultó acertada cuando los valores de $\gamma$ son cercanos a cero. Esto tiene mucho sentido, dado que en estos casos el valor \texttt{inter} es donde más interviene .
+En las etapas de producción y selección de paquetes, la elección de utilizar las dos medidas \texttt{inter} e \texttt{intra} resultó ser acertada sobre todo cuando los valores de $\gamma$ están cercanos al cero. Como se ve en la \autoref{des:eq-fnObj} en los casos en los cuales el valor \texttt{inter} tiene más peso es justamente con $\gamma$ tendiendo a cero.
 
 El uso de las estrategias tabú resultó ser una opción muy adecuada para todos los tipos de búsquedas realizadas en el desarrollo de esta tesis, sobre todo por la facilidad de poder usarse a partir de cualquier solución inicial sin importar la estrategia elegida al inicio de la pesquisa.
 
 En cuanto a la nueva heurística de la familia de algoritmos golosos, tiene la ventaja de contar con implementaciones simples y fácilmente adaptables a los cambios. Es una alternativa muy interesante cuando se prefiere mejorar el tiempo de respuesta aceptando un deterioro en la calidad de la solución. Mejor aún, si se lo combina con una búsqueda tabú, que probó ser un complemento muy útil, mejorando en la mayoría de los casos la calidad de la solución final, sin pérdida de rendimiento. 
 
-\paragraph{Trabajo futuro} Como parte final del trabajo, se describen los temas que quedaron abiertos para trabajos futuros. 
+\section{Trabajo futuro} 
+Como parte final del trabajo, se describen los temas que quedaron abiertos para trabajos futuros. 
 
 Uno de los principales temas es que el algoritmo pueda generar soluciones en el que un ítem esté presente en todos los paquetes. A pesar de que no es parte del problema, sería interesante que cada paquete haga un cubrimiento de un tema particular. Por ejemplo, el escenario en cual un cliente visita una tienda de discos virtual (presentado en la introducción), si un mismo disco se encuentra en todos los paquetes, entonces cada paquete será "`similar"' a este disco. De esta forma, se puede personalizar el resultado con el perfil del cliente.
 

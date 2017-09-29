@@ -1,4 +1,4 @@
-En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas es la obtención de mejores soluciones que puedan ser generadas a partir de un dominio del problema que contiene gran cantidad de elementos disponibles respecto de las estrategias presentadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}. La comparación entre soluciones es realizada en función del valor de la Función Objetivo presentada en la \autoref{des:eq-fnObj}.
+En este capítulo se presentan nuevas propuestas para resolver el problema de \texttt{\\Recuperación de Ítems Empaquetados}. El foco principal de las mismas es generar mejores soluciones a las obtenidas en \cite{journals/tkde/Amer-YahiaBCFMZ14}, a partir de una gran cantidad de elementos pertenecientes al dominio del problema, utilizando como medida de comparación el valor de la Función Objetivo vista en el capítulo anterior en la \autoref{des:eq-fnObj}.
 
 Las propuestas consisten en modificaciones de algoritmos conocidos, enunciados en el \autoref{chap:trabajos-previos} y en la presentación de otros nuevos. Con el fin de mejorar la función objetivo y obtener soluciones de mejor calidad, estas propuestas se enfocan en mejorar la parte \texttt{inter} de la función objetivo, por lo cual se intenta generar soluciones que contengan paquetes con una mayor diversidad entre si.
 
@@ -121,7 +121,7 @@ Cortando el dendrograma mediante líneas horizontales se puede determinar el nú
   \label{nuevaspropuestas:dendograma2}
 \end{figure}
 
-El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) presentado en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplica dicho agrupamiento.
+El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) introducido en \cite{journals/tkde/Amer-YahiaBCFMZ14}, se basa en el algoritmo HAC y tiene la particularidad que cada nuevo grupo que se genera en cada iteración (a partir de la unión de dos grupos) cumple con las restricciones de complementariedad y presupuesto. Por ejemplo, el algoritmo evalúa la unión de los grupos $S_1$ y $S_2$. Si el grupo resultante $S_1 \cup S_2$ es inválido, o sea, no cumple con las reglas recientemente mencionadas, entonces el algoritmo no aplica dicho agrupamiento.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -154,7 +154,7 @@ El algoritmo \textit{Constrained hierarchical agglomerative clustering} (C-HAC) 
 	\end{algorithm}
 \end{center}
 
-Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unen los dos conjuntos con mayor similitud siempre y cuando el conjunto resultante de esa unión sea válido.
+Analizando la complejidad del\textbf{~\autoref{alg:C-HAC}} vemos que el principal ciclo se ejecuta $N - c$ veces, donde $N$ es la cantidad de ítems. En cada paso de la iteración principal se unen los dos conjuntos con mayor similitud siempre y cuando el conjunto resultante de esa unión sea válido.
 
 Cada uno de los ciclos interiores (\textit{~\autoref{alg:C-HAC:cycleInner} y~\autoref{alg:C-HAC:cycleInnerInner}}) itera sobre los elementos contenidos en el conjunto de grupos candidatos a unir, realizando comparaciones entre todos los grupos existentes hasta el momento. 
 
@@ -172,17 +172,11 @@ $$E(C_i,C_j)= 1 - \max_{u \in C_i, v \in C_j}{s(u,v)} \qquad \mbox{ y}$$
 
 $$\mbox{Intra-Inter}(C_i,C_j) = \gamma A(C_i,C_j) + t (1-\gamma) E(C_i,C_j)$$
 
-Lo que se quiere lograr con la función \textit{Intra-Inter} es balancear entre la similitud y la distancia de los clusters que se analiza. El primer término de la función evalúa que tan similares son los clusters y el segundo término lo contrarresta con la distancia. De esta manera el {\em cluster} resultante incrementa el valor \texttt{inter} y uniéndose dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de la sumatoria, de lo contrario, el segundo resulta siempre despreciable con respecto al primero. Por lo tanto se decidió que el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, o sea $\frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$  
+Lo que se quiere lograr con la función \textit{Intra-Inter} es balancear entre la similitud y la distancia de los clusters que se analiza. El primer término de la función evalúa que tan similares son los clusters y el segundo término lo contrarresta con la distancia. De esta manera el {\em cluster} resultante incrementa el valor \texttt{inter} y uniéndose dos {\em clusters} con alta similitud, favoreciendo la dispersión en el {\em clustering} final. El factor $t$ intenta equilibrar los dos términos de la sumatoria, de lo contrario, el segundo resulta siempre despreciable con respecto al primero. Por lo tanto se decidió que el valor que se le asigna a $t$ corresponde a la cantidad de similitudes que se suman en A, finalmente
+
+$$t\ =\ \frac{(\#C_i + \#C_j) (\#C_i + \#C_j - 1)}{2}$$
 
 Si bien el objetivo principal de la modificación propuesta es aumentar la calidad de las soluciones, también se tuvo en cuenta la complejidad temporal del algoritmo. De lo contrario, las mejoras no hubiesen podido ser usadas en las pruebas, que se detallan en los próximos capítulos, por tratarse de instancias con miles de objetos.
-
-En el \textbf{\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad y la complejidad de  \texttt{C-HAC} incluyendo la información inter-paquete. La complejidad de este nuevo algoritmo es $\mathcal{O}(n^{2}\log n)$. 
-
-\texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz de similitud $C$ y un arreglo de colas de prioridad. Las filas $C\left[i\right]$ de la matriz $C$ están ordenadas de forma decreciente en las colas de prioridad $P\left[i\right]$.
-
-El algoritmo comienza con la inicialización de la matriz $C$ de dimensión $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que al inicio cada elemento pertenece a su propio grupo. En la posición $i,j$, de la matriz $C$, se almacena el valor de la similitud de los grupos $\omega_{i}$ y $\omega_{j}$
-
-Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similitud. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -230,24 +224,28 @@ Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} conti
 	\end{algorithm}
 \end{center}
 
+En el \textbf{\autoref{alg:Intra-Inter C-HAC}}, \texttt{Intra-Inter C-HAC}, se muestra el procedimiento propuesto en esta tesis para producir paquetes. Este algoritmo mejora la calidad y la complejidad de \texttt{C-HAC} incluyendo la información inter-paquete. A continuación se detallan los pasos relevantes del algoritmo y se analiza su complejidad. 
+
+\texttt{Intra-Inter C-HAC} cuenta principalmente con dos estructuras. La matriz de similitud $C$ y un arreglo de colas de prioridad. Las filas $C\left[i\right]$ de la matriz $C$ están ordenadas de forma decreciente en las colas de prioridad $P\left[i\right]$.
+
+El algoritmo comienza con la inicialización de la matriz $C$ de dimensión $n$ $x$ $n$ y con el arreglo de colas de prioridad $P\left[n\right]$, donde $n$ es la cantidad de elementos. Como ya se había anticipado \texttt{Intra-Inter C-HAC} es un algoritmo jerárquico divisivo, por lo que al inicio cada elemento pertenece a su propio grupo. En la posición $i,j$, de la matriz $C$, se almacena el valor de la similitud de los grupos $\omega_{i}$ y $\omega_{j}$
+
+Luego de la inicialización de las estructuras, \texttt{Intra-Inter C-HAC} continúa con un ciclo en el que en cada iteración se obtiene entre todas las colas con $P\left[k\right].max()$ el grupo con mayor grado de similitud. Siendo $\omega_{k_{1}}$ y $\omega_{k_{2}}$ los grupos con mayor similitud, se realiza la unión entre estos y se utiliza $\omega_{k_{1}}$  como la representación de la unión. Para el nuevo  $\omega_{k_{1}}$ se calcula la similitud con el resto de los grupos y se actualiza en las colas de similitud.
+
 Retomando las fórmulas presentadas anteriormente, para evitar recalcular en cada iteración los valores ya calculados, se redefinen las fórmulas $A$ y $E$ de forma recursiva. De esta manera para la implementación se mantienen estructuras con esos valores, por lo que la complejidad de la función \textit{Intra-Inter} es constante. A partir de las relaciones entre la iteración $r$ y $r-1$ se tiene que:
 
 $$A^r(C_i \cup C_j, C_s) = A^{r-1}(C_i,C_s) + A^{r-1}(C_j,C_s) \quad \mbox{ y}$$
 
 $$E^r(C_i \cup C_j,C_s) = \max (E^{r-1}(C_i,C_s),E^{r-1}(C_j,C_s))$$
 
-El ciclo de la inicialización de las estructuras es $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$. La complejidad final del algoritmo es $\mathcal{O}(n^{2}\log n)$.
+El ciclo de la inicialización de las estructuras es $\mathcal{O}(n^{2})$. Mientras que el ciclo de unión de conjuntos es $\mathcal{O}(n^{2}\log n)$ para una implementación de las colas de prioridad en que la inserción y borrado es $\mathcal{O}(\log n)$, resultando en una complejidad final del algoritmo de $\mathcal{O}(n^{2}\log n)$.
 
 \subsection{Mejoras en la selección de paquetes}
-En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección del subconjunto de paquetes que será la solución. A continuación se detalla el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
+En \emph{Produce and Choose} luego de la producción de paquetes se realiza la selección del subconjunto de paquetes que formarán parte de la solución. A continuación se detalla el comportamiento de la implementación original de \cite{journals/tkde/Amer-YahiaBCFMZ14} y los cambios propuestos.
 
-El problema puede representarse como un grafo completo con pesos en las aristas y vértices. 
+El problema puede representarse como un grafo completo con pesos en las aristas y vértices. Los nodos corresponden a los paquetes generados en la primera parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está definido en el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
 
-Los nodos corresponden a los paquetes generados en la primera parte del algoritmo y su peso equivale a su calidad o valor \texttt{intra}. Las aristas representan la distancia existente entre los nodos y su peso está definido en el valor \texttt{inter} de los paquetes involucrados. Teniendo en cuenta la transformación mencionada se puede interpretar que la solución de encontrar aquellos paquetes que maximicen la función objetivo es equivalente a encontrar un k-subgrafo completo de mayor peso.
-
-La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente: dado el grafo $ G = (V,E) $, las funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$. 
-
-El resultado es el conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$.
+La definición formal de encontrar el subgrafo completo de tamaño k de peso máximo entre nodos y vértices es la siguiente: dado el grafo $ G = (V,E) $, las funciones de peso $\psi : E \rightarrow \Re$ y $\omega : V \rightarrow \Re$, el entero $ k \leq |V| $ y el real $\gamma \in [0,1]$, el resultado es un conjunto $V' \subseteq V$ tal que $|V'| = k$ y que maximiza el peso de los nodos y vértices del subgrafo $G' = (V', E')$ ponderado por el parámetro $\gamma$. La función a maximizar es la siguiente:
 
 \begin{equation}
 \gamma \sum_{v \in V'}{\omega(v)} + (1 - \gamma) \sum_{(u,v) \in E'}{\psi(u,v)}
@@ -259,7 +257,7 @@ El problema previamente mencionado puede reducirse a la conocida situación de h
 \omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v) 
 \end{equation}
 
-En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar como heurística el algoritmo \ref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. El algoritmo en cada iteración, elimina un vértice al par de nodos con menor peso del grafo, hasta que quedarse con un grafo de $k$ nodos.
+En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar como heurística el \autoref{alg:chooseBundles} para hallar el k-subgrafo de mayor peso de un grafo ponderado. En la \autoref{alg:chooseBundlesDefine} se definen los pesos de las aristas, entonces en cada iteración se elimina el vértice que contenga la menor suma de pesos de sus aristas (líneas \ref{alg:chooseBundlesIter1}-\ref{alg:chooseBundlesIter2}), hasta que quedarse con un grafo de $k$ nodos.
 
 \begin{center}
 	\begin{algorithm}[H]
@@ -267,11 +265,11 @@ En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar como heurística el 
 	\SetAlgoLined
 		\KwData{$k,\gamma,\text{ el grafo con peso en los vértices y aristas }G=(V,E) \text{ donde }\forall S \in V / \omega(S) = \sum_{u,v \in S}{s(u,v)}$ y $\forall (S_i,S_j) \in E / \psi(S_i,S_j) = 1 - \max_{u \in S_i, v \in s_j}{s(u,v)}$}
 		\KwResult{Conjunto de k bundles}
-		$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;
+		$\omega(u,v) = \dfrac{\gamma}{2( k - 1)} (\omega(u) + \omega(v)) + (1 - \gamma)\psi(u,v)$\;\label{alg:chooseBundlesDefine}
 		$S \leftarrow V$\;
 		\While{$ \left|S\right| > k$}{
-			$u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$\;
-			$S \leftarrow S \setminus  \left\{u\right\} $\;
+			$u \leftarrow \min_{u \in S}{\sum_{v \in S}{\omega(u,v)}}$\;\label{alg:chooseBundlesIter1}
+			$S \leftarrow S \setminus  \left\{u\right\} $\;\label{alg:chooseBundlesIter2}
 		}
 		\Return $C$\;
 	\caption{Selección de paquetes}\label{alg:chooseBundles}
@@ -280,9 +278,7 @@ En \cite{journals/tkde/Amer-YahiaBCFMZ14} proponen utilizar como heurística el 
 
 La debilidad de este algoritmo reside en que para seleccionar el próximo nodo a remover (paquete) no se considera el \textit{valor} del nodo (valor intra). Entonces se puede dar el caso de que el nodo que se remueve pertenezca una solución de mejor calidad.
 
-%Si se considerase en la etapa de producción tres paquetes $A$, $B$ y $C$ con los siguientes valores \texttt{Intra}: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. Bajo ese escenario la solución que contenga dos paquetes con $\gamma=0,1$ se tiene los siguientes valores para cada par de paquetes:
-
-Un ejemplo en la etapa de la producción donde se generan los tres paquetes $A$, $B$ y $C$, en la cual el valor \texttt{Intra} para cada uno de los mismos es: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. En este escenario para la solución que contenga dos paquetes y con $\gamma=0,1$ se obtienen los siguientes valores para cada par de paquetes:
+Presentamos un ejemplo para la etapa de producción en el cual se puede visualizar la debilidad de la heurística. Se tienen tres paquetes $A$, $B$ y $C$, con sus respectivos valores \texttt{Intra}: $\omega(A) = 5$, $\omega(B) = 5$ y $\omega(C) = 5$ y el valor \texttt{Inter} entre los paquetes: $\psi(A,B) = 0$, $\psi(A,C) = 1$ y $\psi(B,C) = 0$. Bajo estos valores iniciales, se busca un solución que contenga dos paquetes con un $\gamma=0,1$. Utilizando la definición del \autoref{alg:chooseBundles} para obtener los valores de las aristas en el grafo ponderado, se calcula la función $\omega(u,v)$ para cada par de nodos y se obtienen los siguientes valores:
 \begin{itemize}
 	\item $\omega(A,B) = 0,45$
 	\item $\omega(A,C) = 1,15$
@@ -293,17 +289,15 @@ El par de paquetes $B, C$ es el que tiene el menor valor en la función $\omega$
 
 El valor de la función objetivo de esta solución generada es $0,9$, mientras que el valor de la función objetivo de la solución que contiene a los paquetes $A$ y $C$ es $1,4$.
 
-Tomando esto como base, se propone un nuevo enfoque para seleccionar los paquetes de la solución. A diferencia del algoritmo anterior, la solución se genera iterativamente agregando en cada paso el paquete que maximiza la función objetivo hasta alcanzar la cantidad de paquetes requeridos en la solución.
+A partir de los casos analizados en los cuales el \autoref{alg:chooseBundles} no obtenía la mejor solución, se presenta una nueva forma de seleccionar paquetes enfocada en los puntos débiles observados. En la propuesta de esta tesis, a diferencia de \autoref{alg:chooseBundles}, la solución es generada iterativamente, agregando en cada paso el paquete que maximiza la función objetivo hasta alcanzar la cantidad de paquetes requeridos en la solución.
 
-Para los paquetes generados en el ejemplo anterior, las soluciones posibles en la primera iteración son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Dado que $S^{1}_{1}$ es el candidato con mayor valor de función objetivo, se selecciona este y para la segunda iteración las posibles elecciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Quedándose finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la de mayor función objetivo.
+Utilizando el mismo ejemplo antes mencionado se puede observar que las soluciones posibles en la primera iteración son $S^{1}_{1}=\{A\}$, $S^{1}_{2}=\{B\}$ y $S^{1}_{3}=\{B\}$. Dado que $S^{1}_{1}$ es el candidato con mayor valor de función objetivo, se selecciona este y para la segunda iteración las posibles elecciones son:  $S^{2}_{1}=\{A,B\}$, $S^{2}_{2}=\{A,C\}$. Eligiendo finalmente con la solución $S^{2}_{2}$ que, como se vio anteriormente, es la de mayor función objetivo.
 
-En los casos estudiados, la relación entre la parte \texttt{intra} y la \texttt{inter} de la función objetivo es que el valor de la parte \texttt{intra} es considerablemente mayor que el \texttt{inter}. Esto se debe a que en un paquete el valor \texttt{intra} está dado por la suma de todas las similitudes entre los elementos del paquete, mientras que el valor de la parte \texttt{inter} es de solo una de las relaciones. Además, entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes, $S''$ tiene $n$ relaciones inter-paquete más que $S'$. 
+Previo a la experimentación del nuevo algoritmo de selección observamos en los casos estudiados que la relación entre la parte \texttt{intra} y la \texttt{inter} de la función objetivo es considerablemente mayor. Esto se debe a que en un paquete el valor \texttt{intra} está dado por la suma de todas las similitudes de los elementos (pertenecientes al paquete) entre sí, mientras que en el valor de la parte \texttt{inter} interviene solo una relación de elementos (entre diferentes paquetes). Además, entre una solución $S'$ que contiene $n$ paquetes y la solución $S''$ que contiene $n+1$ paquetes, $S''$ tiene $n$ relaciones inter-paquete más que $S'$.
 
-A continuación se propone una función para este nuevo algoritmo en el que se compensan estas diferencias.
+Finalmente se decidió introducir un coeficiente \textbf{coef} a cada componente de la función objetivo al momento de seleccionar un paquete. El propósito es equilibrar los valores \texttt{intra} e \texttt{inter} en el instante de elección del paquete que formará parte de la solución. El coeficiente propuesto depende de una constante $k$, representando la cantidad de paquetes que debe contener la solución final y del tamaño de la solución parcial obtenida en cada paso de la iteración. En la \textit{Selección de Paquetes Proporcional} (\autoref{alg:algSelProp}) se puede ver que la única diferencia con el \autoref{alg:chooseBundles} se encuentra en la \autoref{alg:algSelPropSel} con la utilización de la función de objetivo modificada. 
 
-El algoritmo \ref{alg:algSelProp} en la etapa de selección utiliza una función, que es una variante de la función objetivo, para seleccionar en cada iteración el paquete que formará parte de la solución. En la variante cada parte de la función objetivo es multiplicada por un coeficiente \textbf{coef}. Con este coeficiente se equilibra la parte \texttt{intra} y la \texttt{inter} durante todo la generación de la solución.   
-
-Formalmente esta función se define de la siguiente manera. Sea $R$ el conjunto de paquetes producidos y $S_i \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$, se agrega a la solución el paquete que cumple con:
+Formalmente la función de selección se define de la siguiente manera. Sea $R$ el conjunto de paquetes producidos y $S_i \subseteq R$ el conjunto de paquetes seleccionados en la iteración $i$, se agrega a la solución el paquete que cumple con:
 
 \begin{equation}
 \max_{b \in (R/S_i)}{\dfrac{k}{|S_i|}} \gamma \sum_{v \in \left\{b\right\} \cup S_i}{\omega(v)} + \dfrac{k * (k-1)}{|S_i| * (|S_i|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S_i}{\psi(v,w)}
@@ -319,7 +313,7 @@ Formalmente esta función se define de la siguiente manera. Sea $R$ el conjunto 
 		$S \leftarrow \emptyset$\;
 		$R \leftarrow V$\;
 		\While{$ \left|S\right| < k$}{
-			$c \leftarrow \max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;
+			$c \leftarrow \max_{b \in (R/S)}{\dfrac{k}{|S|}} \gamma \sum_{v \in \left\{b\right\} \cup S}{\omega(v)} + \dfrac{k * (k-1)}{|S| * (|S|-1)} (1-\gamma) \sum_{v,w \in \left\{b\right\} \cup S}{\psi(v,w)}$\;\label{alg:algSelPropSel}
 			$S \leftarrow S \cup \left\{c\right\}$\;
 			$R \leftarrow R \setminus \left\{c\right\}$\;
 		}
@@ -328,7 +322,7 @@ Formalmente esta función se define de la siguiente manera. Sea $R$ el conjunto 
 	\end{algorithm}
 \end{center}
 
-\section{Resolución con algoritmo goloso}
+\section{Algoritmo goloso}
 
 Para el problema de \texttt{Recuperación de Ítems Empaquetados} se propone una solución basada en heurísticas golosas, la cual abordará dos temas puntuales:
 \begin{itemize}
@@ -382,29 +376,39 @@ Como se puede ver, esta implementación prioriza la cantidad de elementos de la 
 	\end{algorithm}
 \end{center}
 
-\section{Resolución con Búsqueda Tabú}
-Pretendiendo mejorar las soluciones que se obtuvieron hasta el momento, conservando las premisas del tamaño del conjunto de ítems y el tiempo de ejecución acorde con el resto de los algoritmos, se implementaron distintas variantes de la metaheurística \textbf{Tabú search}. 
+\section{Búsqueda Tabú}
+La solución hallada por cualquiera de los algoritmos presentados en las secciones anteriores es un máximo local, entonces se pueden aplicar técnicas para explorar sus soluciones vecinas. Para este trabajo se implementaron distintas variantes de la metaheurística \textbf{Tabú Search}
 
-\textbf{Tabú search} \cite{TS-1,TS-2} es una metaheurística para resolver problemas de optimización, de la familia de las búsquedas locales, diseñada para escapar de óptimos locales. Se basa en buscar una mejor solución a partir de una anterior existente, lo que permite ser combinada junto con las heurísticas estudiadas anteriormente. 
+\textbf{Tabú search} \cite{tabuSearch} es una metaheurística para problemas de optimización que guía a un procedimiento de búsqueda local en la exploración del espacio de soluciones más allá del óptimo local. Permite moverse a una solución aunque no sea tan buena como la actual para poder escapar de óptimos locales y continuar la búsqueda de mejores soluciones. La búsqueda tabú comienza a partir de una solución inicial que puede ser generada aleatoriamente. Para este trabajo la solución inicial siempre es generada por alguno de los algoritmos vistos en las secciones anteriores.
 
-Las búsquedas locales consisten en moverse de una solución a otra, aplicando cambios a la solución candidata hasta encontrar una mejor o satisfacer un criterio de parada. 
+La búsqueda local tradicional parte de una solución inicial $s_{0}$, calcula sus soluciones vecinas $N(s_{0})$ y escoge una nueva solución $s_{1}$ perteneciente a ese vecindario ($N(s_{0})$) de acuerdo a un criterio de selección. Es decir, se realiza un movimiento que aplicado a $s_{0}$ da como resultado $s_{1}$ y este proceso se realiza iterativamente. Es posible definir varios criterios de selección, pero uno de los más simples es tomar la evaluación de la función objetivo. 
 
-Los algoritmos comienzan a partir de una instancia válida, que puede haber sido obtenida mediante algún otro método, y en cada iteración se mueve a una solución vecina, esto es posible sólo si se puede definir una relación de vecindad entre las instancias del problema. Como una solución puede tener muchas instancias vecinas, se elige siempre aquella que maximice (o minimice, según el problema elegido) el criterio seleccionado, produciendo que el algoritmo pueda estancarse en un máximo (ó mínimo) local y nunca pueda salir de él.
+Al aplicar éstos métodos de búsqueda se pueden presentar dos problemas:
+\begin{itemize}
+	\item Iteración indefinida. Para solucionarlo se establecen criterios de parada.
+	\item Generación de un ciclo entre soluciones ya visitadas. Se debe introducir mecanismos para impedir esto.
+\end{itemize}
 
-Para explorar regiones del espacio de búsqueda, que serían dejadas de lado por el procedimiento de búsqueda local, la búsqueda tabú permite moverse a una solución vecina de menor calidad modificando la estructura de vecinos en cada una de las soluciones. De esta manera, se permite al algoritmo escapar de máximos (o mínimos) locales.
+La búsqueda tabú tiene como característica el uso de memoria adaptativa y exploración sensible según \cite{tabuSearch}. La noción de memoria adaptativa permite a la búsqueda tabú buscar soluciones vecinas de forma económica y efectiva, ya que las elecciones locales están guiadas por la información recolectada durante la búsqueda. La exploración sensible supone que una mala elección seleccionada estratégicamente produce más información que una buena elección aleatoria.
 
-Las implementaciones de búsqueda tabú utilizan estructuras de memoria, conocidas como \textbf{listas tabú}, que determinan cuáles son las soluciones vecinas permitidas de una instancia. Para evitar que soluciones de buena calidad no sean visitadas porque la lista tabú lo prohíbe, se introduce el concepto de criterios de aspiración, que permite bajo ciertas circunstancias, eludir las restricciones tabú y así poder visitar soluciones.
+Para que la búsqueda tabú logre sus objetivos utiliza una serie de estructuras de memoria flexibles, condiciones para elegir estratégicamente un movimiento o no que dependen de una lista tabú (elementos o movimientos prohibidos) y función de aspiración. También cuenta con la facilidad de ser utilizada en casi cualquier tipo de problemas de optimización y puede comenzar con una implementación muy sencilla que con el tiempo evoluciona para incorporar mejoras específicas del problema en cuestión.
+
+En la lista tabú se guardan las soluciones o movimientos que no pueden ser elegidos al momento de seleccionar la solución vecina. Un forma sencilla de construir la lista puede ser guardando el paso inverso al introducido, por ejemplo, si cambié el elemento $x$ por $y$, entonces guardó como tabú la acción de cambiar $y$ por $x$ durante $n$ iteraciones. En el caso de que un movimiento (o elemento) que pertenece a la lista tabú mejora la solución global o la mejor encontrada hasta el momento, se puede permitir el movimiento (o elemento) aunque no haya expirado su tiempo, estos casos son los que deben ser definidos en la o las funciones de aspiración.
 
 Se implementaron las búsquedas tabú Inter-Paquete e Intra-Paquete. Una busca encontrar una mejor solución entre la actual y los paquetes ya generados. La otra consiste en mejorar los paquetes con los ítems que quedaron fuera de la solución.
 
 \subsection{Inter-Paquete}
 La búsqueda \texttt{Inter-Paquete} se diseñó especialmente para el algoritmo \texttt{Produce and Choose}. La idea surge de aprovechar los paquetes generados que no forman parte de la solución. Es por eso que se plantea un búsqueda tabú que comienza con una solución inicial obtenida a través de \texttt{Produce and Choose} y luego se intenta buscar una mejor con los paquetes que no pertenecen a la instancia inicial. 
 
-Para esta implementación se define que las instancias vecinas de la solución $S$, son aquellas que no contienen al paquete con menor valor Inter de $S$ e incluye a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la próxima solución a visitar. Se elige entonces como criterio de aspiración, la admisión de una solución vecina que contiene un paquete que está en la lista tabú, si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento. 
+Para esta implementación se define el conjunto de paquetes $B$ que fueron construidos en la etapa de generación pero no fueron escogidos para formar parte de la solución $S$. Las instancias vecinas de la solución $S$, son aquellas que no contienen al paquete con menor valor Inter de $S$ e incluye a un paquete que no pertenece a $S$. El paquete que se saca de $S$ se agrega a la lista tabú durante una cantidad establecida de iteraciones. Esta lista contiene los paquetes que no pueden ser parte de la próxima solución a visitar. Se elige entonces como criterio de aspiración, la admisión de una solución vecina que contiene un paquete que está en la lista tabú, si mejora la función objetivo con respecto a la mejor solución encontrada hasta el momento.
 
 El esquema del proceso para construir una nueva solución es el siguiente:
 
 \begin{enumerate}
+%\item Se define para todo elemento $u,v$ la función $inter(u,v) = (1-\max s(u,v))$
+
+\item Se define para todo paquete $b,c$ la función $inter(b,c) = (1-\max_{\substack{\scriptscriptstyle  u\in c \\ \scriptscriptstyle v \in b}} s(u,v))$
+
 \item $S^* = S$, $ \bar{S}= S$, $LT = \emptyset$
 
 \item Mientras no se cumpla criterio de parada hacer:
@@ -412,20 +416,22 @@ El esquema del proceso para construir una nueva solución es el siguiente:
 \begin{enumerate}
 \item Identificar el paquete $b_r$ en $\bar{S}$ con menor inter:
 
-\begin{align*}
-b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (1-\max_{\substack{\scriptscriptstyle  u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))
-\end{align*}
+\begin{equation} \label{np:eq-tabu-interpaquete-menorinter}
+b_r = \argmin_{\scriptscriptstyle b_i \in \bar{S}} \sum_{\substack{\scriptscriptstyle  b_j \in \bar{S} \\ \scriptscriptstyle  b_j \ne b_i}} (inter(b_i, b_j))
+\end{equation}
 
-\item Determinar el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$
+\item Identificar el paquete, $b_c$, con menor inter en $\bar{S} \setminus \{b_r\}$ utilizando la misma \autoref{np:eq-tabu-interpaquete-menorinter}
 
-\item Determinar el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que maximizan su inter respecto a $b_c$:
+\item Se define a $\delta$ como un umbral que la función $inter$ debe sobrepasar.
+
+\item Determinar el conjunto de paquetes candidatos $C$ como los paquetes de $B\setminus \bar{S}$ que su valor inter supera a $\delta$ respecto a $b_c$:
 \begin{align*}
-C = \argmax_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_c}} s(u,v))
+C = \bigcup_{\scriptscriptstyle b_i \in B \setminus \bar{S}} (inter(b_i,b_c) > \delta)
 \end{align*}
 
 \item Determinar el mejor paquete de $C$ no prohibido en la lista tabú $LT$ según el criterio:
 \begin{align*}
-b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(1-\max_{\substack{\scriptscriptstyle u\in b_i \\ \scriptscriptstyle v \in b_j}} s(u,v))
+b = \argmax_{\scriptscriptstyle b_s \in C \setminus LT} \sum_{\scriptscriptstyle b_i, b_j \in \bar{S}\setminus \{b_r\} \cup \{b_s\}}(inter(b_i,b_j))
 \end{align*}
 
 \item Evaluar el criterio de aspiración para los paquetes en $C \cap LT$

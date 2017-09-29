@@ -1,14 +1,14 @@
 \section{Instancias de pruebas}\label{sect:busquedas}
 En esta sección se presentan las consultas utilizadas para evaluar las propuestas algorítmicas introducidas en este trabajo. 
 
-Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La otra corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}.
+Las consultas se hicieron sobre dos bases de datos. Una de ellas, corresponde a la base de datos de artículos provista por \cite{dataDrive}. La otra corresponde a atracciones turísticas de Europa obtenida de las pruebas realizadas en \cite{journals/tkde/Amer-YahiaBCFMZ14}.
 
 A continuación se describe para cada consulta, realizada sobre las bases de datos, la función de similitud, el atributo utilizado para definir la complementariedad de los elementos y el presupuesto elegidos para las instancias escogidas. 
 
-Para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
+La tesis fue desarrollada en \textbf{C++} y para la experimentación se utilizó una máquina Desktop Intel(R) Core(TM) i5-4570T CPU @ 2.90GHz, 5.7G Ram, con DB: 5.5.46-MariaDB-1ubuntu0.14.04.2.
 
 \subsection{Base de datos de artículos}
-La base de datos utilizada es la proporcionada por \textit{\textquotedblleft A Data-Driven Journey through Software Engineering Research\textquotedblright}\cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. Además los artículos están clasificados mediante \texttt{topicProfile}. La clasificación es asignada a cada artículo en base a las citas provenientes de otros trabajos publicados en conferencias específicas sobre alguno de los 37 tópicos que fueron tratados en \cite{dataDrive}. Como resultado, cada \texttt{topicProfile} expresa el porcentaje de relevancia de cada uno de los tópicos encontrados dentro del artículo. 
+La base de datos utilizada es la proporcionada por \cite{dataDrive}. La misma contiene unos $7800$ artículos relacionados con la Ingeniería de Software presentados en diferentes conferencias entre los años 1975 y 2011. Los artículos se encuentran catalogados por autores, tópicos relevantes, conferencia donde fue presentado el trabajo y afiliaciones. Además los artículos están clasificados mediante \texttt{topicProfile}. La clasificación es asignada a cada artículo en base a las citas provenientes de otros trabajos publicados en conferencias específicas sobre alguno de los 37 tópicos que fueron tratados en \cite{dataDrive}. Como resultado, cada \texttt{topicProfile} expresa el porcentaje de relevancia de cada uno de los tópicos encontrados dentro del artículo. 
 
 De los $9800$ autores contenidos en la base de datos, se tiene la información de la universidad a la que cada uno pertenece y la región donde se encuentra dicha universidad.
 
@@ -16,7 +16,7 @@ El \texttt{topicProfile} es lo que permitirá definir la similitud, no sólo ent
 
 Los criterios de las búsquedas realizadas sobre la base de datos se concibieron a partir de lo que se considera que es de interés general. Por ejemplo, una posible consulta sobre esta base de datos puede ser la búsqueda de artículos sobre núcleos temáticos característicos en las distintas conferencias, de manera que observando un paquete se conozca qué se dice sobre este tema en cada una de las conferencias. En otro escenario, con el propósito de armar paneles de expertos, puede resultar de interés la búsqueda de investigadores que trabajan en tópicos similares con afiliación en distintas universidades. También se puede querer conocer universidades de distintas regiones con grupos de investigación trabajando en tópicos similares.
 
-Por lo establecido en \cite{journals/tkde/Amer-YahiaBCFMZ14} para las búsquedas se deben realizar las siguientes definiciones:
+Para las búsquedas se deben realizar las siguientes definiciones como ya se mencionó en \cite{journals/tkde/Amer-YahiaBCFMZ14}:
 \begin{itemize}
   \item \textbf{Similitud}: Función que dado dos ítems devuelve la similitud entre estos.
   \item \textbf{Costo}: Función que dado un ítem devuelve el costo del mismo.
@@ -26,7 +26,7 @@ Por lo establecido en \cite{journals/tkde/Amer-YahiaBCFMZ14} para las búsquedas
 
 Para todas las búsquedas, sin importar el ítem que sea (artículo, autor o universidad), se definió que el costo de cada ítem sea de una unidad y que el presupuesto para cada búsqueda sea de cinco unidades. La elección del costo de los ítems en una unidad se debe a que el foco principal del trabajo esta centrado en mejorar las relaciones entre los paquetes y no generar funciones de costo sobre los elementos. En consecuencia, todos los paquetes de todos los resultados contienen como máximo cinco ítems. Se tomó esta decisión para que cada paquete contenga como máximo un número fijo de elementos. Además se estableció que sean diez los paquetes devueltos en cada búsqueda. El motivo para tomar esta decisión es que un humano pueda valorizar el resultado propuesto fácilmente. Entonces, de aquí en adelante, para cada criterio de búsqueda se deben definir únicamente la función de similitud y la propiedad de complementariedad. Estos parámetros se fijaron durante todo el experimento con el fin de acotar los casos de estudio.
 
-El \texttt{Topic Profile} define el perfil de un artículo asignándole un porcentaje a cada tópico que se hace referencia. En el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. Esto significa que el 71.43\% de los trabajos citados en este artículo fueron presentados en conferencias o publicados en revistas vinculadas al área REQUIREMENTS.
+El \texttt{Topic Profile} define el perfil de un artículo asignándole un porcentaje a cada tópico que se hace referencia. Por ejemplo, en el caso del artículo \texttt{A Cognitive-Based Mechanism for Constructing Software Inspection Teams} que se encuentra en la base de datos utilizada para las pruebas, el \texttt{Topic Profile} se compone por los tópicos  REQUIREMENTS, RELIABILITY, TESTING y SOFTWARE QUALITY. El porcentaje de cada uno de estos es 71.43 \%, 17.86 \%, 7.14 \% y 3.57 \% respectivamente. Esto significa que el 71.43\% de los trabajos citados en este artículo fueron presentados en conferencias o publicados en revistas vinculadas al área REQUIREMENTS.
 
 El modelo computacional del perfil de cada artículo es un vector cuya dimensión corresponde a la cantidad de tópicos y cada posición representa un tópico diferente. El valor de cada posición del vector es el porcentaje del tópico que le corresponde a ese artículo según el \textit{Topic Profile} de la base de datos. Más adelante se explica cómo estos vectores se utilizan para comparar la similitud entre los artículos.
 
@@ -88,9 +88,9 @@ Para la evaluación de los algoritmos propuestos en esta tesis, se realizaron la
 	\end{itemize}
 \end {enumerate}
 
-Para obtener resultados de mayor calidad, se depuró de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración, $5500$ artículos.  
+Para obtener resultados de mayor calidad, se eliminó de la base de datos aquellos artículos que no contengan la información del autor, de los tópicos (\textbf{topic profile}) o del lugar de publicación (\textbf{venue}). Quedando, luego de la depuración, $5500$ artículos.  
 
-\paragraph{Función de similitud}
+\subsubsection{Función de similitud}
 La similitud se emplea para comparar dos objetos y determinar qué tan parecidos son entre sí. En este trabajo se definió la similitud entre los objetos de la base de datos de artículos mediante la \textbf{similitud coseno}. Esta es una medida de similitud entre dos vectores en un espacio vectorial provisto de un producto escalar que mide el coseno del ángulo comprendido entre ellos.
 
 Entonces se define la función de similitud $S(U_i, V_j)$ para los vectores $U_i$ y $V_j$ a partir del producto escalar
@@ -105,7 +105,7 @@ Para esta instancia los objetos (ahora artículos, autores o universidades) est�
  \item $\sum{v_i} = 1$
 \end{enumerate}
 
-Como los componentes de todos los vectores son mayor o igual a cero se obtiene que $0\leq\cos(\theta)\leq1$, que implica que $S(V_i, V_j) \in \left[0, 1\right]$.
+Como los componentes de todos los vectores son mayores o iguales a cero se obtiene que $0\leq\cos(\theta)\leq1$, que implica que $S(V_i, V_j) \in \left[0, 1\right]$.
 
 \begin{figure}[H]
 \includegraphics[width=0.8\textwidth]{img/coseno.png}
@@ -146,9 +146,9 @@ En esta sección se analizarán los resultados computacionales comparando la cal
 \item{$GOL+T$} Construcción golosa + tabú
 \end{itemize}
 
-Tanto $HACS$ como $BOBS$ corresponden a las metodologías propuestas en \cite{journals/tkde/Amer-YahiaBCFMZ14}. Los demás algoritmos involucran las mejoras propuestas en este trabajo. En \texttt{PAC}, la búsqueda tabú \texttt{Inter-Paquete} se realiza al finalizar la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} se intenta mejorar la solución obtenida mediante la búsqueda tabú \texttt{Intra-Paquete}. Cabe señalar que no se tienen en consideración BOBO-Ex y CAP, ya que para el tamaño de la instancia los tiempos de ejecución de esos algoritmos resultaron prohibitivos. Para las búsquedas tabú se definió que la cantidad de iteraciones de permanencia de un elemento en la lista tabú sea el promedio de elementos que tiene un paquete en la solución inicial.
+Tanto $HACS$ como $BOBS$ son los algoritmos propuestos en \cite{journals/tkde/Amer-YahiaBCFMZ14}. Los demás algoritmos son los propuestos en este trabajo. En \texttt{PAC}, la búsqueda tabú \texttt{Inter-Paquete} se realiza al finalizar la etapa de producción y la \texttt{Intra-Paquete} luego de la selección. En la \texttt{Búsqueda Golosa} se intenta mejorar la solución obtenida mediante la búsqueda tabú \texttt{Intra-Paquete}. Cabe señalar que no se tienen en consideración \texttt{BOBO-Ex} y \texttt{CAP}, ya que para el tamaño de la instancia los tiempos de ejecución de esos algoritmos resultaron prohibitivos. Para las búsquedas tabú se definió que la cantidad de iteraciones de permanencia de un elemento en la lista de prohibidos sea la relación entre la cantidad máxima de iteraciones y el tamaño de la solución inicial.
 
-Para realizar una comparación entre la calidad de las soluciones obtenidas por los diferentes algoritmos, se ha evaluado para los $\gamma \in \left\{0,1; 0,2; 0,3; 0,4; 0,5; 0,6; 0,7; 0,8; 0,9\right\}$ el porcentaje de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los ocho algoritmos.
+Para realizar una comparación entre la calidad de las soluciones obtenidas por los diferentes algoritmos, se ha evaluado para los $\gamma \in \left\{0,1; 0,2; 0,3; 0,4; 0,5; 0,6; 0,7; 0,8; 0,9\right\}$ el gap de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los ocho algoritmos.
 
 En el caso de la búsqueda de artículos, que es el escenario que contiene la mayor cantidad de objetos, los tiempos de ejecución para los algoritmos C-HAC ($HACS$, $HACP$ y $HACP+T$), BOBO ($BOBS$, $BOBP$ y $BOBP+T$) y los golosos ($GOL$ y $GOL+T$) son del orden de los 5, 2 y 6 minutos respectivamente. Los incrementos de tiempo debido a la ejecución de las metaheurísticas de mejora son despreciables, están entre los 5 y 7 segundos. Por lo cual no se considera que el tiempo sea un factor que valga la pena analizar.
 
@@ -163,7 +163,7 @@ Los gráficos del estilo de la \autoref{res:img-explain-bars} permiten analizar 
   \label{res:img-explain-bars}
 \end{figure}
 
-Los gráficos de tipo burbuja de la \autoref{res:img-explain-bubbles} son útiles para concluir el nivel de acoplamiento entre los paquetes de una solución, observando la relación entre los tópicos y los paquetes. Cada burbuja representa un tópico y cada círculo dentro de esa burbuja es un artículo. El tamaño del circulo es la proporción del artículo con el tópico y el color es el paquete al que pertenece. Entonces, si las burbujas contienen círculos de tamaños parecidos de más de un color se puede decir que ese resultado no es muy diverso. Por otro lado, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado será más diverso. En cuanto a la cohesión de los paquetes, es más cohesivo cuando el tamaño de cada círculo dentro de las burbujas es similar (para el mismo color) y cada una de ellas contiene la misma cantidad, o ninguno, de círculos del mismo color.
+Los gráficos de tipo burbuja de la \autoref{res:img-explain-bubbles} son útiles para concluir el nivel de acoplamiento entre los paquetes de una solución, observando la relación entre los tópicos y los paquetes. Cada burbuja representa un tópico y cada círculo dentro de esa burbuja es un artículo. El tamaño del círculo es la proporción del artículo con el tópico y el color es el paquete al que pertenece. Entonces, si las burbujas contienen círculos de tamaños parecidos de más de un color se puede decir que ese resultado no es muy diverso. Por otro lado, mientras que el color de los círculos de las burbujas sea más homogéneo el resultado será más diverso. En cuanto a la cohesión de los paquetes, es más cohesivo cuando el tamaño de cada círculo dentro de las burbujas es similar (para el mismo color) y cada una de ellas contiene la misma cantidad, o ninguno, de círculos del mismo color.
 
 \begin{figure}[H]
   \centering
@@ -173,11 +173,11 @@ Los gráficos de tipo burbuja de la \autoref{res:img-explain-bubbles} son útile
 \end{figure}
 
 \subsubsection{Búsqueda de artículos}
-Para la búsqueda de artículos con tópicos similares en la \autoref{tabla:comp1} se comparan los resultados obtenidos de los ocho algoritmos. La solución con mejor resultado para cada $\gamma$ se representa con un cero y en cada fila se tiene el porcentaje de deterioro de cada solución respecto de la mejor solución obtenida con el resto de los algoritmos. Una primera observación es que los algoritmos Intra-Inter C-HAC reflejan el efecto buscado: a menores valores de $\gamma$ donde el valor inter tiene mayor peso, se obtienen mejores soluciones. Es decir, haber considerado en el proceso de generación de paquetes la función Intra-Inter benefició a la calidad de las soluciones obtenidas. Los algoritmos BOBO, no obtuvieron soluciones de la calidad de los algoritmos C-HAC y el proceso de selección proporcional no logró una mejora consistente para todos los valores de $\gamma$. Las soluciones obtenidas con el algoritmo de construcción golosa, no alcanzaron a mejorar las soluciones de C-HAC pero fueron ampliamente mejores que las de BOBO. En promedio el porcentaje de deterioro de BOBO fue de un $50\%$ mientras que el goloso fue de un $12\%$. 
+Para la búsqueda de artículos con tópicos similares en la \autoref{tabla:comp1} se comparan los resultados obtenidos de los ocho algoritmos. La solución con mejor resultado para cada $\gamma$ se representa con un cero y en cada fila se tiene el gap de deterioro de cada solución respecto de la mejor solución obtenida con el resto de los algoritmos. Una primera observación es que los algoritmos \texttt{Intra-Inter C-HAC} reflejan el efecto buscado: a menores valores de $\gamma$ donde el valor inter tiene mayor peso, se obtienen mejores soluciones. Es decir, haber considerado en el proceso de generación de paquetes la función Intra-Inter benefició a la calidad de las soluciones obtenidas. Los algoritmos \texttt{BOBO}, no obtuvieron soluciones de la calidad de los algoritmos \texttt{C-HAC} y el proceso de selección proporcional no logró una mejora consistente para todos los valores de $\gamma$. Las soluciones obtenidas con el algoritmo de construcción golosa, no alcanzaron a mejorar las soluciones de \texttt{C-HAC} pero fueron ampliamente mejores que las de \texttt{BOBO}. En promedio el gap de deterioro de \texttt{BOBO} fue de un $50\%$ mientras que el goloso fue de un $12\%$. 
 
-Cabe resaltar el muy buen rendimiento de la búsqueda tabú, tanto en escenarios donde la solución inicial no es de buena calidad (algoritmo BOBO) así como también considerando soluciones de mejor calidad (algoritmo Intra-Inter C-HAC). En el primer caso, se obtienen porcentajes de mejora por encima del $70\%$. En el segundo caso, para varios valores de $\gamma$ la solución obtenida por la búsqueda tabú resultó ser la mejor opción y en otros con deterioros inferiores al $0.5\%$.
+Cabe resaltar el muy buen rendimiento de la búsqueda tabú, tanto en escenarios donde la solución inicial no es de buena calidad (algoritmo \texttt{BOBO}) así como también considerando soluciones de mejor calidad (algoritmo Intra-Inter \texttt{C-HAC}). En el primer caso, se obtienen porcentajes de mejora por encima del $70\%$. En el segundo caso, para varios valores de $\gamma$ la solución obtenida por la búsqueda tabú resultó ser la mejor opción y en otros con deterioros inferiores al $0.5\%$.
 
-Si bien el algoritmo goloso no alcanzó los valores obtenidos por las soluciones generadas por C-HAC, tiene como ventaja su fácil y rápida implementación. Sus tiempos de ejecución fueron levemente mayores a los que se obtuvieron con BOBO y menores a las ejecutadas por C-HAC. Por la forma en la que fue construido siempre genera paquetes completos. Si bien la definición formal del problema no obliga a esto último, se implementó de esta manera ya que a efectos de un usuario final es más interesante obtener paquetes completos, aunque esto signifique sacrificar la búsqueda de la solución óptima.
+Si bien el algoritmo goloso no alcanzó los valores obtenidos por las soluciones generadas por \texttt{C-HAC}, tiene como ventaja su fácil y rápida implementación. Sus tiempos de ejecución fueron levemente mayores a los que se obtuvieron con \texttt{BOBO} y menores a las ejecutadas por \texttt{C-HAC}. Por la forma en la que fue construido siempre genera paquetes completos. Si bien la definición formal del problema no obliga a esto último, se implementó de esta manera ya que a efectos de un usuario final es más interesante obtener paquetes completos, aunque esto signifique sacrificar la búsqueda de la solución óptima.
 
 \begin{table}[H]
 \begin{center}
@@ -207,56 +207,64 @@ Para comprender la semántica de las soluciones se compararon las soluciones con
 	\centering
 	\begin{tabular}{cc}
 		\multicolumn{2}{c}{$\gamma=0.1$}\vspace{0.5cm}\\
-		$BOBP$ & $HACP+T$\\
+		$BOBP$ ver \autoref{res:gamma01-bur-alg-3} & $HACP+T$ ver \autoref{res:gamma01-bur-alg-6} \\
 		\includegraphics[width=0.45\linewidth]{img/gamma-01-burbujas-alg-3.png}&
 		\includegraphics[width=0.45\linewidth]{img/gamma-01-burbujas-alg-6.png}\vspace{1cm}\\
 		\multicolumn{2}{c}{$\gamma=0.9$}\vspace{0.5cm}\\
-		$BOBP$ & $HACS$\\
+		$BOBP$ ver \autoref{res:gamma09-bur-alg-3} & $HACS$ ver \autoref{res:gamma09-bur-alg-1} \\
 		\includegraphics[width=0.45\linewidth]{img/gamma-09-burbujas-alg-3.png}&
 		\includegraphics[width=0.45\linewidth]{img/gamma-09-burbujas-alg-1.png}\\
 	\end{tabular}
-	\caption{Comparación entre las soluciones con menor(izq) y mayor(der) valor de la función objetivos  para $\gamma\ =\ 0,1\ y \gamma\ =\ 0,9$}
+	\caption{Comparación entre las soluciones con menor(izq) y mayor(der) valor de la función objetivos  para $\gamma\ =\ 0,1\ y\ \gamma\ =\ 0,9$.\\En la \autoref{apendice:imagenes} se pueden ver las imágenes con mayor claridad}
 	\label{res:comp1}
 \end{figure}
 
-La búsqueda tabú tiene su mayor impacto cuando es aplicada a la solución brindada por el algoritmo $BOBP$, como puede observarse en la \autoref{tabla:comp1} y en este contexto resulta una buena alternativa por su bajo costo computacional. En la \autoref{res:bobo} se observa que para $\gamma=0.1$, la solución dada por el $BOBP$ tiene artículos de distintos paquetes con patrones muy similares indicando un bajo valor inter-paquete. Por el contrario, luego de aplicar la búsqueda tabú los patrones de los artículos más similares entre distintos paquetes se volvieron más dispares, demostrando el aumento de la diversidad entre paquetes. Para $\gamma=0.9$, como puede observarse en la misma \autoref{res:bobo}, la solución brindada por el $BOBP+T$ todos los paquetes tienen al menos un artículo cuyo patrón consiste en muchos círculos pequeños distribuidos en la mayoría de los tópicos en contraposición al resto de los artículos del mismo paquete con pocos círculos de gran tamaño. Demostrando un bajo valor intra-paquete. En contraposición a los paquetes obtenidos luego de aplicar la búsqueda tabú, los cuáles son mucho más cohesivos. La última afirmación puede observarse en los círculos de los artículos dentro de un mismo paquete, quienes siguen patrones mucho más parecidos. Se puede afirmar que la búsqueda tabú es capaz de mejorar las características de la solución en función del parámetro $\gamma$. El caso de $BOBP$ la mejora es más notoria. Al aplicar la búsqueda tabú a los resultados obtenidos por $BOBP$ el promedio de la solución encontrada por $BOBP+T$ mejora en un $37\%$ a la solución original. 
+La búsqueda tabú tiene su mayor impacto cuando es aplicada a la solución brindada por el algoritmo $BOBP$, en la \autoref{tabla:comp1} puede apreciarse que en promedio que la combinación de los algoritmos $BOBP+T$ mejora en un $37\%$ a $BOBP$, resultando en este contexto una buena alternativa por su bajo costo computacional.
+
+En la \autoref{res:bobo} se observa que para $\gamma=0.1$, la solución dada por el $BOBP$ tiene artículos de distintos paquetes con patrones muy similares indicando un bajo valor inter-paquete. Por el contrario, luego de aplicar la búsqueda tabú los patrones de los artículos más similares entre distintos paquetes se volvieron más dispares, demostrando el aumento de la diversidad entre paquetes. 
+
+Para $\gamma=0.9$ (en \autoref{res:bobo}) todos los paquetes de la solución brindada por el algoritmo $BOBP+T$ tienen al menos un artículo cuyo patrón consiste en muchos círculos pequeños distribuidos en la mayoría de los tópicos y el resto de los artículos del mismo paquete están representados con pocos círculos de gran tamaño, demostrando un bajo valor intra-paquete.
+
+Puede observarse que los paquetes obtenidos luego de aplicar la búsqueda tabú son más cohesivos ya que los círculos de los artículos dentro de un mismo paquete siguen patrones más parecidos, con lo cuál se puede afirmar que la búsqueda tabú es capaz de mejorar las características de la solución en función del parámetro $\gamma$. 
 
 \begin{figure}[H]
 	\centering
 	\begin{tabular}{cc}
-		$BOBP$ & $BOBP+T$\\
+		$BOBP$ ver \autoref{res:gamma01-alg-1} & $BOBP+T$ ver \autoref{res:gamma01-alg-4} \\
 		\multicolumn{2}{c}{$\gamma=0.1$}\\
 		\includegraphics[width=0.45\linewidth]{img/gamma-01-alg-3.png}&
 		\includegraphics[width=0.45\linewidth]{img/gamma-01-alg-4.png}\vspace{1cm}\\
+		$BOBP$ ver \autoref{res:gamma09-alg-1} & $BOBP+T$ ver \autoref{res:gamma09-alg-4} \\
 		\multicolumn{2}{c}{$\gamma=0.9$}\\
 		\includegraphics[width=0.45\linewidth]{img/gamma-09-alg-3.png}&
 		\includegraphics[width=0.45\linewidth]{img/gamma-09-alg-4.png}\\
 	\end{tabular}
-	\caption{Comparación de soluciones para BOBO-10 con y sin heurística de mejoramiento}
+	\caption{Comparación de soluciones para BOBO-10 con y sin heurística de mejoramiento.\\En la \autoref{apendice:imagenes} se pueden ver las imágenes con mayor claridad}
 	\label{res:bobo}
 \end{figure}
 
-El usuario debe considerar el contexto de la búsqueda y decidir que tipo de resultados son necesarios o requeridos al momento de iniciar la búsqueda, de ésta manera podrá decidir acerca del valor de $\gamma$ en pos de priorizar un objetivo sobre el otro. Una curva de frontera eficiente sobre diversidad en función de $\gamma$ puede ayudar a examinar el balance (trade-off) entre los dos objetivos. La intención es que el usuario pueda analizar si una mejora significativa en el valor intra-paquete implica una degradación sustancial en el valor inter-paquetes y viceversa. Para ilustrar este análisis en la \autoref{res:inter_intra} se comparan las soluciones obtenidas por los algoritmos $HACS$ y $HACP$ variando en pasos de $0,1$. Una primera evaluación muestra que la mayoría de las soluciones provistas por ambos algoritmos son no dominadas, es decir ninguna solución es mejor en ambos objetivos que cualquier otra solución.
+El usuario debe considerar el contexto de la búsqueda y decidir que tipo de resultados son necesarios o requeridos al momento de iniciar la búsqueda, de ésta manera podrá decidir acerca del valor de $\gamma$ en pos de priorizar un objetivo sobre el otro. Una curva de Pareto (o de frontera eficiente) sobre diversidad en función de $\gamma$ puede ayudar a examinar el balance (trade-off) entre los dos objetivos. La intención es que el usuario pueda analizar si una mejora significativa en el valor intra-paquete implica una degradación sustancial en el valor inter-paquetes y viceversa. Para ilustrar este análisis en las figuras \ref{res:inter_intra-1-5} y \ref{res:inter_intra-2-7} se comparan las soluciones obtenidas por los algoritmos $HACS$ y $HACP$ variando en pasos de $0,1$. Una primera evaluación muestra que la mayoría de las soluciones provistas por ambos algoritmos son no dominadas, es decir ninguna solución es mejor en ambos objetivos que cualquier otra solución.
 
-El algoritmo $C-HAC$ de \cite{journals/tkde/Amer-YahiaBCFMZ14} ($HACS$) utiliza la función $Score$ para decidir el par de {\em clusters} a unir en la etapa de producción de paquetes y en la selección simple en la segunda fase. Estos dos criterios omiten la diversidad de los paquetes. De acuerdo a los resultados de la \autoref{tabla:comp1}, se pudo concluir que haber considerado la función Intra-Inter y la selección proporcional benefició la calidad de las soluciones cuando la misma es medida a partir de la función objetivo $w(S)$. Con el fin de evaluar que el $HACP$ es capaz de captar efectivamente la diversidad en la solución, se analizaron las soluciones para $\gamma=0.5$ (todos los valores en la~\autoref{tabla:intrainter} del Apéndice). En este caso $HACS$ obtuvo un valor de $intra=93,82$ y de $inter=35,49$, mientras que el $HACP$ logró valores de $intra=92,94$ y de $inter=35,96$. A pesar de que la solución de $HACS$ es levemente superior, la solución del $HACP$ aumentó el valor $inter$ el $1,32\%$ con un deterioro del valor $intra$ del $0,93\%$. Observando la \autoref{res:inter_intra} se puede ver que la cohesión intra-paquete de ambas soluciones es equivalente. Sin embargo, la diversidad en la segunda solución es mayor, ya que los patrones entre los artículos más similares de distintos paquetes son más heterogéneos. 
-
-En la misma figura se compara las soluciones obtenidas por los algoritmos $BOBS$ y el goloso $GOL$. En promedio supera a las soluciones provistas por $BOBS$ en $76\%$. De la comparación, se destaca que el valor de $\gamma$ impacta más en las soluciones de $BOBS$.  
+El algoritmo $C-HAC$ de \cite{journals/tkde/Amer-YahiaBCFMZ14} ($HACS$) utiliza la función $Score$ para decidir el par de {\em clusters} a unir en la etapa de producción de paquetes y en la selección simple en la segunda fase. Estos dos criterios omiten la diversidad de los paquetes. De acuerdo a los resultados de la \autoref{tabla:comp1}, se pudo concluir que haber considerado la función Intra-Inter y la selección proporcional benefició la calidad de las soluciones cuando la misma es medida a partir de la función objetivo $w(S)$. Con el fin de evaluar que el $HACP$ es capaz de captar efectivamente la diversidad en la solución, se analizaron las soluciones para $\gamma=0.5$ (todos los valores en la~\autoref{tabla:intrainter} del Apéndice). En este caso $HACS$ obtuvo un valor de $intra=93,82$ y de $inter=35,49$, mientras que el $HACP$ logró valores de $intra=92,94$ y de $inter=35,96$. A pesar de que la solución de $HACS$ es levemente superior, la solución del $HACP$ aumentó el valor $inter$ el $1,32\%$ con un deterioro del valor $intra$ del $0,93\%$. Observando las figuras \ref{res:inter_intra-1-5} y \ref{res:inter_intra-2-7} se puede ver que la cohesión intra-paquete de ambas soluciones es equivalente. Sin embargo, la diversidad en la segunda solución es mayor, ya que los patrones entre los artículos más similares de distintos paquetes son más heterogéneos. 
 
 \begin{figure}[H]
 	\centering
-	\begin{tabular}{cc}
-			\includegraphics[width=0.45\linewidth]{img/alg1_vs_alg5.png}&
-			\includegraphics[width=0.45\linewidth]{img/alg2_vs_alg7.png}\\
-			$HACS$ vs $HACP$ & $BOBS$ vs $GOL$\\
-	\end{tabular}
-	\caption{Trade-off entre objetivos para los distinos valores de $\gamma$}
-	\label{res:inter_intra}
+	\includegraphics[width=0.60\linewidth]{img/alg1_vs_alg5.png}
+	\caption{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
+	\label{res:inter_intra-1-5}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.60\linewidth]{img/alg2_vs_alg7.png}
+	\caption{Trade-off entre objetivos para los distintos valores de $\gamma$ en $BOBS$ y $GOL$}
+	\label{res:inter_intra-2-7}
 \end{figure}
 
 \subsubsection{Búsqueda de autores}
-En la \autoref{tabla:comp2} se muestran los porcentajes de deterioro de cada solución con respecto a la mejor solución obtenida para la búsqueda de ``autores que escribieron artículos de tópicos similares que están afiliados a distintas universidades''. Se observa que en este caso, a diferencia de la búsqueda de artículos, el algoritmo tabú halló en todos los casos la mejor solución. Con la particularidad que el algoritmo goloso tuvo muy poco deterioro con respecto a la mejor solución, alcanzando en algunos casos el mismo valor de función objetivo.
+En la \autoref{tabla:comp2} se muestran los gaps de deterioro de cada solución con respecto a la mejor solución obtenida para la búsqueda de ``autores que escribieron artículos de tópicos similares que están afiliados a distintas universidades''. Puede apreciarse en este caso que $HACP$ con la combinación de la búsqueda tabú halló la mejor solución en todos los casos. Hay que destacar el buen rendimiento que tuvo el algoritmo goloso en combinación con la búsqueda tabú, ya que el deterioro con respecto a la mejor solución fue muy bajo y en algunos casos superando a las soluciones de $HACS$.
 
-Los algoritmos jerárquicos $C-HAC$ e $Inter-Intra C-HAC$ siguen demostrando que obtienen las mejores soluciones en comparación a $BOBO$, sobre todo $HACP+T$ que contiene la búsqueda tabú. Éstas búsquedas vuelven a indicar que las soluciones pueden ser mejoradas en porcentajes muy significativos. Como ocurrió en el caso del algoritmo $BOBP$, mejorando las soluciones en un promedio cercano al $30\%$ y también para $HACP$ y $GOL$ que en todos los casos mejoraron sus valores iniciales. Con respecto a la estrategia de selección proporcional aplicada al algoritmo $BOBO$ no se observaron mejoras, aunque las soluciones obtenidas fueron cercanas en términos de función objetivo. 
+Los algoritmos jerárquicos $C-HAC$ e $Inter-Intra C-HAC$ siguen demostrando que obtienen las mejores soluciones en comparación a $BOBO$, sobre todo $HACP+T$ que realiza una búsqueda tabú. Éstas búsquedas vuelven a indicar que las soluciones pueden ser mejoradas en porcentajes muy significativos. Como ocurrió en el caso del algoritmo $BOBP$, mejorando las soluciones en un promedio cercano al $30\%$ y también para $HACP$ y $GOL$ que en todos los casos mejoraron sus valores iniciales. Con respecto a la estrategia de selección proporcional aplicada al algoritmo $BOBO$ no se observaron mejoras, aunque las soluciones obtenidas fueron cercanas en términos de función objetivo. 
 
 \begin{table}[H]
 \begin{center}
@@ -280,18 +288,22 @@ $\gamma$&$HACS$&$BOBS$&$BOBP$&$BOBP+T$&$HACP$&$HACP+T$&$GOL$&$GOL+T$ \\ \hline
 \end{center}
 \end{table}
 
-Para analizar el trade-off entre la parte inter y la intra en la \autoref{res:aut_alg1_vs_alg5_vs_alg7} del lado izquierdo se muestra los valores inter e intra de las soluciones obtenidas por los algoritmos $HACS$, $BOBS$, $HACP$ y $GOL$ para todos los $\gamma$. Puede apreciarse, como es de esperar, que los valores del $BOBS$ son significativamente inferiores al resto de los algoritmos. En cambio los valores de $HACS$, $HACP$ y $GOL$ se concentran en una región reducida, ya que sus soluciones fueron muy similares respecto al valor de la función objetivo.
+Para analizar el trade-off entre la parte inter y la intra en la \autoref{res:aut_alg1_vs_alg2_vs_alg5_vs_alg7} se muestra los valores inter e intra de las soluciones obtenidas por los algoritmos $HACS$, $BOBS$, $HACP$ y $GOL$ para todos los $\gamma$. Puede apreciarse, como es de esperar, que los valores del $BOBS$ son significativamente inferiores al resto de los algoritmos. En cambio los valores de $HACS$, $HACP$ y $GOL$ se concentran en una región reducida, ya que sus soluciones fueron muy similares respecto al valor de la función objetivo.
 
-A la derecha de la \autoref{res:aut_alg1_vs_alg5_vs_alg7} se encuentran los valores inter e intra de los algoritmos $HACS$ y $HACP$. Puede verse como los valores de las soluciones obtenidas con $HACP$ no están dominadas por la parte inter y si más concentradas en la parte intra, a diferencia de los que ocurre con $HACS$.
+En la \autoref{res:aut_alg1_vs_alg5} se encuentran los valores inter e intra de los algoritmos $HACS$ y $HACP$. Puede verse como los valores de las soluciones obtenidas con $HACP$ no están dominadas por la parte inter y si más concentradas en la parte intra, a diferencia de los que ocurre con $HACS$.
 
 \begin{figure}[H]
 	\centering
-	\begin{tabular}{cc}
-			\includegraphics[width=0.45\linewidth]{img/aut-alg1-alg2-alg5-alg7.png}&
-			\includegraphics[width=0.45\linewidth]{img/aut-alg1-alg5.png}\\
-	\end{tabular}
+	\includegraphics[width=0.60\linewidth]{img/aut-alg1-alg2-alg5-alg7.png}
 	\caption{}
-	\label{res:aut_alg1_vs_alg5_vs_alg7}
+	\label{res:aut_alg1_vs_alg2_vs_alg5_vs_alg7}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.60\linewidth]{img/aut-alg1-alg5.png}
+	\caption{}
+	\label{res:aut_alg1_vs_alg5}
 \end{figure}
 
 
@@ -317,7 +329,7 @@ En este escenario lo que más se destaca de la \autoref{tabla:comp3} es el compo
 
 Por otro lado la función objetivo de las soluciones provista por los algoritmos $BOBS$, $BOBP$ y $GOL$ se encuentran muy alejadas de las soluciones provistas por los jerárquicos. En el caso del algoritmo goloso $GOL$ las soluciones mejoran con respecto a los algoritmos $BOBS$ y $BOBP$ cuando el valor de $\gamma$ disminuye.
 
-Al igual que en el resto, la búsqueda tabú mejoró las soluciones iniciales del $BOBO$ y del algoritmo goloso considerablemente. Se destaca que para las soluciones jerárquicas la búsqueda tabú siempre mejora la solución inicial sin importar que tan buena sea.
+Al igual que en el resto, la búsqueda tabú mejoró las soluciones iniciales del \texttt{BOBO} y del algoritmo goloso considerablemente. Se destaca que para las soluciones jerárquicas la búsqueda tabú siempre mejora la solución inicial sin importar que tan buena sea.
 \begin{table}[H]
 \begin{center}
 \caption{Comparación de calidad de soluciones entre algoritmos para la \hyperref[busqueda:universidades]{búsqueda de universidades}} 
@@ -340,9 +352,9 @@ $\gamma$&$HACS$&$BOBS$&$BOBP$&$BOBP+T$&$HACP$&$HACP+T$&$GOL$&$GOL+T$ \\ \hline
 }
 \end{center}
 \end{table}
-
+%como puede observarse en la \autoref{tabla:comp4}
 \subsection{Análisis de los resultados obtenidos de la base de datos de atracciones turísticas}\label{res:busAtracciones}
-En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas a partir de las modificaciones propuestas en este trabajo de los algoritmos PAC, como puede observarse en la \autoref{tabla:comp4}, mejoran a los originales en todos los casos. Es para destacar que en este escenario el algoritmo goloso supera a $HACS$. La búsqueda tabú consiguió mejores resultados para los algoritmos PAC. Por otro lado en el algoritmo goloso, en contraste a lo sucedido en las demás consultas, la heurística de búsqueda no obtuvo mejores soluciones.
+En las búsquedas realizadas sobre la base de datos de atracciones turísticas las soluciones obtenidas con las modificaciones propuestas en este trabajo sobre los algoritmos \texttt{PAC} mejoran a los algoritmos originales en todos los casos, en la \autoref{tabla:comp4} puede verse la comparación. Es para destacar que en este escenario el algoritmo goloso supera a $HACS$ no sólo para algunos valores de $\gamma$ sino para todos. La combinación de los algoritmos \texttt{PAC} con la búsqueda tabú consiguió mejores resultados. Por otro lado, en el algoritmo goloso ($GOL$) el uso de la búsqueda tabú no mejoró las soluciones en contraste a lo sucedido en las demás consultas.
 
 \begin{table}[H]
 \begin{center}
@@ -372,10 +384,10 @@ Se obtuvieron mejores resultados en términos de los valores de la función obje
 
 Se observó que las soluciones obtenidas utilizando el algoritmo goloso fueron mejores en comparación a las generadas por la metodología \texttt{PAC}, solo cuando en la etapa de producción se utilizó la estrategia \texttt{BOBO}. Por el contrario, la producción jerárquica derivó en la obtención final de mejores paquetes. Si bien la técnica de las implementaciones de \texttt{BOBO} son golosas, éstas solo hacen hincapié en los valores intra de la función objetivo. Mientras qué la nueva propuesta lo hace sobre la totalidad de la función objetivo. 
 
-Para la estrategia PAC las implementaciones de \texttt{BOBO} fueron en todos los casos las más rápidas, resultando ser las ideales para instancias significativamente grandes. La solución obtenida mejora considerablemente si se le aplica la búsqueda tabú. En las pruebas realizadas con HAC con un universo de elementos menor a los 10000 se cuadruplican o quintuplican los tiempos de ejecución debido a su complejidad ($\mathcal{O}(N^{2}\log n)$). Sin embargo en instancias más chicas como las atracciones turísticas los tiempos fueron muy cercanos entre ellos.
+Para la estrategia \texttt{PAC} las implementaciones de \texttt{BOBO} fueron en todos los casos las más rápidas, resultando ser las ideales para instancias significativamente grandes. La solución obtenida mejora considerablemente si se le aplica la búsqueda tabú. En las pruebas realizadas con \texttt{HAC} con un universo de elementos menor a los 10000 se cuadruplican o quintuplican los tiempos de ejecución debido a su complejidad ($\mathcal{O}(N^{2}\log n)$). Sin embargo en instancias más chicas como las atracciones turísticas los tiempos fueron muy cercanos entre ellos.
 
-Las soluciones obtenidas usando \texttt{Efficient-HAC} y búsquedas golosas para valores de $\gamma$ menores a $0.5$ fueron \textquotedblleft similarmente buenas\textquotedblright , dado que los resultados en términos de función objetivo fueron cercanos. En cambio para $\gamma$ más cercanos a uno se observó que el valor de la función objetivo de las soluciones HAC resultaron significativamente mayores. En todos los casos se identificó que las relaciones inter-paquetes son mejores en las soluciones del algoritmo goloso, logrando soluciones más interdependientes.
+Las soluciones obtenidas usando \texttt{Efficient-HAC} y búsquedas golosas para valores de $\gamma$ menores a $0.5$ fueron \textquotedblleft similarmente buenas\textquotedblright , dado que los resultados en términos de función objetivo fueron cercanos. En cambio para $\gamma$ más cercanos a uno se observó que el valor de la función objetivo de las soluciones \texttt{HAC} resultaron significativamente mayores. En todos los casos se identificó que las relaciones inter-paquetes son mejores en las soluciones del algoritmo goloso, logrando soluciones más interdependientes.
 
-A partir de una experimentación preliminar con \texttt{BOBO} para valores $c=1, 5$ y $10$, resultó $c=10$ la opción más competitiva. Para los valores $c>10$ se realizaron pruebas y los valores obtenidos no mejoraron significativamente las soluciones en relación al incremento del tiempo requerido para su ejecución. Igualmente se compararon los resultados entre \texttt{BOBO-160} y \texttt{HAC}. La experimentación se debe a que la cantidad máxima de paquetes que genera el \texttt{HAC} es cercano a $1600$ y los que genera \texttt{BOBO-160} antes de la selección también. Se esperaba tener unos valores más cercanos entre sí, pero sucedió que a pesar de generar más paquetes los resultados fueron levemente mejor que la variante \texttt{BOBO-10}. Se  observa que la diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ se acerca a $1$. Se supone que esto se debe a la estrategia \texttt{Produce and Choose}.
+A partir de una experimentación preliminar con \texttt{BOBO} para valores $c=1, 5$ y $10$, resultó $c=10$ la opción más competitiva. Para los valores $c>10$ se realizaron pruebas y los valores obtenidos no mejoraron significativamente las soluciones en relación al incremento del tiempo requerido para su ejecución. Igualmente se compararon los resultados entre $BOBO-160$ y \texttt{HAC}. La experimentación se debe a que la cantidad máxima de paquetes que genera el \texttt{HAC} es cercano a $1600$ y los que genera $BOBO-160$ antes de la selección también. Se esperaba tener unos valores más cercanos entre sí, pero sucedió que a pesar de generar más paquetes los resultados fueron levemente mejor que la variante $BOBO-10$. Se  observa que la diferencia entre los valores de la función objetivo de cada solución aumenta a medida que $\gamma$ se acerca a $1$. Se supone que esto se debe a la estrategia \texttt{Produce and Choose}.
 
-Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección de a pares se obtuvo que para \texttt{HAC} los tiempos aumentaron a $40$ minutos y para \texttt{BOBO-10} a $2$ minutos. En cuanto al valor de la función objetivo el único beneficiado fue \texttt{BOBO-10} ya que para \texttt{HAC} no mejoró pese al incremento del tiempo de ejecución.
+Comparando los resultados obtenidos al realizar la selección de a un candidato contra la selección de a pares se obtuvo que para \texttt{HAC} los tiempos aumentaron a $40$ minutos y para $BOBO-10$ de $2$ minutos. En cuanto al valor de la función objetivo el único beneficiado fue $BOBO-10$ ya que para \texttt{HAC} no mejoró pese al incremento del tiempo de ejecución.

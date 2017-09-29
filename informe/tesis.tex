@@ -1,7 +1,8 @@
 %\documentclass[11pt,a4paper,twoside]{tesis}
 % SI NO PENSAS IMPRIMIRLO EN FORMATO LIBRO PODES USAR
 \documentclass[11pt,a4paper]{tesis}
-
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{5}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
@@ -22,15 +23,17 @@
 \usepackage{textcomp}
 \usepackage{caption}
 \usepackage{subcaption}
- \usepackage{hyperref}
-\hypersetup{pageanchor=false}
 \usepackage{todonotes}
+\usepackage{hyperref}
 \hypersetup{
-    colorlinks,
+    colorlinks=true,
     citecolor=black,
     filecolor=black,
-    linkcolor=black,
-    urlcolor=black
+    linkcolor=blue,
+    %colorlinks=blue,
+    urlcolor=black,
+    pageanchor=false,
+    pdftitle={Tesis}
 }
 \usepackage[many]{tcolorbox}
 \newtcolorbox{mybox}[1]{
@@ -103,6 +106,7 @@
 \input{conclusiones.tex}
 \chapter{Apéndice}
 \input{tablas-resutlados.tex}
+
 \addcontentsline{toc}{chapter}{Bibliografia}
 
 %%%% BIBLIOGRAFIA
