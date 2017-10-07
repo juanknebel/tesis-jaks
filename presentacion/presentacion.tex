@@ -116,60 +116,173 @@ Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departame
 Un coleccionista de discos desea incorporar a su catalogo musical artistas provenientes de \underline{diferentes países}. Lo primordial en su búsqueda es que la elección final de discos pertenezca al mismo período de tiempo, sin importar la época a la que pertenecen. Las consideraciones a tener en cuenta deben ser:
 \begin{itemize}
   \item Mismo período.
-  \item Diferentes países de origenes.
+  \item Diferentes países de orígenes.
   \item Correspondan a varios países.
   \item No supere el presupuesto total de $\$ 100$.
 \end{itemize}
 }
 
 \frame{\frametitle{Comprando discos on-line}
-Para que el coleccioniste encuentre su conjunto de discos podría realizar las siguientes consutlas:
-\pause
-
+Para que el coleccionista encuentre su conjunto de discos podría realizar las siguientes consultas:
+%\pause
 }
 %\frame[shrink=20]{\frametitle{Comprando discos on-line} 
 %lalallala
 %}
 
 \section{IR vs CR} 
-\frame{\frametitle{Titulo}
-\item Poner la comparacion entre las busquedas comunes y las nuestras
+\frame{\frametitle{Recuperación Compuesta vs Recuperación de la Información}
+\begin{itemize}
+	\item Recuperación de la información es el arte de encontrar material, generalmente documentos, de naturaleza no estructurada, generalmente textos, que satisfagan una necesidad de información dentro de grandes colecciones, generalmente almacenadas en computadoras. (An Introduction to Information Retrieval, Manning, Raghavan, Schutze).
+	\item Recuperación compuesta de la información es el estudio de métodos para crear, recuperar y clasificar respuestas compuestas i.e., ítems conectados bajo algún criterio.
+	\item Motivación: ayudar a los usuarios a explorar un gran número de ítems relevantes de forma más eficiente.
+\end{itemize}
 }
 
-\section{Definici\'on formal} 
-\frame{\frametitle{Titulo}
-\begin{tabular}{c c c}
-Primera formula \\ 
-\pause 
-Segunda formula \\  
-\pause 
-Tercera formula \\ 
-\end{tabular} 
+\section{Definición formal} 
+\frame{\frametitle{Definición del problema}
+Dados:
+\begin{itemize}
+	\item Un conjunto de ítems, cada uno con
+	\begin{itemize}
+		\item atributos.
+		\item un costo.
+	\end{itemize}
+	\item Una función de similitud entre todo par de ítems.
+	\item Un presupuesto.
+\end{itemize}
+\pause
+\bigskip
+\textbf{Objetivo:}\\
+Generar un conjunto \textit{diverso} de $k$ paquetes de ítems \textit{similares}.
+}
+
+\frame{\frametitle{Definición del problema}
+Los paquetes deben cumplir las siguientes propiedades:
+\begin{itemize}
+	\item \textbf{Compatibilidad: } Los elementos dentro de un paquete deben ser similares. El grado de similitud de los elementos que forman un paquete define su calidad.
+	\textit{Poner algo del ejemplo de los discos}.
+	\pause
+	\item \textbf{Validez: } El costo total de los elementos del paquete no puede superar el presupuesto.
+	\textit{Poner algo del ejemplo de los discos}.
+	\pause
+	\item \textbf{Diversidad: } Los paquetes entre sí deben ser diversos.
+	\textit{Poner algo del ejemplo de los discos}.
+	\pause
+	\item \textbf{Complementariedad: } Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro de paquete contienen un valor diferente para tal propiedad.
+	\textit{Poner algo del ejemplo de los discos}.
+\end{itemize}
+}
+
+\frame{\frametitle{Definición del problema}
+Dados:
+\begin{itemize}
+	\item un conjunto de ítems $I$.
+	\item una función de similitud $s(u,v)$ para cada par $u,v \in I$.
+	\item una función de complementariedad $\alpha$.
+	\item una función de costos $f: 2^{I} \rightarrow \Re^{+}$.
+	\item un presupuesto $\beta$.
+	\item un entero $k$ (cantidad de paquetes).
+\end{itemize}
+\pause
+Se debe hallar un conjunto de paquetes válidos $S = \{ S_{1}...S_{k} \}$ que maximice la función:
+\small
+$$
+w(s) = \gamma \boxed{\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{s(u,v)}}} 
++ (1-\gamma) \boxed{\sum_{1 \leq i < j \leq k} {(1-\max_{u \in S_i, v \in S_j}{s(u,v)})}}
+$$
+\normalsize
+Cada paquete $S_{i} \in S$ es válido si y solo sí satisface las reglas:
+\begin{itemize}
+	\item \textbf{Complementariedad: } $\forall u,v \in S_{i} \alpha(u) \neq \alpha(v)$.
+	\item \textbf{Presupuesto: } $\forall S_{i} \in S, f(S_{i}) \leq \beta$.
+\end{itemize}
+
 }
 
 \section{Trabajos anteriores}
-\frame{\frametitle{Titulo}
-Poner cosas de los trabajos anteriores
+\frame{\frametitle{En el trabajo anterior}
+\begin{itemize}
+	\item Demostraron que el problema es NP-Difícil con una reducción desde Maximum edge subgraph.
+	\item Desarrollaron dos familias de heurísticas:
+	\begin{itemize}
+		\item PAC (produce and choose):
+		\begin{itemize}
+			\item Se producen paquetes candidatos.
+			\item Se seleccionan $k$ de estos paquetes.
+		\end{itemize}
+		\item CAP (cluster and pick):
+		\begin{itemize}
+			\item Se realiza un \textit{k-clustering} de los ítems por similitud (para generar paquetes con alta similitud).
+			\item Dentro de cada \textit{cluster} se seleccionan ítems que formen un paquete válido (complementariedad y presupuesto).
+		\end{itemize}
+	\end{itemize}
+	\item Presentaron un modelo de programación lineal entera.
+	\item De la experimentación concluyeron que las mejores soluciones se obtienen con los algoritmos PAC.
+\end{itemize}
+}
+
+\frame{\frametitle{En el trabajo anterior... Heurísticas PAC}
+\begin{itemize}
+	\item Producción de paquetes candidatos:
+	\begin{itemize}
+		\item C-HAC:
+		\begin{itemize}
+			\item \textit{Clustering} jerárquico aglomerativo con restricciones.
+			\item Función \textit{Score: } similitudes de todos los ítems en el nuevo cluster.
+		\end{itemize}
+		\item BOBO-c (bundles one-by-one): Se generan $c*k$ paquetes seleccionando un ítem como pivote y golosamente construyendo un paquetes a su alrededor.
+	\end{itemize}
+	\pause
+	\item Selección de paquetes candidatos (selección simple, SS):
+	\begin{itemize}
+		\item SE define un grafo pesado: sus nodos representan los paquetes candidatos (con peso dado por su valor intra) y el peso de una arista dado por el valor inter.
+		\item Se busca el subgrafo de $k$ nodos de mayor peso.
+		\item Heurística golosa: iterativamente se selecciona el paquete que maximiza la función objetivo evaluada en los paquetes hasta el momento seleccionados.
+	\end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{En el trabajo anterior... Debilidades}
+Por la naturaleza de PAC, las soluciones generadas se enfocan más en valorar la parte intra-paquete que la inter-paquetes.
+\begin{itemize}
+	\item C-HAC: Función \textit{Score} sólo presta atención a la similitud intra-paquete. Cuando se busca alta diversidad los paquetes generados no resulta buenos.
+	\item SS:
+	\begin{itemize}
+		\item La componente intra de la función objetivo crece linealmente al agregarse un nuevo paquete a la solución. En contraste, la inter lo hace en forma cuadrática.
+		\item Esto hace que en las soluciones parciales, la parte inter no tenga peso proporcional a su valor en la solución completa.
+		\item En las primeras iteraciones el valor inter-paquetes es despreciable con respecto a la suma de los valores intra-paquete.
+		\item Cuando se quiere privilegiar la diversidad de paquetes en la solución ésta no es una buena estrategia.
+	\end{itemize}
+\end{itemize}
 }
 
 \section{Nuevas propuestas}
-\frame{\frametitle{Titulo}
-Poner nuestras nuevas propuestas
+\frame{\frametitle{Nuevas propuestas - Intra-inter C-HAC}
+Dados dos clusters $C_{i}$ y $C_{j}$ definimos:
+
+$$Intra-Inter(C_{i}, C_{j}) = \gamma A(C_{i},C_{j}) + t(1 - \gamma) E(C_{i},C_{j})$$
+$$A(C_{i},C_{j}) = \sum_{u \in C_{i}, v \in C_{j}} s(u,v)$$
+$$E(C_{i},C_{j}) = \max_{u \in C_{i}, v \in C_{j}} s(u,v)$$
+
+\begin{itemize}
+	\item Incrementará el valor intra.
+	\item Se habrán unido dos \textit{clusters} con alta similitud favoreciendo la dispersión en el \textit{clustering} final.
+	\item El factor $t$ equilibra los dos términos de esta sumatoria (el segundo resultará siempre despreciable con respecto al primero).
+\end{itemize}
 }
 
-\section{Experimentaci\'on}
-\frame{\frametitle{Titulo}
-Poner los resultados
-}
+\frame{\frametitle{Nuevas propuestas - Intra-inter C-HAC}
+Costo computacional del cálculo de la función Intra-Inter:
+\begin{itemize}
+	\item Estructuras con los valores $A$ y $E$.
+	\item Actualización en tiempo constante a partir de las siguientes relaciones entre la iteración $r$ y la $r - 1$:
+	$$A^{r}(C_{i} \cup C_{j},C_{s}) = A^{r-1}(C_{i},C_{s}) + A^{r-1}(C_{j},C_{s})$$
+	$$E^{r}(C_{i} \cup C_{j},C_{s}) = \max(E^{r-1}(C_{i},C_{s}),E^{r-1}(C_{j},C_{s}))$$
+	\item El valor de la función Intra-Inter para cada \textit{cluster} es almacenado en orden decreciente en una cola de prioridad.
+	\item Permite el borrado e inserción en $\mathcal{O}(\log n)$, resultando la complejidad total del algoritmo $\mathcal{O}(n^{2}\log n)$
+\end{itemize}
 
-\section{Conclusiones}
-\frame{\frametitle{Titulo}
-Poner las conclusiones
-}
-
-\section{Trabajo futuro}
-\frame{\frametitle{Titulo}
-Poner los trabajos futuros
 }
 
 \end{document}
