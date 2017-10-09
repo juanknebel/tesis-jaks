@@ -318,7 +318,7 @@ Se realizaron dos implementaciones de procedimientos de mejora basados en la met
 }
 
 \frame{\frametitle{Nuevas propuestas - Mejora \textit{Inter-paquete}}
-\small
+\tiny
 $S$ conjunto de paquetes elegidos. $B$ conjunto de paquetes generados.
 \begin{enumerate}
 	\tiny
@@ -355,6 +355,22 @@ $S$ conjunto de paquetes elegidos. $B$ conjunto de paquetes generados.
 	\end{multicols}
 	\item Retornar $S^{*}$
 \end{enumerate}
-%\normalsize
+}
+
+
+\frame{\frametitle{Nuevas propuestas - Mejora \textit{Intra-paquete}}
+\normalsize
+Procurar obtener paquetes más cohesivos:
+\begin{itemize}
+	\item Elige el paquete $b$ de las solución actual con menor valor intra.
+	\item Determina su ítem centroide $c$ como:
+	$$c = \argmax_{v \in b} \sum_{w \in b}s(v,w)$$
+	\item Determina el ítem de $b$ más alejado a él:
+	$$i = \argmin_{v \in b}s(c,v)$$
+	\item Arma lista de candidatos $C$: ítems más cercanos al centroide $c$ que no pertenecen a paquetes de la solución actual.
+	\item Selecciona el ítem $r$ de $C$ que no es tabú con mayor valor intra del paquete $b \setminus \{i\} \cup \{r\}$.
+	\item Arma la nueva solución reemplazando $b$ por $b \setminus \{i\} \cup \{r\}$.
+	\item Criterio de aspiración similar a la búsqueda anterior.
+\end{itemize}
 }
 \end{document}
