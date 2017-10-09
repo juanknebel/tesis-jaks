@@ -77,10 +77,13 @@
 
 %\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
-
+\usepackage{amsmath}
+\usepackage{multicol}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \let\Tiny=\tiny
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -101,6 +104,8 @@ Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departame
 
 \date{} % Date, can be changed to a custom date
 
+\setbeamertemplate{items}[default]
+\setbeamertemplate{enumerate items}[default]
 \begin{document}
 \begin{frame}
 \titlepage % Print the title page as the first slide
@@ -282,7 +287,74 @@ Costo computacional del cálculo de la función Intra-Inter:
 	\item El valor de la función Intra-Inter para cada \textit{cluster} es almacenado en orden decreciente en una cola de prioridad.
 	\item Permite el borrado e inserción en $\mathcal{O}(\log n)$, resultando la complejidad total del algoritmo $\mathcal{O}(n^{2}\log n)$
 \end{itemize}
-
 }
 
+\frame{\frametitle{Nuevas propuestas - Selección proporcional}
+Para neutralizar el comportamiento \textit{desproporcional} en la selección simple se ponderó en la iteración j-ésima del procedimiento:
+\begin{itemize}
+	\item la parte intra por $\dfrac{k}{j+1}$.
+	\bigskip
+	\item la parte inter por $\dfrac{k(k-1)}{j(j+1)}$.
+\end{itemize}
+}
+
+\frame{\frametitle{Nuevas propuestas - Procedimientos de mejora}
+Se realizaron dos implementaciones de procedimientos de mejora basados en la metaheurística de búsqueda tabú en las diferentes etapas:
+\begin{itemize}
+	\item Mejora \textbf{Inter-paquete}: se aplica a la fase de selección en los algoritmos PAC.
+	\bigskip
+	\item Mejora \textbf{Intra-paquete}: explora soluciones vecinas procurando obtener paquetes más cohesivos.
+\end{itemize}
+}
+
+\frame{\frametitle{Nuevas propuestas - Mejora \textit{Inter-paquete}}
+\begin{itemize}
+	\item Intercambia paquetes seleccionados con paquetes generados en la etapa de producción pero que no han sido elegidos.
+	\item Lista tabú de paquetes prohibidos, LT: paquetes que fueron eliminados de la solución en iteraciones anteriores.
+	\item Se va actualizando esta lista con un criterio de permanencia en cantidad de iteraciones de los paquetes prohibidos.
+	\item Criterio de aspiración: permite considerar un paquete tabú si este aumenta el valor de la mejor solución obtenida hasta el momento.
+	\item Criterio de parada: cantidad máxima de iteraciones.
+\end{itemize}
+}
+
+\frame{\frametitle{Nuevas propuestas - Mejora \textit{Inter-paquete}}
+\small
+$S$ conjunto de paquetes elegidos. $B$ conjunto de paquetes generados.
+\begin{enumerate}
+	\tiny
+	\item $S^{*} = S, \overline{S} = S, LT = \emptyset$
+	\item Mientras no se cumple criterio de parada hacer:
+	\pause
+	\begin{multicols}{2}
+		\begin{enumerate}
+			\tiny
+			\item $b_{r}$ en $\overline{S}$ con menor inter:
+			$$b_{r} = \argmin_{b_{j} \in \overline{S}} \sum_{\substack{b_{j} \in \overline{S}\\ b_{j} \neq b_{i}}} (1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
+			\pause
+			\item $b_{c}$ con menor inter en $\overline{S} \setminus \{b_{r}\}$
+			\pause
+			\item Candidatos $C$ ($\max$ inter a $b_{c}$:
+			$$C = k-\argmax_{b_{j} \in B \setminus \overline{S}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{c}}}s(u,v))$$
+			\pause
+			\item Mejor paquete de $C$ no prohibido en \textit{LT} según el criterio:
+			$$b = \argmax_{b_{s} \in C \setminus LT} \sum_{\substack{b_{i}, b_{j} \in \\ \overline{S} \setminus \{b_{r}\} \cup \{b_{s}\}}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
+			\pause
+			\item Se evalúa el criterio de aspiración para los paquetes en $C \cap LT$:
+			$$b_{tabu} = \argmax_{b_{s} \in C \cap LT}w(\overline{S} \setminus \{b_{r}\} \cup \{b_{s}\})$$
+			\pause
+			\item Si $\max(w(S^{*}), w(\overline{S} \setminus \{b_{r}\} \cup \{b\})) < w(\overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\})$ entonces
+			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\}$$
+			Sino
+			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b\}$$
+			\pause
+			\item Actualizar $LT$
+			\pause
+			\item Si $w(\overline{S}) > w(S^{*})$ entonces $S^{*} = \overline{S}$
+			\pause
+		\end{enumerate}
+	\end{multicols}
+	\item Retornar $S^{*}$
+\end{enumerate}
+%\normalsize
+}
 \end{document}
