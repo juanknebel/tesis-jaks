@@ -375,5 +375,114 @@ Procurar obtener paquetes más cohesivos:
 }
 
 \frame{\frametitle{Experimentación computacional}
+\begin{itemize}
+	\item Base de datos propocionada por \textit{Data Driven Journey through Software Engineering Research}.
+	\item Artículos relacionados con la ingeniaría de software presentados en diferentes conferencias entre los años $1975$ y $2011$.
+	\item Catalogador por autores, tópicos relevantes, conferencia donde fue presentando el trabajo y afiliaciones de los autores.
+	\item $7800$ artículos y $9800$ autores.
+	\item Cada artículo tiene asociado un \textit{topic profile} que define su perfil asignándole un porcentaje de la relevancia de cada tópico dentro del artículo.
+	\item Este valor fue calculado en función de los temas de las conferencias o revistas de los trabajos citados en el artículo.
+	\item La base considera $37$ tópicos para definir el \textit{topic profile}
+\end{itemize}
 }
+
+\frame{\frametitle{Experimentación computacional}
+\begin{itemize}
+	\item Consulta de artículos con tópicos similares presentados en distintas conferencias.
+	\item Función de similitud que compara el perfil de cada artículo.
+	\item Atributo de complementariedad definido como la conferencia donde fue presentado.
+	\item Una unidad de costo de cada artículo y cinco de presupuesto $\beta$ (todos los paquetes contendrán como máximo cinco artículos).
+	\item $k = 10$ paquetes retornados en cada consulta (para que un humando pueda valorizar el resultado propuesto fácilmente).
+	\item Pruebas realizadas con la siguiente configuración: Desktop Intel(R) Core(TM) $i5-4570$T CPU @ $2.9GHz$, $5.7Gb$ Ram, base de datos $5.5.46$-MariaDB-1ubuntu$0.14.04.2$. El lenguage utilizado fue $C++$.
+\end{itemize}
+}
+
+\frame{\frametitle{Experimentación computacional}
+Con el objetivo de evaluar las propuestas algorítmicas, se consideran los siguientes métodos:
+\begin{itemize}
+	\item{$HACS$} PAC(C-HAC / selección simple)
+	\item{$HACP$} PAC(Intra-Inter C-HAC / selección proporcional)
+	\item{$HACP+T$} PAC(Intra-Inter C-HAC / selección proporcional) + tabú
+	\item{$BOBS$} PAC(BOBO-10 / selección simple)
+	\item{$BOBP$} PAC(BOBO-10 / selección proporcional)
+	\item{$BOBP+T$} PAC(BOBO-10 / selección proporcional) + tabú
+	\item{$GOL$} Construcción golosa
+	\item{$GOL+T$} Construcción golosa + tabú
+\end{itemize}
+}
+
+\frame{\frametitle{Experimentación computacional}
+Porcentaje de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los 8 algoritmos.
+\begin{table}[H]
+\begin{center}
+\caption{Comparación de calidad de soluciones entre algoritmos para la búsqueda de autores} 
+\scalebox{0.7}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\gamma$    & \textcolor{cyan}{$HACS$}            & $HACP$         & $HACP+T$        & \textcolor{cyan}{$BOBS$} & $BOBP$ & $BOBP+T$ & $GOL$  & $GOL+T$ \\ \hline
+0,1         & 0,33             & 0,13          & \textbf{0,00}  & 21,59 & 26,05 & 1,74    & 0,61  & \textbf{0,00} \\
+0,2         & 0,63             & 0,36          & \textbf{0,00}  & 27,46 & 29,71 & 0,52    & 1,10  & 0,25 \\
+0,3         & 0,44             & 0,53          & \textbf{0,00}  & 30,57 & 32,47 & 0,20    & 1,50  & 0,34 \\
+0,4         & 0,25             & 0,25          & \textbf{0,00}  & 32,63 & 34,29 & 0,32    & 1,88  & 0,73 \\
+0,5         & 0,22             & \textbf{0,00} & \textbf{0,00}  & 34,42 & 35,84 & 0,04    & 2,15  & 0,79 \\
+0,6         & 0,18             & \textbf{0,00} & \textbf{0,00}  & 35,86 & 37,05 & 2,01    & 2,45  & 1,39 \\
+0,7         & \textbf{0,00}    & 0,12          & \textbf{0,00}  & 37,10 & 37,93 & 1,71    & 2,59  & 0,96 \\ 
+0,8         & \textbf{0,00}    & 0,08          & \textbf{0,00}  & 38,19 & 38,70 & 1,44    & 2,72  & 1,20 \\
+0,9         & 0,03             & 0,10          & \textbf{0,00}  & 39,15 & 39,38 & 1,21    & 3,35 & 1,72 \\ \hline  
+\end{tabular}
+\label{tabla:comp2}
+}
+\end{center}
+\end{table}
+}
+
+\frame{\frametitle{Experimentación computacional}
+\begin{itemize}
+	\item Algoritmos $Intra-Inter C-HAC$: a menores valores de $\gamma$ donde el valor inter tiene mayor peso, obtiene mejores soluciones.
+	\item Algoritmo $BOBO$: no obtienen soluciones de la calidad de los algoritmos $C-HAC$. El proceso de selección proporcional logra una mejora consistente para todos los valores de $\gamma$.
+	\item Algoritmo goloso: Logró soluciones de muy buena calidad en especial para los valores mas bajos de $\gamma$.
+	\item Muy buen rendimiento de la búsqueda tabú:
+	\begin{itemize}
+		\item En escenarios donde la solución inicial no es de buena calidad (algoritmo $BOBO$) mejoras por encima del $70\%$.
+		\item En soluciones de mejor calidad (algoritmo $C-HAC$) para varios valores de $\gamma$ la solución obtenida resultó ser la mejor opción y en otros con deterioros inferiores al $0,5\%$.
+	\end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Poner algún gráfico representativo}
+}
+
+\frame{\frametitle{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.50\linewidth]{imagenes/alg1_vs_alg5.png}
+	\label{res:inter_intra-1-5}
+\end{figure}
+}
+
+\frame{\frametitle{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
+\begin{itemize}
+	\item La mayoría de las soluciones provistas por el algoritmo son no dominadas.
+	\item La heurística $HACP+T$ es capaz de proveer conjunto de paquetes con diversos valores de la función $Intra-Inter$.
+	\item Incrementos significativos en los valores intra-paquetes no pueden ser alcanzados sin sacrificar el valor inter del conjunto y viceversa.
+	\item Este tipo de análisis puede ayudar al usuario a decidirse por una de las soluciones.
+	\item Un buen compromiso entre ambas soluciones puede ser la solución $\gamma = 0,3$.
+\end{itemize}
+}
+
+\section{Conclusiones y trabajo futuro}
+\frame{\frametitle{Conclusiones}
+\begin{itemize}
+	\item La búsqueda y recuperación de la información es una de las aplicaciones más utilizadas en Internet.
+	\item En este trabajo se propusieron significativas mejoras a algoritmos para realizar búsquedas de información alternativas a las tradicionales.
+	\item Los algoritmos propuestos resultaron más eficientes tanto en valor de la función objetivo como en su sensibilidad al criterio de valoración de cada objetivo, sin perjuicio en el tiempo de ejecución.
+\end{itemize}
+}
+
+\frame{\frametitle{Trabajo futuro}
+\begin{itemize}
+	\item Poner algo.
+\end{itemize}
+}
+
 \end{document}
