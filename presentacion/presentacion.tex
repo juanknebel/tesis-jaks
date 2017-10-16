@@ -111,21 +111,18 @@ Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departame
 \titlepage % Print the title page as the first slide
 \end{frame}
 
-\begin{frame}
-\frametitle{Contenido} % Table of contents slide, comment this block out to remove it
+\frame{\frametitle{Contenido} % Table of contents slide, comment this block out to remove it
 \tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presez
 }
 
 \frame{\frametitle{Comprando discos on-line}
 Para encontrar que discos comprar
-
 \begin{itemize}
 	\item Consulta sobre discos en una tienda virtual
 \end{itemize}
-}
-
-\frame{\frametitle{Comprando discos on-line}
-	\begin{mybox}{Búsqueda: Inglaterra}
+\pause
+\begin{block}{Búsqueda: Inglaterra}
+	\tiny
 	\begin{itemize}
 		\item {\scriptsize Physical Graffiti - Led Zeppelin (1975)}
 		\item {\scriptsize Perfect Strangers - Deep Purple (1984)}
@@ -138,11 +135,12 @@ Para encontrar que discos comprar
 		\item {\scriptsize 461 Ocean Boulevard - Eric Clapton (1964)}
 		\item {\scriptsize Physical Graffiti - Led Zeppelin (1975)}
 	\end{itemize}
-	\end{mybox}
+	\end{block}
 }
 
 \frame{\frametitle{Comprando discos on-line}
-	\begin{mybox}{Búsqueda: Argentina}
+	\begin{block}{Búsqueda: Argentina}
+	\tiny
 	\begin{itemize}
 		\item {\scriptsize El Cielo Puede Esperar - Attaque 77 (1990)}
 		\item {\scriptsize Confesiones de Invierno - Sui Generis (1973)}
@@ -154,11 +152,12 @@ Para encontrar que discos comprar
 		\item {\scriptsize Se Dice de Mí - Tita Merello (1954)}
 		\item {\scriptsize Películas - La Maquina de Hacer Pajaros (1977)}
 	\end{itemize}
-	\end{mybox}
+	\end{block}
 }
 
 \frame{\frametitle{Comprando discos on-line}
-	\begin{mybox}{Búsqueda: Años 1960 - 1970}
+	\begin{block}{Búsqueda: Años 1960 - 1970}
+    \tiny
 	\begin{itemize}
 		\item {\scriptsize Let it Bleed - The Rolling Stones (1969)}
 		\item {\scriptsize Please Please Me - The Beatles (1963)}
@@ -167,11 +166,12 @@ Para encontrar que discos comprar
 		\item {\scriptsize Rock de la Mujer Perdida - Los Gatos (1969)}
 		\item {\scriptsize Lo Mejor de Violeta Rivas - Violeta Rivas (1966)}
 	\end{itemize}
-	\end{mybox}
+	\end{block}
 }
 
 \frame{\frametitle{Comprando discos on-line}
-	\begin{mybox}{Búsqueda: Años 1965 - 1975}
+	\begin{block}{Búsqueda: Años 1965 - 1975}
+    \tiny
 	\begin{itemize}
 		\item {\scriptsize Tommy - The Who (1969)}
 		\item {\scriptsize Fuente y Caudal - Paco de Lucía (1973)}
@@ -183,58 +183,52 @@ Para encontrar que discos comprar
 		\item {\scriptsize Natty Dread - Bob Marley (1974)}
 		\item {\scriptsize Un Muchacho Como Yo - Palito Ortega (1967)}
 	\end{itemize}
-	\end{mybox}
-
+	\end{block}
 }
 
 \frame{\frametitle{Comprando discos on-line}
 Para encontrar que discos comprar
-
 \begin{itemize}
 	\item Consulta sobre discos en una tienda virtual
-  \item Obtiene listas de discos
-	\begin{itemize}
-		\item Por país
-		\item Por año
-	\end{itemize}
-	
-  \item Ahora debe procesar manualmente todos estos datos,
-cuidando respetar sus requerimientos al definir los discos a comprar.
+	\item Obtiene listas de discos
+		\begin{itemize}
+			\item Por país
+			\item Por año
+		\end{itemize}
+	\item Ahora debe procesar manualmente todos estos datos, cuidando respetar sus requerimientos al definir los discos a comprar.
 \end{itemize}
 }
 
 \frame{\frametitle{Comprando discos on-line}
-	\begin{mybox}{Paquete 1}
+	\begin{block}{Paquete 1}
+	\tiny
 		\begin{itemize}
 			\item {\scriptsize Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20}
 			\item {\scriptsize Confesiones de Invierno - Sui Generis (1973 - Argentina) \$20}
 			\item {\scriptsize Natty Dread - Bob Marley (1974 - Jamaica) \$30}
 			\item {\scriptsize Saturday Night Fiver - Bee Gees (1977 - Australia) \$30}
 		\end{itemize}
-	\end{mybox}
+	\end{block}
 
-	\begin{mybox}{Paquete 2}
+	\begin{block}{Paquete 2}
+	\tiny
 		\begin{itemize}
 			\item {\scriptsize Please Please Me - The Beatles (1963 - Inglaterra) \$20}
 			\item {\scriptsize My favorite things - John Coltrane (1960 - EEUU) \$30}
 			\item {\scriptsize Rock de la mujer perdida - Los Gatos (1969 - Argentina) \$20}
 			\item {\scriptsize Digan lo que digan - Rafhael (1967 - España) \$20}
 		\end{itemize}
-	\end{mybox}
+	\end{block}
 
-	\begin{mybox}{Paquete 3}
+	\begin{block}{Paquete 3}
+	\tiny
 		\begin{itemize}
 			\item {\scriptsize Physical Graffiti - Led Zeppelin (1975 - Inglaterra) \$20}
 			\item {\scriptsize Saturday Night Fiver - Bee Gees (1977 - Australia) \$30}
 			\item {\scriptsize Un muchacho como yo - Palito Ortega (1967 - Argentina) \$35}
 		\end{itemize}
-	\end{mybox}
+	\end{block}
 }
-
-
-%\frame[shrink=20]{\frametitle{Comprando discos on-line} 
-%lalallala
-%}
 
 \section{IR vs CR} 
 \frame{\frametitle{Recuperación Compuesta vs Recuperación de la Información}
