@@ -115,11 +115,23 @@ Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departame
 \tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presez
 }
 
-\frame{\frametitle{Comprando discos on-line}
-Para encontrar que discos comprar
+\section{Comprando discos on-line}
+\frame{\frametitle{Comprando discos on-line} 
+Un coleccionista de discos quiere incorporar nuevos discos de una misma época a su fonoteca. Para esta incorporación desea que:
 \begin{itemize}
-	\item Consulta sobre discos en una tienda virtual
+	\pause
+	\item La compra no supere los $\$ 100$.
+	\pause
+	\item Quiere concentrarse en discos de una misma época.
+	\pause
+	\item No repetir el país de origen del artista del disco.
+	\pause
+	\item Que estén representados varios países.
 \end{itemize}
+}
+
+\frame{\frametitle{Comprando discos on-line}
+El coleccionista consulta en una tienda virtual de discos.
 \pause
 \begin{block}{Búsqueda: Inglaterra}
 	\tiny
@@ -189,13 +201,13 @@ Para encontrar que discos comprar
 \frame{\frametitle{Comprando discos on-line}
 Para encontrar que discos comprar
 \begin{itemize}
-	\item Consulta sobre discos en una tienda virtual
-	\item Obtiene listas de discos
+	\item Consulta sobre discos en una tienda virtual.
+	\item Obtiene listas de discos:
 		\begin{itemize}
-			\item Por país
-			\item Por año
+			\item Por país.
+			\item Por período.
 		\end{itemize}
-	\item Ahora debe procesar manualmente todos estos datos, cuidando respetar sus requerimientos al definir los discos a comprar.
+	\item Ahora debe procesar manualmente todos los discos, cuidando respetar sus requerimientos al definir los discos a comprar.
 \end{itemize}
 }
 
@@ -230,8 +242,8 @@ Para encontrar que discos comprar
 	\end{block}
 }
 
-\section{IR vs CR} 
-\frame{\frametitle{Recuperación Compuesta vs Recuperación de la Información}
+\section{IR y CR} 
+\frame{\frametitle{Recuperación Compuesta y Recuperación de la Información}
 \begin{itemize}
 	\item Recuperación de la información es el arte de encontrar material, generalmente documentos, de naturaleza no estructurada, generalmente textos, que satisfagan una necesidad de información dentro de grandes colecciones, generalmente almacenadas en computadoras. (An Introduction to Information Retrieval, Manning, Raghavan, Schutze).
 	\item Recuperación compuesta de la información es el estudio de métodos para crear, recuperar y clasificar respuestas compuestas i.e., ítems conectados bajo algún criterio.
@@ -336,7 +348,7 @@ Cada paquete $S_{i} \in S$ es válido si y solo sí satisface las reglas:
 	\pause
 	\item Selección de paquetes candidatos (selección simple, SS):
 	\begin{itemize}
-		\item SE define un grafo pesado: sus nodos representan los paquetes candidatos (con peso dado por su valor intra) y el peso de una arista dado por el valor inter.
+		\item Se define un grafo pesado: sus nodos representan los paquetes candidatos (con peso dado por su valor intra) y el peso de una arista dado por el valor inter.
 		\item Se busca el subgrafo de $k$ nodos de mayor peso.
 		\item Heurística golosa: iterativamente se selecciona el paquete que maximiza la función objetivo evaluada en los paquetes hasta el momento seleccionados.
 	\end{itemize}
@@ -346,7 +358,7 @@ Cada paquete $S_{i} \in S$ es válido si y solo sí satisface las reglas:
 \frame{\frametitle{En el trabajo anterior... Debilidades}
 Por la naturaleza de PAC, las soluciones generadas se enfocan más en valorar la parte intra-paquete que la inter-paquetes.
 \begin{itemize}
-	\item C-HAC: Función \textit{Score} sólo presta atención a la similitud intra-paquete. Cuando se busca alta diversidad los paquetes generados no resulta buenos.
+	\item C-HAC: Función \textit{Score} sólo presta atención a la similitud intra-paquete. Cuando se busca alta diversidad los paquetes generados no resultan buenos.
 	\item SS:
 	\begin{itemize}
 		\item La componente intra de la función objetivo crece linealmente al agregarse un nuevo paquete a la solución. En contraste, la inter lo hace en forma cuadrática.
@@ -469,6 +481,13 @@ Procurar obtener paquetes más cohesivos:
 \end{itemize}
 }
 
+\frame{\frametitle{Nuevas propuestas - Algoritmo goloso}
+\begin{itemize}
+	\item poner
+\end{itemize}
+}
+
+\section{Experimentación computacional}
 \frame{\frametitle{Experimentación computacional}
 \begin{itemize}
 	\item Base de datos propocionada por \textit{Data Driven Journey through Software Engineering Research}.
