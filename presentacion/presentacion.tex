@@ -243,7 +243,7 @@ Para encontrar que discos comprar
 }
 
 \section{IR y CR} 
-\frame{\frametitle{Recuperación Compuesta y Recuperación de la Información}
+\frame{\frametitle{Recuperación de la Información y Recuperación Compuesta}
 \begin{itemize}
 	\item Recuperación de la información es el arte de encontrar material, generalmente documentos, de naturaleza no estructurada, generalmente textos, que satisfagan una necesidad de información dentro de grandes colecciones, generalmente almacenadas en computadoras. (An Introduction to Information Retrieval, Manning, Raghavan, Schutze).
 	\item Recuperación compuesta de la información es el estudio de métodos para crear, recuperar y clasificar respuestas compuestas i.e., ítems conectados bajo algún criterio.
@@ -483,7 +483,10 @@ Procurar obtener paquetes más cohesivos:
 
 \frame{\frametitle{Nuevas propuestas - Algoritmo goloso}
 \begin{itemize}
-	\item poner
+	\item Propuesta completamente diferente al resto.
+	\item Comienza con $k$ clusters vacíos.
+	\item En cada iteración agrega un ítem al cluster que maximice la función objetivo sin importar que el nuevo valor sea menor al actual.
+	\item El algoritmo va a generar soluciones en las que se prioriza completar los paquetes con la máxima cantidad de ítems.
 \end{itemize}
 }
 
@@ -529,22 +532,22 @@ Con el objetivo de evaluar las propuestas algorítmicas, se consideran los sigui
 Porcentaje de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los 8 algoritmos.
 \begin{table}[H]
 \begin{center}
-\caption{Comparación de calidad de soluciones entre algoritmos para la búsqueda de autores} 
+\caption{Comparación de calidad de soluciones entre algoritmos para la búsqueda de artículos}
 \scalebox{0.7}{
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
-$\gamma$    & \textcolor{cyan}{$HACS$}            & $HACP$         & $HACP+T$        & \textcolor{cyan}{$BOBS$} & $BOBP$ & $BOBP+T$ & $GOL$  & $GOL+T$ \\ \hline
-0,1         & 0,33             & 0,13          & \textbf{0,00}  & 21,59 & 26,05 & 1,74    & 0,61  & \textbf{0,00} \\
-0,2         & 0,63             & 0,36          & \textbf{0,00}  & 27,46 & 29,71 & 0,52    & 1,10  & 0,25 \\
-0,3         & 0,44             & 0,53          & \textbf{0,00}  & 30,57 & 32,47 & 0,20    & 1,50  & 0,34 \\
-0,4         & 0,25             & 0,25          & \textbf{0,00}  & 32,63 & 34,29 & 0,32    & 1,88  & 0,73 \\
-0,5         & 0,22             & \textbf{0,00} & \textbf{0,00}  & 34,42 & 35,84 & 0,04    & 2,15  & 0,79 \\
-0,6         & 0,18             & \textbf{0,00} & \textbf{0,00}  & 35,86 & 37,05 & 2,01    & 2,45  & 1,39 \\
-0,7         & \textbf{0,00}    & 0,12          & \textbf{0,00}  & 37,10 & 37,93 & 1,71    & 2,59  & 0,96 \\ 
-0,8         & \textbf{0,00}    & 0,08          & \textbf{0,00}  & 38,19 & 38,70 & 1,44    & 2,72  & 1,20 \\
-0,9         & 0,03             & 0,10          & \textbf{0,00}  & 39,15 & 39,38 & 1,21    & 3,35 & 1,72 \\ \hline  
-\end{tabular}
-\label{tabla:comp2}
+$\gamma$&\textcolor{cyan}{$HACS$}&\textcolor{cyan}{$BOBS$}&$BOBP$&$BOBP+T$&$HACP$&$HACP+T$&$GOL$&$GOL+T$ \\ \hline
+0,1 & 2,05 & 32,70 & 36,18 & 7,45 & 0,42 & \textbf{0,00} & 4,53 & 3,53 \\
+0,2 & 2,11 & 38,06 & 41,19 & 8,23 & \textbf{0,00} & \textbf{0,00} & 4,92 & 3,85 \\
+0,3 & 2,31 & 45,21 & 47,35 & 8,01 & \textbf{0,00} & \textbf{0,00} & 9,17 & 7,66 \\
+0,4 & 0,14 & 49,08 & 51,22 & 15,51 & \textbf{0,00} & \textbf{0,00} & 10,40 & 9,35 \\
+0,5 & \textbf{0,00} & 52,35 & 54,23 & 17,87 & 0,31 & 0,31 & 12,97 & 10,38 \\
+0,6 & \textbf{0,00} & 55,16 & 56,04 & 14,43 & 0,05 & 0,05 & 14,78 & 13,69 \\
+0,7 & \textbf{0,00} & 56,88 & 56,57 & 17,02 & 0,41 & 0,41 & 16,21 & 15,08 \\
+0,8 & \textbf{0,00} & 57,86 & 57,86 & 16,11 & 0,56 & 0,30 & 18,10 & 17,60 \\
+0,9 & \textbf{0,00} & 58,92 & 58,92 & 15,91 & 0,48 & 0,35 & 20,47 & 17,61 \\ \hline 
+\end{tabular} 
+\label{tabla:comp1}
 }
 \end{center}
 \end{table}
@@ -563,7 +566,28 @@ $\gamma$    & \textcolor{cyan}{$HACS$}            & $HACP$         & $HACP+T$   
 \end{itemize}
 }
 
-\frame{\frametitle{Poner algún gráfico representativo}
+\frame{\frametitle{$BOBO\ \gamma = 0,1$}
+\begin{figure}[H]
+	\includegraphics[width=0.60\linewidth]{imagenes/gamma-01-alg-3.png}
+\end{figure}
+}
+
+\frame{\frametitle{$BOBP+T\ \gamma = 0,1$}
+\begin{figure}[H]
+	\includegraphics[width=0.60\linewidth]{imagenes/gamma-01-alg-4.png}
+\end{figure}
+}
+
+\frame{\frametitle{$BOBO\ \gamma = 0,9$}
+\begin{figure}[H]
+	\includegraphics[width=0.60\linewidth]{imagenes/gamma-09-alg-3.png}
+\end{figure}
+}
+
+\frame{\frametitle{$BOBP+T\ \gamma = 0,9$}
+\begin{figure}[H]
+	\includegraphics[width=0.60\linewidth]{imagenes/gamma-09-alg-4.png}
+\end{figure}
 }
 
 \frame{\frametitle{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
@@ -593,10 +617,10 @@ $\gamma$    & \textcolor{cyan}{$HACS$}            & $HACP$         & $HACP+T$   
 \end{itemize}
 }
 
-\frame{\frametitle{Trabajo futuro}
-\begin{itemize}
-	\item Poner algo.
-\end{itemize}
-}
+% \frame{\frametitle{Trabajo futuro}
+% \begin{itemize}
+% 	\item Poner algo.
+% \end{itemize}
+% }
 
 \end{document}
