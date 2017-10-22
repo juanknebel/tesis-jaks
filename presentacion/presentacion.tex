@@ -514,17 +514,6 @@ Una propuesta completamente diferente al resto de las mencionadas:
 }
 
 \frame{\frametitle{Experimentación computacional}
-\begin{itemize}
-	\item Consulta de artículos con tópicos similares presentados en distintas conferencias.
-	\item Función de similitud que compara el perfil de cada artículo.
-	\item Atributo de complementariedad definido como la conferencia donde fue presentado.
-	\item Una unidad de costo de cada artículo y cinco de presupuesto $\beta$ (todos los paquetes contendrán como máximo cinco artículos).
-	\item $k = 10$ paquetes retornados en cada consulta (para que un humando pueda valorizar el resultado propuesto fácilmente).
-	\item Pruebas realizadas con la siguiente configuración: Desktop Intel(R) Core(TM) $i5-4570$T CPU @ $2.9GHz$, $5.7Gb$ Ram, base de datos $5.5.46$-MariaDB-1ubuntu$0.14.04.2$. El lenguage utilizado fue $C++$.
-\end{itemize}
-}
-
-\frame{\frametitle{Experimentación computacional}
 Con el objetivo de evaluar las propuestas algorítmicas, se consideran los siguientes métodos:
 \begin{itemize}
 	\item{$HACS$} PAC(C-HAC / selección simple)
@@ -536,6 +525,45 @@ Con el objetivo de evaluar las propuestas algorítmicas, se consideran los sigui
 	\item{$GOL$} Construcción golosa
 	\item{$GOL+T$} Construcción golosa + tabú
 \end{itemize}
+}
+
+\frame{\frametitle{Experimentación computacional}
+\begin{itemize}
+	\item Consulta de artículos con tópicos similares presentados en distintas conferencias.
+	\item Función de similitud que compara el perfil de cada artículo.
+	\item Atributo de complementariedad definido como la conferencia donde fue presentado.
+	\item Consulta de autores con un perfil similar de distintas afiliaciones.
+	\item Función de similitud comparar el perfil de cada autor.
+	\item Atributo de complementariedad definido como la afiliación del autor.
+	\item Una unidad de costo de cada artículo o autor y cinco de presupuesto $\beta$ (todos los paquetes contendrán como máximo cinco artículos o autores).
+	\item $k = 10$ paquetes retornados en cada consulta (para que un humando pueda valorizar el resultado propuesto fácilmente).
+	\item Pruebas realizadas con la siguiente configuración: Desktop Intel(R) Core(TM) $i5-4570$T CPU @ $2.9GHz$, $5.7Gb$ Ram, base de datos $5.5.46$-MariaDB-1ubuntu$0.14.04.2$. El lenguage utilizado fue $C++$.
+\end{itemize}
+}
+
+\frame{\frametitle{Experimentación computacional}
+Porcentaje de deterioro de cada solución respecto de la mejor solución obtenida por alguno de los 8 algoritmos.
+\begin{table}[H]
+\begin{center}
+\caption{Comparación de calidad de soluciones entre algoritmos para la búsqueda de autores} 
+\scalebox{0.7}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\gamma$    & \textcolor{cyan}{$HACS$}            & $HACP$         & $HACP+T$        & \textcolor{cyan}{$BOBS$} & $BOBP$ & $BOBP+T$ & $GOL$  & $GOL+T$ \\ \hline
+0,1         & 0,33             & 0,13          & \textbf{0,00}  & 21,59 & 26,05 & 1,74    & 0,61  & \textbf{0,00} \\
+0,2         & 0,63             & 0,36          & \textbf{0,00}  & 27,46 & 29,71 & 0,52    & 1,10  & 0,25 \\
+0,3         & 0,44             & 0,53          & \textbf{0,00}  & 30,57 & 32,47 & 0,20    & 1,50  & 0,34 \\
+0,4         & 0,25             & 0,25          & \textbf{0,00}  & 32,63 & 34,29 & 0,32    & 1,88  & 0,73 \\
+0,5         & 0,22             & \textbf{0,00} & \textbf{0,00}  & 34,42 & 35,84 & 0,04    & 2,15  & 0,79 \\
+0,6         & 0,18             & \textbf{0,00} & \textbf{0,00}  & 35,86 & 37,05 & 2,01    & 2,45  & 1,39 \\
+0,7         & \textbf{0,00}    & 0,12          & \textbf{0,00}  & 37,10 & 37,93 & 1,71    & 2,59  & 0,96 \\ 
+0,8         & \textbf{0,00}    & 0,08          & \textbf{0,00}  & 38,19 & 38,70 & 1,44    & 2,72  & 1,20 \\
+0,9         & 0,03             & 0,10          & \textbf{0,00}  & 39,15 & 39,38 & 1,21    & 3,35 & 1,72 \\ \hline  
+\end{tabular}
+\label{tabla:comp2}
+}
+\end{center}
+\end{table}
 }
 
 \frame{\frametitle{Experimentación computacional}
