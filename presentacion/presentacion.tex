@@ -119,20 +119,15 @@ Universidad de Buenos Aires\\Facultad de Ciencias Exactas y Naturales\\Departame
 \frame{\frametitle{Comprando discos on-line} 
 Un coleccionista de discos quiere incorporar nuevos discos de una misma época a su fonoteca. Para esta incorporación desea que:
 \begin{itemize}
-	\pause
 	\item La compra no supere los $\$ 100$.
-	\pause
 	\item Quiere concentrarse en discos de una misma época.
-	\pause
 	\item No repetir el país de origen del artista del disco.
-	\pause
 	\item Que estén representados varios países.
 \end{itemize}
 }
 
 \frame{\frametitle{Comprando discos on-line}
 El coleccionista consulta en una tienda virtual de discos.
-\pause
 \begin{block}{Búsqueda: Inglaterra}
 	\tiny
 	\begin{itemize}
@@ -272,17 +267,17 @@ Generar un conjunto \textit{diverso} de $k$ paquetes de ítems \textit{similares
 \frame{\frametitle{Definición del problema}
 Los paquetes deben cumplir las siguientes propiedades:
 \begin{itemize}
-	\item \textbf{Compatibilidad: } Los elementos dentro de un paquete deben ser similares. El grado de similitud de los elementos que forman un paquete define su calidad.
-	\textit{Poner algo del ejemplo de los discos}.
+	\item \textbf{Compatibilidad:} Los elementos dentro de un paquete deben ser similares. El grado de similitud de los elementos que forman un paquete define su calidad.
+	\textcolor{cyan}{Año de lanzamiento del disco}.
 	\pause
-	\item \textbf{Validez: } El costo total de los elementos del paquete no puede superar el presupuesto.
-	\textit{Poner algo del ejemplo de los discos}.
+	\item \textbf{Complementariedad:} Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro de paquete contienen un valor diferente para tal propiedad.
+	\textcolor{cyan}{País de origen del disco}.
 	\pause
-	\item \textbf{Diversidad: } Los paquetes entre sí deben ser diversos.
-	\textit{Poner algo del ejemplo de los discos}.
+	\item \textbf{Validez:} El costo total de los elementos del paquete no puede superar el presupuesto.
+	\textcolor{cyan}{Valor total de todos los discos}.
 	\pause
-	\item \textbf{Complementariedad: } Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro de paquete contienen un valor diferente para tal propiedad.
-	\textit{Poner algo del ejemplo de los discos}.
+	\item \textbf{Diversidad:} Los paquetes entre sí deben ser diversos.
+	\textcolor{cyan}{Los años representados en los paquetes sean representativos}.
 \end{itemize}
 }
 
@@ -415,6 +410,7 @@ Se realizaron dos implementaciones de procedimientos de mejora basados en la met
 }
 
 \frame{\frametitle{Nuevas propuestas - Mejora \textit{Inter-paquete}}
+Proporciona soluciones más diversas:
 \begin{itemize}
 	\item Intercambia paquetes seleccionados con paquetes generados en la etapa de producción pero que no han sido elegidos.
 	\item Lista tabú de paquetes prohibidos, LT: paquetes que fueron eliminados de la solución en iteraciones anteriores.
@@ -425,48 +421,58 @@ Se realizaron dos implementaciones de procedimientos de mejora basados en la met
 }
 
 \frame{\frametitle{Nuevas propuestas - Mejora \textit{Inter-paquete}}
-\tiny
-$S$ conjunto de paquetes elegidos. $B$ conjunto de paquetes generados.
-\begin{enumerate}
-	\tiny
-	\item $S^{*} = S, \overline{S} = S, LT = \emptyset$
-	\item Mientras no se cumple criterio de parada hacer:
-	\pause
-	\begin{multicols}{2}
-		\begin{enumerate}
-			\tiny
-			\item $b_{r}$ en $\overline{S}$ con menor inter:
-			$$b_{r} = \argmin_{b_{j} \in \overline{S}} \sum_{\substack{b_{j} \in \overline{S}\\ b_{j} \neq b_{i}}} (1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
-			\pause
-			\item $b_{c}$ con menor inter en $\overline{S} \setminus \{b_{r}\}$
-			\pause
-			\item Candidatos $C$ ($\max$ inter a $b_{c}$:
-			$$C = k-\argmax_{b_{j} \in B \setminus \overline{S}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{c}}}s(u,v))$$
-			\pause
-			\item Mejor paquete de $C$ no prohibido en \textit{LT} según el criterio:
-			$$b = \argmax_{b_{s} \in C \setminus LT} \sum_{\substack{b_{i}, b_{j} \in \\ \overline{S} \setminus \{b_{r}\} \cup \{b_{s}\}}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
-			\pause
-			\item Se evalúa el criterio de aspiración para los paquetes en $C \cap LT$:
-			$$b_{tabu} = \argmax_{b_{s} \in C \cap LT}w(\overline{S} \setminus \{b_{r}\} \cup \{b_{s}\})$$
-			\pause
-			\item Si $\max(w(S^{*}), w(\overline{S} \setminus \{b_{r}\} \cup \{b\})) < w(\overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\})$ entonces
-			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\}$$
-			Sino
-			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b\}$$
-			\pause
-			\item Actualizar $LT$
-			\pause
-			\item Si $w(\overline{S}) > w(S^{*})$ entonces $S^{*} = \overline{S}$
-			\pause
-		\end{enumerate}
-	\end{multicols}
-	\item Retornar $S^{*}$
-\end{enumerate}
+% \tiny
+% $S$ conjunto de paquetes elegidos. $B$ conjunto de paquetes generados.
+% \begin{enumerate}
+% 	\tiny
+% 	\item $S^{*} = S, \overline{S} = S, LT = \emptyset$
+% 	\item Mientras no se cumple criterio de parada hacer:
+% 	\pause
+% 	\begin{multicols}{2}
+% 		\begin{enumerate}
+% 			\tiny
+% 			\item $b_{r}$ en $\overline{S}$ con menor inter:
+% 			$$b_{r} = \argmin_{b_{j} \in \overline{S}} \sum_{\substack{b_{j} \in \overline{S}\\ b_{j} \neq b_{i}}} (1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
+% 			\pause
+% 			\item $b_{c}$ con menor inter en $\overline{S} \setminus \{b_{r}\}$
+% 			\pause
+% 			\item Candidatos $C$ ($\max$ inter a $b_{c}$):
+% 			$$C = k-\argmax_{b_{j} \in B \setminus \overline{S}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{c}}}s(u,v))$$
+% 			\pause
+% 			\item Mejor paquete de $C$ no prohibido en \textit{LT} según el criterio:
+% 			$$b = \argmax_{b_{s} \in C \setminus LT} \sum_{\substack{b_{i}, b_{j} \in \\ \overline{S} \setminus \{b_{r}\} \cup \{b_{s}\}}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
+% 			\pause
+% 			\item Se evalúa el criterio de aspiración para los paquetes en $C \cap LT$:
+% 			$$b_{tabu} = \argmax_{b_{s} \in C \cap LT}w(\overline{S} \setminus \{b_{r}\} \cup \{b_{s}\})$$
+% 			\pause
+% 			\item Si $\max(w(S^{*}), w(\overline{S} \setminus \{b_{r}\} \cup \{b\})) < w(\overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\})$ entonces
+% 			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b_{tabu}\}$$
+% 			Sino
+% 			$$\overline{S} = \overline{S} \setminus \{b_{r}\} \cup \{b\}$$
+% 			\pause
+% 			\item Actualizar $LT$
+% 			\pause
+% 			\item Si $w(\overline{S}) > w(S^{*})$ entonces $S^{*} = \overline{S}$
+% 			\pause
+% 		\end{enumerate}
+% 	\end{multicols}
+% 	\item Retornar $S^{*}$
+% \end{enumerate}
+\normalsize
+\begin{itemize}
+	\item Elige el paquete $b_{r}$ con menor valor inter de la solución actual $S$ para ser reemplazado.
+	\item Identifica el paquete $b_{c}$ con menor valor en $S \setminus b_{r}$.
+	\item Arma una lista de paquetes candidatos con aquellos paquetes que quedaron fuera de la selección y que maximicen el valor inter hacia $b_{c}$.
+	\item Selecciona el ítem $b_{s}$ de la lista de candidatos que maximice la suma total de los valores inter de la solución $S \setminus b_{r} \cup b_{s}$.
+	\item Genera la nueva solución reemplazado $b_{r}$ por $b_{s}$.
+	\item Evalúa el criterio de aspiración para los elementos tabú.
+\end{itemize}
+
 }
 
 
 \frame{\frametitle{Nuevas propuestas - Mejora \textit{Intra-paquete}}
-\normalsize
+\tiny
 Procurar obtener paquetes más cohesivos:
 \begin{itemize}
 	\item Elige el paquete $b$ de las solución actual con menor valor intra.
@@ -475,13 +481,17 @@ Procurar obtener paquetes más cohesivos:
 	\item Determina el ítem de $b$ más alejado a él:
 	$$i = \argmin_{v \in b}s(c,v)$$
 	\item Arma lista de candidatos $C$: ítems más cercanos al centroide $c$ que no pertenecen a paquetes de la solución actual.
-	\item Selecciona el ítem $r$ de $C$ que no es tabú con mayor valor intra del paquete $b \setminus \{i\} \cup \{r\}$.
+	\item Como primer medida intenta agregar un ítem $r$ de $C$ al paquete si es posible para aprovechar el presupuesto.
+	\item Si no puede agregar ningún ítem selecciona el ítem $r$ de $C$ que no es tabú con mayor valor intra del paquete $b \setminus \{i\} \cup \{r\}$.
 	\item Arma la nueva solución reemplazando $b$ por $b \setminus \{i\} \cup \{r\}$.
+	\item Evalúa la solución reemplazando $b$ por $b \setminus \{i\}$ antes de terminar la iteración.
 	\item Criterio de aspiración similar a la búsqueda anterior.
 \end{itemize}
+\normalsize
 }
 
 \frame{\frametitle{Nuevas propuestas - Algoritmo goloso}
+Una propuesta completamente diferente al resto de las mencionadas:
 \begin{itemize}
 	\item Propuesta completamente diferente al resto.
 	\item Comienza con $k$ clusters vacíos.
@@ -588,24 +598,6 @@ $\gamma$&\textcolor{cyan}{$HACS$}&\textcolor{cyan}{$BOBS$}&$BOBP$&$BOBP+T$&$HACP
 \begin{figure}[H]
 	\includegraphics[width=0.60\linewidth]{imagenes/gamma-09-alg-4.png}
 \end{figure}
-}
-
-\frame{\frametitle{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.50\linewidth]{imagenes/alg1_vs_alg5.png}
-	\label{res:inter_intra-1-5}
-\end{figure}
-}
-
-\frame{\frametitle{Trade-off entre objetivos para los distintos valores de $\gamma$ en $HACS$ y $HACP$}
-\begin{itemize}
-	\item La mayoría de las soluciones provistas por el algoritmo son no dominadas.
-	\item La heurística $HACP+T$ es capaz de proveer conjunto de paquetes con diversos valores de la función $Intra-Inter$.
-	\item Incrementos significativos en los valores intra-paquetes no pueden ser alcanzados sin sacrificar el valor inter del conjunto y viceversa.
-	\item Este tipo de análisis puede ayudar al usuario a decidirse por una de las soluciones.
-	\item Un buen compromiso entre ambas soluciones puede ser la solución $\gamma = 0,3$.
-\end{itemize}
 }
 
 \section{Conclusiones y trabajo futuro}
