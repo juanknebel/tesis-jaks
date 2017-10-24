@@ -194,15 +194,15 @@ El coleccionista consulta en una tienda virtual de discos.
 }
 
 \frame{\frametitle{Comprando discos on-line}
-Para encontrar que discos comprar
+Para encontrar que discos comprar:
 \begin{itemize}
 	\item Consulta sobre discos en una tienda virtual.
-	\item Obtiene listas de discos:
+	\item Obtiene varias listas de discos:
 		\begin{itemize}
 			\item Por país.
 			\item Por período.
 		\end{itemize}
-	\item Ahora debe procesar manualmente todos los discos, cuidando respetar sus requerimientos al definir los discos a comprar.
+	\item Debe procesar manualmente todos los discos, cuidando respetar sus requerimientos al definir los discos a comprar.
 \end{itemize}
 }
 
@@ -250,7 +250,7 @@ Para encontrar que discos comprar
 \frame{\frametitle{Definición del problema}
 Dados:
 \begin{itemize}
-	\item Un conjunto de ítems, cada uno con
+	\item Un conjunto de ítems, cada uno con:
 	\begin{itemize}
 		\item atributos.
 		\item un costo.
@@ -267,17 +267,17 @@ Generar un conjunto \textit{diverso} de $k$ paquetes de ítems \textit{similares
 \frame{\frametitle{Definición del problema}
 Los paquetes deben cumplir las siguientes propiedades:
 \begin{itemize}
-	\item \textbf{Compatibilidad:} Los elementos dentro de un paquete deben ser similares. El grado de similitud de los elementos que forman un paquete define su calidad.
+	\item \textbf{Compatibilidad:} Los elementos dentro de un paquete deben ser similares. El grado de similitud de los elementos que forman un paquete definen su calidad.
 	\textcolor{cyan}{Año de lanzamiento del disco}.
 	\pause
-	\item \textbf{Complementariedad:} Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro de paquete contienen un valor diferente para tal propiedad.
+	\item \textbf{Complementariedad:} Todos los paquetes cumplen que, para un mismo atributo especificado los elementos dentro del mismo paquete contienen no repiten tal propiedad.
 	\textcolor{cyan}{País de origen del disco}.
 	\pause
 	\item \textbf{Validez:} El costo total de los elementos del paquete no puede superar el presupuesto.
 	\textcolor{cyan}{Valor total de todos los discos}.
 	\pause
 	\item \textbf{Diversidad:} Los paquetes entre sí deben ser diversos.
-	\textcolor{cyan}{Los años representados en los paquetes sean representativos}.
+	\textcolor{cyan}{Los años representados en los paquetes no deben solaparse}.
 \end{itemize}
 }
 
@@ -295,14 +295,14 @@ Dados:
 Se debe hallar un conjunto de paquetes válidos $S = \{ S_{1}...S_{k} \}$ que maximice la función:
 \small
 $$
-w(s) = \gamma \boxed{\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{s(u,v)}}} 
+w(S) = \gamma \boxed{\sum_{1 \leq i \leq k}{\sum_{u,v \in S_i}{s(u,v)}}} 
 + (1-\gamma) \boxed{\sum_{1 \leq i < j \leq k} {(1-\max_{u \in S_i, v \in S_j}{s(u,v)})}}
 $$
 \normalsize
 Cada paquete $S_{i} \in S$ es válido si y solo sí satisface las reglas:
 \begin{itemize}
-	\item \textbf{Complementariedad: } $\forall u,v \in S_{i} \alpha(u) \neq \alpha(v)$.
-	\item \textbf{Presupuesto: } $\forall S_{i} \in S, f(S_{i}) \leq \beta$.
+	\item \textbf{Complementariedad:} $\forall u,v \in S_{i} \alpha(u) \neq \alpha(v)$.
+	\item \textbf{Presupuesto:} $\forall S_{i} \in S, f(S_{i}) \leq \beta$.
 \end{itemize}
 
 }
@@ -336,9 +336,9 @@ Cada paquete $S_{i} \in S$ es válido si y solo sí satisface las reglas:
 		\item C-HAC:
 		\begin{itemize}
 			\item \textit{Clustering} jerárquico aglomerativo con restricciones.
-			\item Función \textit{Score: } similitudes de todos los ítems en el nuevo cluster.
+			\item Función \textit{Score:} similitudes de todos los ítems en el nuevo cluster.
 		\end{itemize}
-		\item BOBO-c (bundles one-by-one): Se generan $c*k$ paquetes seleccionando un ítem como pivote y golosamente construyendo un paquetes a su alrededor.
+		\item BOBO-c (bundles one-by-one): Se generan $c*k$ paquetes seleccionando un ítem como pivote y en cada iteración de manera golosa construye un paquetes a su alrededor.
 	\end{itemize}
 	\pause
 	\item Selección de paquetes candidatos (selección simple, SS):
@@ -356,7 +356,7 @@ Por la naturaleza de PAC, las soluciones generadas se enfocan más en valorar la
 	\item C-HAC: Función \textit{Score} sólo presta atención a la similitud intra-paquete. Cuando se busca alta diversidad los paquetes generados no resultan buenos.
 	\item SS:
 	\begin{itemize}
-		\item La componente intra de la función objetivo crece linealmente al agregarse un nuevo paquete a la solución. En contraste, la inter lo hace en forma cuadrática.
+		\item La componente inter de la función objetivo crece linealmente al agregarse un nuevo paquete a la solución. En contraste, la intra lo hace en forma cuadrática.
 		\item Esto hace que en las soluciones parciales, la parte inter no tenga peso proporcional a su valor en la solución completa.
 		\item En las primeras iteraciones el valor inter-paquetes es despreciable con respecto a la suma de los valores intra-paquete.
 		\item Cuando se quiere privilegiar la diversidad de paquetes en la solución ésta no es una buena estrategia.
@@ -458,16 +458,18 @@ Proporciona soluciones más diversas:
 % 	\end{multicols}
 % 	\item Retornar $S^{*}$
 % \end{enumerate}
-\normalsize
+\tiny
 \begin{itemize}
-	\item Elige el paquete $b_{r}$ con menor valor inter de la solución actual $S$ para ser reemplazado.
-	\item Identifica el paquete $b_{c}$ con menor valor en $S \setminus b_{r}$.
-	\item Arma una lista de paquetes candidatos con aquellos paquetes que quedaron fuera de la selección y que maximicen el valor inter hacia $b_{c}$.
-	\item Selecciona el ítem $b_{s}$ de la lista de candidatos que maximice la suma total de los valores inter de la solución $S \setminus b_{r} \cup b_{s}$.
+	\item Elige el paquete $b_{r}$ con menor valor inter de la solución actual $S$ para ser reemplazado:
+	$$b_{r} = \argmin_{b_{j} \in \overline{S}} \sum_{\substack{b_{j} \in \overline{S}\\ b_{j} \neq b_{i}}} (1 - \max_{\substack{u \in b_{i}\\ v \in b_{j}}}s(u,v))$$
+	\item Identifica el paquete $b_{c}$ con menor valor en $S \setminus \{b_{r}\}$.
+	\item Arma una lista de paquetes candidatos con aquellos paquetes que quedaron fuera de la selección y que maximicen el valor inter hacia $b_{c}$:
+	$$C = k-\argmax_{b_{j} \in B \setminus \overline{S}}(1 - \max_{\substack{u \in b_{i}\\ v \in b_{c}}}s(u,v))$$
+	\item Selecciona el ítem $b_{s}$ de la lista de candidatos que maximice la suma total de los valores inter de la solución $S \setminus \{b_{r}\} \cup \{b_{s}\}$.
 	\item Genera la nueva solución reemplazado $b_{r}$ por $b_{s}$.
 	\item Evalúa el criterio de aspiración para los elementos tabú.
 \end{itemize}
-
+\normalsize
 }
 
 
@@ -491,12 +493,13 @@ Procurar obtener paquetes más cohesivos:
 }
 
 \frame{\frametitle{Nuevas propuestas - Algoritmo goloso}
-Una propuesta completamente diferente al resto de las mencionadas:
+Una nueva propuesta que aborda el problema de una forma diferente:
 \begin{itemize}
-	\item Propuesta completamente diferente al resto.
+	\item No divide el problema en dos etapas.
 	\item Comienza con $k$ clusters vacíos.
-	\item En cada iteración agrega un ítem al cluster que maximice la función objetivo sin importar que el nuevo valor sea menor al actual.
-	\item El algoritmo va a generar soluciones en las que se prioriza completar los paquetes con la máxima cantidad de ítems.
+	\item En cada iteración siempre agrega un ítem.
+	\item El ítem se agrega al cluster que maximice la función objetivo sin importar que el nuevo valor de la función objetivo sea menor al actual.
+	\item El algoritmo va a generar soluciones en las que se prioriza completar los paquetes con la máxima cantidad de ítems en cada paquete.
 \end{itemize}
 }
 
@@ -528,6 +531,7 @@ Con el objetivo de evaluar las propuestas algorítmicas, se consideran los sigui
 }
 
 \frame{\frametitle{Experimentación computacional}
+\tiny
 \begin{itemize}
 	\item Consulta de artículos con tópicos similares presentados en distintas conferencias.
 	\item Función de similitud que compara el perfil de cada artículo.
@@ -539,6 +543,7 @@ Con el objetivo de evaluar las propuestas algorítmicas, se consideran los sigui
 	\item $k = 10$ paquetes retornados en cada consulta (para que un humando pueda valorizar el resultado propuesto fácilmente).
 	\item Pruebas realizadas con la siguiente configuración: Desktop Intel(R) Core(TM) $i5-4570$T CPU @ $2.9GHz$, $5.7Gb$ Ram, base de datos $5.5.46$-MariaDB-1ubuntu$0.14.04.2$. El lenguage utilizado fue $C++$.
 \end{itemize}
+\normalsize
 }
 
 \frame{\frametitle{Experimentación computacional}
